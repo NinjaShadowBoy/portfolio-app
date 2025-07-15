@@ -1,0 +1,15 @@
+<div class="about-container">
+  <h1>About Me</h1>
+  <p>
+    I'm a fourth-year software engineering student with experience in full-stack development and game programming.
+    My projects include a hotel reservation system with Stripe integration, a Pac-Man clone with procedural maze
+    generation,
+    and a construction material tracking system. I'm passionate about building scalable, user-friendly applications.
+  </p>
+  <h2>Skills</h2>
+  <ul class="skills-list">
+    @for (skill of skills; track skill) {
+    <li>{{ skill }}</li>
+    }
+  </ul>
+</div>
