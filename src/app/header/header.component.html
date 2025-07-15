@@ -1,0 +1,32 @@
+<div class="header-container">
+  <header class="header">
+    <!-- String interpolation for dynmic data -->
+    <div class="header-content">
+      <h1>{{ title }}</h1>
+      <p>{{ subtitle }}</p>
+    </div>
+
+    <!-- @for for dynamic list rendering -->
+    <nav class="navigation">
+      <ul>
+        @for(item of navItems; track item.label) {
+        <li>
+          <!-- Event binding for user interactions -->
+          <a class="link" [routerLink]="[item.link]" routerLinkActive="active">{{ item.label }}</a>
+        </li>
+        }
+        <ul>
+          <li>
+            <a class="social" href="#"><img [src]="'assets/images/LinkedIn.png'" alt="LinkedIn" width="40" /></a>
+          </li>
+          <li>
+            <a class="social" href="#"><img [src]="'assets/images/Facebook Circled.png'" alt="Facebook" width="40" /></a>
+          </li>
+          <li>
+            <a class="social" href="#"><img [src]="'assets/images/GitHub.png'" alt="GitHub" width="40" /></a>
+          </li>
+        </ul>
+      </ul>
+    </nav>
+  </header>
+</div>
