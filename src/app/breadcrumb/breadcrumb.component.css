@@ -1,0 +1,167 @@
+.breadcrumb {
+  max-width: 1400px;
+  margin: 1rem auto;
+  padding: 0 2rem;
+  background: var(--surface-base);
+  transition: all var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.breadcrumb ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.breadcrumb li {
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  transition: color var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.breadcrumb li a {
+  color: var(--text-link);
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.breadcrumb li a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--surface-hover);
+  transform: scaleX(0);
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+  z-index: -1;
+}
+
+.breadcrumb li a:hover {
+  color: var(--text-link-hover);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.breadcrumb li a:hover::before {
+  transform: scaleX(1);
+}
+
+.breadcrumb li span {
+  color: var(--text-primary);
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-brand);
+  border-radius: 6px;
+  border: 1px solid var(--border-brand);
+  box-shadow: var(--elevation-1);
+}
+
+.breadcrumb li:not(:last-child)::after {
+  content: "›";
+  margin-left: 1rem;
+  color: var(--text-quaternary);
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.breadcrumb li:not(:last-child):hover::after {
+  color: var(--text-accent);
+}
+
+/* Holographic effect for active breadcrumb */
+.breadcrumb li span::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--hologram-bg);
+  opacity: 0;
+  transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
+  pointer-events: none;
+}
+
+.breadcrumb li span:hover::before {
+  opacity: 0.1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .breadcrumb {
+    padding: 0 1rem;
+    margin: 0.5rem auto;
+  }
+
+  .breadcrumb ul {
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .breadcrumb li a,
+  .breadcrumb li span {
+    padding: 0.375rem 0.5rem;
+  }
+
+  .breadcrumb li:not(:last-child)::after {
+    margin-left: 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Animation for breadcrumb appearance */
+.breadcrumb {
+  animation: fadeInUp 0.5s var(--motion-ease-out);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode optimizations */
+[data-theme="dark"] .breadcrumb li span {
+  background: var(--surface-brand);
+  border-color: var(--border-brand);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .breadcrumb li a:hover {
+  background: var(--surface-hover);
+}
+
+/* Focus management for accessibility */
+.breadcrumb li a:focus {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Print optimizations */
+@media print {
+  .breadcrumb {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .breadcrumb li span {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .breadcrumb li a:hover {
+    background: transparent !important;
+    transform: none !important;
+  }
+}
