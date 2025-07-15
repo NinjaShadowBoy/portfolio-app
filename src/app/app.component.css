@@ -1,0 +1,33 @@
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-inline: 2rem;
+  background: var(--glass-noise);
+  color: var(--text-primary);
+  min-height: calc(100vh - 200px);
+  transition: background-color var(--motion-duration-normal)
+      var(--motion-ease-out),
+    color var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+/* Theme-aware container */
+.theme-system {
+  background: var(--surface-base);
+  color: var(--text-primary);
+  transition: all var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    padding-inline: 1rem;
+  }
+}
+
+/* Print optimizations */
+@media print {
+  .main-content {
+    max-width: none;
+    padding: 0;
+  }
+}
