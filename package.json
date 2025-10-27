@@ -5,6 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:gh-pages": "ng build --configuration gh-pages",
+    "predeploy": "npm run build:gh-pages",
+    "deploy": "npx angular-cli-ghpages --dir=dist/portfolio-app/browser",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

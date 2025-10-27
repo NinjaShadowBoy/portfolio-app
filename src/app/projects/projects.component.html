@@ -130,9 +130,11 @@
           <button (click)="toggleDetails(project)" class="details-toggle">
             {{ project.isExpanded ? 'Hide Details' : 'Show Details' }}
           </button>
+          @if (isAdmin()) {
           <button (click)="resetProjectRatings(project)" class="reset-ratings">
             Reset Ratings
           </button>
+          }
         </div>
 
         @if (project.isExpanded) {

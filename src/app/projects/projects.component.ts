@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Project, Rating } from '../interfaces/project.interface';
 import { ProjectDataService } from '../services/project-data.service';
 import { ProjectDetailComponent } from '../project-detail/project-detail.component';
+import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-projects',
@@ -15,6 +17,8 @@ import { ProjectDetailComponent } from '../project-detail/project-detail.compone
 export class ProjectsComponent implements OnInit {
   // Angular 20 function-based injection
   private projectService = inject(ProjectDataService);
+  private auth = inject(AuthService);
+  private notifier = inject(NotificationService);
 
   // Local component state using signals
   private isLoadingSignal = signal(false);
@@ -26,6 +30,7 @@ export class ProjectsComponent implements OnInit {
   public readonly filters = this.projectService.filters;
   public readonly isLoading = this.isLoadingSignal.asReadonly();
   public readonly error = this.errorSignal;
+  public readonly isAdmin = this.auth.isAdmin;
 
   // Form controls
   public searchTerm = signal('');
@@ -88,12 +93,14 @@ export class ProjectsComponent implements OnInit {
   }
 
   resetProjectRatings(project: Project): void {
-    if (
-      confirm(
-        `Are you sure you want to reset all ratings for "${project.name}"?`
-      )
-    ) {
+    if (!this.isAdmin()) {
+      this.notifier.error('Only admins can reset ratings.');
+      return;
+    }
+
+    if (confirm(`Are you sure you want to reset all ratings for "${project.name}"?`)) {
       this.projectService.resetProjectRatings(project.id);
+      this.notifier.success('Ratings reset.');
     }
   }
 

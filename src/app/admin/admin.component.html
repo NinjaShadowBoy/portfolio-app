@@ -1,0 +1,9 @@
+<section class="admin">
+    <h2>Admin Dashboard</h2>
+    @if (isAdmin) {
+    <p>Welcome, {{ user?.name }} ({{ user?.email }})</p>
+    } @else {
+    <p>Restricted area. You are not authorized.</p>
+    <button (click)="goHome()">Go Home</button>
+    }
+</section>

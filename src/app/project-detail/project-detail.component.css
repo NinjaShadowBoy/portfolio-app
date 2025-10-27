@@ -139,14 +139,6 @@ h2::before {
   border-radius: 2px;
 }
 
-.challenges h2::before {
-  background: var(--gradient-warning);
-}
-
-.learnings h2::before {
-  background: var(--gradient-success);
-}
-
 .challenges p,
 .learnings p {
   color: var(--text-secondary);

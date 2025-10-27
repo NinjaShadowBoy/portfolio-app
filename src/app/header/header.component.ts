@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -27,4 +28,17 @@ export class HeaderComponent {
     // {label: 'Experience', link: '/experience'},
     // {label: 'Certifications', link: '/certifications'},
   ];
+
+  private auth = inject(AuthService);
+  isAuthenticated = this.auth.isAuthenticated;
+
+  isMenuOpen = false;
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  logout() {
+    this.auth.logout();
+  }
 }

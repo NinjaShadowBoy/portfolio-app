@@ -1,0 +1,200 @@
+.auth-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  padding-top: 0;
+  background: var(--surface-base);
+  color: var(--text-primary);
+  transition: all var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.auth-card {
+  background: var(--surface-raised);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--elevation-2);
+  border: 1px solid var(--border-subtle);
+  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
+}
+
+.auth-header h1 {
+  margin: 0;
+  color: var(--text-primary);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auth-header .subtitle {
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.mode-toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.mode-toggle span {
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  z-index: 1;
+}
+
+.mode-toggle span.active {
+  color: var(--text-primary);
+}
+
+.mode-toggle .toggle-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 6px);
+  border-radius: 999px;
+  background: var(--surface-base);
+  box-shadow: var(--elevation-2);
+  transition: transform var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.mode-toggle .toggle-thumb.right {
+  transform: translateX(100%);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input-field {
+  padding: 0.75rem;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--input-bg);
+  color: var(--input-text);
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.input-field::placeholder {
+  color: var(--input-placeholder);
+}
+
+.input-field:hover {
+  border-color: var(--input-border-hover);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+  box-shadow: var(--focus-ring);
+  transform: translateY(-1px);
+}
+
+.error {
+  color: var(--color-danger-text);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+  background: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  border-radius: 6px;
+  animation: fadeInUp 0.3s var(--motion-ease-out);
+}
+
+.auth-form.submitting {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Button styling identical pattern to contact form */
+.auth-form button {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+  box-shadow: var(--btn-primary-shadow);
+  position: relative;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.auth-form button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+  z-index: -1;
+}
+
+.auth-form button:hover:not(:disabled) {
+  background: var(--btn-primary-bg-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--btn-primary-shadow), var(--elevation-2);
+}
+
+.auth-form button:hover:not(:disabled)::before {
+  transform: scaleX(1);
+}
+
+.auth-form button:active:not(:disabled) {
+  transform: translateY(0);
+  transition-duration: var(--motion-duration-instant);
+}
+
+.auth-form button:disabled {
+  background: var(--btn-disabled-bg);
+  color: var(--btn-disabled-text);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .auth-container { padding: 1rem; }
+  .auth-card { padding: 1.5rem; }
+}
+
+

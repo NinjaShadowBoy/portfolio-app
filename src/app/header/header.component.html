@@ -6,21 +6,34 @@
       <p>{{ subtitle }}</p>
     </div>
 
-    <!-- @for for dynamic list rendering -->
-    <nav class="navigation">
-      <ul>
+    <!-- Navigation with hamburger for small screens -->
+    <nav class="navigation" aria-label="Primary">
+      <button class="hamburger" aria-label="Menu" (click)="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+
+      <!-- Desktop navigation -->
+      <ul class="desktop-nav">
         @for(item of navItems; track item.label) {
         <li>
           <!-- Event binding for user interactions -->
           <a class="link" [routerLink]="[item.link]" routerLinkActive="active">{{ item.label }}</a>
         </li>
         }
-        <ul>
+        <li class="auth-controls">
+          @if (isAuthenticated()) {
+          <button class="link" (click)="logout()">Logout</button>
+          } @else {
+          <a class="link" [routerLink]="['/login']" routerLinkActive="active">Login</a>
+          }
+        </li>
+        <ul class="socials">
           <li>
             <a class="social" href="#"><img [src]="'assets/images/LinkedIn.png'" alt="LinkedIn" width="40" /></a>
           </li>
           <li>
-            <a class="social" href="#"><img [src]="'assets/images/Facebook Circled.png'" alt="Facebook" width="40" /></a>
+            <a class="social" href="#"><img [src]="'assets/images/Facebook Circled.png'" alt="Facebook"
+                width="40" /></a>
           </li>
           <li>
             <a class="social" href="#"><img [src]="'assets/images/GitHub.png'" alt="GitHub" width="40" /></a>
@@ -28,5 +41,33 @@
         </ul>
       </ul>
     </nav>
+
+    <!-- Mobile sidebar modal -->
+    @if (isMenuOpen) {
+    <div class="backdrop" (click)="toggleMenu()"></div>
+    }
+    <div class="sidebar" [class.open]="isMenuOpen">
+      <button class="close-btn" (click)="toggleMenu()">×</button>
+      <ul class="mobile-nav">
+        @for(item of navItems; track item.label) {
+        <li>
+          <a class="link" [routerLink]="[item.link]" routerLinkActive="active" (click)="toggleMenu()">{{ item.label
+            }}</a>
+        </li>
+        }
+        <li class="auth-controls">
+          @if (isAuthenticated()) {
+          <button class="link" (click)="logout(); toggleMenu()">Logout</button>
+          } @else {
+          <a class="link" [routerLink]="['/login']" routerLinkActive="active" (click)="toggleMenu()">Login</a>
+          }
+        </li>
+        <li class="socials">
+          <a class="social" href="#"><img [src]="'assets/images/LinkedIn.png'" alt="LinkedIn" width="40" /></a>
+          <a class="social" href="#"><img [src]="'assets/images/Facebook Circled.png'" alt="Facebook" width="40" /></a>
+          <a class="social" href="#"><img [src]="'assets/images/GitHub.png'" alt="GitHub" width="40" /></a>
+        </li>
+      </ul>
+    </div>
   </header>
 </div>

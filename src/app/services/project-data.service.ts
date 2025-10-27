@@ -7,6 +7,7 @@ import {
   Rating,
 } from '../interfaces/project.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class ProjectDataService {
   private readonly USER_RATINGS_KEY = 'user-ratings';
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/v1/projects';
+  private apiUrl = `${environment.apiBaseUrl}/projects`;
 
   // Angular 20 Signals for reactive state management
   private projectsSignal = signal<Project[]>([]);

@@ -1,0 +1,77 @@
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Main Footer Content -->
+    <div class="footer-main">
+      <!-- Brand Section -->
+      <div class="footer-brand">
+        <h3 class="brand-title">Portfolio</h3>
+        <p class="brand-description">
+          Showcasing innovative software engineering projects and professional experience.
+          Building the future, one line of code at a time.
+        </p>
+        <div class="social-links">
+          <a *ngFor="let social of socialLinks" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
+            rel="noopener noreferrer" class="social-link interactive">
+            <span class="social-icon">{{ social.icon }}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links Section -->
+      <div class="footer-section">
+        <h4 class="section-title">Quick Links</h4>
+        <nav class="footer-nav">
+          <a *ngFor="let link of quickLinks" [routerLink]="link.route" routerLinkActive="active"
+            class="footer-link interactive">
+            {{ link.name }}
+          </a>
+        </nav>
+      </div>
+
+      <!-- Contact Section -->
+      <div class="footer-section">
+        <h4 class="section-title">Contact</h4>
+        <div class="contact-info">
+          <div class="contact-item">
+            <span class="contact-icon">📧</span>
+            <a [href]="'mailto:' + contactInfo.email" class="contact-link">
+              {{ contactInfo.email }}
+            </a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">📞</span>
+            <a [href]="'tel:' + contactInfo.phone" class="contact-link">
+              {{ contactInfo.phone }}
+            </a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">📍</span>
+            <span class="contact-text">{{ contactInfo.location }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter Section -->
+      <div class="footer-section">
+        <h4 class="section-title">Stay Updated</h4>
+        <p class="newsletter-description">
+          Subscribe to get updates on new projects and insights.
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p class="copyright">
+          © {{ currentYear }} Portfolio. All rights reserved.
+        </p>
+        <div class="footer-bottom-links">
+          <a href="#" class="footer-bottom-link interactive">Privacy Policy</a>
+          <a href="#" class="footer-bottom-link interactive">Terms of Service</a>
+          <a href="#" class="footer-bottom-link interactive">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
