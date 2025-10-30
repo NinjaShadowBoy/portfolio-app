@@ -81,71 +81,193 @@ export class ProjectDataService {
   private getDefaultProjects(): Project[] {
     return [
       {
-        id: 'hotel-reservation',
-        name: 'Hotel Reservation System',
-        description:
-          'Full-stack Spring Boot application with integrated payment processing via Stripe API.',
-        technologies: [
-          'Spring Boot',
-          'Java',
-          'Stripe API',
-          'MySQL',
-          'Thymeleaf',
-        ],
-        githubLink: 'https://github.com/example/hotel-reservation',
+        id: 'mapiole-webapp',
+        name: 'Mapiole WebApp',
+        description: 'A web app developed to be used by eyang students.',
+        technologies: ['Java', 'HTML', 'CSS', 'Web application'],
+        githubLink: 'https://github.com/sims-yann/MapioleWebApp',
         challenges:
-          'Handling concurrent bookings and ensuring data consistency across multiple services.',
+          'Integrating the Java backend with a responsive HTML/CSS frontend and handling user workflows for students.',
         whatILearned:
-          'Advanced Spring Boot patterns, payment gateway integration, and microservices architecture.',
+          'Full-stack web app structure, connecting backend logic to frontend templates, and building student-facing UIs.',
         isExpanded: false,
         ratings: [],
         averageRating: 0,
-        createdAt: new Date('2023-06-01'),
-        updatedAt: new Date('2023-08-15'),
-        featured: true,
-        photosUrls: [],
-      },
-      {
-        id: 'pacman-clone',
-        name: 'Pac-Man Clone',
-        description:
-          'Game using SDL with procedural maze generation and custom AI for ghosts.',
-        technologies: ['C', 'SDL', 'Game Development', 'AI Algorithms'],
-        githubLink: 'https://github.com/example/pacman-clone',
-        challenges:
-          'Implementing smooth game physics, AI pathfinding, and real-time collision detection.',
-        whatILearned:
-          'Game development patterns, AI algorithms, and performance optimization in C.',
-        isExpanded: false,
-        ratings: [],
-        averageRating: 0,
-        createdAt: new Date('2023-03-15'),
-        updatedAt: new Date('2023-05-20'),
+        createdAt: new Date('2025-04-25'),
+        updatedAt: new Date('2025-08-01'),
         featured: false,
         photosUrls: [],
       },
       {
-        id: 'construction-tracking',
-        name: 'Construction Material Tracking System',
+        id: 'steph-theme7-web',
+        name: 'Theme7 Group Web Project',
         description:
-          'Enterprise app for managing construction site inventory with real-time updates.',
-        technologies: [
-          'Spring Boot',
-          'Java',
-          'MySQL',
-          'JavaScript',
-          'WebSocket',
-        ],
-        githubLink: 'https://github.com/example/construction-tracking',
+          'Team web project (theme 7) — frontend-focused site built for a course.',
+        technologies: ['JavaScript', 'HTML', 'CSS'],
+        githubLink:
+          'https://github.com/Stephie-BTRSD/steph_sji_ing3isi_group10_theme7_web_en',
         challenges:
-          'Managing complex inventory relationships, real-time updates, and multi-user concurrent access.',
+          'Coordinating work across team members and ensuring consistent styling and functionality across pages.',
         whatILearned:
-          'Enterprise architecture, WebSocket implementation, and complex data synchronization.',
+          'Collaborative front-end development, structuring HTML/CSS/JS for team projects, and basic project organization.',
         isExpanded: false,
         ratings: [],
         averageRating: 0,
-        createdAt: new Date('2023-09-01'),
-        updatedAt: new Date('2023-11-30'),
+        createdAt: new Date('2024-11-26'),
+        updatedAt: new Date('2025-01-23'),
+        featured: false,
+        photosUrls: [],
+      },
+      {
+        id: 'hotel-reservation-system',
+        name: 'Hotel Reservation System (Spring Boot)',
+        description:
+          'Full-stack hotel reservation system built with Spring Boot and a web frontend.',
+        technologies: ['Spring Boot', 'Java', 'Thymeleaf', 'HTML', 'CSS'],
+        githubLink:
+          'https://github.com/NinjaShadowBoy/Hotel-Reservation-System-with-Spring-Boot',
+        challenges:
+          'Managing booking flows, preventing double-bookings, and synchronizing data between backend and frontend.',
+        whatILearned:
+          'Spring Boot application patterns, server-side templating and handling reservation logic reliably.',
+        isExpanded: false,
+        ratings: [],
+        averageRating: 0,
+        createdAt: new Date('2025-04-28'),
+        updatedAt: new Date('2025-06-08'),
+        featured: true,
+        photosUrls: [],
+      },
+      {
+        id: 'portfolio-backend',
+        name: 'Portfolio Backend',
+        description: 'Backend for a personal portfolio, implemented in Kotlin.',
+        technologies: ['Kotlin', 'REST API', 'Docker'],
+        githubLink: 'https://github.com/NinjaShadowBoy/portfolio-backend',
+        challenges:
+          'Designing a small backend API surface and packaging the service for deployment with Docker.',
+        whatILearned:
+          'Kotlin for backend development, building REST endpoints, and basic containerization.',
+        isExpanded: false,
+        ratings: [],
+        averageRating: 0,
+        createdAt: new Date('2025-07-15'),
+        updatedAt: new Date('2025-10-27'),
+        featured: false,
+        photosUrls: [],
+      },
+      {
+        id: 'banking-system-java',
+        name: 'Banking System With Java',
+        description: 'A standalone application to simulate a banking system.',
+        technologies: ['Java', 'Object-oriented design', 'Collections'],
+        githubLink: 'https://github.com/NinjaShadowBoy/BankingSystemWithJava',
+        challenges:
+          'Modeling banking concepts (accounts, transactions) and ensuring correct state changes and validations.',
+        whatILearned:
+          'Core Java application design, data modeling with collections, and command-line/standalone app structure.',
+        isExpanded: false,
+        ratings: [],
+        averageRating: 0,
+        createdAt: new Date('2024-12-13'),
+        updatedAt: new Date('2025-01-17'),
+        featured: false,
+        photosUrls: [],
+      },
+      {
+        id: 'rmi-protocol',
+        name: 'RMI Protocol',
+        description:
+          'Java project focused on RMI/networking concepts and protocol experiments.',
+        technologies: ['Java', 'Java RMI', 'Networking'],
+        githubLink: 'https://github.com/NinjaShadowBoy/RMI-Protocol',
+        challenges:
+          'Designing and implementing remote method invocation patterns and handling distributed communication edge cases.',
+        whatILearned:
+          'Java networking concepts, RMI usage patterns, and debugging remote interactions.',
+        isExpanded: false,
+        ratings: [],
+        averageRating: 0,
+        createdAt: new Date('2025-09-24'),
+        updatedAt: new Date('2025-09-24'),
+        featured: false,
+        photosUrls: [],
+      },
+      {
+        id: 'atelier-git-workshop',
+        name: 'Atelier Git Workshop',
+        description:
+          'Getting to grips with Git/GitHub/GitLab workshop materials and exercises.',
+        technologies: ['Git', 'GitHub', 'GitLab'],
+        githubLink:
+          'https://github.com/NinjaShadowBoy/atelierGit1_Abena_Alex-Moutcheu_Gift',
+        challenges:
+          'Learning and teaching core git workflows, resolving merge conflicts and using branching strategies.',
+        whatILearned:
+          'Practical Git workflows, collaboration practices on GitHub/GitLab, and common troubleshooting techniques.',
+        isExpanded: false,
+        ratings: [],
+        averageRating: 0,
+        createdAt: new Date('2025-09-15'),
+        updatedAt: new Date('2025-09-15'),
+        featured: false,
+        photosUrls: [],
+      },
+      {
+        id: 'ticket-tracker',
+        name: 'Practical Evaluation - Ticket Tracker',
+        description:
+          'A ticket-tracker project (practical evaluation) implemented in TypeScript.',
+        technologies: ['TypeScript', 'Web application', 'API design'],
+        githubLink:
+          'https://github.com/NinjaShadowBoy/Practical-Evaluation-ticket-tracker-Abena_Alex-ING4ISI',
+        challenges:
+          'Implementing ticket CRUD flows, ensuring type-safety across codebase, and validating user input.',
+        whatILearned:
+          'TypeScript project structure, data modelling with types/interfaces, and building reliable web features.',
+        isExpanded: false,
+        ratings: [],
+        averageRating: 0,
+        createdAt: new Date('2025-10-07'),
+        updatedAt: new Date('2025-10-07'),
+        featured: false,
+        photosUrls: [],
+      },
+      {
+        id: 'portfolio-app',
+        name: 'Portfolio App',
+        description:
+          'Personal portfolio frontend combining TypeScript and CSS for styling.',
+        technologies: ['TypeScript', 'CSS', 'HTML', 'Frontend'],
+        githubLink: 'https://github.com/NinjaShadowBoy/portfolio-app',
+        challenges:
+          'Crafting a responsive layout, organizing styles, and integrating TypeScript-driven UI logic.',
+        whatILearned:
+          'Frontend structure with TypeScript, advanced CSS styling, and creating a presentable portfolio site.',
+        isExpanded: false,
+        ratings: [],
+        averageRating: 0,
+        createdAt: new Date('2025-07-15'),
+        updatedAt: new Date('2025-10-27'),
+        featured: false,
+        photosUrls: [],
+      },
+      {
+        id: 'connect4-react',
+        name: 'Connect 4 (React)',
+        description:
+          'The classic Connect 4 game implemented in React with TypeScript.',
+        technologies: ['TypeScript', 'React', 'CSS', 'Game logic'],
+        githubLink: 'https://github.com/NinjaShadowBoy/Connect4WithReact',
+        challenges:
+          'Designing game state management, implementing turn logic, and keeping UI performant.',
+        whatILearned:
+          'React component design, state management in TypeScript, and implementing game algorithms in the browser.',
+        isExpanded: false,
+        ratings: [],
+        averageRating: 0,
+        createdAt: new Date('2025-01-22'),
+        updatedAt: new Date('2025-03-11'),
         featured: true,
         photosUrls: [],
       },
