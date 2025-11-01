@@ -1,16 +1,17 @@
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Project, Rating } from '../interfaces/project.interface';
+import { Project } from '../interfaces/project.interface';
 import { ProjectDataService } from '../services/project-data.service';
 import { ProjectDetailComponent } from '../project-detail/project-detail.component';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
+import { ProjectCardComponent } from '../project-card/project-card.component';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ProjectCardComponent],
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css'],
 })
@@ -107,21 +108,5 @@ export class ProjectsComponent implements OnInit {
   private showError(message: string): void {
     this.errorSignal.set(message);
     setTimeout(() => this.errorSignal.set(null), 5000);
-  }
-
-  // Utility methods
-
-  getStarArray(rating: number): number[] {
-    return Array.from({ length: 5 }, (_, i) => i + 1);
-  }
-
-  getRatingClass(star: number, averageRating: number): string {
-    if (averageRating >= star) return 'star-filled';
-    if (averageRating >= star - 0.5) return 'star-half';
-    return 'star-empty';
-  }
-
-  getRatings(ratings: Rating[], rating: number): Rating[] {
-    return ratings.filter((r) => r.rating === rating);
   }
 }

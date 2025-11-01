@@ -17,19 +17,19 @@ export class FooterComponent {
     {
       name: 'GitHub',
       url: 'https://github.com',
-      icon: 'github',
+      icon: 'assets/images/GitHub.png',
       ariaLabel: 'Visit GitHub profile',
     },
     {
       name: 'LinkedIn',
       url: 'https://linkedin.com',
-      icon: 'linkedin',
+      icon: 'assets/images/LinkedIn.png',
       ariaLabel: 'Visit LinkedIn profile',
     },
     {
       name: 'Facebook',
       url: 'https://facebook.com',
-      icon: 'facebook',
+      icon: 'assets/images/Facebook Circled.png',
       ariaLabel: 'Visit Facebook profile',
     },
   ];

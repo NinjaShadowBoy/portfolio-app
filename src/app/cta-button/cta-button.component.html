@@ -1,0 +1,61 @@
+@if (routerLink) {
+  <a [routerLink]="routerLink" class="cta-button" [class]="'cta-' + variant">
+    <span class="cta-text">{{ text }}</span>
+    <span class="cta-icon" [class]="'icon-' + icon">
+      @switch (icon) {
+        @case ('explore') {
+          <img src="assets/icons/explore.svg" alt="Explore icon" width="20" height="20" />
+        }
+        @case ('arrow-right') {
+          <img src="assets/icons/arrow-right.svg" alt="Arrow icon" width="20" height="20" />
+        }
+        @case ('external') {
+          <img src="assets/icons/external.svg" alt="External link icon" width="20" height="20" />
+        }
+        @case ('search') {
+          <img src="assets/icons/search.svg" alt="Search icon" width="20" height="20" />
+        }
+      }
+    </span>
+  </a>
+} @else if (href) {
+  <a [href]="href" [target]="target" class="cta-button" [class]="'cta-' + variant">
+    <span class="cta-text">{{ text }}</span>
+    <span class="cta-icon" [class]="'icon-' + icon">
+      @switch (icon) {
+        @case ('explore') {
+          <img src="assets/icons/explore.svg" alt="Explore icon" width="20" height="20" />
+        }
+        @case ('arrow-right') {
+          <img src="assets/icons/arrow-right.svg" alt="Arrow icon" width="20" height="20" />
+        }
+        @case ('external') {
+          <img src="assets/icons/external.svg" alt="External link icon" width="20" height="20" />
+        }
+        @case ('search') {
+          <img src="assets/icons/search.svg" alt="Search icon" width="20" height="20" />
+        }
+      }
+    </span>
+  </a>
+} @else {
+  <button class="cta-button" [class]="'cta-' + variant">
+    <span class="cta-text">{{ text }}</span>
+    <span class="cta-icon" [class]="'icon-' + icon">
+      @switch (icon) {
+        @case ('explore') {
+          <img src="assets/icons/explore.svg" alt="Explore icon" width="20" height="20" />
+        }
+        @case ('arrow-right') {
+          <img src="assets/icons/arrow-right.svg" alt="Arrow icon" width="20" height="20" />
+        }
+        @case ('external') {
+          <img src="assets/icons/external.svg" alt="External link icon" width="20" height="20" />
+        }
+        @case ('search') {
+          <img src="assets/icons/search.svg" alt="Search icon" width="20" height="20" />
+        }
+      }
+    </span>
+  </button>
+}

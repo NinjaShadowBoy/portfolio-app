@@ -65,110 +65,14 @@
   <!-- Projects Grid -->
   <div class="projects-grid">
     @for (project of projects(); track project.id) {
-    <article class="project-card" [class.featured]="project.featured">
-      @if (project.featured) {
-      <div class="featured-badge">Featured</div>
-      }
-
-      <header class="project-header">
-        <h3>{{ project.name }}</h3>
-        <div class="project-meta">
-          <span class="created-date">Created: {{ project.createdAt | date:'MMM yyyy' }}</span>
-          @if (project.updatedAt.toString() !== project.createdAt.toString()) {
-          <span class="updated-date">Updated: {{ project.updatedAt | date:'MMM yyyy' }}</span>
-          }
-        </div>
-      </header>
-
-      <div class="project-content">
-        <p class="project-description">{{ project.description }}</p>
-
-        <div class="technologies">
-          <strong>Technologies:</strong>
-          <div class="tech-tags">
-            @for (tech of project.technologies; track tech) {
-            <span class="tech-tag">{{ tech }}</span>
-            }
-          </div>
-        </div>
-
-        <div class="rating-section">
-          <div class="rating-display">
-            <span class="rating-label">Rating:</span>
-            <div class="stars">
-              @for (star of getStarArray(project.averageRating); track star) {
-              <span class="star" [class]="getRatingClass(star, project.averageRating)">★</span>
-              }
-            </div>
-            <span class="rating-text">
-              {{ project.averageRating.toFixed(1) }}
-              ({{ project.ratings.length }} rating{{ project.ratings.length !== 1 ? 's' : '' }})
-            </span>
-          </div>
-
-          @if (canRate(project)) {
-          <div class="rating-input">
-            <span>Rate this project:</span>
-            <div class="rating-buttons">
-              @for (star of getStarArray(5); track star) {
-              <button (click)="addRating(project, star)" class="rating-button"
-                [attr.aria-label]="'Rate ' + star + ' star' + (star !== 1 ? 's' : '')">
-                {{ star }}★
-              </button>
-              }
-            </div>
-          </div>
-          } @else {
-          <p class="already-rated">You've already rated this project</p>
-          }
-        </div>
-
-        <div class="project-actions">
-          <a [href]="project.githubLink" target="_blank" class="github-link">
-            View on GitHub
-          </a>
-          <button (click)="toggleDetails(project)" class="details-toggle">
-            {{ project.isExpanded ? 'Hide Details' : 'Show Details' }}
-          </button>
-          @if (isAdmin()) {
-          <button (click)="resetProjectRatings(project)" class="reset-ratings">
-            Reset Ratings
-          </button>
-          }
-        </div>
-
-        @if (project.isExpanded) {
-        <div class="project-details">
-          <div class="detail-section">
-            <h4>Challenges:</h4>
-            <p>{{ project.challenges }}</p>
-          </div>
-          <div class="detail-section">
-            <h4>What I Learned:</h4>
-            <p>{{ project.whatILearned }}</p>
-          </div>
-          @if (project.ratings.length > 0) {
-          <div class="detail-section">
-            <h4>Ratings Breakdown:</h4>
-            <div class="ratings-summary">
-              @for (rating of [5, 4, 3, 2, 1]; track rating) {
-              <div class="rating-row">
-                <span>{{ rating }}★</span>
-                <div class="rating-bar">
-                  <div class="rating-fill"
-                    [style.width.%]="(getRatings(project.ratings, rating).length / project.ratings.length) * 100">
-                  </div>
-                </div>
-                <span>{{ getRatings(project.ratings, rating).length }}</span>
-              </div>
-              }
-            </div>
-          </div>
-          }
-        </div>
-        }
-      </div>
-    </article>
+    <app-project-card
+      [project]="project"
+      [isAdmin]="isAdmin()"
+      [canRate]="canRate(project)"
+      (toggleDetails)="toggleDetails($event)"
+      (addRating)="addRating($event.project, $event.rating)"
+      (resetRatings)="resetProjectRatings($event)">
+    </app-project-card>
     } @empty {
     <div class="no-results">
       <h3>No projects found</h3>

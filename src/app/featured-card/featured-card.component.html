@@ -1,0 +1,12 @@
+<article class="project-card">
+  <div class="featured-badge">Featured</div>
+  <h3>{{ project.name }}</h3>
+  <p>{{ project.description }}</p>
+  <p><strong>Technologies:</strong> {{ project.technologies.join(', ') }}</p>
+  <app-cta-button
+    text="Explore Details"
+    [routerLink]="['/projects', project.id]"
+    icon="explore"
+    variant="outline">
+  </app-cta-button>
+</article>

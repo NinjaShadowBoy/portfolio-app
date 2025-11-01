@@ -12,7 +12,7 @@
         <div class="social-links">
           <a *ngFor="let social of socialLinks" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
             rel="noopener noreferrer" class="social-link interactive">
-            <span class="social-icon">{{ social.icon }}</span>
+            <img [src]="social.icon" [alt]="social.name" width="24" height="24" />
           </a>
         </div>
       </div>
@@ -33,19 +33,19 @@
         <h4 class="section-title">Contact</h4>
         <div class="contact-info">
           <div class="contact-item">
-            <span class="contact-icon">📧</span>
+            <img class="contact-icon" src="assets/icons/mail.svg" alt="Email icon" />
             <a [href]="'mailto:' + contactInfo.email" class="contact-link">
               {{ contactInfo.email }}
             </a>
           </div>
           <div class="contact-item">
-            <span class="contact-icon">📞</span>
+            <img class="contact-icon" src="assets/icons/phone.svg" alt="Phone icon" />
             <a [href]="'tel:' + contactInfo.phone" class="contact-link">
               {{ contactInfo.phone }}
             </a>
           </div>
           <div class="contact-item">
-            <span class="contact-icon">📍</span>
+            <img class="contact-icon" src="assets/icons/map-pin.svg" alt="Location icon" />
             <span class="contact-text">{{ contactInfo.location }}</span>
           </div>
         </div>

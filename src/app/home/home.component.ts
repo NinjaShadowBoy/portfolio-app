@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectDataService } from '../services/project-data.service';
-import { Project } from '../interfaces/project.interface';
-import { RouterLink } from '@angular/router';
+import { FeaturedCardComponent } from '../featured-card/featured-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FeaturedCardComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })

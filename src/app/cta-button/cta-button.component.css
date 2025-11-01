@@ -1,0 +1,166 @@
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.cta-text {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+  position: relative;
+  z-index: 1;
+}
+
+.cta-icon svg,
+.cta-icon img {
+  display: block;
+}
+
+/* Style img icons to inherit color */
+.cta-primary .cta-icon img {
+  filter: brightness(0) invert(1);
+}
+
+.cta-secondary .cta-icon img {
+  filter: brightness(0) saturate(100%) invert(41%) sepia(54%) saturate(1571%) hue-rotate(189deg) brightness(96%) contrast(101%);
+}
+
+.cta-outline .cta-icon img {
+  filter: brightness(0) saturate(100%) invert(41%) sepia(54%) saturate(1571%) hue-rotate(189deg) brightness(96%) contrast(101%);
+}
+
+.cta-outline:hover .cta-icon img {
+  filter: brightness(0) invert(1);
+}
+
+/* Primary variant */
+.cta-primary {
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-primary);
+}
+
+.cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--elevation-3), var(--shadow-primary);
+}
+
+.cta-primary:hover .cta-icon {
+  transform: translateX(4px);
+}
+
+/* Secondary variant */
+.cta-secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border: 2px solid var(--btn-secondary-border);
+}
+
+.cta-secondary:hover {
+  background: var(--btn-secondary-bg-hover);
+  border-color: var(--border-emphasis);
+  transform: translateY(-2px);
+  box-shadow: var(--elevation-2);
+}
+
+.cta-secondary:hover .cta-icon {
+  transform: translateX(4px);
+}
+
+/* Outline variant */
+.cta-outline {
+  background: transparent;
+  color: var(--color-primary-500);
+  border: 2px solid var(--color-primary-500);
+  position: relative;
+}
+
+.cta-outline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+  z-index: 0;
+}
+
+.cta-outline:hover {
+  color: var(--text-inverse);
+  border-color: var(--color-primary-600);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-primary);
+}
+
+.cta-outline:hover::before {
+  transform: scaleX(1);
+}
+
+.cta-outline:hover .cta-icon {
+  transform: translateX(4px);
+}
+
+/* Icon animations for explore icon */
+.icon-explore svg,
+.icon-explore img {
+  animation: rotate 20s linear infinite;
+}
+
+.cta-button:hover .icon-explore svg,
+.cta-button:hover .icon-explore img {
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .cta-button {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .cta-icon svg,
+  .cta-icon img {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .cta-outline {
+  color: var(--color-primary-400);
+  border-color: var(--color-primary-400);
+}
+
+[data-theme="dark"] .cta-outline:hover {
+  border-color: var(--color-primary-500);
+}
