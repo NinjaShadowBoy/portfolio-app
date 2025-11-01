@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { SocialLinksService } from '../services/social-links.service';
 
 @Component({
   selector: 'app-header',
@@ -30,7 +31,10 @@ export class HeaderComponent {
   ];
 
   private auth = inject(AuthService);
+  private socialLinksService = inject(SocialLinksService);
+
   isAuthenticated = this.auth.isAuthenticated;
+  socialLinks = this.socialLinksService.getSocialLinks();
 
   isMenuOpen = false;
 

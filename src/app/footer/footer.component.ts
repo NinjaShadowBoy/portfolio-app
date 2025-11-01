@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { SocialLinksService } from '../services/social-links.service';
 
 @Component({
   selector: 'app-footer',
@@ -12,27 +13,8 @@ import { RouterModule } from '@angular/router';
 export class FooterComponent {
   currentYear = new Date().getFullYear();
 
-  // Social media links
-  socialLinks = [
-    {
-      name: 'GitHub',
-      url: 'https://github.com/NinjaShadowBoy/NinjaShadowBoy',
-      icon: 'assets/images/GitHub.png',
-      ariaLabel: 'Visit GitHub profile',
-    },
-    {
-      name: 'LinkedIn',
-      url: 'https://www.linkedin.com/in/alex-nelson-ryan-abena-439068290/',
-      icon: 'assets/images/LinkedIn.png',
-      ariaLabel: 'Visit LinkedIn profile',
-    },
-    {
-      name: 'Facebook',
-      url: 'https://facebook.com',
-      icon: 'assets/images/Facebook Circled.png',
-      ariaLabel: 'Visit Facebook profile',
-    },
-  ];
+  // Social media links from shared service
+  socialLinks = new SocialLinksService().getSocialLinks();
 
   // Quick links
   quickLinks = [

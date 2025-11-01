@@ -28,16 +28,14 @@
           }
         </li>
         <ul class="socials">
+          @for(social of socialLinks; track social.name) {
           <li>
-            <a class="social" href="#"><img [src]="'assets/images/LinkedIn.png'" alt="LinkedIn" width="40" /></a>
+            <a class="social" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
+              rel="noopener noreferrer">
+              <img [src]="social.icon" [alt]="social.name" width="40" />
+            </a>
           </li>
-          <li>
-            <a class="social" href="#"><img [src]="'assets/images/Facebook Circled.png'" alt="Facebook"
-                width="40" /></a>
-          </li>
-          <li>
-            <a class="social" href="#"><img [src]="'assets/images/GitHub.png'" alt="GitHub" width="40" /></a>
-          </li>
+          }
         </ul>
       </ul>
     </nav>
@@ -63,9 +61,12 @@
           }
         </li>
         <li class="socials">
-          <a class="social" href="#"><img [src]="'assets/images/LinkedIn.png'" alt="LinkedIn" width="40" /></a>
-          <a class="social" href="#"><img [src]="'assets/images/Facebook Circled.png'" alt="Facebook" width="40" /></a>
-          <a class="social" href="#"><img [src]="'assets/images/GitHub.png'" alt="GitHub" width="40" /></a>
+          @for(social of socialLinks; track social.name) {
+          <a class="social" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
+            rel="noopener noreferrer">
+            <img [src]="social.icon" [alt]="social.name" width="40" />
+          </a>
+          }
         </li>
       </ul>
     </div>
