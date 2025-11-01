@@ -148,7 +148,7 @@ h2::before {
 }
 
 .github-link {
-  display: inline-block;
+  display: inline-flex;
   color: var(--color-primary-500);
   text-decoration: none;
   font-weight: 600;
@@ -181,6 +181,21 @@ h2::before {
 
 .github-link:hover::before {
   transform: scaleX(1);
+}
+
+.github-icon {
+  filter: brightness(0) invert(1);
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+  margin-left: 10px;
+}
+
+.github-link:hover .github-icon {
+  transform: scale(1.5);
+}
+
+/* Dark mode - adjust icon color */
+[data-theme="dark"] .github-icon {
+  filter: brightness(0) invert(1);
 }
 
 .not-found {

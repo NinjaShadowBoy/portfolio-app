@@ -206,17 +206,35 @@
   background: var(--btn-primary-bg);
   color: var(--btn-primary-text);
   text-decoration: none;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1rem;
   border-radius: 8px;
   font-weight: 500;
   transition: all var(--motion-duration-fast) var(--motion-ease-out);
   box-shadow: var(--btn-primary-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
 }
 
 .github-link:hover {
   background: var(--btn-primary-bg-hover);
   transform: translateY(-2px);
   box-shadow: var(--btn-primary-shadow), var(--elevation-2);
+}
+
+.github-icon {
+  filter: brightness(0) invert(1);
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.github-link:hover .github-icon {
+  transform: scale(1.5);
+}
+
+/* Dark mode - adjust icon color */
+[data-theme="dark"] .github-icon {
+  filter: brightness(0) invert(1);
 }
 
 .details-toggle {
