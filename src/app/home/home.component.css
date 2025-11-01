@@ -12,6 +12,7 @@
   flex-wrap: nowrap;
 }
 
+
 @media (prefers-color-scheme: dark) {
   .hero-section:not([data-theme]) {
     background: linear-gradient(#3572ef00, #1e4189 90%);
@@ -93,6 +94,11 @@
   margin: 2rem;
 }
 
+.my-face {
+  border-radius: 500px;
+  width: 400px;
+}
+
 .headline {
   font-size: 2.5em;
   font-weight: bold;
@@ -136,6 +142,9 @@
   .social-header {
     padding: 2em 1em 2em 0em;
   }
+  .my-face {
+    width: 350px;
+  }
 }
 
 @media (max-width: 700px) {
@@ -159,6 +168,9 @@
   }
   .social-header {
     padding: 1em 0.5em 1em 0em;
+  }
+  .my-face {
+    width: 132px;
   }
 }
 
@@ -221,6 +233,10 @@ p {
   .projects-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .my-face {
+    width: 224px;
   }
 }
 

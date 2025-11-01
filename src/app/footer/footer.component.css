@@ -226,7 +226,7 @@
 /* Footer Bottom */
 .footer-bottom {
   border-top: 1px solid var(--border-subtle);
-  padding: 1.5rem 0;
+  padding: 1.5rem 1.5rem;
   background: var(--surface-sunken);
 }
 

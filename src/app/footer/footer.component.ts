@@ -16,13 +16,13 @@ export class FooterComponent {
   socialLinks = [
     {
       name: 'GitHub',
-      url: 'https://github.com',
+      url: 'https://github.com/NinjaShadowBoy/NinjaShadowBoy',
       icon: 'assets/images/GitHub.png',
       ariaLabel: 'Visit GitHub profile',
     },
     {
       name: 'LinkedIn',
-      url: 'https://linkedin.com',
+      url: 'https://www.linkedin.com/in/alex-nelson-ryan-abena-439068290/',
       icon: 'assets/images/LinkedIn.png',
       ariaLabel: 'Visit LinkedIn profile',
     },
