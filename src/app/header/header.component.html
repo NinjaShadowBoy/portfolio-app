@@ -2,7 +2,7 @@
   <header class="header">
     <!-- Navigation with hamburger for small screens -->
     <nav class="navigation" aria-label="Primary">
-      <button class="hamburger" aria-label="Menu" (click)="toggleMenu()">
+      <button class="hamburger liquid-glass" aria-label="Menu" (click)="toggleMenu()">
         <span></span><span></span><span></span>
       </button>
 
@@ -11,25 +11,25 @@
         @for(item of navItems; track item.label) {
         <li>
           <!-- Event binding for user interactions -->
-          <a class="link" [routerLink]="[item.link]" routerLinkActive="active">{{ item.label }}</a>
+          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active">{{ item.label }}</a>
         </li>
         }
         <li class="auth-controls">
           @if (isAuthenticated()) {
-          <a class="link" (click)="logout()" routerLinkActive="active">Logout</a>
+          <a class="link liquid-glass" (click)="logout()" routerLinkActive="active">Logout</a>
           } @else {
-          <a class="link" [routerLink]="['/login']" routerLinkActive="active">Login</a>
+          <a class="link liquid-glass" [routerLink]="['/login']" routerLinkActive="active">Login</a>
           }
         </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
-          <a class="link" [routerLink]="['/admin']" routerLinkActive="active">Admin</a>
+          <a class="link liquid-glass" [routerLink]="['/admin']" routerLinkActive="active">Admin</a>
         </li>
         }
         <ul class="socials">
           @for(social of socialLinks; track social.name) {
           <li>
-            <a class="social" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
+            <a class="social liquid-glass" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
               rel="noopener noreferrer">
               <img [src]="social.icon" [alt]="social.name" width="40" />
             </a>
@@ -54,25 +54,25 @@
       <ul class="mobile-nav">
         @for(item of navItems; track item.label) {
         <li>
-          <a class="link" [routerLink]="[item.link]" routerLinkActive="active" (click)="toggleMenu()">{{ item.label
+          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active" (click)="toggleMenu()">{{ item.label
             }}</a>
         </li>
         }
         <li class="auth-controls">
           @if (isAuthenticated()) {
-          <a class="link" (click)="logout(); toggleMenu()" routerLinkActive="active">Logout</a>
+          <a class="link liquid-glass" (click)="logout(); toggleMenu()" routerLinkActive="active">Logout</a>
           } @else {
-          <a class="link" [routerLink]="['/login']" routerLinkActive="active" (click)="toggleMenu()">Login</a>
+          <a class="link liquid-glass" [routerLink]="['/login']" routerLinkActive="active" (click)="toggleMenu()">Login</a>
           }
         </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
-          <a class="link" [routerLink]="['/admin']" routerLinkActive="active">Admin</a>
+          <a class="link liquid-glass" [routerLink]="['/admin']" routerLinkActive="active">Admin</a>
         </li>
         }
         <li class="socials">
           @for(social of socialLinks; track social.name) {
-          <a class="social" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
+          <a class="social liquid-glass" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
             rel="noopener noreferrer">
             <img [src]="social.icon" [alt]="social.name" width="40" />
           </a>

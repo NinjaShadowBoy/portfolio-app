@@ -138,6 +138,13 @@
   opacity: 0;
   transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
   pointer-events: none;
+  z-index: 0;
+}
+
+.oauth-btn span,
+.oauth-btn .oauth-icon {
+  position: relative;
+  z-index: 1;
 }
 
 .oauth-btn:hover:not(:disabled)::before {
