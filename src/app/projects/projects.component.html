@@ -7,13 +7,6 @@
     <p>Loading projects...</p>
   </div>
   } @else {
-  <!-- Error Display -->
-  @if (error()) {
-  <div class="error-message">
-    <p>{{ error() }}</p>
-    <button (click)="error.set(null)" class="dismiss-error">Dismiss</button>
-  </div>
-  }
 
   <!-- Advanced Filters -->
   <div class="filters-section">

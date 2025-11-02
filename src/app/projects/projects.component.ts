@@ -20,15 +20,11 @@ export class ProjectsComponent {
   private auth = inject(AuthService);
   private notifier = inject(NotificationService);
 
-  // Local component state using signals
-  private errorSignal = signal<string | null>(null);
-
   // Computed properties from service
   public readonly projects = this.projectService.filteredProjects;
   public readonly uniqueTechnologies = this.projectService.uniqueTechnologies;
   public readonly filters = this.projectService.filters;
   public readonly isLoading = this.projectService.isLoading;
-  public readonly error = this.errorSignal;
   public readonly isAdmin = this.auth.isAdmin;
 
   // Form controls
@@ -62,7 +58,7 @@ export class ProjectsComponent {
       },
       error: (err) => {
         console.error('Error adding rating:', err);
-        this.showError(
+        this.notifier.error(
           'Unable to add rating. You may have already rated this project or need to be logged in.'
         );
       },
@@ -100,10 +96,5 @@ export class ProjectsComponent {
         },
       });
     }
-  }
-
-  private showError(message: string): void {
-    this.errorSignal.set(message);
-    setTimeout(() => this.errorSignal.set(null), 5000);
   }
 }

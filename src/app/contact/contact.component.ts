@@ -36,7 +36,12 @@ export class ContactComponent implements CanComponentDeactivate {
     }
 
     console.log('Form Submitted!', this.contactForm.value);
-    this.notificationService.success('Message sent successfully!');
+
+    // Inform user that the contact form is not yet functional
+    this.notificationService.info(
+      'Contact form is currently under development. Please reach out via email or social media for now.',
+      7000 // Display for 7 seconds
+    );
     this.contactForm.reset();
   }
 
