@@ -24,10 +24,25 @@
     <h2>What I Learned</h2>
     <p>{{ project.whatILearned }}</p>
   </div>
-  <div class="gallery">
-    <h2>Some Screen shots</h2>
 
+  @if (project.photoUrls && project.photoUrls.length > 0) {
+  <div class="gallery">
+    <h2>Project Screenshots</h2>
+    <div class="gallery-grid">
+      @for (photoUrl of project.photoUrls; track photoUrl) {
+      <div class="gallery-item">
+        <img [src]="getPhotoUrl(photoUrl)" [alt]="project.name + ' screenshot'" />
+      </div>
+      }
+    </div>
   </div>
+  } @else {
+  <div class="gallery">
+    <h2>Project Screenshots</h2>
+    <p class="no-photos">No screenshots available yet.</p>
+  </div>
+  }
+
   <a [href]="project.githubLink" target="_blank" class="github-link"><p>View on GitHub</p>
     <img src="assets/icons/github.svg" alt="GitHub" width="20" height="20" class="github-icon" />
   </a>

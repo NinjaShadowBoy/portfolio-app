@@ -40,13 +40,4 @@ export class ProjectCardComponent {
     if (averageRating >= star - 0.5) return 'star-half';
     return 'star-empty';
   }
-
-  getRatingCount(rating: number): number {
-    return this.project.ratings.filter((r) => r.rating === rating).length;
-  }
-
-  getRatingPercentage(rating: number): number {
-    if (this.project.ratings.length === 0) return 0;
-    return (this.getRatingCount(rating) / this.project.ratings.length) * 100;
-  }
 }

@@ -35,7 +35,7 @@
         </div>
         <span class="rating-text">
           {{ project.averageRating.toFixed(1) }}
-          ({{ project.ratings.length }} rating{{ project.ratings.length !== 1 ? 's' : '' }})
+          ({{ project.totalRatings }} rating{{ project.totalRatings !== 1 ? 's' : '' }})
         </span>
       </div>
 
@@ -86,21 +86,10 @@
         <h4>What I Learned:</h4>
         <p>{{ project.whatILearned }}</p>
       </div>
-      @if (project.ratings.length > 0) {
+      @if (project.totalRatings > 0) {
       <div class="detail-section">
-        <h4>Ratings Breakdown:</h4>
-        <div class="ratings-summary">
-          @for (rating of [5, 4, 3, 2, 1]; track rating) {
-          <div class="rating-row">
-            <span>{{ rating }}★</span>
-            <div class="rating-bar">
-              <div class="rating-fill" [style.width.%]="getRatingPercentage(rating)">
-              </div>
-            </div>
-            <span>{{ getRatingCount(rating) }}</span>
-          </div>
-          }
-        </div>
+        <h4>Ratings Summary:</h4>
+        <p>This project has {{ project.totalRatings }} rating{{ project.totalRatings !== 1 ? 's' : '' }} with an average of {{ project.averageRating.toFixed(1) }} stars.</p>
       </div>
       }
     </div>

@@ -1,9 +1,8 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Project } from '../interfaces/project.interface';
 import { ProjectDataService } from '../services/project-data.service';
-import { ProjectDetailComponent } from '../project-detail/project-detail.component';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 import { ProjectCardComponent } from '../project-card/project-card.component';
@@ -15,21 +14,20 @@ import { ProjectCardComponent } from '../project-card/project-card.component';
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css'],
 })
-export class ProjectsComponent implements OnInit {
-  // Angular 20 function-based injection
+export class ProjectsComponent {
+  // Angular function-based injection
   private projectService = inject(ProjectDataService);
   private auth = inject(AuthService);
   private notifier = inject(NotificationService);
 
   // Local component state using signals
-  private isLoadingSignal = signal(false);
   private errorSignal = signal<string | null>(null);
 
   // Computed properties from service
   public readonly projects = this.projectService.filteredProjects;
   public readonly uniqueTechnologies = this.projectService.uniqueTechnologies;
   public readonly filters = this.projectService.filters;
-  public readonly isLoading = this.isLoadingSignal.asReadonly();
+  public readonly isLoading = this.projectService.isLoading;
   public readonly error = this.errorSignal;
   public readonly isAdmin = this.auth.isAdmin;
 
@@ -51,21 +49,6 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    // Component initialization logic
-    this.initializeComponent();
-  }
-
-  private initializeComponent(): void {
-    this.isLoadingSignal.set(true);
-    this.errorSignal.set(null);
-
-    // Simulate loading time (in real app, this might be an HTTP call)
-    setTimeout(() => {
-      this.isLoadingSignal.set(false);
-    }, 500);
-  }
-
   // User interaction methods
 
   toggleDetails(project: Project): void {
@@ -73,16 +56,23 @@ export class ProjectsComponent implements OnInit {
   }
 
   addRating(project: Project, rating: number): void {
-    const success = this.projectService.addRating(project.id, rating);
-    if (!success) {
-      this.showError(
-        'Unable to add rating. You may have already rated this project.'
-      );
-    }
+    this.projectService.addRating(project.id, rating).subscribe({
+      next: () => {
+        this.notifier.success('Rating added successfully!');
+      },
+      error: (err) => {
+        console.error('Error adding rating:', err);
+        this.showError(
+          'Unable to add rating. You may have already rated this project or need to be logged in.'
+        );
+      },
+    });
   }
 
   canRate(project: Project): boolean {
-    return this.projectService.canRateProject(project.id);
+    // For synchronous UI checks, we'll assume they can rate and handle errors server-side
+    // Alternatively, you can track this in component state with an async call
+    return true;
   }
 
   resetFilters(): void {
@@ -100,8 +90,15 @@ export class ProjectsComponent implements OnInit {
     }
 
     if (confirm(`Are you sure you want to reset all ratings for "${project.name}"?`)) {
-      this.projectService.resetProjectRatings(project.id);
-      this.notifier.success('Ratings reset.');
+      this.projectService.resetProjectRatings(project.id).subscribe({
+        next: () => {
+          this.notifier.success('Ratings reset successfully.');
+        },
+        error: (err) => {
+          console.error('Error resetting ratings:', err);
+          this.notifier.error('Failed to reset ratings.');
+        },
+      });
     }
   }
 

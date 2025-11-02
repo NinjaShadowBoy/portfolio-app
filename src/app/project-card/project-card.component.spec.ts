@@ -18,7 +18,7 @@ describe('ProjectCardComponent', () => {
 
     // Create a mock project
     mockProject = {
-      id: '1',
+      id: 1,
       name: 'Test Project',
       description: 'A test project',
       technologies: ['Angular', 'TypeScript'],
@@ -26,12 +26,12 @@ describe('ProjectCardComponent', () => {
       challenges: 'Test challenges',
       whatILearned: 'Test learnings',
       isExpanded: false,
-      ratings: [],
+      totalRatings: 0,
       averageRating: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: '2025-01-01T00:00:00Z',
+      updatedAt: '2025-01-01T00:00:00Z',
       featured: false,
-      photosUrls: []
+      photoUrls: []
     };
 
     component.project = mockProject;

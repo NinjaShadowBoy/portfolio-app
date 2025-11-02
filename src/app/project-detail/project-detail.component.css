@@ -147,6 +147,64 @@ h2::before {
   font-size: 1rem;
 }
 
+.gallery {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--surface-raised);
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--elevation-1);
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.gallery:hover {
+  box-shadow: var(--elevation-2);
+  border-color: var(--border-emphasis);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-sunken);
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+  cursor: pointer;
+}
+
+.gallery-item:hover {
+  box-shadow: var(--elevation-3);
+  transform: translateY(-4px);
+  border-color: var(--color-primary-500);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.no-photos {
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+  margin: 0;
+}
+
 .github-link {
   display: inline-flex;
   color: var(--color-primary-500);
@@ -238,7 +296,8 @@ h2::before {
   .description,
   .technologies,
   .challenges,
-  .learnings {
+  .learnings,
+  .gallery {
     padding: 1rem;
   }
 
@@ -254,6 +313,15 @@ h2::before {
   .github-link {
     padding: 0.875rem 1.5rem;
     font-size: 0.95rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .gallery-item img {
+    height: 200px;
   }
 }
 
@@ -273,7 +341,8 @@ h2::before {
 [data-theme="dark"] .description,
 [data-theme="dark"] .technologies,
 [data-theme="dark"] .challenges,
-[data-theme="dark"] .learnings {
+[data-theme="dark"] .learnings,
+[data-theme="dark"] .gallery {
   background: var(--surface-raised);
   border-color: var(--border-default);
 }
@@ -293,6 +362,11 @@ h2::before {
   border-color: var(--border-default);
 }
 
+[data-theme="dark"] .gallery-item {
+  background: var(--surface-sunken);
+  border-color: var(--border-default);
+}
+
 /* Print optimizations */
 @media print {
   .project-detail-container {
@@ -303,7 +377,8 @@ h2::before {
   .description,
   .technologies,
   .challenges,
-  .learnings {
+  .learnings,
+  .gallery {
     background: transparent !important;
     border: 1px solid var(--border-default) !important;
     box-shadow: none !important;
@@ -318,5 +393,13 @@ h2::before {
   .github-link {
     border: 1px solid var(--border-default) !important;
     color: var(--text-primary) !important;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery-item {
+    page-break-inside: avoid;
   }
 }
