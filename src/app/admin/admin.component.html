@@ -1,9 +1,311 @@
-<section class="admin">
-    <h2>Admin Dashboard</h2>
+<section class="admin-container">
+  <div class="admin-header">
+    <h1>Admin Dashboard</h1>
     @if (isAdmin) {
-    <p>Welcome, {{ user?.name }} ({{ user?.email }})</p>
+    <p class="welcome">Welcome, {{ user?.name }} ({{ user?.email }})</p>
     } @else {
-    <p>Restricted area. You are not authorized.</p>
-    <button (click)="goHome()">Go Home</button>
+    <p class="restricted">Restricted area. You are not authorized.</p>
+    <button class="btn-primary" (click)="goHome()">Go Home</button>
     }
+  </div>
+
+  @if (isAdmin) {
+  <div class="admin-content">
+    <!-- Mode Toggle -->
+    <div class="mode-toggle" (click)="toggleJsonMode()">
+      <span [class.active]="!jsonMode()">Form Mode</span>
+      <div class="toggle-thumb" [class.right]="jsonMode()"></div>
+      <span [class.active]="jsonMode()">JSON Mode</span>
+    </div>
+
+    <!-- Form Mode -->
+    @if (!jsonMode()) {
+    <div class="form-section">
+      <h2>{{ formMode() === 'create' ? 'Create New Project' : 'Edit Project' }}</h2>
+
+      <form [formGroup]="projectForm" (ngSubmit)="submitForm()" class="project-form">
+        <div class="form-group">
+          <label for="name">Project Name *</label>
+          <input
+            formControlName="name"
+            id="name"
+            placeholder="Enter project name"
+            required
+          />
+          @if(projectForm.get('name')?.invalid && projectForm.get('name')?.touched) {
+          <div class="error">Project name is required (min 3 characters).</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description *</label>
+          <textarea
+            formControlName="description"
+            id="description"
+            placeholder="Enter project description"
+            required
+          ></textarea>
+          @if(projectForm.get('description')?.invalid && projectForm.get('description')?.touched) {
+          <div class="error">Description is required (min 10 characters).</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="technologies">Technologies * (comma-separated)</label>
+          <input
+            formControlName="technologies"
+            id="technologies"
+            placeholder="e.g., Angular, TypeScript, CSS"
+            required
+          />
+          @if(projectForm.get('technologies')?.invalid && projectForm.get('technologies')?.touched) {
+          <div class="error">Technologies are required.</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="githubLink">GitHub Link *</label>
+          <input
+            formControlName="githubLink"
+            id="githubLink"
+            placeholder="https://github.com/username/repo"
+            required
+          />
+          @if(projectForm.get('githubLink')?.invalid && projectForm.get('githubLink')?.touched) {
+          <div class="error">Valid GitHub URL is required.</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="challenges">Challenges *</label>
+          <textarea
+            formControlName="challenges"
+            id="challenges"
+            placeholder="What challenges did you face?"
+            required
+          ></textarea>
+          @if(projectForm.get('challenges')?.invalid && projectForm.get('challenges')?.touched) {
+          <div class="error">Challenges description is required.</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="whatILearned">What I Learned *</label>
+          <textarea
+            formControlName="whatILearned"
+            id="whatILearned"
+            placeholder="What did you learn from this project?"
+            required
+          ></textarea>
+          @if(projectForm.get('whatILearned')?.invalid && projectForm.get('whatILearned')?.touched) {
+          <div class="error">Learning description is required.</div>
+          }
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label>
+            <input formControlName="featured" type="checkbox" />
+            <span>Featured Project</span>
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="projectForm.invalid" class="btn-primary">
+            {{ formMode() === 'create' ? 'Create Project' : 'Update Project' }}
+          </button>
+          @if (formMode() === 'edit') {
+          <button type="button" (click)="resetForm()" class="btn-secondary">
+            Cancel
+          </button>
+          }
+        </div>
+      </form>
+    </div>
+    }
+
+    <!-- JSON Mode -->
+    @if (jsonMode()) {
+    <div class="json-section">
+      <h2>JSON Bulk Operations</h2>
+      <p class="info-text">
+        Enter a single project object or an array of projects. Include an "id" field to update
+        existing projects, omit it to create new ones.
+      </p>
+
+      <div class="sample-buttons">
+        <button (click)="copySampleJson()" class="btn-secondary">
+          Copy Sample JSON (Single)
+        </button>
+        <button (click)="copySampleJsonArray()" class="btn-secondary">
+          Copy Sample JSON (Array)
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label for="jsonInput">JSON Input</label>
+        <textarea
+          id="jsonInput"
+          [(ngModel)]="jsonInput"
+          [ngModelOptions]="{ standalone: true }"
+          placeholder='{"name": "Project Name", "description": "...", ...}'
+          rows="15"
+          class="json-textarea"
+        ></textarea>
+        @if (jsonError()) {
+        <div class="error">{{ jsonError() }}</div>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button (click)="processJson()" class="btn-primary">Process JSON</button>
+        <button (click)="jsonInput.set('')" class="btn-secondary">Clear</button>
+      </div>
+
+      <div class="json-help">
+        <h3>Required Fields:</h3>
+        <ul>
+          <li><code>name</code> - Project name</li>
+          <li><code>description</code> - Project description</li>
+          <li><code>technologies</code> - Array of technology names</li>
+          <li><code>githubLink</code> - GitHub repository URL</li>
+          <li><code>challenges</code> - Challenges faced</li>
+          <li><code>whatILearned</code> - What you learned</li>
+        </ul>
+        <h3>Optional Fields:</h3>
+        <ul>
+          <li><code>id</code> - Include to update existing project</li>
+          <li><code>featured</code> - Boolean for featured status</li>
+        </ul>
+      </div>
+    </div>
+    }
+
+    <!-- Projects List -->
+    <div class="projects-list">
+      <h2>Existing Projects ({{ projects().length }})</h2>
+
+      @if (projects().length === 0) {
+      <p class="no-projects">No projects found. Create your first project above!</p>
+      } @else {
+      <div class="projects-grid">
+        @for (project of projects(); track project.id) {
+        <div class="project-card" [class.featured]="project.featured">
+          <div class="project-header">
+            <h3>{{ project.name }}</h3>
+            @if (project.featured) {
+            <span class="badge-featured">Featured</span>
+            }
+          </div>
+
+          <p class="project-description">{{ project.description }}</p>
+
+          <div class="project-meta">
+            <div class="technologies">
+              @for (tech of project.technologies; track tech) {
+              <span class="tech-tag">{{ tech }}</span>
+              }
+            </div>
+            <a [href]="project.githubLink" target="_blank" class="github-link">
+              View on GitHub →
+            </a>
+          </div>
+
+          <div class="project-details">
+            <p><strong>Challenges:</strong> {{ project.challenges }}</p>
+            <p><strong>Learnings:</strong> {{ project.whatILearned }}</p>
+          </div>
+
+          <div class="project-actions">
+            <button (click)="editProject(project)" class="btn-edit">Edit</button>
+            <button (click)="openPhotoManager(project)" class="btn-photos">Photos</button>
+            <button (click)="deleteProject(project)" class="btn-delete">Delete</button>
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Photo Management Modal -->
+    @if (selectedProjectForPhotos()) {
+    <div class="modal-overlay" (click)="closePhotoManager()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Manage Photos - {{ selectedProjectForPhotos()!.name }}</h2>
+          <button class="btn-close" (click)="closePhotoManager()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Upload Section -->
+          <div class="upload-section">
+            <h3>Upload New Photos</h3>
+            <div class="file-input-wrapper">
+              <input
+                type="file"
+                id="photoInput"
+                accept="image/jpeg,image/jpg,image/png,image/gif"
+                multiple
+                (change)="onFilesSelected($event)"
+                class="file-input"
+              />
+              <label for="photoInput" class="file-label">
+                Choose Photos (JPEG, PNG, GIF)
+              </label>
+            </div>
+
+            @if (selectedFiles.length > 0) {
+            <div class="selected-files">
+              <p>Selected {{ selectedFiles.length }} file(s):</p>
+              <ul>
+                @for (file of selectedFiles; track file.name) {
+                <li>{{ file.name }} ({{ (file.size / 1024).toFixed(2) }} KB)</li>
+                }
+              </ul>
+              <button
+                (click)="uploadPhotos()"
+                [disabled]="isUploadingPhotos()"
+                class="btn-primary"
+              >
+                {{ isUploadingPhotos() ? 'Uploading...' : 'Upload Photos' }}
+              </button>
+            </div>
+            }
+          </div>
+
+          <!-- Existing Photos Section -->
+          <div class="existing-photos">
+            <h3>Existing Photos ({{ selectedProjectForPhotos()!.photos?.length || selectedProjectForPhotos()!.photoUrls.length }})</h3>
+
+            @if ((selectedProjectForPhotos()!.photos?.length || 0) === 0 && selectedProjectForPhotos()!.photoUrls.length === 0) {
+            <p class="no-photos">No photos uploaded yet.</p>
+            } @else {
+            <div class="photos-grid">
+              @if (selectedProjectForPhotos()!.photos && selectedProjectForPhotos()!.photos!.length > 0) {
+                @for (photo of selectedProjectForPhotos()!.photos; track photo.id) {
+                <div class="photo-item">
+                  <img [src]="getApiBaseUrl() + photo.photoUrl" [alt]="'Project photo ' + photo.id" />
+                  <button (click)="deletePhoto(photo.id)" class="btn-delete-photo">
+                    Delete
+                  </button>
+                </div>
+                }
+              } @else {
+                @for (photoUrl of selectedProjectForPhotos()!.photoUrls; track photoUrl) {
+                <div class="photo-item">
+                  <img [src]="getApiBaseUrl() + photoUrl" [alt]="'Project photo'" />
+                  <div class="no-delete-info">
+                    <small>Photo ID not available - refresh page to delete</small>
+                  </div>
+                </div>
+                }
+              }
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  }
 </section>

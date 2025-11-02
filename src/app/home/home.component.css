@@ -1,8 +1,8 @@
 /* HERO SECTION STYLES */
 .hero-section {
-  width: 100vw;
+  min-width: 100%;
+  margin-inline: -2rem;
   max-height: 850px;
-  margin-left: calc(-1 * (100vw - 100%) / 2);
   background: linear-gradient(170deg, #3572ef00 10%, #1e4189 80%);
   color: white;
   padding-bottom: 0;
@@ -84,8 +84,8 @@
   grid-template-columns: 1fr 300px;
   align-items: center;
   padding: 2em 4em 0 4em;
-  gap: 2em;
-  width: 1400px;
+  gap: 1rem;
+  width: 100%;
 }
 
 .hero .content {

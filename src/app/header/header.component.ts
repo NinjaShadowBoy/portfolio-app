@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -7,7 +7,7 @@ import { SocialLinksService } from '../services/social-links.service';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink], // CommonModule Required for template directives like @for, @if, @else, @switch, @case, @default, @break, @continue, @return, @throw, @try, @catch, @finally, @import, @export, @module, @component, @directive, @pipe, @ngModule, @Injectable, @Inject, @Optional, @Self, @SkipSelf, @Host, @HostBinding, @HostListener, @Input, @Output, @ViewChild, @ViewChildren, @ContentChild, @ContentChildren, @ViewEncapsulation, @ViewProviders, @ViewParent
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
@@ -34,6 +34,7 @@ export class HeaderComponent {
   private socialLinksService = inject(SocialLinksService);
 
   isAuthenticated = this.auth.isAuthenticated;
+  isAdmin = this.auth.isAdmin;
   socialLinks = this.socialLinksService.getSocialLinks();
 
   isMenuOpen = false;

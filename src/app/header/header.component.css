@@ -16,7 +16,7 @@
   padding: 2rem;
   gap: 1rem;
   /* width: 100%; */
-  max-width: 1200px;
+  max-width: 1400px;
 }
 
 /* Holographic effect overlay */
@@ -272,19 +272,19 @@
     gap: 1rem;
     padding: 1rem;
   }
-  
+
   .navigation {
     width: 100%;
   }
-  
-  .hamburger { 
-    display: inline-flex; 
+
+  .hamburger {
+    display: inline-flex;
     align-self: flex-end;
     margin-top: -2rem;
   }
-  
-  .desktop-nav { 
-    display: none !important; 
+
+  .desktop-nav {
+    display: none !important;
   }
 }
 

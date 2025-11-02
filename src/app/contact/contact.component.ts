@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import {
   FormControl,
   FormGroup,
-  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -14,7 +13,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css'],
 })
@@ -26,33 +25,28 @@ export class ContactComponent implements CanComponentDeactivate {
     email: new FormControl('', [Validators.required, Validators.email]),
     message: new FormControl('', [
       Validators.required,
-      Validators.minLength(2),
+      Validators.minLength(10),
     ]),
   });
-  name: string = '';
-  email: string = '';
-  message: string = '';
 
   submitForm(): void {
-    console.log('Form Submitted!', this.contactForm.value);
-    if (this.name && this.email && this.message) {
-      this.notificationService.success('Message sent successfully!');
-      this.name = '';
-      this.email = '';
-      this.message = '';
-    } else {
-      this.notificationService.error('Please fill out all fields.');
+    if (this.contactForm.invalid) {
+      this.notificationService.error('Please fill out all fields correctly.');
+      return;
     }
+
+    console.log('Form Submitted!', this.contactForm.value);
+    this.notificationService.success('Message sent successfully!');
+    this.contactForm.reset();
   }
 
   canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean =
     () => {
-      if (this.name.length || this.email.length || this.message.length) {
+      if (this.contactForm.dirty && !this.contactForm.pristine) {
         return confirm(
-          'Contact form enterd data will be lost. Are you sure to leave ?'
+          'Contact form entered data will be lost. Are you sure you want to leave?'
         );
-      } else {
-        return true;
       }
+      return true;
     };
 }

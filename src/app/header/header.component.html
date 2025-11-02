@@ -22,11 +22,16 @@
         }
         <li class="auth-controls">
           @if (isAuthenticated()) {
-          <button class="link" (click)="logout()">Logout</button>
+          <a class="link" (click)="logout()" routerLinkActive="active">Logout</a>
           } @else {
           <a class="link" [routerLink]="['/login']" routerLinkActive="active">Login</a>
           }
         </li>
+        @if (isAuthenticated() && isAdmin()) {
+        <li>
+          <a class="link" [routerLink]="['/admin']" routerLinkActive="active">Admin</a>
+        </li>
+        }
         <ul class="socials">
           @for(social of socialLinks; track social.name) {
           <li>
@@ -55,11 +60,16 @@
         }
         <li class="auth-controls">
           @if (isAuthenticated()) {
-          <button class="link" (click)="logout(); toggleMenu()">Logout</button>
+          <a class="link" (click)="logout(); toggleMenu()" routerLinkActive="active">Logout</a>
           } @else {
           <a class="link" [routerLink]="['/login']" routerLinkActive="active" (click)="toggleMenu()">Login</a>
           }
         </li>
+        @if (isAuthenticated() && isAdmin()) {
+        <li>
+          <a class="link" [routerLink]="['/admin']" routerLinkActive="active">Admin</a>
+        </li>
+        }
         <li class="socials">
           @for(social of socialLinks; track social.name) {
           <a class="social" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
