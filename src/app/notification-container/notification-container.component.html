@@ -1,0 +1,37 @@
+<div class="notification-container">
+  @for (notification of notifications(); track notification.id) {
+    <div
+      class="notification notification-{{notification.type}}"
+      role="alert"
+      [attr.aria-live]="notification.type === 'error' ? 'assertive' : 'polite'"
+    >
+      <div class="notification-content">
+        <div class="notification-icon">
+          {{ getIcon(notification.type) }}
+        </div>
+        <div class="notification-message">
+          {{ notification.message }}
+        </div>
+        @if (notification.actions && notification.actions.length > 0) {
+          <div class="notification-actions">
+            @for (action of notification.actions; track $index) {
+              <button
+                class="notification-action-btn"
+                (click)="executeAction(notification, $index)"
+              >
+                {{ action.label }}
+              </button>
+            }
+          </div>
+        }
+        <button
+          class="notification-close"
+          (click)="dismiss(notification.id)"
+          aria-label="Dismiss notification"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  }
+</div>

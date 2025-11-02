@@ -1,18 +1,25 @@
 export interface Project {
-  id: string; // Unique identifier for better tracking
+  id: number; // Unique identifier for better tracking
   name: string;
   description: string;
   technologies: string[];
-  githubLink: string;
-  challenges: string;
-  whatILearned: string;
-  isExpanded: boolean;
-  ratings: Rating[];
+  githubLink: string | null;
+  challenges: string | null;
+  whatILearned: string | null;
+  isExpanded?: boolean; // UI-only property, not from backend
   averageRating: number;
-  createdAt: Date;
-  updatedAt: Date;
+  totalRatings: number; // Backend returns this instead of ratings array
+  createdAt: string; // ISO string from backend
+  updatedAt: string; // ISO string from backend
   featured: boolean; // For homepage featured projects
-  photosUrls: string[]
+  photoUrls: string[]; // Backend uses photoUrls (not photosUrls)
+  photos?: Photo[]; // Optional: Full photo objects with IDs for deletion
+}
+
+export interface Photo {
+  id: number;
+  photoUrl: string;
+  projectId: number;
 }
 
 export interface Rating {
