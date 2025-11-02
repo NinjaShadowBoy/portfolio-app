@@ -1,11 +1,5 @@
 <div class="header-container">
   <header class="header">
-    <!-- String interpolation for dynmic data -->
-    <div class="header-content">
-      <h1>{{ title }}</h1>
-      <p>{{ subtitle }}</p>
-    </div>
-
     <!-- Navigation with hamburger for small screens -->
     <nav class="navigation" aria-label="Primary">
       <button class="hamburger" aria-label="Menu" (click)="toggleMenu()">
@@ -44,6 +38,12 @@
         </ul>
       </ul>
     </nav>
+
+    <!-- String interpolation for dynmic data -->
+    <div class="header-content">
+      <h1>{{ title }}</h1>
+      <p>{{ subtitle }}</p>
+    </div>
 
     <!-- Mobile sidebar modal -->
     @if (isMenuOpen) {

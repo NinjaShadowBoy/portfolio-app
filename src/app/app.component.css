@@ -7,16 +7,20 @@
 
 .main-content {
   box-sizing: border-box;
-  width: min(100%, 1400px);
-  max-width: 1400px;
-  margin: 0 auto;
-  padding-inline: 2rem;
+  width: 100%;
   background: var(--glass-noise);
   color: var(--text-primary);
   flex: 1;
   transition: background-color var(--motion-duration-normal)
       var(--motion-ease-out),
     color var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+/* Content wrapper for constraining width */
+.main-content > * {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-inline: 2rem;
 }
 
 /* Theme-aware container */
@@ -28,8 +32,14 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .main-content {
-    padding-inline: 1rem;
+  .main-content > * {
+    padding-inline: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content > * {
+    padding-inline: 0.25rem;
   }
 }
 

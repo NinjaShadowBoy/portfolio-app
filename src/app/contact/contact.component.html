@@ -4,14 +4,14 @@
   <form [formGroup]="contactForm" (ngSubmit)="submitForm()" class="contact-form">
     <div class="form-group">
       <label for="name">Name</label>
-      <input formControlName="name" id="name" [(ngModel)]="name" name="name" placeholder="Your Name" required />
+      <input formControlName="name" id="name" placeholder="Your Name" required />
       @if(contactForm.get('name')?.invalid && contactForm.get('name')?.touched){
       <div class="error">Name is required.</div>
       }
     </div>
     <div class="form-group">
       <label for="email">Email</label>
-      <input formControlName="email" id="email" [(ngModel)]="email" name="email" type="email" placeholder="Your Email"
+      <input formControlName="email" id="email" type="email" placeholder="Your Email"
         required />
       @if(contactForm.get('email')?.invalid && contactForm.get('email')?.touched){
       @if(contactForm.get('email')?.errors?.['required']){
@@ -24,14 +24,14 @@
     </div>
     <div class="form-group">
       <label for="message">Message</label>
-      <textarea formControlName="message" id="message" [(ngModel)]="message" name="message" placeholder="Your Message"
+      <textarea formControlName="message" id="message" placeholder="Your Message"
         required></textarea>
       @if (contactForm.get('message')?.invalid && contactForm.get('message')?.touched) {
       @if (contactForm.get('message')?.errors?.['required']) {
       <div class="error">Message is required.</div>
       }
       @if (contactForm.get('message')?.errors?.['minlength']) {
-      <div class="error">Message must be at least 2 characters.</div>
+      <div class="error">Message must be at least 10 characters.</div>
       }
       }
     </div>

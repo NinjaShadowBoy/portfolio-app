@@ -38,6 +38,113 @@
   </div>
 </div>
 
+<!-- My Arsenal Section with Moving Banners -->
+<section class="my-tools-section">
+  <h2>My Arsenal</h2>
+
+  <!-- Languages Banner (Left to Right) -->
+  <div class="category-section">
+    <h3>Languages</h3>
+    <div class="tools-banner-container">
+      <div class="tools-banner">
+        @for (tool of languages; track tool.name) {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+        <!-- Duplicate multiple times for seamless loop -->
+        @for (tool of languages; track tool.name + '-duplicate-1') {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+        @for (tool of languages; track tool.name + '-duplicate-2') {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+        @for (tool of languages; track tool.name + '-duplicate-3') {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Frameworks Banner (Right to Left) -->
+  <div class="category-section">
+    <h3>Frameworks</h3>
+    <div class="tools-banner-container">
+      <div class="tools-banner reverse">
+        @for (tool of frameworks; track tool.name) {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+        <!-- Duplicate multiple times for seamless loop -->
+        @for (tool of frameworks; track tool.name + '-duplicate-1') {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+        @for (tool of frameworks; track tool.name + '-duplicate-2') {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+        @for (tool of frameworks; track tool.name + '-duplicate-3') {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Tools Banner (Left to Right) -->
+  <div class="category-section">
+    <h3>Tools</h3>
+    <div class="tools-banner-container">
+      <div class="tools-banner">
+        @for (tool of tools; track tool.name) {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+        <!-- Duplicate multiple times for seamless loop -->
+        @for (tool of tools; track tool.name + '-duplicate-1') {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+        @for (tool of tools; track tool.name + '-duplicate-2') {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+        @for (tool of tools; track tool.name + '-duplicate-3') {
+          <div class="tool-item">
+            <img [src]="tool.icon" [alt]="tool.name" />
+            <span>{{ tool.name }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Existing featured projects section remains below -->
 <section class="featured-projects">
   <h2>Featured Projects</h2>

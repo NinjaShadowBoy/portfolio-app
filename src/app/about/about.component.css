@@ -159,18 +159,59 @@ h2 {
   border-radius: 2px;
 }
 
-/* Responsive design */
+/* Responsive design - Tablet */
+@media (max-width: 1024px) {
+  .about-container {
+    padding: 1.5rem;
+  }
+
+  .skills-section {
+    padding: 1.75rem;
+  }
+
+  .skills-list {
+    gap: 0.875rem;
+  }
+
+  .skills-list li {
+    padding: 0.65rem 1.15rem;
+  }
+}
+
+/* Responsive design - Mobile */
 @media (max-width: 768px) {
   .about-container {
     padding: 1rem;
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
   }
 
   h2 {
     font-size: 1.5rem;
+    margin-bottom: 0.875rem;
+  }
+
+  p {
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .skills-section {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .skills-category {
+    margin-bottom: 1.5rem;
+  }
+
+  .skills-category h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.875rem;
   }
 
   .skills-list {
@@ -178,12 +219,63 @@ h2 {
   }
 
   .skills-list li {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.875rem;
+    min-height: 40px; /* Better touch target */
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .about-container {
+    padding: 0.75rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.65rem;
+  }
+
+  h2 {
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
   }
 
   .skills-section {
-    padding: 1.5rem;
+    margin-top: 1.25rem;
+    padding: 1.25rem;
+    border-radius: 8px;
+  }
+
+  .skills-category {
+    margin-bottom: 1.25rem;
+  }
+
+  .skills-category h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .skills-category h3::before {
+    width: 3px;
+    height: 1.25rem;
+  }
+
+  .skills-list {
+    gap: 0.65rem;
+  }
+
+  .skills-list li {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.825rem;
+    border-radius: 20px;
   }
 }
 

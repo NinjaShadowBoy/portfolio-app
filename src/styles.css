@@ -1274,6 +1274,7 @@ body {
   transition: background-color var(--motion-duration-normal)
       var(--motion-ease-out),
     color var(--motion-duration-normal) var(--motion-ease-out);
+  overflow-x: hidden;
 }
 
 * {
@@ -1290,4 +1291,96 @@ body * {
 
 *, *::before, *::after {
   box-sizing: border-box;
+}
+
+/* ============================================
+   MOBILE-FIRST RESPONSIVE DESIGN
+   ============================================ */
+
+/* Mobile UX Best Practices */
+@media (max-width: 768px) {
+  :root {
+    /* Adjust touch target sizes for mobile */
+    --min-touch-target: 44px;
+
+    /* Optimized motion timings for mobile - snappy but smooth */
+    --motion-duration-instant: 0ms;
+    --motion-duration-fast: 120ms;
+    --motion-duration-normal: 250ms;
+    --motion-duration-slow: 400ms;
+    --motion-duration-slower: 600ms;
+  }
+
+  /* Increase base font size for better readability on mobile */
+  body {
+    font-size: 16px; /* Prevents zoom on input focus on iOS */
+  }
+
+  /* Speed up interaction transitions for snappy UI feel */
+  button,
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost,
+  a:not(.tools-banner a),
+  input,
+  textarea,
+  select {
+    transition-duration: 150ms !important;
+  }
+
+  /* Page load animations - reduced but still visible */
+  h1, h2, h3, p {
+    animation-duration: 0.5s !important;
+  }
+
+  /* Better spacing for mobile screens */
+  h1 {
+    font-size: 1.75rem !important;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: 1.25rem !important;
+    line-height: 1.4;
+  }
+
+  /* Improved button sizing for touch */
+  button,
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost,
+  a[role="button"] {
+    min-height: var(--min-touch-target);
+    padding: 0.75rem 1.25rem !important;
+    font-size: 1rem !important;
+  }
+
+  /* Better input sizing for mobile */
+  input,
+  textarea,
+  select {
+    min-height: var(--min-touch-target);
+    font-size: 16px !important; /* Prevents iOS zoom */
+    padding: 0.75rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens - phone in portrait */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  h2 {
+    font-size: 1.25rem !important;
+  }
+
+  h3 {
+    font-size: 1.1rem !important;
+  }
 }
