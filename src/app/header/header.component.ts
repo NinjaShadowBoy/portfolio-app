@@ -13,7 +13,7 @@ import { SocialLinksService } from '../services/social-links.service';
 })
 export class HeaderComponent {
   title: string = 'Alex Nelson AKA NinjaShadowboy';
-  subtitle: string = 'Software Engineering Student';
+  subtitle: string = 'Junior Software Engineering and Student';
   description: string =
     'I am a software engineer with a passion for building web applications and mobile applications.';
 
