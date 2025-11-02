@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angu
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -57,6 +58,17 @@ export class LoginComponent {
       },
       complete: () => this.loading.set(false),
     });
+  }
+
+  loginWithOAuth2(provider: 'google' | 'github' | 'facebook') {
+    if (this.loading()) return;
+    this.loading.set(true);
+
+    // Construct the OAuth2 authorization URL
+    const oauth2Url = `${environment.apiBaseUrl}/oauth2/authorize/${provider}`;
+
+    // Redirect to the OAuth2 provider
+    window.location.href = oauth2Url;
   }
 
   toggleMode() {

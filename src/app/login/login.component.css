@@ -39,7 +39,7 @@
   align-items: center;
   gap: 0.5rem;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   padding: 0.35rem;
   border-radius: 999px;
   background: var(--surface-sunken);
@@ -76,6 +76,185 @@
   transform: translateX(100%);
 }
 
+/* OAuth2 Section Styling */
+.oauth-section {
+  margin: 2rem 0;
+}
+
+.oauth-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--border-emphasis),
+    transparent
+  );
+}
+
+.divider-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.oauth-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.oauth-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
+  pointer-events: none;
+}
+
+.oauth-btn:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.oauth-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.oauth-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Google Button */
+.oauth-google {
+  background: #ffffff;
+  color: #1f1f1f;
+  border-color: #dadce0;
+  box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.1),
+              0 1px 2px 0 rgba(60, 64, 67, 0.15);
+}
+
+.oauth-google::before {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8eaed 100%);
+}
+
+.oauth-google:hover:not(:disabled) {
+  border-color: #d2d3d5;
+  box-shadow: 0 2px 6px 0 rgba(60, 64, 67, 0.15),
+              0 1px 3px 0 rgba(60, 64, 67, 0.2);
+  transform: translateY(-2px);
+}
+
+.oauth-google:active:not(:disabled) {
+  background: #f8f9fa;
+  transform: translateY(0);
+}
+
+/* GitHub Button */
+.oauth-github {
+  background: #24292e;
+  color: #ffffff;
+  border-color: #24292e;
+  box-shadow: 0 2px 8px 0 rgba(36, 41, 46, 0.2);
+}
+
+.oauth-github::before {
+  background: linear-gradient(135deg, #2f363d 0%, #1b1f23 100%);
+}
+
+.oauth-github:hover:not(:disabled) {
+  border-color: #1b1f23;
+  box-shadow: 0 4px 12px 0 rgba(36, 41, 46, 0.3);
+  transform: translateY(-2px);
+}
+
+.oauth-github:active:not(:disabled) {
+  background: #1b1f23;
+  transform: translateY(0);
+}
+
+/* Facebook Button */
+.oauth-facebook {
+  background: #1877f2;
+  color: #ffffff;
+  border-color: #1877f2;
+  box-shadow: 0 2px 8px 0 rgba(24, 119, 242, 0.2);
+}
+
+.oauth-facebook::before {
+  background: linear-gradient(135deg, #2d88ff 0%, #0c63d4 100%);
+}
+
+.oauth-facebook:hover:not(:disabled) {
+  border-color: #0c63d4;
+  box-shadow: 0 4px 12px 0 rgba(24, 119, 242, 0.3);
+  transform: translateY(-2px);
+}
+
+.oauth-facebook:active:not(:disabled) {
+  background: #0c63d4;
+  transform: translateY(0);
+}
+
+/* Section Divider */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0 1.5rem;
+}
+
+.section-divider .divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--border-default),
+    transparent
+  );
+}
+
+.section-divider .divider-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-quaternary);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* Traditional Form Styling */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -137,7 +316,7 @@
   pointer-events: none;
 }
 
-/* Button styling identical pattern to contact form */
+/* Submit Button Styling */
 .auth-form button {
   background: var(--btn-primary-bg);
   color: var(--btn-primary-text);
@@ -192,9 +371,66 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Dark Mode Specific Adjustments */
+[data-theme="dark"] .oauth-google {
+  background: #2d2d2d;
+  color: #e8eaed;
+  border-color: #3c4043;
+}
+
+[data-theme="dark"] .oauth-google::before {
+  background: linear-gradient(135deg, #3c4043 0%, #202124 100%);
+}
+
+[data-theme="dark"] .oauth-github {
+  background: #0d1117;
+  color: #ffffff;
+  border-color: #30363d;
+}
+
+[data-theme="dark"] .oauth-github::before {
+  background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  .auth-container { padding: 1rem; }
-  .auth-card { padding: 1.5rem; }
+  .auth-container {
+    padding: 1rem;
+  }
+
+  .auth-card {
+    padding: 1.5rem;
+  }
+
+  .oauth-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .oauth-btn {
+    width: 100%;
+  }
+}
+
+/* Loading State Enhancement */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.oauth-btn.loading,
+.auth-form button.loading {
+  position: relative;
+}
+
+.oauth-btn.loading::after,
+.auth-form button.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
 }
 
 

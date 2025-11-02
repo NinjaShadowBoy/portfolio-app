@@ -28,7 +28,7 @@ export class BreadcrumbComponent {
     breadcrumbs: { label: string; url: string }[] = []
   ): { label: string; url: string }[] {
     const children: ActivatedRoute[] = route.children;
-    // console.log(breadcrumbs, 'Children ', children.length);
+
     if (children.length === 0) {
       return breadcrumbs;
     }
@@ -37,19 +37,21 @@ export class BreadcrumbComponent {
       const routeURL: string = child.snapshot.url
         .map((segment) => segment.path)
         .join('/');
-      if (routeURL !== '') {
-        url += `/${routeURL}`;
-      } else {
+
+      if (routeURL === '') {
         return breadcrumbs;
       }
 
+      url += `/${routeURL}`;
+
       let label = child.snapshot.data['breadcrumb'] || '';
+
       if (child.snapshot.params['id']) {
-        const project = this.projectService.getProject(
-          child.snapshot.params['id']
-        );
-        label = project ? project.name : 'Project Details';
+        const projectId = child.snapshot.params['id'];
+        const project = this.projectService.getProject(projectId);
+        label = project?.name || 'Project Details';
       }
+
       if (label) {
         breadcrumbs.push({ label, url });
       }

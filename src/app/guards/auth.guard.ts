@@ -9,33 +9,17 @@ export const authGuard: CanActivateFn = () => {
   const notificationService = inject(NotificationService);
   const auth = inject(AuthService);
 
-  const isAuthenticated = auth.isAuthenticated();
-  if (isAuthenticated) return true;
+  if (auth.isAuthenticated()) {
+    return true;
+  }
 
   notificationService.error('Please log in to continue.');
   return router.createUrlTree(['/login']);
 };
 
-// Consider using this interface for all CanDeactivate guards,
-// and have your components implement this interface, too.
-//
-//   e.g. export class VillainsComponent implements CanComponentDeactivate { ...
-//
 export interface CanComponentDeactivate {
   canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
 }
-
-// export const NameGuard: CanDeactivateFn<CanComponentDeactivate> = (
-//   component: CanComponentDeactivate
-// ) => {
-//     if (component.canDeactivate()) {
-//       console.log(`💂‍♀️ [Guard] - Can Deactivate Guard - allowed`);
-//       return true;
-//     } else {
-//       console.log(`💂‍♀️ [Guard] - Can Deactivate Guard - not allowed`);
-//       return false;
-//   }
-// }
 
 export const contactGuard: CanDeactivateFn<CanComponentDeactivate> = (
   component: CanComponentDeactivate

@@ -8,19 +8,18 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { authGuard, contactGuard } from './guards/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
+import { Oauth2RedirectComponent } from './oauth2-redirect/oauth2-redirect.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, data: { breadcrumb: 'Home' } },
   {
     path: 'projects',
-    // component: ProjectsComponent,
     data: { breadcrumb: 'Projects' },
     children: [
       {
         path: '',
         component: ProjectsComponent,
-        // data: { breadcrumb: 'Project Details' },
       },
       {
         path: ':id',
@@ -31,12 +30,21 @@ export const routes: Routes = [
   },
   { path: 'about', component: AboutComponent, data: { breadcrumb: 'About' } },
   { path: 'login', component: LoginComponent, data: { breadcrumb: 'Login' } },
-  { path: 'admin', component: AdminComponent, data: { breadcrumb: 'Admin' }, canActivate: [authGuard] },
+  {
+    path: 'oauth2/redirect',
+    component: Oauth2RedirectComponent,
+    data: { breadcrumb: 'Authenticating' },
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    data: { breadcrumb: 'Admin' },
+    canActivate: [authGuard],
+  },
   {
     path: 'contact',
     component: ContactComponent,
     data: { breadcrumb: 'Contact' },
-    canActivate: [authGuard], // Protect contact page
     canDeactivate: [contactGuard],
   },
   { path: '**', component: NotFoundComponent },
