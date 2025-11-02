@@ -62,13 +62,12 @@ export class LoginComponent {
 
   loginWithOAuth2(provider: 'google' | 'github' | 'facebook') {
     if (this.loading()) return;
-    this.loading.set(true);
 
-    // Construct the OAuth2 authorization URL
-    const oauth2Url = `${environment.apiBaseUrl}/oauth2/authorize/${provider}`;
-
-    // Redirect to the OAuth2 provider
-    window.location.href = oauth2Url;
+    // OAuth2 is not currently available
+    const providerName = provider.charAt(0).toUpperCase() + provider.slice(1);
+    this.notifier.error(
+      `${providerName} login is not available at the moment. Please use email and password to sign in.`
+    );
   }
 
   toggleMode() {
