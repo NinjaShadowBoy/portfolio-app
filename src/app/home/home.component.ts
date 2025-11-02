@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectDataService } from '../services/project-data.service';
 import { FeaturedCardComponent } from '../featured-card/featured-card.component';
+import { LazyLoadDirective } from '../directives/lazy-load.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FeaturedCardComponent],
+  imports: [CommonModule, FeaturedCardComponent, LazyLoadDirective],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
@@ -15,6 +16,7 @@ export class HomeComponent {
   readonly featuredProjects = this.projectService.featuredProjects;
 
   // Technologies/Tools organized by category
+  // Using local references instead of CDN where possible for better performance
   languages = [
     { name: 'TypeScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
     { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },

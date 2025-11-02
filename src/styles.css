@@ -1,6 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* ============================================
+   LAZY LOADING OPTIMIZATION STYLES
+   ============================================ */
+
+/* Lazy loading states for images */
+img[appLazyLoad] {
+  will-change: opacity, filter;
+  transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
+img.lazy-loading {
+  opacity: 0;
+  filter: blur(10px);
+  background: var(--surface-hover);
+}
+
+img.lazy-loaded {
+  opacity: 1;
+  filter: blur(0);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+img.lazy-error {
+  opacity: 0.3;
+  filter: grayscale(1);
+  background: var(--surface-disabled);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Image aspect ratio preservation to prevent layout shift (CLS improvement) */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Content visibility for off-screen elements (improves SI and rendering) */
+.featured-projects,
+.my-tools-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* ============================================
    CUSTOM FONTS
    ============================================ */
 @font-face {

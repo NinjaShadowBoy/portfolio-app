@@ -5,7 +5,78 @@
   <title>PortfolioApp</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Alex Nelson ABENA - Full Stack Developer Portfolio">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- DNS Prefetch for external resources -->
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <!-- Preconnect to critical origins -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <!-- Preload critical fonts with font-display: swap -->
+  <link rel="preload" href="/assets/fonts/PRODUCTSANS-REGULAR.TTF" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/assets/fonts/PRODUCTSANS-BOLD.TTF" as="font" type="font/ttf" crossorigin>
+
+  <!-- Preload LCP image (hero image) -->
+  <link rel="preload" href="assets/images/2223i141.jpg" as="image" fetchpriority="high">
+  <link rel="preload" href="assets/images/Ilustration-1.svg" as="image">
+
+  <!-- Critical CSS - Inline minimal styles for FCP -->
+  <style>
+    /* Critical above-the-fold styles */
+    :root {
+      --color-primary: #3572ef;
+      --surface-base: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-primary: #60a5fa;
+        --surface-base: #0f172a;
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--surface-base);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      margin: 0;
+    }
+
+    /* Loading skeleton for app-root */
+    app-root:empty {
+      display: block;
+      min-height: 100vh;
+      background: var(--surface-base);
+    }
+
+    app-root:empty::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+  </style>
 </head>
 <body>
   <app-root></app-root>

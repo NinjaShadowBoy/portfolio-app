@@ -25,7 +25,7 @@
   </div> -->
   <div class="hero">
     <div class="content">
-      <img class="my-face" src="assets/images/2223i141.jpg" alt="">
+      <img class="my-face" appLazyLoad src="assets/images/2223i141.jpg" alt="Alex Nelson ABENA - Profile Picture" width="200" height="200" fetchpriority="high">
       <p class="headline">
         Young, Growing, self taught, all around <span aria-label="sweat smile" role="img">😅</span>, programmer
       </p>
@@ -34,7 +34,7 @@
         <span>Know more about me!</span>
       </div>
     </div>
-    <img class="hero-illustration" src="assets/images/Ilustration-1.svg" alt="Hero Illustration" />
+    <img class="hero-illustration" src="assets/images/Ilustration-1.svg" alt="Hero Illustration" width="500" height="500" fetchpriority="high">
   </div>
 </div>
 
@@ -49,26 +49,26 @@
       <div class="tools-banner">
         @for (tool of languages; track tool.name) {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
         <!-- Duplicate multiple times for seamless loop -->
         @for (tool of languages; track tool.name + '-duplicate-1') {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
         @for (tool of languages; track tool.name + '-duplicate-2') {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
         @for (tool of languages; track tool.name + '-duplicate-3') {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
@@ -83,26 +83,26 @@
       <div class="tools-banner reverse">
         @for (tool of frameworks; track tool.name) {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
         <!-- Duplicate multiple times for seamless loop -->
         @for (tool of frameworks; track tool.name + '-duplicate-1') {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
         @for (tool of frameworks; track tool.name + '-duplicate-2') {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
         @for (tool of frameworks; track tool.name + '-duplicate-3') {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
@@ -117,26 +117,26 @@
       <div class="tools-banner">
         @for (tool of tools; track tool.name) {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
         <!-- Duplicate multiple times for seamless loop -->
         @for (tool of tools; track tool.name + '-duplicate-1') {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
         @for (tool of tools; track tool.name + '-duplicate-2') {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
         @for (tool of tools; track tool.name + '-duplicate-3') {
           <div class="tool-item">
-            <img [src]="tool.icon" [alt]="tool.name" />
+            <img appLazyLoad [src]="tool.icon" [alt]="tool.name" width="48" height="48" loading="lazy" />
             <span>{{ tool.name }}</span>
           </div>
         }
