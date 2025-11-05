@@ -43,6 +43,117 @@
   </div>
   }
 
+  <!-- Rating & Comments Section -->
+  <div class="rating-section">
+    <h2>Rate This Project</h2>
+
+    <!-- Average Rating Display -->
+    <div class="rating-summary">
+      <div class="average-rating">
+        <span class="rating-number">{{ averageRating.toFixed(1) }}</span>
+        <div class="stars-display">
+          @for (star of getStarArray(); track star) {
+            <span class="star" [class.filled]="star <= averageRating">★</span>
+          }
+        </div>
+        <span class="rating-count">{{ ratingCount }} {{ ratingCount === 1 ? 'rating' : 'ratings' }}</span>
+      </div>
+    </div>
+
+    <!-- User Rating Input -->
+    @if (authService.isAuthenticated()) {
+      @if (!userRating || isEditingRating) {
+        <form class="rating-form" [class.submitting]="isSubmitting" (ngSubmit)="submitRating()">
+          <p class="rating-prompt">{{ userRating ? 'Update your rating:' : 'Click to rate:' }}</p>
+          <div class="stars-interactive">
+            @for (star of getStarArray(); track star) {
+              <button
+                type="button"
+                class="star-button"
+                [class.filled]="isStarFilled(star)"
+                [class.hovered]="star <= hoveredStar"
+                [disabled]="isSubmitting"
+                (mouseenter)="onStarHover(star)"
+                (mouseleave)="onStarLeave()"
+                (click)="onStarClick(star)"
+                [attr.aria-label]="'Rate ' + star + ' stars'">
+                ★
+              </button>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="comment">Add a comment (optional):</label>
+            <textarea
+              id="comment"
+              [(ngModel)]="commentText"
+              name="comment"
+              [disabled]="isSubmitting"
+              placeholder="Share your thoughts about this project..."
+              rows="4"></textarea>
+          </div>
+
+          <div class="rating-actions">
+            <button type="submit" class="submit-btn" [disabled]="isSubmitting || selectedRating === 0">
+              {{ userRating ? 'Update Rating' : 'Submit Rating' }}
+            </button>
+            @if (isEditingRating) {
+              <button type="button" (click)="cancelEditingRating()" class="cancel-btn" [disabled]="isSubmitting">
+                Cancel
+              </button>
+            }
+          </div>
+        </form>
+      } @else {
+        <div class="user-rating-display">
+          <p class="your-rating-label">Your Rating:</p>
+          <div class="stars-display">
+            @for (star of getStarArray(); track star) {
+              <span class="star" [class.filled]="star <= userRating.rating">★</span>
+            }
+          </div>
+          @if (userRating.comment) {
+            <p class="user-comment">{{ userRating.comment }}</p>
+          }
+          <div class="rating-actions">
+            <button type="button" (click)="startEditingRating()" class="edit-btn">
+              Edit
+            </button>
+            <button type="button" (click)="deleteRating()" class="delete-btn">
+              Delete
+            </button>
+          </div>
+        </div>
+      }
+    } @else {
+      <p class="login-prompt">
+        <a href="/login" class="text-link">Log in</a> to rate this project
+      </p>
+    }
+
+    <!-- All Ratings & Comments -->
+    @if (ratings.length > 0) {
+      <div class="all-ratings">
+        <h3>All Reviews</h3>
+        @for (rating of ratings; track rating.id) {
+          <div class="rating-item">
+            <div class="rating-header">
+              <div class="stars-display">
+                @for (star of getStarArray(); track star) {
+                  <span class="star small" [class.filled]="star <= rating.rating">★</span>
+                }
+              </div>
+              <span class="rating-date">{{ rating.createdAt | date:'MMM dd, yyyy' }}</span>
+            </div>
+            @if (rating.comment) {
+              <p class="rating-comment">{{ rating.comment }}</p>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
   <a [href]="project.githubLink" target="_blank" class="github-link"><p>View on GitHub</p>
     <img src="assets/icons/github.svg" alt="GitHub" width="20" height="20" class="github-icon" />
   </a>

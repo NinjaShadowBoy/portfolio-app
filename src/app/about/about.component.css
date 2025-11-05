@@ -24,6 +24,75 @@ p {
   animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
 }
 
+.cv-download-section {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  animation: fadeInUp 0.8s var(--motion-ease-out) 0.3s both;
+}
+
+.cv-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+  box-shadow: var(--elevation-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.cv-download-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.cv-download-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--elevation-4), var(--shadow-primary);
+}
+
+.cv-download-btn:hover::before {
+  opacity: 1;
+}
+
+.cv-download-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.cv-download-btn svg {
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.cv-download-btn:hover svg {
+  transform: translateY(2px);
+  animation: bounce 0.6s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(2px);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
 h2 {
   color: var(--text-primary);
   margin-bottom: 1rem;
@@ -38,6 +107,7 @@ h2 {
   flex-wrap: wrap;
   gap: 1rem;
   animation: fadeInUp 0.8s var(--motion-ease-out) 0.6s both;
+  margin-bottom: 1rem;
 }
 
 .skills-list li {
@@ -123,6 +193,31 @@ h2 {
   transform: translateX(100%);
 }
 
+/* Hobbies list - reuses skills-list styles */
+.hobbies-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: center;
+  text-align: center;
+}
+
+.hobby-name {
+  font-weight: 600;
+  color: inherit;
+}
+
+.hobby-detail {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  color: var(--text-tertiary);
+}
+
+.hobbies-list li:hover .hobby-detail {
+  color: var(--text-inverse);
+  opacity: 1;
+}
+
 /* Skills grid layout for better organization */
 .skills-section {
   margin-top: 2rem;
@@ -199,6 +294,21 @@ h2 {
     font-size: 0.95rem;
   }
 
+  .cv-download-section {
+    margin: 1.5rem 0;
+  }
+
+  .cv-download-btn {
+    padding: 0.875rem 1.75rem;
+    font-size: 0.95rem;
+    gap: 0.65rem;
+  }
+
+  .cv-download-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
   .skills-section {
     margin-top: 1.5rem;
     padding: 1.5rem;
@@ -246,6 +356,24 @@ h2 {
   p {
     margin-bottom: 1rem;
     font-size: 0.9rem;
+  }
+
+  .cv-download-section {
+    margin: 1.25rem 0;
+  }
+
+  .cv-download-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    gap: 0.6rem;
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+
+  .cv-download-btn svg {
+    width: 16px;
+    height: 16px;
   }
 
   .skills-section {

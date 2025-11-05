@@ -1,7 +1,8 @@
-import { Injectable, computed, effect, signal } from '@angular/core';
+import { Injectable, computed, effect, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoginRequest, LoginResponse, RegisterRequest, UserDto } from '../interfaces/auth.interface';
 import { environment } from '../../environments/environment';
+import { NotificationService } from './notification.service';
 
 const TOKEN_STORAGE_KEY = 'auth.token';
 const USER_STORAGE_KEY = 'auth.user';
@@ -9,6 +10,7 @@ const USER_STORAGE_KEY = 'auth.user';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apiBaseUrl = `${environment.apiBaseUrl}/auth`;
+  private notificationService = inject(NotificationService);
 
   // Signals store
   private tokenSignal = signal<string | null>(this.loadToken());
@@ -50,6 +52,7 @@ export class AuthService {
   logout() {
     this.tokenSignal.set(null);
     this.userSignal.set(null);
+    this.notificationService.success('You have been logged out successfully');
   }
 
   private loadToken(): string | null {

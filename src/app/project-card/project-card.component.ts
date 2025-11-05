@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Project } from '../interfaces/project.interface';
 import { CtaButtonComponent } from '../cta-button/cta-button.component';
@@ -12,32 +12,15 @@ import { CtaButtonComponent } from '../cta-button/cta-button.component';
 })
 export class ProjectCardComponent {
   @Input({ required: true }) project!: Project;
-  @Input() isAdmin = false;
-  @Input() canRate = false;
+  @Input() maxDescriptionLength = 150; // Maximum characters for description
 
-  @Output() toggleDetails = new EventEmitter<Project>();
-  @Output() addRating = new EventEmitter<{ project: Project; rating: number }>();
-  @Output() resetRatings = new EventEmitter<Project>();
+  getTruncatedDescription(): string {
+    if (!this.project.description) return '';
 
-  onToggleDetails(): void {
-    this.toggleDetails.emit(this.project);
-  }
+    if (this.project.description.length <= this.maxDescriptionLength) {
+      return this.project.description;
+    }
 
-  onAddRating(rating: number): void {
-    this.addRating.emit({ project: this.project, rating });
-  }
-
-  onResetRatings(): void {
-    this.resetRatings.emit(this.project);
-  }
-
-  getStarArray(rating: number): number[] {
-    return Array.from({ length: 5 }, (_, i) => i + 1);
-  }
-
-  getRatingClass(star: number, averageRating: number): string {
-    if (averageRating >= star) return 'star-filled';
-    if (averageRating >= star - 0.5) return 'star-half';
-    return 'star-empty';
+    return this.project.description.substring(0, this.maxDescriptionLength).trim() + '...';
   }
 }

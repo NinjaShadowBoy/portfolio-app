@@ -2,9 +2,16 @@
   <header class="header">
     <!-- Navigation with hamburger for small screens -->
     <nav class="navigation" aria-label="Primary">
-      <button class="hamburger liquid-glass" aria-label="Menu" (click)="toggleMenu()">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="mobile-nav-controls">
+        <button class="hamburger liquid-glass" aria-label="Menu" (click)="toggleMenu()">
+          <span></span><span></span><span></span>
+        </button>
+        @if (isAuthenticated() && user()) {
+        <div class="mobile-login-indicator liquid-glass-subtle" title="Logged in as {{ user()!.name }}">
+          <span class="user-avatar-small">{{ user()!.name.charAt(0).toUpperCase() }}</span>
+        </div>
+        }
+      </div>
 
       <!-- Desktop navigation -->
       <ul class="desktop-nav">
@@ -12,6 +19,14 @@
         <li>
           <!-- Event binding for user interactions -->
           <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active">{{ item.label }}</a>
+        </li>
+        }
+        @if (isAuthenticated() && user()) {
+        <li class="login-status">
+          <div class="status-badge liquid-glass-subtle">
+            <span class="user-avatar">{{ user()!.name.charAt(0).toUpperCase() }}</span>
+            <span class="user-name">{{ user()!.name }}</span>
+          </div>
         </li>
         }
         <li class="auth-controls">
@@ -41,7 +56,7 @@
 
     <!-- String interpolation for dynmic data -->
     <div class="header-content">
-      <h1>{{ title }}</h1>
+      <h1>{{ title }} aka <em class="nickname">{{ nickname }}</em></h1>
       <p>{{ subtitle }}</p>
     </div>
 
@@ -51,6 +66,17 @@
     }
     <div class="sidebar" [class.open]="isMenuOpen">
       <button class="close-btn" (click)="toggleMenu()">×</button>
+      @if (isAuthenticated() && user()) {
+      <div class="mobile-login-status">
+        <div class="status-badge liquid-glass-subtle">
+          <span class="user-avatar">{{ user()!.name.charAt(0).toUpperCase() }}</span>
+          <div class="user-info">
+            <span class="user-name">{{ user()!.name }}</span>
+            <span class="user-email">{{ user()!.email }}</span>
+          </div>
+        </div>
+      </div>
+      }
       <ul class="mobile-nav">
         @for(item of navItems; track item.label) {
         <li>

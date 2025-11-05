@@ -12,16 +12,17 @@ import { SocialLinksService } from '../services/social-links.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  title: string = 'Alex Nelson AKA NinjaShadowboy';
+  title: string = 'Alex Nelson Abena';
+  nickname: string = 'NinjaShadowBoy';
   subtitle: string = 'Junior Software Engineer and Student';
   description: string =
     'I am a software engineer with a passion for building web applications and mobile applications.';
 
   navItems: { label: string; link: string }[] = [
     { label: 'Home', link: '/home' },
-    { label: 'MyWork', link: '/projects' },
-    { label: 'MySkills', link: '/about' },
-    { label: 'Get In touch', link: '/contact' },
+    { label: 'Projects', link: '/projects' },
+    { label: 'About Me', link: '/about' },
+    { label: 'Contact Me', link: '/contact' },
     // {label: 'Blog', link: '/blog'},
     // {label: 'Resume', link: '/resume'},
     // {label: 'Skills', link: '/skills'},
@@ -35,12 +36,20 @@ export class HeaderComponent {
 
   isAuthenticated = this.auth.isAuthenticated;
   isAdmin = this.auth.isAdmin;
+  user = this.auth.user;
   socialLinks = this.socialLinksService.getSocialLinks();
 
   isMenuOpen = false;
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+
+    // Prevent body scroll when menu is open
+    if (this.isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   }
 
   logout() {

@@ -8,9 +8,15 @@
   </div>
   } @else {
 
+  <!-- Projects Header -->
+  <div class="projects-header">
+    <h1>My Projects</h1>
+    <p class="project-count">I have <strong>{{ totalProjects().length }}</strong> {{ totalProjects().length === 1 ? 'project' : 'projects' }} to share with you</p>
+  </div>
+
   <!-- Advanced Filters -->
   <div class="filters-section">
-    <h3>Filter Projects</h3>
+    <h3>Filter Projects ({{ projects().length }})</h3>
     <div class="filters-grid">
       <div class="filter-group">
         <label for="search">Search Projects:</label>
@@ -58,13 +64,7 @@
   <!-- Projects Grid -->
   <div class="projects-grid">
     @for (project of projects(); track project.id) {
-    <app-project-card
-      [project]="project"
-      [isAdmin]="isAdmin()"
-      [canRate]="canRate(project)"
-      (toggleDetails)="toggleDetails($event)"
-      (addRating)="addRating($event.project, $event.rating)"
-      (resetRatings)="resetProjectRatings($event)">
+    <app-project-card [project]="project">
     </app-project-card>
     } @empty {
     <div class="no-results">
