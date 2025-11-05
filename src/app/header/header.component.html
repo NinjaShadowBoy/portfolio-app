@@ -8,7 +8,7 @@
         </button>
         @if (isAuthenticated() && user()) {
         <div class="mobile-login-indicator liquid-glass-subtle" title="Logged in as {{ user()!.name }}">
-          <span class="user-avatar-small">{{ user()!.name.charAt(0).toUpperCase() }}</span>
+          <app-user-avatar [userName]="user()!.name" size="small"></app-user-avatar>
         </div>
         }
       </div>
@@ -24,7 +24,7 @@
         @if (isAuthenticated() && user()) {
         <li class="login-status">
           <div class="status-badge liquid-glass-subtle">
-            <span class="user-avatar">{{ user()!.name.charAt(0).toUpperCase() }}</span>
+            <app-user-avatar [userName]="user()!.name" size="medium"></app-user-avatar>
             <span class="user-name">{{ user()!.name }}</span>
           </div>
         </li>
@@ -69,7 +69,7 @@
       @if (isAuthenticated() && user()) {
       <div class="mobile-login-status">
         <div class="status-badge liquid-glass-subtle">
-          <span class="user-avatar">{{ user()!.name.charAt(0).toUpperCase() }}</span>
+          <app-user-avatar [userName]="user()!.name" size="large"></app-user-avatar>
           <div class="user-info">
             <span class="user-name">{{ user()!.name }}</span>
             <span class="user-email">{{ user()!.email }}</span>

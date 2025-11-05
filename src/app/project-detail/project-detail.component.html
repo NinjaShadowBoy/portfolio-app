@@ -138,12 +138,18 @@
         @for (rating of ratings; track rating.id) {
           <div class="rating-item">
             <div class="rating-header">
-              <div class="stars-display">
-                @for (star of getStarArray(); track star) {
-                  <span class="star small" [class.filled]="star <= rating.rating">★</span>
-                }
+              <div class="rating-user-info">
+                <app-user-avatar [userName]="getUserName(rating.userId)" size="small"></app-user-avatar>
+                <span class="rating-user-name">{{ getUserName(rating.userId) }}</span>
               </div>
-              <span class="rating-date">{{ rating.createdAt | date:'MMM dd, yyyy' }}</span>
+              <div class="rating-meta">
+                <div class="stars-display">
+                  @for (star of getStarArray(); track star) {
+                    <span class="star small" [class.filled]="star <= rating.rating">★</span>
+                  }
+                </div>
+                <span class="rating-date">{{ rating.createdAt | date:'MMM dd, yyyy' }}</span>
+              </div>
             </div>
             @if (rating.comment) {
               <p class="rating-comment">{{ rating.comment }}</p>

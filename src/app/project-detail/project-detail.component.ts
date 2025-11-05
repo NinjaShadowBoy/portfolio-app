@@ -8,11 +8,12 @@ import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 import { Project } from '../interfaces/project.interface';
 import { environment } from '../../environments/environment';
+import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, UserAvatarComponent],
   templateUrl: './project-detail.component.html',
   styleUrls: ['./project-detail.component.css'],
 })
@@ -197,5 +198,19 @@ export class ProjectDetailComponent implements OnInit {
   isStarFilled(star: number): boolean {
     const displayRating = this.hoveredStar || this.selectedRating;
     return star <= displayRating;
+  }
+
+  /**
+   * Get user name from user ID for display in ratings
+   * For now, returns "User" as a placeholder until backend provides user info
+   */
+  getUserName(userId: number): string {
+    // TODO: Fetch actual user name from backend when available
+    // For now, check if it's the current user
+    const currentUser = this.authService.user();
+    if (currentUser && currentUser.id === userId) {
+      return currentUser.name;
+    }
+    return `User ${userId}`;
   }
 }

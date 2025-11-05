@@ -1,0 +1,31 @@
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--gradient-accent);
+  color: var(--text-inverse);
+  font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-accent);
+  cursor: default;
+}
+
+/* Size variations */
+.user-avatar.size-small {
+  width: 24px;
+  height: 24px;
+  font-size: 0.75rem;
+}
+
+.user-avatar.size-medium {
+  width: 32px;
+  height: 32px;
+  font-size: 0.9rem;
+}
+
+.user-avatar.size-large {
+  width: 36px;
+  height: 36px;
+  font-size: 1rem;
+}
