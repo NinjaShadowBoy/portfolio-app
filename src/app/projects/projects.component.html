@@ -15,8 +15,10 @@
   </div>
 
   <!-- Advanced Filters -->
-  <div class="filters-section">
-    <h3>Filter Projects ({{ projects().length }})</h3>
+  <details class="filters-section">
+    <summary>
+      <h3>▼ Filter Projects ({{ projects().length }}) - Click to expand/collapse</h3>
+    </summary>
     <div class="filters-grid">
       <div class="filter-group">
         <label for="search">Search Projects:</label>
@@ -59,7 +61,7 @@
         </button>
       </div>
     </div>
-  </div>
+  </details>
 
   <!-- Projects Grid -->
   <div class="projects-grid">
