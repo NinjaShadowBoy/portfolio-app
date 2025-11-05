@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectDataService } from '../services/project-data.service';
-import { FeaturedCardComponent } from '../featured-card/featured-card.component';
+import { ProjectCardComponent } from '../project-card/project-card.component';
 import { LazyLoadDirective } from '../directives/lazy-load.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FeaturedCardComponent, LazyLoadDirective],
+  imports: [CommonModule, ProjectCardComponent, LazyLoadDirective],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })

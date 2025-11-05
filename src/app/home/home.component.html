@@ -151,7 +151,7 @@
   @if (featuredProjects().length > 0) {
   <div class="projects-grid">
     @for (project of featuredProjects(); track project.id) {
-    <app-featured-card [project]="project"></app-featured-card>
+    <app-project-card [project]="project"></app-project-card>
     }
   </div>
   } @else {
