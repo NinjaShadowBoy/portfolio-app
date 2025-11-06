@@ -1038,7 +1038,7 @@ img {
   animation: bounce 2s infinite;
 }
 
-/* Responsive Design Enhancements */
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -1047,6 +1047,7 @@ img {
   }
 }
 
+/* System preference dark mode - only when no explicit theme is set */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     /* Auto dark mode support */

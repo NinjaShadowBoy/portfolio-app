@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { SocialLinksService } from '../services/social-links.service';
+import { ThemeService } from '../services/theme.service';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 
 @Component({
@@ -34,11 +35,13 @@ export class HeaderComponent {
 
   private auth = inject(AuthService);
   private socialLinksService = inject(SocialLinksService);
+  private themeService = inject(ThemeService);
 
   isAuthenticated = this.auth.isAuthenticated;
   isAdmin = this.auth.isAdmin;
   user = this.auth.user;
   socialLinks = this.socialLinksService.getSocialLinks();
+  currentTheme = this.themeService.currentTheme;
 
   isMenuOpen = false;
 
@@ -55,5 +58,9 @@ export class HeaderComponent {
 
   logout() {
     this.auth.logout();
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
   }
 }

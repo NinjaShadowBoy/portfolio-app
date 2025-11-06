@@ -21,6 +21,18 @@
           <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active">{{ item.label }}</a>
         </li>
         }
+        <li class="theme-toggle-item">
+          <button class="theme-toggle liquid-glass"
+                  (click)="toggleTheme()"
+                  [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+                  title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
+            @if (currentTheme() === 'dark') {
+              <span class="theme-icon">☀️</span>
+            } @else {
+              <span class="theme-icon">🌙</span>
+            }
+          </button>
+        </li>
         @if (isAuthenticated() && user()) {
         <li class="login-status">
           <div class="status-badge liquid-glass-subtle">
@@ -78,6 +90,20 @@
       </div>
       }
       <ul class="mobile-nav">
+        <li class="theme-toggle-item mobile-theme">
+          <button class="theme-toggle liquid-glass"
+                  (click)="toggleTheme()"
+                  [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+                  title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
+            @if (currentTheme() === 'dark') {
+              <span class="theme-icon">☀️</span>
+              <span class="theme-label">Light Mode</span>
+            } @else {
+              <span class="theme-icon">🌙</span>
+              <span class="theme-label">Dark Mode</span>
+            }
+          </button>
+        </li>
         @for(item of navItems; track item.label) {
         <li>
           <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active" (click)="toggleMenu()">{{ item.label

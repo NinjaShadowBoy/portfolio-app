@@ -16,9 +16,8 @@
   z-index: 2;
 }
 
-
 @media (prefers-color-scheme: dark) {
-  .hero-section:not([data-theme]) {
+  html:not([data-theme]) .hero-section {
     background: linear-gradient(#3572ef00, #1e4189 90%);
   }
 }
@@ -144,7 +143,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .my-tools-section:not([data-theme]) {
+  html:not([data-theme]) .my-tools-section {
     background: linear-gradient(to bottom, #0a0f2e 0%, var(--surface-base) 50%);
   }
 }
@@ -204,10 +203,10 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .tools-banner-container::before {
+  html:not([data-theme]) .tools-banner-container::before {
     background: linear-gradient(to right, #0a0f2e, transparent);
   }
-  .tools-banner-container::after {
+  html:not([data-theme]) .tools-banner-container::after {
     background: linear-gradient(to left, #0a0f2e, transparent);
   }
 }

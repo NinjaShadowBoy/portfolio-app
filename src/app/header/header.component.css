@@ -548,3 +548,58 @@
     max-width: 100px;
   }
 }
+
+/* Theme Toggle Styles */
+.theme-toggle-item {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-inverse);
+  padding: 0.6rem 1rem;
+  border-radius: 200px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+.theme-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.theme-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: none; /* Hidden by default, shown in mobile */
+}
+
+/* Mobile theme toggle */
+.mobile-theme .theme-toggle {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 1rem 1.5rem;
+}
+
+.mobile-theme .theme-label {
+  display: inline-block;
+}
