@@ -587,19 +587,11 @@
   line-height: 1;
 }
 
-.theme-label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  display: none; /* Hidden by default, shown in mobile */
-}
-
-/* Mobile theme toggle */
+/* Mobile theme toggle - subtle icon-only style */
 .mobile-theme .theme-toggle {
-  width: 100%;
-  justify-content: flex-start;
-  padding: 1rem 1.5rem;
-}
-
-.mobile-theme .theme-label {
-  display: inline-block;
+  width: auto;
+  justify-content: center;
+  padding: 0.6rem 1rem;
+  align-self: flex-start;
+  margin-left: 0.5rem;
 }
