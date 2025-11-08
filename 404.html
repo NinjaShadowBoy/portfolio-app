@@ -8,6 +8,18 @@
   <meta name="description" content="Alex Nelson ABENA - Full Stack Developer Portfolio">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
+  <!-- GitHub Pages SPA routing fix -->
+  <script>
+    // Redirect handler for GitHub Pages SPA routing
+    (function() {
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect != location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
+
   <!-- DNS Prefetch for external resources -->
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
@@ -15,8 +27,8 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
   <!-- Preload critical fonts with font-display: swap -->
-  <link rel="preload" href="/assets/fonts/PRODUCTSANS-REGULAR.TTF" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="/assets/fonts/PRODUCTSANS-BOLD.TTF" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/fonts/PRODUCTSANS-REGULAR.TTF" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/fonts/PRODUCTSANS-BOLD.TTF" as="font" type="font/ttf" crossorigin>
 
   <!-- Preload LCP image (hero image) -->
   <link rel="preload" href="assets/images/2223i141.jpg" as="image" fetchpriority="high">
