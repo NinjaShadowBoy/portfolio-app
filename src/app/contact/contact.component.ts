@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { NotificationService } from '../services/notification.service';
+import { ContactService } from '../services/contact.service';
 import { CanComponentDeactivate } from '../guards/auth.guard';
 import { Observable } from 'rxjs';
 
@@ -19,6 +20,9 @@ import { Observable } from 'rxjs';
 })
 export class ContactComponent implements CanComponentDeactivate {
   private notificationService = inject(NotificationService);
+  private contactService = inject(ContactService);
+
+  isSubmitting = false;
 
   contactForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -35,14 +39,39 @@ export class ContactComponent implements CanComponentDeactivate {
       return;
     }
 
-    console.log('Form Submitted!', this.contactForm.value);
+    if (this.isSubmitting) {
+      return;
+    }
 
-    // Inform user that the contact form is not yet functional
-    this.notificationService.info(
-      'Contact form is currently under development. Please reach out via email or social media for now.',
-      7000 // Display for 7 seconds
-    );
-    this.contactForm.reset();
+    this.isSubmitting = true;
+    const formValue = this.contactForm.value;
+
+    this.contactService.submitContactForm({
+      name: formValue.name || '',
+      email: formValue.email || '',
+      message: formValue.message || ''
+    }).subscribe({
+      next: (response) => {
+        this.isSubmitting = false;
+        if (response.success) {
+          this.notificationService.success(
+            response.message || 'Thank you for your message! I\'ll get back to you soon.'
+          );
+          this.contactForm.reset();
+        } else {
+          this.notificationService.error(
+            response.message || 'Failed to submit contact form. Please try again.'
+          );
+        }
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        console.error('Error submitting contact form:', error);
+        this.notificationService.error(
+          'Failed to send message. Please try again later or reach out via email.'
+        );
+      }
+    });
   }
 
   canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean =

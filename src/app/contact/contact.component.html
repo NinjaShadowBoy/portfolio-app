@@ -35,6 +35,8 @@
       }
       }
     </div>
-    <button [disabled]="contactForm.invalid" type="submit">Send Message</button>
+    <button [disabled]="contactForm.invalid || isSubmitting" type="submit">
+      {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+    </button>
   </form>
 </div>
