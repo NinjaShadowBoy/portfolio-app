@@ -58,7 +58,7 @@ img {
    ============================================ */
 @font-face {
   font-family: 'Product Sans';
-  src: url('/assets/fonts/PRODUCTSANS-REGULAR.TTF') format('truetype');
+  src: url('assets/fonts/PRODUCTSANS-REGULAR.TTF') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -66,7 +66,7 @@ img {
 
 @font-face {
   font-family: 'Product Sans';
-  src: url('/assets/fonts/PRODUCTSANS-BOLD.TTF') format('truetype');
+  src: url('assets/fonts/PRODUCTSANS-BOLD.TTF') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -74,7 +74,7 @@ img {
 
 @font-face {
   font-family: 'Product Sans';
-  src: url('/assets/fonts/PRODUCTSANS-ITALIC.TTF') format('truetype');
+  src: url('assets/fonts/PRODUCTSANS-ITALIC.TTF') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -82,7 +82,7 @@ img {
 
 @font-face {
   font-family: 'Product Sans';
-  src: url('/assets/fonts/PRODUCTSANS-BOLDITALIC.TTF') format('truetype');
+  src: url('assets/fonts/PRODUCTSANS-BOLDITALIC.TTF') format('truetype');
   font-weight: 700;
   font-style: italic;
   font-display: swap;

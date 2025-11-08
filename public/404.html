@@ -3,25 +3,30 @@
   <head>
     <meta charset="utf-8">
     <title>Redirecting...</title>
-    <meta http-equiv="refresh" content="0; URL='./index.html'">
     <script>
       // GitHub Pages SPA redirect workaround
       // See: https://github.com/rafgraph/spa-github-pages
       (function() {
+        var pathSegmentsToKeep = 1; // Keep /portfolio-app
+
         var l = window.location;
-        var repoBase = '/portfolio-app/';
-        if (l.pathname.startsWith(repoBase)) {
-          var relative = l.pathname.substring(repoBase.length);
-          var newUrl = repoBase + 'index.html?/' + relative + l.search + l.hash;
-          window.location.replace(newUrl);
-        } else {
-          // Fallback to index
-          window.location.replace('index.html');
-        }
+        var repoBase = '/portfolio-app';
+
+        // Store the path in sessionStorage for index.html to pick up
+        sessionStorage.redirect = l.href;
+
+        // Replace current URL with index.html to avoid showing 404 in browser history
+        l.replace(
+          l.protocol + '//' + l.host + repoBase + '/' +
+          (l.pathname.split('/').slice(0, pathSegmentsToKeep + 1).join('/') || '') +
+          '/?/' + l.pathname.slice(repoBase.length + 1).replace(/^\//, '') +
+          (l.search || '') +
+          (l.hash || '')
+        );
       })();
     </script>
   </head>
   <body>
-    Redirecting to the app...
+    <!-- GitHub Pages redirect handler for SPA -->
   </body>
 </html>
