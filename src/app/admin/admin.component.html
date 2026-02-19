@@ -292,7 +292,7 @@
               } @else {
                 @for (photoUrl of selectedProjectForPhotos()!.photoUrls; track photoUrl) {
                 <div class="photo-item">
-                  <img [src]="getApiBaseUrl() + photoUrl" [alt]="'Project photo'" />
+                  <img [src]="photoUrl" [alt]="'Project photo'" />
                   <div class="no-delete-info">
                     <small>Photo ID not available - refresh page to delete</small>
                   </div>

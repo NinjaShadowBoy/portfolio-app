@@ -31,7 +31,7 @@
     <div class="gallery-grid">
       @for (photoUrl of project.photoUrls; track photoUrl) {
       <div class="gallery-item">
-        <img [src]="getPhotoUrl(photoUrl)" [alt]="project.name + ' screenshot'" />
+        <img [src]="photoUrl" [alt]="project.name + ' screenshot'" />
       </div>
       }
     </div>

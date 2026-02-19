@@ -187,10 +187,6 @@ export class ProjectDetailComponent implements OnInit {
     });
   }
 
-  getPhotoUrl(photoUrl: string): string {
-    return this.apiBaseUrl + photoUrl;
-  }
-
   getStarArray(): number[] {
     return [1, 2, 3, 4, 5];
   }
