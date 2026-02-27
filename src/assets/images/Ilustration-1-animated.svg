@@ -1,0 +1,42 @@
+<svg width="272" height="739" viewBox="0 0 272 739" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Decorative path (static) -->
+  <path d="M113.5 691.5C113.5 691.5 6.47187 607.636 12 535C18.6741 447.306 179.271 505.417 221 428C241.925 389.179 241.234 360.004 234 316.5C221.091 238.864 63.1362 268.083 43 192C29.6472 141.548 43.3674 103.229 76 62.5C114.272 14.733 221 3 221 3" stroke="#1E428A" stroke-width="6"/>
+
+  <!-- Circle — moves left/right + up/down + rotates clockwise -->
+  <g>
+    <!-- Horizontal drift -->
+    <animateTransform attributeName="transform" type="translate"
+      values="0 0; 40 0; 0 0; -40 0; 0 0"
+      dur="5s" repeatCount="indefinite" additive="sum"/>
+    <!-- Vertical drift -->
+    <animateTransform attributeName="transform" type="translate"
+      values="0 0; 0 30; 0 0; 0 -30; 0 0"
+      dur="3.5s" repeatCount="indefinite" additive="sum"/>
+    <circle cx="85" cy="345" r="85" fill="#A7E6FF">
+      <animateTransform attributeName="transform" type="rotate"
+        from="0 85 345" to="360 85 345"
+        dur="6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Triangle (center ~142.5, 703.9) — rotates counter-clockwise -->
+  <path d="M125 675L132.184 697.111H155.434L136.625 710.777L143.809 732.889L125 719.223L106.191 732.889L113.375 710.777L94.5662 697.111H117.816L125 675Z" fill="#FFD70D">
+    <animateTransform attributeName="transform" type="rotate"
+      from="0 125 703.944" to="-360 125 703.944"
+      dur="6s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Square (rotated rect — center approx 195.01, 120.39) — rotates clockwise -->
+  <rect x="122.51" y="47.8858" width="145" height="145" transform="rotate(19.5932 122.51 47.8858)" fill="#2F66D6">
+    <animateTransform attributeName="transform" type="rotate"
+      from="19.5932 195.01 120.386" to="379.5932 195.01 120.386"
+      dur="8s" repeatCount="indefinite" additive="replace"/>
+  </rect>
+
+  <!-- Triangle on path (center ~142, 591.7) — rotates counter-clockwise -->
+  <path d="M61.6609 526.918L223.185 506.475L160.128 656.581L61.6609 526.918Z" fill="#244EA3">
+    <animateTransform attributeName="transform" type="rotate"
+      from="0 148.349 563.325" to="-360 148.349 563.325"
+      dur="8s" repeatCount="indefinite"/>
+  </path>
+</svg>
