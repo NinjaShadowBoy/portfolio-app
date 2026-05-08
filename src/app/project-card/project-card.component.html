@@ -1,14 +1,14 @@
-<article class="project-card" [class.featured]="project.featured">
-  @if (project.featured) {
+<article class="project-card" [class.featured]="project().featured">
+  @if (project().featured) {
   <div class="featured-badge">Featured</div>
   }
 
   <header class="project-header">
-    <h3>{{ project.name }}</h3>
+    <h3>{{ project().name }}</h3>
     <div class="project-meta">
-      <span class="created-date">Created: {{ project.createdAt | date:'MMM yyyy' }}</span>
-      @if (project.updatedAt.toString() !== project.createdAt.toString()) {
-      <span class="updated-date">Updated: {{ project.updatedAt | date:'MMM yyyy' }}</span>
+      <span class="created-date">Created: {{ project().createdAt | date:'MMM yyyy' }}</span>
+      @if (project().updatedAt.toString() !== project().createdAt.toString()) {
+      <span class="updated-date">Updated: {{ project().updatedAt | date:'MMM yyyy' }}</span>
       }
     </div>
   </header>
@@ -19,7 +19,7 @@
     <div class="technologies">
       <strong>Technologies:</strong>
       <div class="tech-tags">
-        @for (tech of project.technologies; track tech) {
+        @for (tech of project().technologies; track tech) {
         <span class="tech-tag">{{ tech }}</span>
         }
       </div>
@@ -28,11 +28,11 @@
     <div class="project-actions">
       <app-cta-button
         text="Details"
-        [routerLink]="['/projects', project.id]"
+        [routerLink]="['/projects', project().id]"
         icon="search"
         variant="outline">
       </app-cta-button>
-      <a [href]="project.githubLink" target="_blank" rel="noopener noreferrer" class="github-link" aria-label="View on GitHub">
+      <a [href]="project().githubLink" target="_blank" rel="noopener noreferrer" class="github-link" aria-label="View on GitHub">
         <img src="assets/icons/github.svg" alt="GitHub" width="20" height="20" class="github-icon" />
       </a>
     </div>

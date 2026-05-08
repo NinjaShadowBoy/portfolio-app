@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,12 +9,12 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./user-avatar.component.css'],
 })
 export class UserAvatarComponent {
-  @Input() userName: string = '';
-  @Input() size: 'small' | 'medium' | 'large' = 'medium';
-  @Input() title: string = '';
+  userName = input<string>('');
+  size = input<'small' | 'medium' | 'large'>('medium');
+  title = input<string>('');
 
   get initials(): string {
-    if (!this.userName) return '';
-    return this.userName.charAt(0).toUpperCase();
+    if (!this.userName()) return '';
+    return this.userName().charAt(0).toUpperCase();
   }
 }

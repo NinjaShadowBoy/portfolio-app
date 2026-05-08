@@ -10,10 +10,12 @@
           Building the future, one line of code at a time.
         </p>
         <div class="social-links">
-          <a *ngFor="let social of socialLinks" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
-            rel="noopener noreferrer" class="social-link interactive">
-            <img [src]="social.icon" [alt]="social.name" width="24" height="24" />
-          </a>
+          @for (social of socialLinks; track social.name) {
+            <a [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
+              rel="noopener noreferrer" class="social-link interactive">
+              <img [src]="social.icon" [alt]="social.name" width="24" height="24" />
+            </a>
+          }
         </div>
       </div>
 
@@ -21,10 +23,12 @@
       <div class="footer-section">
         <h4 class="section-title">Quick Links</h4>
         <nav class="footer-nav">
-          <a *ngFor="let link of quickLinks" [routerLink]="link.route" routerLinkActive="active"
-            class="footer-link interactive">
-            {{ link.name }}
-          </a>
+          @for (link of quickLinks; track link.name) {
+            <a [routerLink]="link.route" routerLinkActive="active"
+              class="footer-link interactive">
+              {{ link.name }}
+            </a>
+          }
         </nav>
       </div>
 

@@ -54,26 +54,29 @@
 
         <!-- Traditional Email/Password Form -->
         <form class="auth-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate [class.submitting]="loading()">
-            <div class="form-group" *ngIf="isRegister()">
-                <label for="name">Full name</label>
-                <input id="name" type="text" formControlName="name" class="input-field" placeholder="Jane Doe" />
-            </div>
+            @if (isRegister()) {
+                <div class="form-group">
+                    <label for="name">Full name</label>
+                    <input id="name" type="text" formControlName="name" class="input-field" placeholder="Jane Doe" />
+                </div>
+            }
 
             <div class="form-group">
                 <label for="email">Email</label>
                 <input id="email" type="email" formControlName="email" class="input-field"
                     placeholder="you@example.com" />
-                <div class="error" *ngIf="form.controls.email.invalid && (form.controls.email.dirty || submitted())">
-                    Valid email required</div>
+                @if (form.controls.email.invalid && (form.controls.email.dirty || submitted())) {
+                    <div class="error">Valid email required</div>
+                }
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
                 <input id="password" type="password" formControlName="password" class="input-field"
                     placeholder="••••••••" />
-                <div class="error"
-                    *ngIf="form.controls.password.invalid && (form.controls.password.dirty || submitted())">Password is
-                    required</div>
+                @if (form.controls.password.invalid && (form.controls.password.dirty || submitted())) {
+                    <div class="error">Password is required</div>
+                }
             </div>
 
             <button type="submit" [disabled]="form.invalid || loading()">

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Project } from '../interfaces/project.interface';
 import { CtaButtonComponent } from '../cta-button/cta-button.component';
@@ -11,16 +11,19 @@ import { CtaButtonComponent } from '../cta-button/cta-button.component';
   styleUrls: ['./project-card.component.css'],
 })
 export class ProjectCardComponent {
-  @Input({ required: true }) project!: Project;
-  @Input() maxDescriptionLength = 150; // Maximum characters for description
+  project = input.required<Project>();
+  maxDescriptionLength = input<number>(150); // Maximum characters for description
 
   getTruncatedDescription(): string {
-    if (!this.project.description) return '';
+    const desc = this.project().description;
+    const maxLength = this.maxDescriptionLength();
 
-    if (this.project.description.length <= this.maxDescriptionLength) {
-      return this.project.description;
+    if (!desc) return '';
+
+    if (desc.length <= maxLength) {
+      return desc;
     }
 
-    return this.project.description.substring(0, this.maxDescriptionLength).trim() + '...';
+    return desc.substring(0, maxLength).trim() + '...';
   }
 }

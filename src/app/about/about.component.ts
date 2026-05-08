@@ -19,12 +19,12 @@ export class AboutComponent {
     { name: 'Teamwork', detail: 'Soft Skill' }
   ];
 
-  cvPath = 'assets/docs/CV-Abena_Alex_Nelson_Ryan-en.pdf';
+  cvPath = 'assets/docs/cv-en.pdf';
 
   downloadCV(): void {
     const link = document.createElement('a');
     link.href = this.cvPath;
-    link.download = 'CV-Abena_Alex_Nelson_Ryan.pdf';
+    link.download = 'cv-en.pdf';
     link.click();
   }
 }

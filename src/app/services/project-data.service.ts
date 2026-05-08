@@ -1,6 +1,7 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, delay } from 'rxjs/operators';
 import {
   Project,
   ProjectFilters,
@@ -17,9 +18,14 @@ export class ProjectDataService {
   private ratingService = inject(RatingService);
   private apiUrl = `${environment.apiBaseUrl}/projects`;
 
-  // Angular 20 Signals for reactive state management
-  private projectsSignal = signal<Project[]>([]);
-  private loadingSignal = signal<boolean>(true);
+  // Angular 20 rxResource for declarative async data fetching
+  private projectsResource = rxResource({
+    loader: () => this.http.get<Project[]>(this.apiUrl).pipe(
+      map(projects => projects.map(p => ({ ...p, isExpanded: false }))),
+      delay(300) // Ensure loading spinner shows for at least 300ms to avoid flicker
+    )
+  });
+
   private filtersSignal = signal<ProjectFilters>({
     searchTerm: '',
     technology: '',
@@ -28,8 +34,8 @@ export class ProjectDataService {
   });
 
   // Computed signals for derived state
-  public readonly projects = this.projectsSignal.asReadonly();
-  public readonly isLoading = this.loadingSignal.asReadonly();
+  public readonly projects = computed(() => this.projectsResource.value() ?? []);
+  public readonly isLoading = this.projectsResource.isLoading;
   public readonly filters = this.filtersSignal.asReadonly();
   public readonly filteredProjects = computed(() => this.applyFilters());
   public readonly uniqueTechnologies = computed(() =>
@@ -40,44 +46,12 @@ export class ProjectDataService {
   );
 
   constructor() {
-    this.loadInitialData();
+    // Initial data is automatically loaded by rxResource!
   }
 
-  private loadInitialData(): void {
-    this.loadingSignal.set(true);
-    const startTime = Date.now();
-
-    this.http
-      .get<Project[]>(this.apiUrl)
-      .subscribe({
-        next: (projects) => {
-          // Add isExpanded property for UI state
-          const projectsWithUI = projects.map((p) => ({
-            ...p,
-            isExpanded: false,
-          }));
-          this.projectsSignal.set(projectsWithUI);
-
-          // Ensure loading spinner shows for at least 300ms
-          const elapsed = Date.now() - startTime;
-          const minDelay = Math.max(0, 300 - elapsed);
-
-          setTimeout(() => {
-            this.loadingSignal.set(false);
-          }, minDelay);
-        },
-        error: (err) => {
-          console.error('Error loading projects from server:', err);
-
-          // Ensure loading spinner shows for at least 300ms even on error
-          const elapsed = Date.now() - startTime;
-          const minDelay = Math.max(0, 300 - elapsed);
-
-          setTimeout(() => {
-            this.loadingSignal.set(false);
-          }, minDelay);
-        },
-      });
+  // Refreshes the projects manually
+  refreshProjects() {
+    this.projectsResource.reload();
   }
 
   // Public API Methods
@@ -151,53 +125,15 @@ export class ProjectDataService {
   }
 
   /**
-   * Refresh projects from server
-   */
-  refreshProjects(): void {
-    this.loadingSignal.set(true);
-    const startTime = Date.now();
-
-    this.http
-      .get<Project[]>(this.apiUrl)
-      .subscribe({
-        next: (projects) => {
-          const projectsWithUI = projects.map((p) => ({
-            ...p,
-            isExpanded: p.isExpanded ?? false,
-          }));
-          this.projectsSignal.set(projectsWithUI);
-
-          // Ensure loading spinner shows for at least 300ms
-          const elapsed = Date.now() - startTime;
-          const minDelay = Math.max(0, 300 - elapsed);
-
-          setTimeout(() => {
-            this.loadingSignal.set(false);
-          }, minDelay);
-        },
-        error: (err) => {
-          console.error('Error refreshing projects:', err);
-
-          // Ensure loading spinner shows for at least 300ms even on error
-          const elapsed = Date.now() - startTime;
-          const minDelay = Math.max(0, 300 - elapsed);
-
-          setTimeout(() => {
-            this.loadingSignal.set(false);
-          }, minDelay);
-        },
-      });
-  }
-
-  /**
    * Toggle project expanded state (UI only)
    */
   toggleProjectExpanded(projectId: number): void {
-    const projects = this.projects();
-    const updatedProjects = projects.map((p) =>
-      p.id === projectId ? { ...p, isExpanded: !p.isExpanded } : p
-    );
-    this.projectsSignal.set(updatedProjects);
+    this.projectsResource.update((projects) => {
+      const current = projects ?? [];
+      return current.map((p) =>
+        p.id === projectId ? { ...p, isExpanded: !p.isExpanded } : p
+      );
+    });
   }
 
   /**
