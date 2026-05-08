@@ -20,16 +20,16 @@ export class SocialLinksService {
       ariaLabel: 'Visit LinkedIn profile',
     },
     {
-      name: 'Facebook',
-      url: 'https://facebook.com',
-      icon: 'assets/images/Facebook Circled.png',
-      ariaLabel: 'Visit Facebook profile',
-    },
-    {
       name: 'GitHub',
       url: 'https://github.com/NinjaShadowBoy/NinjaShadowBoy',
       icon: 'assets/images/GitHub.png',
       ariaLabel: 'Visit GitHub profile',
+    },
+    {
+      name: 'WhatsApp',
+      url: 'https://wa.me/237656246826',
+      icon: 'assets/images/WhatsApp.svg',
+      ariaLabel: 'Chat on WhatsApp',
     },
   ];
 

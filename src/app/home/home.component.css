@@ -122,8 +122,10 @@
 
 .hero-illustration {
   /* width: 100%; */
-  max-width: 300px;
-  height: 130%;
+  max-width: 1000px;
+  height: 120%;
+  margin-left: -100px;
+  max-height: 980px;
   display: block;
   position: relative;
   z-index: 3;

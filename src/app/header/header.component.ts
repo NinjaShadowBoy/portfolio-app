@@ -44,6 +44,14 @@ export class HeaderComponent {
   currentTheme = this.themeService.currentTheme;
 
   isMenuOpen = false;
+  cvPath = 'assets/docs/cv-en.pdf';
+
+  downloadCV(): void {
+    const link = document.createElement('a');
+    link.href = this.cvPath;
+    link.download = 'cv-en.pdf';
+    link.click();
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;

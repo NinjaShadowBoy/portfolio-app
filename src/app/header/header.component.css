@@ -587,8 +587,40 @@
   line-height: 1;
 }
 
+/* CV Download Styles */
+.cv-download-item {
+  display: flex;
+  align-items: center;
+}
+
+.header-cv-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-inverse);
+  padding: 0.6rem 1rem;
+  border-radius: 200px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.header-cv-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.header-cv-btn:active {
+  transform: translateY(0);
+}
+
 /* Mobile theme toggle - subtle icon-only style */
-.mobile-theme .theme-toggle {
+.mobile-theme .theme-toggle,
+.mobile-theme .header-cv-btn {
   width: auto;
   justify-content: center;
   padding: 0.6rem 1rem;
