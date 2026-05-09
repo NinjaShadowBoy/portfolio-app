@@ -3,6 +3,13 @@
   <div class="featured-badge">Featured</div>
   }
 
+  <!-- Project Carousel -->
+  @if (project().photoUrls && project().photoUrls.length > 0) {
+  <div class="project-carousel-wrapper">
+    <app-carousel [photoUrls]="project().photoUrls" [projectName]="project().name"></app-carousel>
+  </div>
+  }
+
   <header class="project-header">
     <h3>{{ project().name }}</h3>
     <div class="project-meta">

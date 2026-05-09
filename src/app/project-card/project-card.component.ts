@@ -2,11 +2,12 @@ import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Project } from '../interfaces/project.interface';
 import { CtaButtonComponent } from '../cta-button/cta-button.component';
+import { CarouselComponent } from '../carousel/carousel.component';
 
 @Component({
   selector: 'app-project-card',
   standalone: true,
-  imports: [CommonModule, CtaButtonComponent],
+  imports: [CommonModule, CtaButtonComponent, CarouselComponent],
   templateUrl: './project-card.component.html',
   styleUrls: ['./project-card.component.css'],
 })

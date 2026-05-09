@@ -55,6 +55,24 @@
   z-index: 10;
 }
 
+.project-carousel-wrapper {
+  padding: 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.project-carousel-wrapper ::ng-deep .carousel-container {
+  gap: 1rem;
+}
+
+.project-carousel-wrapper ::ng-deep .carousel-main {
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
 .project-header {
   padding: 1.25rem;
   padding-top: 1.25rem;
