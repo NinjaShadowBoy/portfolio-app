@@ -39,6 +39,9 @@ export class ProjectDetailComponent implements OnInit {
   isAuthenticated: boolean = false;
   isSubmitting: boolean = false;
 
+  // Carousel state
+  currentImageIndex: number = 0;
+
   constructor() {
     this.route.params.subscribe((params) => {
       this.project = this.projectService.getProject(params['id']);
@@ -208,5 +211,24 @@ export class ProjectDetailComponent implements OnInit {
       return currentUser.name;
     }
     return `User ${userId}`;
+  }
+
+  // Carousel methods
+  nextImage(): void {
+    if (this.project?.photoUrls && this.project.photoUrls.length > 0) {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.project.photoUrls.length;
+    }
+  }
+
+  previousImage(): void {
+    if (this.project?.photoUrls && this.project.photoUrls.length > 0) {
+      this.currentImageIndex = (this.currentImageIndex - 1 + this.project.photoUrls.length) % this.project.photoUrls.length;
+    }
+  }
+
+  goToImage(index: number): void {
+    if (this.project?.photoUrls && index >= 0 && index < this.project.photoUrls.length) {
+      this.currentImageIndex = index;
+    }
   }
 }

@@ -28,11 +28,48 @@
   @if (project.photoUrls && project.photoUrls.length > 0) {
   <div class="gallery">
     <h2>Project Screenshots</h2>
-    <div class="gallery-grid">
-      @for (photoUrl of project.photoUrls; track photoUrl) {
-      <div class="gallery-item">
-        <img [src]="photoUrl" [alt]="project.name + ' screenshot'" />
+    <div class="carousel-container">
+      <div class="carousel-main">
+        <img 
+          [src]="project.photoUrls[currentImageIndex]" 
+          [alt]="project.name + ' screenshot ' + (currentImageIndex + 1)"
+          class="carousel-image" />
       </div>
+      
+      @if (project.photoUrls.length > 1) {
+        <button 
+          type="button"
+          class="carousel-button carousel-button-prev" 
+          (click)="previousImage()"
+          [attr.aria-label]="'Previous image'"
+          [disabled]="project.photoUrls.length === 0">
+          ❮
+        </button>
+        <button 
+          type="button"
+          class="carousel-button carousel-button-next" 
+          (click)="nextImage()"
+          [attr.aria-label]="'Next image'"
+          [disabled]="project.photoUrls.length === 0">
+          ❯
+        </button>
+        
+        <div class="carousel-indicators">
+          @for (dot of project.photoUrls; track $index; let i = $index) {
+            <button
+              type="button"
+              class="indicator-dot"
+              [class.active]="i === currentImageIndex"
+              (click)="goToImage(i)"
+              [attr.aria-label]="'Go to image ' + (i + 1)"
+              [attr.aria-current]="i === currentImageIndex ? 'true' : 'false'">
+            </button>
+          }
+        </div>
+        
+        <div class="carousel-counter">
+          {{ currentImageIndex + 1 }} / {{ project.photoUrls.length }}
+        </div>
       }
     </div>
   </div>
