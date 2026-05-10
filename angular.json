@@ -88,8 +88,8 @@
             },
             "gh-pages": {
               "outputHashing": "all",
-              "baseHref": "/portfolio-app/",
-              "deployUrl": "/portfolio-app/",
+              "baseHref": "/",
+              "deployUrl": "/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
