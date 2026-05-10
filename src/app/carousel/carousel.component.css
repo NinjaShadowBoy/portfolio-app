@@ -23,7 +23,8 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  animation: fadeIn 0.5s var(--motion-ease-out);
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .carousel-button {
@@ -38,7 +39,7 @@
   cursor: pointer;
   z-index: 10;
   transition: all var(--motion-duration-fast) var(--motion-ease-out);
-  border-radius: 6px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,11 +57,11 @@
 }
 
 .carousel-button-prev {
-  left: 1rem;
+  left: -0.1rem;
 }
 
 .carousel-button-next {
-  right: 1rem;
+  right: -0.1rem;
 }
 
 .carousel-indicators {

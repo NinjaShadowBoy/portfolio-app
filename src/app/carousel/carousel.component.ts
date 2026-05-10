@@ -51,19 +51,38 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   nextImage(): void {
     if (this.photoUrls().length > 0) {
-      this.currentImageIndex = (this.currentImageIndex + 1) % this.photoUrls().length;
+      this.fadeOutAndChangeImage(() => {
+        this.currentImageIndex = (this.currentImageIndex + 1) % this.photoUrls().length;
+      });
     }
   }
 
   previousImage(): void {
     if (this.photoUrls().length > 0) {
-      this.currentImageIndex = (this.currentImageIndex - 1 + this.photoUrls().length) % this.photoUrls().length;
+      this.fadeOutAndChangeImage(() => {
+        this.currentImageIndex = (this.currentImageIndex - 1 + this.photoUrls().length) % this.photoUrls().length;
+      });
     }
   }
 
   goToImage(index: number): void {
     if (index >= 0 && index < this.photoUrls().length) {
-      this.currentImageIndex = index;
+      this.fadeOutAndChangeImage(() => {
+        this.currentImageIndex = index;
+      });
+    }
+  }
+
+  private fadeOutAndChangeImage(changeImageCallback: () => void): void {
+    const image = document.querySelector('.carousel-image') as HTMLImageElement;
+    if (image) {
+      image.style.opacity = '0.3';
+      setTimeout(() => {
+        changeImageCallback();
+        setTimeout(() => {
+          image.style.opacity = '1';
+        }, 50);
+      }, 300);
     }
   }
 }
