@@ -1,4 +1,4 @@
-import { Component, input, OnInit, OnDestroy } from '@angular/core';
+import { Component, input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 export class CarouselComponent implements OnInit, OnDestroy {
   photoUrls = input.required<string[]>();
   projectName = input.required<string>();
+
+  @ViewChild('carouselImage') carouselImage!: ElementRef<HTMLImageElement>;
 
   currentImageIndex: number = 0;
   isHovered: boolean = false;
@@ -74,7 +76,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   private fadeOutAndChangeImage(changeImageCallback: () => void): void {
-    const image = document.querySelector('.carousel-image') as HTMLImageElement;
+    const image = this.carouselImage?.nativeElement;
     if (image) {
       image.style.opacity = '0.3';
       setTimeout(() => {

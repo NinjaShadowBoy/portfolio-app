@@ -2,6 +2,7 @@
   <div class="carousel-container" (mouseenter)="onHover()" (mouseleave)="onLeave()">
     <div class="carousel-main">
       <img 
+        #carouselImage
         [src]="photoUrls()[currentImageIndex]" 
         [alt]="projectName() + ' screenshot ' + (currentImageIndex + 1)"
         class="carousel-image" />
