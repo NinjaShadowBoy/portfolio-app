@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,11 +8,46 @@ import { CommonModule } from '@angular/common';
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css'],
 })
-export class CarouselComponent {
+export class CarouselComponent implements OnInit, OnDestroy {
   photoUrls = input.required<string[]>();
   projectName = input.required<string>();
 
   currentImageIndex: number = 0;
+  isHovered: boolean = false;
+  private autoPlayInterval: any;
+  private autoPlayDelay: number = 5000; // 5 seconds
+
+  ngOnInit(): void {
+    this.startAutoPlay();
+  }
+
+  ngOnDestroy(): void {
+    this.stopAutoPlay();
+  }
+
+  private startAutoPlay(): void {
+    if (this.photoUrls().length <= 1) return;
+
+    this.autoPlayInterval = setInterval(() => {
+      if (!this.isHovered) {
+        this.nextImage();
+      }
+    }, this.autoPlayDelay);
+  }
+
+  private stopAutoPlay(): void {
+    if (this.autoPlayInterval) {
+      clearInterval(this.autoPlayInterval);
+    }
+  }
+
+  onHover(): void {
+    this.isHovered = true;
+  }
+
+  onLeave(): void {
+    this.isHovered = false;
+  }
 
   nextImage(): void {
     if (this.photoUrls().length > 0) {

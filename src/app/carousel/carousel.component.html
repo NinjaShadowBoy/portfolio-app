@@ -1,5 +1,5 @@
 @if (photoUrls().length > 0) {
-  <div class="carousel-container">
+  <div class="carousel-container" (mouseenter)="onHover()" (mouseleave)="onLeave()">
     <div class="carousel-main">
       <img 
         [src]="photoUrls()[currentImageIndex]" 
