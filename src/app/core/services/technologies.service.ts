@@ -206,7 +206,12 @@ export class TechnologiesService {
       name: 'Bootstrap',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg',
       docUrl: 'https://getbootstrap.com/',
-    }
+    },
+    'next.js': {
+      name: 'Next.js',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+      docUrl: 'https://nextjs.org/',
+    },
   };
 
   /**

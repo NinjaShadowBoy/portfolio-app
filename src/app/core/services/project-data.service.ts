@@ -1,7 +1,8 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { tap, map, delay } from 'rxjs/operators';
+import { tap, map, delay, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 import {
   Project,
   ProjectFilters,
@@ -17,13 +18,55 @@ export class ProjectDataService {
   private http = inject(HttpClient);
   private ratingService = inject(RatingService);
   private apiUrl = `${environment.apiBaseUrl}/projects`;
+  private readonly fallbackProjects: Project[] = [
+    {
+      id: 1,
+      name: 'Lora',
+      description:
+        'A mobile learning companion built with Expo to stream audio lessons and keep learning sessions organized.',
+      technologies: ['Expo React Native', 'TypeScript', 'JavaScript'],
+      githubLink: 'https://github.com/',
+      challenges:
+        'Balancing audio playback reliability with smooth navigation across mobile devices.',
+      whatILearned:
+        'How to structure a mobile app around asynchronous media and reusable state.',
+      averageRating: 0,
+      totalRatings: 0,
+      createdAt: '2026-01-01T00:00:00Z',
+      updatedAt: '2026-01-01T00:00:00Z',
+      featured: true,
+      photoUrls: [],
+      isExpanded: false,
+    },
+    {
+      id: 3,
+      name: 'Connect Four',
+      description:
+        'A visually rich strategy game with polished interactions and animated game feedback.',
+      technologies: ['TypeScript', 'Angular', 'CSS3'],
+      githubLink: 'https://github.com/',
+      challenges:
+        'Making the board logic feel responsive without losing the visual weight of the animations.',
+      whatILearned:
+        'How small interaction details can make a simple game feel much more alive.',
+      averageRating: 0,
+      totalRatings: 0,
+      createdAt: '2026-01-01T00:00:00Z',
+      updatedAt: '2026-01-01T00:00:00Z',
+      featured: false,
+      photoUrls: [],
+      isExpanded: false,
+    },
+  ];
 
   // Angular 20 rxResource for declarative async data fetching
   private projectsResource = rxResource({
-    loader: () => this.http.get<Project[]>(this.apiUrl).pipe(
-      map(projects => projects.map(p => ({ ...p, isExpanded: false }))),
-      delay(300) // Ensure loading spinner shows for at least 300ms to avoid flicker
-    )
+    loader: () =>
+      this.http.get<Project[]>(this.apiUrl).pipe(
+        map((projects) => this.normalizeProjects(projects)),
+        catchError(() => of(this.getFallbackProjects())),
+        delay(300) // Ensure loading spinner shows for at least 300ms to avoid flicker
+      ),
   });
 
   private filtersSignal = signal<ProjectFilters>({
@@ -254,5 +297,18 @@ export class ProjectDataService {
   private getUniqueTechnologies(): string[] {
     const allTechs = this.projects().flatMap((project) => project.technologies);
     return [...new Set(allTechs)].sort();
+  }
+
+  private normalizeProjects(projects: Project[]): Project[] {
+    const normalized = projects.map((project) => ({
+      ...project,
+      isExpanded: project.isExpanded ?? false,
+    }));
+
+    return normalized.length > 0 ? normalized : this.getFallbackProjects();
+  }
+
+  private getFallbackProjects(): Project[] {
+    return this.fallbackProjects.map((project) => ({ ...project }));
   }
 }
