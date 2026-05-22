@@ -1,0 +1,77 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Manage Photos - {{ project().name }}</h2>
+      <button class="btn-close" (click)="onClose()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Upload Section -->
+      <div class="upload-section">
+        <h3>Upload New Photos</h3>
+        <div class="file-input-wrapper">
+          <input
+            type="file"
+            id="photoInput"
+            accept="image/jpeg,image/jpg,image/png,image/gif"
+            multiple
+            (change)="onFilesSelected($event)"
+            class="file-input"
+          />
+          <label for="photoInput" class="file-label">
+            Choose Photos (JPEG, PNG, GIF)
+          </label>
+        </div>
+
+        @if (selectedFiles.length > 0) {
+        <div class="selected-files">
+          <p>Selected {{ selectedFiles.length }} file(s):</p>
+          <ul>
+            @for (file of selectedFiles; track file.name) {
+            <li>{{ file.name }} ({{ (file.size / 1024).toFixed(2) }} KB)</li>
+            }
+          </ul>
+          <button
+            (click)="uploadPhotos()"
+            [disabled]="isUploadingPhotos()"
+            class="btn-primary"
+          >
+            {{ isUploadingPhotos() ? 'Uploading...' : 'Upload Photos' }}
+          </button>
+        </div>
+        }
+      </div>
+
+      <!-- Existing Photos Section -->
+      <div class="existing-photos">
+        <h3>Existing Photos ({{ project().photos?.length || project().photoUrls.length }})</h3>
+
+        @if ((project().photos?.length || 0) === 0 && project().photoUrls.length === 0) {
+        <p class="no-photos">No photos uploaded yet.</p>
+        } @else {
+        <div class="photos-grid">
+          @if (project().photos && project().photos!.length > 0) {
+            @for (photo of project().photos; track photo.id) {
+            <div class="photo-item">
+              <img [src]="apiBaseUrl + photo.photoUrl" [alt]="'Project photo ' + photo.id" />
+              <button (click)="deletePhoto(photo.id)" class="btn-delete-photo">
+                Delete
+              </button>
+            </div>
+            }
+          } @else {
+            @for (photoUrl of project().photoUrls; track photoUrl) {
+            <div class="photo-item">
+              <img [src]="photoUrl" [alt]="'Project photo'" />
+              <div class="no-delete-info">
+                <small>Photo ID not available - refresh page to delete</small>
+              </div>
+            </div>
+            }
+          }
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,637 @@
+.header-container {
+  display: flex;
+  background: var(--gradient-primary);
+  justify-content: center;
+}
+
+.header {
+  color: var(--text-inverse);
+  padding: 2rem 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--elevation-2);
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1400px;
+}
+
+/* Holographic effect overlay */
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--hologram-bg);
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+  color: var(--text-inverse);
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 300;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.8s var(--motion-ease-out);
+}
+
+.header-content p {
+  margin: 0.5rem 0 0 0;
+  font-size: 1rem;
+  opacity: 0.9;
+  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
+}
+
+.navigation {
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s var(--motion-ease-out) 0.4s both;
+}
+
+.navigation ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-inverse);
+}
+
+.hamburger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+}
+
+.navigation li {
+  margin: 4px;
+  height: min-content;
+}
+
+.navigation a {
+  color: var(--text-inverse);
+  text-decoration: none;
+  padding: 0.8rem 1.6rem;
+  font-weight: 500;
+  position: relative;
+  display: inline-block;
+  border-radius: 200px;
+}
+
+/* Ensure text content is above pseudo-elements */
+.navigation a span,
+.navigation a img {
+  position: relative;
+  z-index: 2;
+}
+
+/* Social Links Tray Effect */
+.navigation .socials {
+  position: relative;
+  padding: 0rem;
+  /* margin-left: 0.5rem; */
+  background: linear-gradient(145deg,
+      rgba(0, 0, 0, 0.15) 0%,
+      rgba(0, 0, 0, 0.05) 50%,
+      rgba(255, 255, 255, 0.05) 100%);
+  border-radius: 100px;
+  box-shadow:
+    /* Inset shadows for depth */
+    inset 0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.1),
+    /* Outer shadow for elevation */
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Tray shine effect */
+.navigation .socials::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 40%;
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 100%);
+  border-radius: 50px 50px 0 0;
+  pointer-events: none;
+}
+
+/* Tray bottom highlight */
+.navigation .socials::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.navigation .socials li {
+  margin: 0.25rem;
+  aspect-ratio: 1 / 1;
+}
+
+.navigation .socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0.25rem;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+}
+
+.navigation .socials a:hover {
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.15), 0 6px 20px rgba(0, 0, 0, 0.25),
+    0 10px 40px rgba(53, 114, 239, 0.3);
+}
+
+.navigation .socials img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Responsive design - Tablet */
+@media (max-width: 1024px) {
+  .header {
+    padding: 1.5rem;
+  }
+
+  .header-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .header-content p {
+    font-size: 0.95rem;
+  }
+
+  .navigation a {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Responsive design - Mobile */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .header-content h1 {
+    font-size: 1.1rem;
+  }
+
+  .header-content p {
+    font-size: 0.75rem;
+    margin: 0.2rem 0 0 0;
+  }
+
+  .navigation a {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+    /* Minimum touch target size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .header {
+    padding: 0.6rem 0.85rem;
+  }
+
+  .header-content h1 {
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+
+  .header-content p {
+    font-size: 0.65rem;
+    margin: 0.15rem 0 0 0;
+  }
+
+  .navigation ul {
+    gap: 0.5rem;
+  }
+
+  .navigation a {
+    padding: 0.55rem 0.85rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Mobile sidebar modal styles */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.3s var(--motion-ease-out) forwards;
+  touch-action: none;
+  /* Prevent touch scrolling on backdrop */
+  overscroll-behavior: contain;
+  /* Prevent scroll chaining */
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+  background: var(--gradient-primary);
+  box-shadow: var(--elevation-4);
+  z-index: 1001;
+  transform: translateX(-100%);
+  transition: transform 0.3s var(--motion-ease-out);
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1rem;
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  /* Prevent scroll chaining to body */
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.close-btn {
+  align-self: flex-end;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-inverse);
+  font-size: 1.5rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.mobile-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.mobile-nav li {
+  margin: 0;
+}
+
+.mobile-nav a,
+.mobile-nav button {
+  display: block;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  color: var(--text-inverse);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.mobile-nav .socials {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.mobile-nav .socials a {
+  display: flex;
+  aspect-ratio: 1 / 1;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mobile Navigation Controls */
+.mobile-nav-controls {
+  display: none;
+  /* Hidden by default, shown on mobile */
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobile-login-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: default;
+}
+
+/* Hide hamburger on desktop */
+.hamburger {
+  display: none;
+}
+
+/* Collapse into hamburger around ~600px */
+@media (max-width: 600px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.6rem 0.85rem;
+  }
+
+  .header-content {
+    flex: 1;
+  }
+
+  .header-content h1 {
+    font-size: 0.9rem;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .header-content p {
+    font-size: 0.65rem;
+    margin: 0.1rem 0 0 0;
+  }
+
+  .navigation {
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .mobile-nav-controls {
+    display: flex;
+  }
+
+  .hamburger {
+    display: inline-flex;
+    min-height: 32px;
+    min-width: 32px;
+    padding: 5px 6px;
+    gap: 2.5px;
+  }
+
+  .hamburger span {
+    width: 16px;
+  }
+
+  .desktop-nav {
+    display: none !important;
+  }
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Login Status Indicator Styles */
+.login-status {
+  margin: 0 !important;
+  height: auto !important;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 200px;
+  color: var(--text-inverse);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-name {
+  color: var(--text-inverse);
+  font-weight: 500;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mobile Login Status */
+.mobile-login-status {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.mobile-login-status .status-badge {
+  padding: 0.75rem 1rem;
+  gap: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mobile-login-status .user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+  min-width: 0;
+  /* Allow text truncation */
+}
+
+.mobile-login-status .user-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  max-width: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-login-status .user-email {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .status-badge {
+    padding: 0.5rem 1rem;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .user-name {
+    max-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .status-badge {
+    padding: 0.45rem 0.9rem;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .user-name {
+    max-width: 100px;
+  }
+}
+
+/* Theme Toggle Styles */
+.theme-toggle-item {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-inverse);
+  padding: 0.6rem 1rem;
+  border-radius: 200px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+.theme-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/* CV Download Styles */
+.cv-download-group {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.cv-download-n-theme-group {
+  display: flex;
+  align-items: center;
+}
+
+.header-cv-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-inverse);
+  padding: 0.6rem 1rem;
+  border-radius: 200px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.header-cv-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.header-cv-btn:active {
+  transform: translateY(0);
+}
+
+/* Mobile theme toggle - subtle icon-only style */
+.mobile-theme .theme-toggle,
+.mobile-theme .header-cv-btn {
+  width: auto;
+  justify-content: center;
+  padding: 0.6rem 1rem;
+  align-self: flex-start;
+  margin-left: 0.5rem;
+}

@@ -1,0 +1,51 @@
+<h2>JSON Bulk Operations</h2>
+<p class="info-text">
+  Enter a single project object or an array of projects. Include an "id" field to update
+  existing projects, omit it to create new ones.
+</p>
+
+<div class="sample-buttons">
+  <button (click)="copySampleJson()" class="btn-secondary">
+    Copy Sample JSON (Single)
+  </button>
+  <button (click)="copySampleJsonArray()" class="btn-secondary">
+    Copy Sample JSON (Array)
+  </button>
+</div>
+
+<div class="form-group">
+  <label for="jsonInput">JSON Input</label>
+  <textarea
+    id="jsonInput"
+    [value]="importData()"
+    (input)="importData.set($any($event.target).value)"
+    placeholder='{"name": "Project Name", "description": "...", ...}'
+    rows="15"
+    class="json-textarea"
+  ></textarea>
+  @if (jsonError()) {
+  <div class="error">{{ jsonError() }}</div>
+  }
+</div>
+
+<div class="form-actions">
+  <button (click)="processJson()" class="btn-primary">Process JSON</button>
+  <button (click)="clear()" class="btn-secondary">Clear</button>
+</div>
+
+<div class="json-help">
+  <h3>Required Fields:</h3>
+  <ul>
+    <li><code>name</code> - Project name</li>
+    <li><code>description</code> - Project description</li>
+    <li><code>technologies</code> - Array of technology names</li>
+    <li><code>githubLink</code> - GitHub repository URL</li>
+    <li><code>challenges</code> - Challenges faced</li>
+    <li><code>whatILearned</code> - What you learned</li>
+  </ul>
+  <h3>Optional Fields:</h3>
+  <ul>
+    <li><code>id</code> - Include to update existing project</li>
+    <li><code>featured</code> - Boolean for featured status</li>
+  </ul>
+</div>

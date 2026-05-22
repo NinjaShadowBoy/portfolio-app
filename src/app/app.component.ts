@@ -1,10 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './header/header.component';
-import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { FooterComponent } from './footer/footer.component';
-import { NotificationContainerComponent } from './notification-container/notification-container.component';
-import { PerformanceMonitorService } from './services/performance-monitor.service';
+import { HeaderComponent } from './shared/ui/header/header.component';
+import { BreadcrumbComponent } from './shared/ui/breadcrumb/breadcrumb.component';
+import { FooterComponent } from './shared/ui/footer/footer.component';
+import { NotificationContainerComponent } from './shared/ui/notification-container/notification-container.component';
+import { PerformanceMonitorService } from './core/services/performance-monitor.service';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +18,11 @@ import { PerformanceMonitorService } from './services/performance-monitor.servic
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'portfolio-app';
   private performanceMonitor = inject(PerformanceMonitorService);
 
-  ngOnInit(): void {
+  constructor() {
     // Initialize performance monitoring in production
     // Comment out if you don't want console logs in production
     this.performanceMonitor.initializePerformanceMonitoring();

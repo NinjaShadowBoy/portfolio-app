@@ -1,0 +1,102 @@
+<section class="admin-container">
+  <div class="admin-header">
+    <h1>Admin Dashboard</h1>
+    @if (isAdmin) {
+      <p class="welcome">Welcome, {{ user?.name }} ({{ user?.email }})</p>
+    } @else {
+      <p class="restricted">Restricted area. You are not authorized.</p>
+      <button class="btn-primary" (click)="goHome()">Go Home</button>
+    }
+  </div>
+
+  @if (isAdmin) {
+    <div class="admin-content">
+      <!-- Mode Toggle -->
+      <div class="mode-toggle" (click)="toggleJsonMode()">
+        <span [class.active]="!jsonMode()">Form Mode</span>
+        <div class="toggle-thumb" [class.right]="jsonMode()"></div>
+        <span [class.active]="jsonMode()">JSON Mode</span>
+      </div>
+
+      <!-- Form Mode -->
+      @if (!jsonMode()) {
+        <app-project-form
+          [formMode]="formMode()"
+          [project]="editingProject()"
+          (save)="onSaveProject($event)"
+          (cancel)="resetForm()"
+        ></app-project-form>
+      }
+
+      <!-- JSON Mode -->
+      @if (jsonMode()) {
+        <app-json-import
+          (importSuccess)="onJsonImport($event)"
+        ></app-json-import>
+      }
+
+      <!-- Projects List -->
+      <div class="projects-list">
+        <h2>Existing Projects ({{ projects().length }})</h2>
+        @if (projects().length === 0) {
+          <p class="no-projects">No projects found. Create your first project above!</p>
+        } @else {
+          <div class="projects-grid">
+            @for (project of projects(); track project.id) {
+              <div class="project-card" [class.featured]="project.featured">
+                <div class="project-header">
+                  <h3>{{ project.name }}</h3>
+                  @if (project.featured) {
+                    <span class="badge-featured">Featured</span>
+                  }
+                </div>
+                <p class="project-description">{{ project.description }}</p>
+                <div class="project-meta">
+                  <div class="technologies">
+                    @for (tech of project.technologies; track tech) {
+                      @if (getTechDocUrl(tech); as docUrl) {
+                        <a [href]="docUrl" target="_blank" rel="noopener noreferrer" class="tech-tag" [attr.aria-label]="tech + ' documentation'">
+                          @if (getTechIcon(tech); as iconUrl) {
+                            <img [src]="iconUrl" [alt]="tech" class="tech-icon" width="16" height="16" />
+                          }
+                          <span>{{ tech }}</span>
+                        </a>
+                      } @else {
+                        <span class="tech-tag">
+                          @if (getTechIcon(tech); as iconUrl) {
+                            <img [src]="iconUrl" [alt]="tech" class="tech-icon" width="16" height="16" />
+                          }
+                          <span>{{ tech }}</span>
+                        </span>
+                      }
+                    }
+                  </div>
+                  <a [href]="project.githubLink" target="_blank" class="github-link">
+                    View on GitHub →
+                  </a>
+                </div>
+                <div class="project-details">
+                  <p><strong>Challenges:</strong> {{ project.challenges }}</p>
+                  <p><strong>Learnings:</strong> {{ project.whatILearned }}</p>
+                </div>
+                <div class="project-actions">
+                  <button (click)="editProject(project)" class="btn-edit">Edit</button>
+                  <button (click)="openPhotoManager(project)" class="btn-photos">Photos</button>
+                  <button (click)="deleteProject(project)" class="btn-delete">Delete</button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Photo Management Modal -->
+      @if (selectedProjectForPhotos()) {
+        <app-photo-manager
+          [project]="selectedProjectForPhotos()!"
+          (close)="closePhotoManager()"
+        ></app-photo-manager>
+      }
+    </div>
+  }
+</section>

@@ -1,0 +1,99 @@
+<!-- src/app/projects/projects.component.html -->
+<div class="projects-container">
+  <!-- Loading State -->
+  @if (isLoading()) {
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading projects...</p>
+  </div>
+  } @else {
+
+  <!-- Projects Header -->
+  <div class="projects-header">
+    <h1>My Projects</h1>
+    <p class="project-count">I have <strong>{{ totalProjects().length }}</strong> {{ totalProjects().length === 1 ? 'project' : 'projects' }} to share with you</p>
+  </div>
+
+  <!-- Advanced Filters -->
+  <details class="filters-section">
+    <summary>
+      <h3> Filter Projects ({{ projects().length }}) - Click to expand/collapse</h3>
+    </summary>
+    <div class="filters-grid">
+      <div class="filter-group">
+        <label for="search">Search Projects:</label>
+        <input
+          id="search"
+          [value]="searchTerm()"
+          (input)="searchTerm.set($any($event.target).value)"
+          placeholder="Search by name or description..."
+          class="search-input"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label for="technology">Technology:</label>
+        <select
+          id="technology"
+          [value]="selectedTechnology()"
+          (change)="selectedTechnology.set($any($event.target).value)"
+          class="tech-filter"
+        >
+          <option value="">All Technologies</option>
+          @for (tech of uniqueTechnologies(); track tech) {
+          <option [value]="tech">{{ tech }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="minRating">Minimum Rating:</label>
+        <select
+          id="minRating"
+          [value]="minRating()"
+          (change)="minRating.set(Number($any($event.target).value))"
+          class="rating-filter"
+        >
+          <option [value]="0">Any Rating</option>
+          <option [value]="1">1 Star & Up</option>
+          <option [value]="2">2 Stars & Up</option>
+          <option [value]="3">3 Stars & Up</option>
+          <option [value]="4">4 Stars & Up</option>
+          <option [value]="5">5 Stars Only</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            [checked]="showFeaturedOnly()"
+            (change)="showFeaturedOnly.set($any($event.target).checked)"
+          />
+          Featured Projects Only
+        </label>
+      </div>
+
+      <div class="filter-actions">
+        <button (click)="resetFilters()" class="reset-button">
+          Reset Filters
+        </button>
+      </div>
+    </div>
+  </details>
+
+  <!-- Projects Grid -->
+  <div class="projects-grid">
+    @for (project of projects(); track project.id) {
+    <app-project-card [project]="project">
+    </app-project-card>
+    } @empty {
+    <div class="no-results">
+      <h3>No projects found</h3>
+      <p>Try adjusting your filters to see more projects.</p>
+      <button (click)="resetFilters()" class="reset-button">Reset Filters</button>
+    </div>
+    }
+  </div>
+  }
+</div>

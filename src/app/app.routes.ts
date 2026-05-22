@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { AboutComponent } from './about/about.component';
-import { ContactComponent } from './contact/contact.component';
-import { ProjectDetailComponent } from './project-detail/project-detail.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { authGuard, contactGuard } from './guards/auth.guard';
-import { LoginComponent } from './login/login.component';
-import { AdminComponent } from './admin/admin.component';
-import { Oauth2RedirectComponent } from './oauth2-redirect/oauth2-redirect.component';
+import { HomeComponent } from './features/home/home.component';
+import { ProjectsComponent } from './features/projects/projects.component';
+import { AboutComponent } from './features/about/about.component';
+import { ContactComponent } from './features/contact/contact.component';
+import { ProjectDetailComponent } from './features/project-detail/project-detail.component';
+import { NotFoundComponent } from './features/not-found/not-found.component';
+import { authGuard, contactGuard } from './core/guards/auth.guard';
+import { LoginComponent } from './features/auth/login/login.component';
+import { AdminComponent } from './features/admin/admin.component';
+import { Oauth2RedirectComponent } from './features/auth/oauth2-redirect/oauth2-redirect.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },

@@ -1,0 +1,36 @@
+Portfolio App Structure Audit (Angular 19.2.x)
+
+Scope: src/app structure, component organization, duplication, and complexity.
+
+Findings
+
+1) Flat component structure
+All page and shared components live directly under src/app (home, projects, about, header, footer, etc.). There is no feature- or domain-based grouping (e.g., features/projects, features/auth, shared/ui, core/services). This makes navigation harder as the app grows and mixes “pages” with reusable UI.
+
+2) Mixed responsibilities inside components
+AdminComponent bundles CRUD, JSON import/export, and photo management in one class (many responsibilities and long file). ProjectDetailComponent handles rating CRUD, user lookups, and UI state, while ProjectDataService also exposes rating-related APIs. This blends feature logic across component/service boundaries and raises maintenance cost.
+
+3) Inconsistent component structure
+Most components use external HTML/CSS files, but oauth2-redirect is fully inline (template + styles), making it an outlier. Login/Admin lack spec files while many other components include them, indicating inconsistent testing structure.
+
+4) Duplicated patterns / data placement
+Rating operations appear in both ProjectDataService and ProjectDetailComponent. The large static tech/tool lists in HomeComponent are embedded in the component class, which is hard to reuse and bloats the component.
+
+Opportunities (low-effort improvements)
+
+1) Organize by feature and layer
+Create directories like:
+- src/app/features/{home,projects,project-detail,admin,auth,contact}
+- src/app/shared/ui/{header,footer,breadcrumb,project-card,carousel,cta-button,user-avatar,notification-container}
+- src/app/core/{services,guards,interceptors,interfaces}
+This keeps page features and reusable UI separated while preserving standalone components.
+
+2) Consolidate rating logic
+Either move rating CRUD into a dedicated RatingsFacade service or lean on ProjectDataService as the single entry point. This removes duplication and keeps ProjectDetailComponent focused on view logic.
+
+3) Split AdminComponent into smaller components
+Extract ProjectForm, JsonImport, and PhotoManager child components. This reduces complexity and improves testability.
+
+4) Normalize component structure and tests
+Standardize on external templates/styles and add missing specs for login, admin, and oauth2-redirect to keep testing coverage consistent.
+

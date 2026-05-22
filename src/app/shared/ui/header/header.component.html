@@ -1,0 +1,183 @@
+<div class="header-container">
+  <header class="header">
+    <!-- Navigation with hamburger for small screens -->
+    <nav class="navigation" aria-label="Primary">
+      <div class="mobile-nav-controls">
+        <button class="hamburger liquid-glass" aria-label="Menu" (click)="toggleMenu()">
+          <span></span><span></span><span></span>
+        </button>
+        @if (isAuthenticated() && user()) {
+        <div class="mobile-login-indicator liquid-glass-subtle" title="Logged in as {{ user()!.name }}">
+          <app-user-avatar [userName]="user()!.name" size="small"></app-user-avatar>
+        </div>
+        }
+      </div>
+
+      <!-- Desktop navigation -->
+      <ul class="desktop-nav">
+        @for(item of navItems; track item.label) {
+        <li>
+          <!-- Event binding for user interactions -->
+          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active">{{ item.label }}</a>
+        </li>
+        }
+        @if (isAuthenticated() && user()) {
+        <li class="login-status">
+          <div class="status-badge liquid-glass-subtle">
+            <app-user-avatar [userName]="user()!.name" size="medium"></app-user-avatar>
+            <span class="user-name">{{ user()!.name }}</span>
+          </div>
+        </li>
+        }
+        <li class="auth-controls">
+          @if (isAuthenticated()) {
+          <a class="link liquid-glass" (click)="logout()" routerLinkActive="active">Logout</a>
+          } @else {
+          <a class="link liquid-glass" [routerLink]="['/login']" routerLinkActive="active">Login</a>
+          }
+        </li>
+        @if (isAuthenticated() && isAdmin()) {
+        <li>
+          <a class="link liquid-glass" [routerLink]="['/admin']" routerLinkActive="active">Admin</a>
+        </li>
+        }
+
+        <li class="cv-download-n-theme-group">
+          <div class="cv-download-group">
+            <button class="header-cv-btn liquid-glass" (click)="downloadCV('en')" aria-label="Download CV (English)"
+              title="Download CV (English)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>CV EN</span>
+            </button>
+            <button class="header-cv-btn liquid-glass" (click)="downloadCV('fr')" aria-label="Download CV (French)"
+              title="Download CV (French)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>CV FR</span>
+            </button>
+            <div class="theme-toggle-item">
+              <button class="theme-toggle liquid-glass" (click)="toggleTheme()"
+                [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+                title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
+                @if (currentTheme() === 'dark') {
+                <span class="theme-icon">☀️</span>
+                } @else {
+                <span class="theme-icon">🌙</span>
+                }
+              </button>
+            </div>
+          </div>
+        </li>
+        <ul class="socials">
+          @for(social of socialLinks; track social.name) {
+          <li>
+            <a class="social liquid-glass" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
+              rel="noopener noreferrer">
+              <img [src]="social.icon" [alt]="social.name" width="40" />
+            </a>
+          </li>
+          }
+        </ul>
+      </ul>
+    </nav>
+
+    <!-- String interpolation for dynmic data -->
+    <div class="header-content">
+      <h1>{{ title }} aka <em class="nickname">{{ nickname }}</em></h1>
+      <p>{{ subtitle }}</p>
+    </div>
+
+    <!-- Mobile sidebar modal -->
+    @if (isMenuOpen) {
+    <div class="backdrop" (click)="toggleMenu()"></div>
+    }
+    <div class="sidebar" [class.open]="isMenuOpen">
+      <button class="close-btn" (click)="toggleMenu()">×</button>
+      @if (isAuthenticated() && user()) {
+      <div class="mobile-login-status">
+        <div class="status-badge liquid-glass-subtle">
+          <app-user-avatar [userName]="user()!.name" size="large"></app-user-avatar>
+          <div class="user-info">
+            <span class="user-name">{{ user()!.name }}</span>
+            <span class="user-email">{{ user()!.email }}</span>
+          </div>
+        </div>
+      </div>
+      }
+      <ul class="mobile-nav">
+        <li class="cv-download-n-theme-group mobile-theme">
+          <div class="cv-download-group">
+            <button class="header-cv-btn liquid-glass" (click)="downloadCV('en')" aria-label="Download CV (English)"
+              title="Download CV (English)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>CV EN</span>
+            </button>
+            <button class="header-cv-btn liquid-glass" (click)="downloadCV('fr')" aria-label="Download CV (French)"
+              title="Download CV (French)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>CV FR</span>
+            </button>
+          </div>
+        </li>
+        <li class="theme-toggle-item mobile-theme">
+          <button class="theme-toggle liquid-glass" (click)="toggleTheme()"
+            [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
+            @if (currentTheme() === 'dark') {
+            <span class="theme-icon">☀️</span>
+            } @else {
+            <span class="theme-icon">🌙</span>
+            }
+          </button>
+        </li>
+        @for(item of navItems; track item.label) {
+        <li>
+          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active" (click)="toggleMenu()">{{
+            item.label
+            }}</a>
+        </li>
+        }
+        <li class="auth-controls">
+          @if (isAuthenticated()) {
+          <a class="link liquid-glass" (click)="logout(); toggleMenu()" routerLinkActive="active">Logout</a>
+          } @else {
+          <a class="link liquid-glass" [routerLink]="['/login']" routerLinkActive="active"
+            (click)="toggleMenu()">Login</a>
+          }
+        </li>
+        @if (isAuthenticated() && isAdmin()) {
+        <li>
+          <a class="link liquid-glass" [routerLink]="['/admin']" routerLinkActive="active">Admin</a>
+        </li>
+        }
+        <li class="socials">
+          @for(social of socialLinks; track social.name) {
+          <a class="social liquid-glass" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
+            rel="noopener noreferrer">
+            <img [src]="social.icon" [alt]="social.name" width="40" />
+          </a>
+          }
+        </li>
+      </ul>
+    </div>
+  </header>
+</div>

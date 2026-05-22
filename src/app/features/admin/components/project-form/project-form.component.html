@@ -1,0 +1,99 @@
+<h2>{{ formMode() === 'create' ? 'Create New Project' : 'Edit Project' }}</h2>
+
+<form [formGroup]="projectForm" (ngSubmit)="submitForm()" class="project-form">
+  <div class="form-group">
+    <label for="name">Project Name *</label>
+    <input
+      formControlName="name"
+      id="name"
+      placeholder="Enter project name"
+      required
+    />
+    @if(projectForm.get('name')?.invalid && projectForm.get('name')?.touched) {
+    <div class="error">Project name is required (min 3 characters).</div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description *</label>
+    <textarea
+      formControlName="description"
+      id="description"
+      placeholder="Enter project description"
+      required
+    ></textarea>
+    @if(projectForm.get('description')?.invalid && projectForm.get('description')?.touched) {
+    <div class="error">Description is required (min 10 characters).</div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="technologies">Technologies * (comma-separated)</label>
+    <input
+      formControlName="technologies"
+      id="technologies"
+      placeholder="e.g., Angular, TypeScript, CSS"
+      required
+    />
+    @if(projectForm.get('technologies')?.invalid && projectForm.get('technologies')?.touched) {
+    <div class="error">Technologies are required.</div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="githubLink">GitHub Link *</label>
+    <input
+      formControlName="githubLink"
+      id="githubLink"
+      placeholder="https://github.com/username/repo"
+      required
+    />
+    @if(projectForm.get('githubLink')?.invalid && projectForm.get('githubLink')?.touched) {
+    <div class="error">Valid GitHub URL is required.</div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="challenges">Challenges *</label>
+    <textarea
+      formControlName="challenges"
+      id="challenges"
+      placeholder="What challenges did you face?"
+      required
+    ></textarea>
+    @if(projectForm.get('challenges')?.invalid && projectForm.get('challenges')?.touched) {
+    <div class="error">Challenges description is required.</div>
+    }
+  </div>
+
+  <div class="form-group">
+    <label for="whatILearned">What I Learned *</label>
+    <textarea
+      formControlName="whatILearned"
+      id="whatILearned"
+      placeholder="What did you learn from this project?"
+      required
+    ></textarea>
+    @if(projectForm.get('whatILearned')?.invalid && projectForm.get('whatILearned')?.touched) {
+    <div class="error">Learning description is required.</div>
+    }
+  </div>
+
+  <div class="form-group checkbox-group">
+    <label>
+      <input formControlName="featured" type="checkbox" />
+      <span>Featured Project</span>
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" [disabled]="projectForm.invalid" class="btn-primary">
+      {{ formMode() === 'create' ? 'Create Project' : 'Update Project' }}
+    </button>
+    @if (formMode() === 'edit') {
+    <button type="button" (click)="onCancel()" class="btn-secondary">
+      Cancel
+    </button>
+    }
+  </div>
+</form>

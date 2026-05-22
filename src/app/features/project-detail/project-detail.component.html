@@ -1,0 +1,175 @@
+@if (project(); as project) {
+<div class="project-detail-container">
+  <h1>{{ project.name }}</h1>
+  <div class="project-meta">
+    <span>Created: {{ project.createdAt | date:'MMM yyyy' }}</span>
+    @if (project.updatedAt.toString() !== project.createdAt.toString()) {
+    <span>Updated: {{ project.updatedAt | date:'MMM yyyy' }}</span>
+    }
+  </div>
+  <p class="description">{{ project.description }}</p>
+  <div class="technologies">
+    <strong>Technologies:</strong>
+    <div class="tech-tags">
+      @for (tech of project.technologies; track tech) {
+        @if (getTechDocUrl(tech); as docUrl) {
+          <a [href]="docUrl" target="_blank" rel="noopener noreferrer" class="tech-tag" [attr.aria-label]="tech + ' documentation'">
+            @if (getTechIcon(tech); as iconUrl) {
+              <img [src]="iconUrl" [alt]="tech" class="tech-icon" width="16" height="16" />
+            }
+            <span>{{ tech }}</span>
+          </a>
+        } @else {
+          <span class="tech-tag">
+            @if (getTechIcon(tech); as iconUrl) {
+              <img [src]="iconUrl" [alt]="tech" class="tech-icon" width="16" height="16" />
+            }
+            <span>{{ tech }}</span>
+          </span>
+        }
+      }
+    </div>
+  </div>
+  <div class="challenges">
+    <h2>Challenges</h2>
+    <p>{{ project.challenges }}</p>
+  </div>
+  @if (project.photoUrls && project.photoUrls.length > 0) {
+  <div class="gallery">
+    <h2>Project Screenshots</h2>
+    <app-carousel [photoUrls]="project.photoUrls" [projectName]="project.name"></app-carousel>
+  </div>
+  } @else {
+  <div class="gallery">
+    <h2>Project Screenshots</h2>
+    <p class="no-photos">No screenshots available yet.</p>
+  </div>
+  }
+
+  <!-- Rating & Comments Section -->
+  <div class="rating-section">
+    <h2>Rate This Project</h2>
+
+    <!-- Average Rating Display -->
+    <div class="rating-summary">
+      <div class="average-rating">
+        <span class="rating-number">{{ averageRating().toFixed(1) }}</span>
+        <div class="stars-display">
+          @for (star of stars; track star) {
+            <span class="star" [class.filled]="star <= averageRating()">★</span>
+          }
+        </div>
+        <span class="rating-count">{{ ratingCount() }} {{ ratingCount() === 1 ? 'rating' : 'ratings' }}</span>
+      </div>
+    </div>
+
+    <!-- User Rating Input -->
+    @if (authService.isAuthenticated()) {
+      @if (!userRating() || isEditingRating()) {
+        <form class="rating-form" [class.submitting]="isSubmitting()" (ngSubmit)="submitRating()">
+          <p class="rating-prompt">{{ userRating() ? 'Update your rating:' : 'Click to rate:' }}</p>
+          <div class="stars-interactive">
+            @for (star of stars; track star) {
+              <button
+                type="button"
+                class="star-button"
+                [class.filled]="isStarFilled(star)"
+                [class.hovered]="star <= hoveredStar()"
+                [disabled]="isSubmitting()"
+                (mouseenter)="onStarHover(star)"
+                (mouseleave)="onStarLeave()"
+                (click)="onStarClick(star)"
+                [attr.aria-label]="'Rate ' + star + ' stars'">
+                ★
+              </button>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="comment">Add a comment (optional):</label>
+            <textarea
+              id="comment"
+              [value]="commentText()"
+              (input)="commentText.set($any($event.target).value)"
+              [disabled]="isSubmitting()"
+              placeholder="Share your thoughts about this project..."
+              rows="4"></textarea>
+          </div>
+
+          <div class="rating-actions">
+            <button type="submit" class="submit-btn" [disabled]="isSubmitting() || selectedRating() === 0">
+              {{ userRating() ? 'Update Rating' : 'Submit Rating' }}
+            </button>
+            @if (isEditingRating()) {
+              <button type="button" (click)="cancelEditingRating()" class="cancel-btn" [disabled]="isSubmitting()">
+                Cancel
+              </button>
+            }
+          </div>
+        </form>
+      } @else {
+        <div class="user-rating-display">
+          <p class="your-rating-label">Your Rating:</p>
+          <div class="stars-display">
+            @for (star of stars; track star) {
+              <span class="star" [class.filled]="star <= userRating()!.rating">★</span>
+            }
+          </div>
+          @if (userRating()!.comment) {
+            <p class="user-comment">{{ userRating()!.comment }}</p>
+          }
+          <div class="rating-actions">
+            <button type="button" (click)="startEditingRating()" class="edit-btn">
+              Edit
+            </button>
+            <button type="button" (click)="deleteRating()" class="delete-btn">
+              Delete
+            </button>
+          </div>
+        </div>
+      }
+    } @else {
+      <p class="login-prompt">
+        <a href="/login" class="text-link">Log in</a> to rate this project
+      </p>
+    }
+
+    <!-- All Ratings & Comments -->
+    @if (ratings().length > 0) {
+      <div class="all-ratings">
+        <h3>All Reviews</h3>
+        @for (rating of ratings(); track rating.id) {
+          <div class="rating-item">
+            <div class="rating-header">
+              <div class="rating-user-info">
+                <app-user-avatar [userName]="getUserName(rating.userId)" size="small"></app-user-avatar>
+                <span class="rating-user-name">{{ getUserName(rating.userId) }}</span>
+              </div>
+              <div class="rating-meta">
+                <div class="stars-display">
+                  @for (star of stars; track star) {
+                    <span class="star small" [class.filled]="star <= rating.rating">★</span>
+                  }
+                </div>
+                <span class="rating-date">{{ rating.createdAt | date:'MMM dd, yyyy' }}</span>
+              </div>
+            </div>
+            @if (rating.comment) {
+              <p class="rating-comment">{{ rating.comment }}</p>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <a [href]="project.githubLink" target="_blank" class="github-link"><p>View on GitHub</p>
+    <img src="assets/icons/github.svg" alt="GitHub" width="20" height="20" class="github-icon" />
+  </a>
+</div>
+} @else {
+<div class="not-found">
+  <h2>Project Not Found</h2>
+  <p>The requested project does not exist.</p>
+</div>
+}

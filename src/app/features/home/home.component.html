@@ -1,0 +1,160 @@
+<div class="hero-section">
+  <!-- <div class="nav-container">
+    <header>
+      <span class="logo">Alex Nelson ABENA</span>
+      <nav>
+        <ul>
+          <li><a href="#">My Work</a></li>
+          <li><a href="#">My Skills</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="social-header">
+      <ul>
+        <li>
+          <a href="#"><img [src]="'/assets/images/LinkedIn.png'" alt="LinkedIn" /></a>
+        </li>
+        <li>
+          <a href="#"><img [src]="'/assets/images/Facebook Circled.png'" alt="Facebook" /></a>
+        </li>
+        <li>
+          <a href="#"><img [src]="'/assets/images/GitHub.png'" alt="GitHub" /></a>
+        </li>
+      </ul>
+    </div>
+  </div> -->
+  <div class="hero">
+    <div class="content">
+      <img class="my-face" appLazyLoad src="assets/images/2223i141.jpg" alt="Alex Nelson ABENA - Profile Picture" width="200" height="200" fetchpriority="high">
+      <p class="headline">
+        Young, Growing, self taught, all around <span aria-label="sweat smile" role="img">😅</span>, programmer
+      </p>
+      <div class="meet">
+        <span aria-label="point down" role="img">👇</span>
+        <span>Know more about me!</span>
+      </div>
+    </div>
+    <img class="hero-illustration" src="assets/images/Ilustration-1-animated.svg" alt="Hero Illustration" width="480" height="900" fetchpriority="high">
+  </div>
+</div>
+
+<!-- My Arsenal Section with Moving Banners -->
+<section class="my-tools-section">
+  <h2>My Arsenal</h2>
+
+  <!-- Languages Banner (Left to Right) -->
+  <div class="category-section">
+    <h3>Languages</h3>
+    <div class="tools-banner-container">
+      <div class="tools-banner">
+        @for (tool of languages; track tool.name) {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+        <!-- Duplicate multiple times for seamless loop -->
+        @for (tool of languages; track tool.name + '-duplicate-1') {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+        @for (tool of languages; track tool.name + '-duplicate-2') {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+        @for (tool of languages; track tool.name + '-duplicate-3') {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Frameworks Banner (Right to Left) -->
+  <div class="category-section">
+    <h3>Frameworks</h3>
+    <div class="tools-banner-container">
+      <div class="tools-banner reverse">
+        @for (tool of frameworks; track tool.name) {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+        <!-- Duplicate multiple times for seamless loop -->
+        @for (tool of frameworks; track tool.name + '-duplicate-1') {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+        @for (tool of frameworks; track tool.name + '-duplicate-2') {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+        @for (tool of frameworks; track tool.name + '-duplicate-3') {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Tools Banner (Left to Right) -->
+  <div class="category-section">
+    <h3>Tools</h3>
+    <div class="tools-banner-container">
+      <div class="tools-banner">
+        @for (tool of tools; track tool.name) {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+        <!-- Duplicate multiple times for seamless loop -->
+        @for (tool of tools; track tool.name + '-duplicate-1') {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+        @for (tool of tools; track tool.name + '-duplicate-2') {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+        @for (tool of tools; track tool.name + '-duplicate-3') {
+          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
+            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
+            <span>{{ tool.name }}</span>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Existing featured projects section remains below -->
+<section class="featured-projects">
+  <h2>Featured Projects</h2>
+  @if (featuredProjects().length > 0) {
+  <div class="projects-grid">
+    @for (project of featuredProjects(); track project.id) {
+    <app-project-card [project]="project"></app-project-card>
+    }
+  </div>
+  } @else {
+  <p>No featured projects available.</p>
+  }
+</section>

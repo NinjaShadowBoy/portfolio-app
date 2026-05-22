@@ -1,0 +1,80 @@
+<div class="about-container">
+  <h1>About Me</h1>
+  <p>
+    I'm a fourth-year software engineering student with experience in full-stack development and game programming.
+    My projects include a hotel reservation system with Stripe integration, a Pac-Man clone with procedural maze
+    generation,
+    and a construction material tracking system. I'm passionate about building scalable, user-friendly applications.
+  </p>
+
+  <div class="cv-download-section">
+    <div class="cv-download-group">
+      <button class="cv-download-btn" (click)="downloadCV('en')" aria-label="Download CV (English)"
+        title="Download CV (English)">
+        <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        CV
+        <svg class="lang-flag" viewBox="0 0 640 480">
+          <path fill="#012169" d="M0 0h640v480H0z" />
+          <path fill="#FFF"
+            d="m75 0 244 181L562 0h78v62L400 240l240 178v62h-78L320 300 77 480H0v-62l240-178L0 62V0h75z" />
+          <path fill="#C8102E"
+            d="m424 281 216 159v40L369 281h55zM640 0v3L447 149h-55L640 0zM0 440l216-159h55L0 480v-40zM0 0l239 176h-55L0 44V0z" />
+          <path fill="#FFF" d="M240 0h160v480H240zM0 160h640v160H0z" />
+          <path fill="#C8102E" d="M0 192h640v96H0zM272 0h96v480h-96z" />
+        </svg>
+      </button>
+      <button class="cv-download-btn" (click)="downloadCV('fr')" aria-label="Download CV (French)"
+        title="Download CV (French)">
+        <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        CV
+        <svg class="lang-flag" viewBox="0 0 640 480">
+          <g fill-rule="evenodd" stroke-width="1pt">
+            <path fill="#fff" d="M0 0h640v480H0z" />
+            <path fill="#00267f" d="M0 0h213.3v480H0z" />
+            <path fill="#f31830" d="M426.7 0H640v480H426.7z" />
+          </g>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <h2>Skills</h2>
+  <ul class="skills-list">
+    @for (skill of skills; track skill) {
+    <li>{{ skill }}</li>
+    }
+  </ul>
+
+  <h2>Core Technologies</h2>
+  <ul class="skills-list">
+    @for (tech of coreTechnologies; track tech.name) {
+    <li class="tech-badge-item">
+      <a [href]="tech.docUrl" target="_blank" rel="noopener noreferrer" class="tech-badge-link"
+        [attr.aria-label]="tech.name + ' documentation'">
+        <img [src]="tech.logo" [alt]="tech.name" class="tech-badge-icon" width="20" height="20" />
+        <span>{{ tech.name }}</span>
+      </a>
+    </li>
+    }
+  </ul>
+
+  <h2>Hobbies & Interests</h2>
+  <ul class="skills-list hobbies-list">
+    @for (hobby of hobbies; track hobby.name) {
+    <li>
+      <span class="hobby-name">{{ hobby.name }}</span>
+      <span class="hobby-detail">{{ hobby.detail }}</span>
+    </li>
+    }
+  </ul>
+</div>
