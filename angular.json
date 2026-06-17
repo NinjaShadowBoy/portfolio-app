@@ -46,7 +46,15 @@
               }
             },
             "sourceMap": false,
-            "namedChunks": false
+            "namedChunks": false,
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "security": {
+              "allowedHosts": []
+            },
+            "ssr": {
+              "entry": "src/server.ts"
+            }
           },
           "configurations": {
             "production": {

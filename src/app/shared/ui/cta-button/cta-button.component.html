@@ -19,7 +19,7 @@
     </span>
   </a>
 } @else if (href) {
-  <a [href]="href" [target]="target" class="cta-button" [class]="'cta-' + variant">
+  <a [href]="href" [target]="target()" class="cta-button" [class]="'cta-' + variant">
     <span class="cta-text">{{ text }}</span>
     <span class="cta-icon" [class]="'icon-' + icon">
       @switch (icon) {

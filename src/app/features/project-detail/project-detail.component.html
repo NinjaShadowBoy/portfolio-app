@@ -37,7 +37,7 @@
   @if (project.photoUrls && project.photoUrls.length > 0) {
   <div class="gallery">
     <h2>Project Screenshots</h2>
-    <app-carousel [photoUrls]="project.photoUrls" [projectName]="project.name"></app-carousel>
+    <app-carousel [photoUrls]="project.photoUrls" [projectName]="project.name" />
   </div>
   } @else {
   <div class="gallery">
@@ -142,7 +142,7 @@
           <div class="rating-item">
             <div class="rating-header">
               <div class="rating-user-info">
-                <app-user-avatar [userName]="getUserName(rating.userId)" size="small"></app-user-avatar>
+                <app-user-avatar [userName]="getUserName(rating.userId)" size="small" />
                 <span class="rating-user-name">{{ getUserName(rating.userId) }}</span>
               </div>
               <div class="rating-meta">

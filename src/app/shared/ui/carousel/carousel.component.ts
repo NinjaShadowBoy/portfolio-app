@@ -1,4 +1,4 @@
-import { Component, effect, input, signal, ViewChild, ElementRef } from '@angular/core';
+import { Component, effect, input, signal, ElementRef, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,7 +12,7 @@ export class CarouselComponent {
   photoUrls = input.required<string[]>();
   projectName = input.required<string>();
 
-  @ViewChild('carouselImage') carouselImage!: ElementRef<HTMLImageElement>;
+  readonly carouselImage = viewChild.required<ElementRef<HTMLImageElement>>('carouselImage');
 
   currentImageIndex = signal(0);
   isHovered = signal(false);
@@ -82,7 +82,7 @@ export class CarouselComponent {
   }
 
   private fadeOutAndChangeImage(changeImageCallback: () => void): void {
-    const image = this.carouselImage?.nativeElement;
+    const image = this.carouselImage()?.nativeElement;
     if (image) {
       image.style.opacity = '0.3';
       setTimeout(() => {

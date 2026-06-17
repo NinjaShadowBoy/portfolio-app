@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   // Local dev backend URL. Update if your dev server differs.
-  apiBaseUrl: 'http://localhost:8080/api/v1',
+  apiBaseUrl: 'http://localhost:8080/portfolio',
   cloudinary: {
     cloudName: 'dct6fuenh',
     uploadPreset: 'portfolio_unsigned', // Create this in Cloudinary dashboard

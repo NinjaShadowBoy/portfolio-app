@@ -1,5 +1,7 @@
 export type UserRole = 'USER' | 'ADMIN';
 
+export type OAuthProvider = 'google' | 'github';
+
 export interface UserDto {
   id: number;
   email: string;

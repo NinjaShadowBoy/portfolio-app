@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -15,5 +15,5 @@ export class CtaButtonComponent {
   @Input() href?: string;
   @Input() icon: 'arrow-right' | 'external' | 'search' | 'explore' = 'arrow-right';
   @Input() variant: 'primary' | 'secondary' | 'outline' = 'outline';
-  @Input() target?: string;
+  readonly target = input<string>();
 }

@@ -9,33 +9,40 @@
     "predeploy": "npm run build:gh-pages",
     "deploy": "npx angular-cli-ghpages --dir=dist/portfolio-app/browser",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "serve:ssr:portfolio-app": "node dist/portfolio-app/server/server.mjs"
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^19.2.15",
-    "@angular/compiler": "^19.2.15",
-    "@angular/core": "^19.2.15",
-    "@angular/forms": "^19.2.15",
-    "@angular/platform-browser": "^19.2.15",
-    "@angular/platform-browser-dynamic": "^19.2.15",
-    "@angular/router": "^19.2.15",
+    "@angular/common": "^22.0.1",
+    "@angular/compiler": "^22.0.1",
+    "@angular/core": "^22.0.1",
+    "@angular/forms": "^22.0.1",
+    "@angular/platform-browser": "^22.0.1",
+    "@angular/platform-browser-dynamic": "^22.0.1",
+    "@angular/platform-server": "^22.0.1",
+    "@angular/router": "^22.0.1",
+    "@angular/ssr": "^22.0.1",
     "cloudinary": "^2.8.0",
+    "express": "^5.1.0",
     "rxjs": "~7.8.2",
     "tslib": "^2.8.1",
-    "zone.js": "~0.15.1"
+    "zone.js": "~0.16.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.19",
-    "@angular/cli": "^19.2.19",
-    "@angular/compiler-cli": "^19.2.15",
-    "@types/jasmine": "~5.1.12",
+    "@angular-devkit/build-angular": "^22.0.1",
+    "@angular/cli": "^22.0.1",
+    "@angular/compiler-cli": "^22.0.1",
+    "@types/express": "^5.0.1",
+    "@types/jasmine": "~6.0.0",
+    "@types/node": "^20.17.19",
+    "baseline-browser-mapping": "^2.10.37",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.7.3"
+    "typescript": "~6.0.3"
   }
 }

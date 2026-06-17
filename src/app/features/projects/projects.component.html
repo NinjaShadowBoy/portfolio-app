@@ -85,8 +85,7 @@
   <!-- Projects Grid -->
   <div class="projects-grid">
     @for (project of projects(); track project.id) {
-    <app-project-card [project]="project">
-    </app-project-card>
+    <app-project-card [project]="project" />
     } @empty {
     <div class="no-results">
       <h3>No projects found</h3>

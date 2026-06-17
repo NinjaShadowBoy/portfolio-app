@@ -3,12 +3,14 @@
     <!-- Navigation with hamburger for small screens -->
     <nav class="navigation" aria-label="Primary">
       <div class="mobile-nav-controls">
-        <button class="hamburger liquid-glass" aria-label="Menu" (click)="toggleMenu()">
+        <button class="hamburger liquid-glass" type="button" aria-controls="mobile-menu"
+          [attr.aria-expanded]="isMenuOpen"
+          [attr.aria-label]="isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'" (click)="toggleMenu()">
           <span></span><span></span><span></span>
         </button>
         @if (isAuthenticated() && user()) {
         <div class="mobile-login-indicator liquid-glass-subtle" title="Logged in as {{ user()!.name }}">
-          <app-user-avatar [userName]="user()!.name" size="small"></app-user-avatar>
+          <app-user-avatar [userName]="user()!.name" size="small" />
         </div>
         }
       </div>
@@ -18,27 +20,31 @@
         @for(item of navItems; track item.label) {
         <li>
           <!-- Event binding for user interactions -->
-          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active">{{ item.label }}</a>
+          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active"
+            ariaCurrentWhenActive="page">{{ item.label }}</a>
         </li>
         }
         @if (isAuthenticated() && user()) {
         <li class="login-status">
           <div class="status-badge liquid-glass-subtle">
-            <app-user-avatar [userName]="user()!.name" size="medium"></app-user-avatar>
+            <app-user-avatar [userName]="user()!.name" size="medium" />
             <span class="user-name">{{ user()!.name }}</span>
           </div>
         </li>
         }
         <li class="auth-controls">
           @if (isAuthenticated()) {
-          <a class="link liquid-glass" (click)="logout()" routerLinkActive="active">Logout</a>
+          <a class="link liquid-glass" (click)="logout()" routerLinkActive="active"
+            ariaCurrentWhenActive="page">Logout</a>
           } @else {
-          <a class="link liquid-glass" [routerLink]="['/login']" routerLinkActive="active">Login</a>
+          <a class="link liquid-glass" [routerLink]="['/login']" routerLinkActive="active"
+            ariaCurrentWhenActive="page">Login</a>
           }
         </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
-          <a class="link liquid-glass" [routerLink]="['/admin']" routerLinkActive="active">Admin</a>
+          <a class="link liquid-glass" [routerLink]="['/admin']" routerLinkActive="active"
+            ariaCurrentWhenActive="page">Admin</a>
         </li>
         }
 
@@ -81,14 +87,26 @@
               </svg>
             </button>
             <div class="theme-toggle-item">
-              <button class="theme-toggle liquid-glass" (click)="toggleTheme()"
+              <button class="theme-toggle" type="button" (click)="toggleTheme()"
+                [class.dark]="currentTheme() === 'dark'"
                 [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
                 title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
-                @if (currentTheme() === 'dark') {
-                <span class="theme-icon">☀️</span>
-                } @else {
-                <span class="theme-icon">🌙</span>
-                }
+                <span class="theme-track" aria-hidden="true">
+                  <span class="theme-icon theme-icon-sun">
+                    <svg viewBox="0 0 24 24" focusable="false">
+                      <circle cx="12" cy="12" r="4"></circle>
+                      <path
+                        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41">
+                      </path>
+                    </svg>
+                  </span>
+                  <span class="theme-icon theme-icon-moon">
+                    <svg viewBox="0 0 24 24" focusable="false">
+                      <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 1 0 9.8 9.8z"></path>
+                    </svg>
+                  </span>
+                  <span class="theme-thumb"></span>
+                </span>
               </button>
             </div>
           </div>
@@ -116,12 +134,12 @@
     @if (isMenuOpen) {
     <div class="backdrop" (click)="toggleMenu()"></div>
     }
-    <div class="sidebar" [class.open]="isMenuOpen">
-      <button class="close-btn" (click)="toggleMenu()">×</button>
+    <div class="sidebar" id="mobile-menu" [class.open]="isMenuOpen">
+      <button class="close-btn" type="button" aria-label="Close navigation menu" (click)="toggleMenu()">×</button>
       @if (isAuthenticated() && user()) {
       <div class="mobile-login-status">
         <div class="status-badge liquid-glass-subtle">
-          <app-user-avatar [userName]="user()!.name" size="large"></app-user-avatar>
+          <app-user-avatar [userName]="user()!.name" size="large" />
           <div class="user-info">
             <span class="user-name">{{ user()!.name }}</span>
             <span class="user-email">{{ user()!.email }}</span>
@@ -171,34 +189,49 @@
           </div>
         </li>
         <li class="theme-toggle-item mobile-theme">
-          <button class="theme-toggle liquid-glass" (click)="toggleTheme()"
+          <button class="theme-toggle" type="button" (click)="toggleTheme()"
+            [class.dark]="currentTheme() === 'dark'"
             [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
             title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
-            @if (currentTheme() === 'dark') {
-            <span class="theme-icon">☀️</span>
-            } @else {
-            <span class="theme-icon">🌙</span>
-            }
+            <span class="theme-track" aria-hidden="true">
+              <span class="theme-icon theme-icon-sun">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <path
+                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41">
+                  </path>
+                </svg>
+              </span>
+              <span class="theme-icon theme-icon-moon">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 1 0 9.8 9.8z"></path>
+                </svg>
+              </span>
+              <span class="theme-thumb"></span>
+            </span>
           </button>
         </li>
         @for(item of navItems; track item.label) {
         <li>
-          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active" (click)="toggleMenu()">{{
+          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active"
+            ariaCurrentWhenActive="page" (click)="toggleMenu()">{{
             item.label
             }}</a>
         </li>
         }
         <li class="auth-controls">
           @if (isAuthenticated()) {
-          <a class="link liquid-glass" (click)="logout(); toggleMenu()" routerLinkActive="active">Logout</a>
+          <a class="link liquid-glass" (click)="logout(); toggleMenu()" routerLinkActive="active"
+            ariaCurrentWhenActive="page">Logout</a>
           } @else {
           <a class="link liquid-glass" [routerLink]="['/login']" routerLinkActive="active"
-            (click)="toggleMenu()">Login</a>
+            ariaCurrentWhenActive="page" (click)="toggleMenu()">Login</a>
           }
         </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
-          <a class="link liquid-glass" [routerLink]="['/admin']" routerLinkActive="active">Admin</a>
+          <a class="link liquid-glass" [routerLink]="['/admin']" routerLinkActive="active"
+            ariaCurrentWhenActive="page" (click)="toggleMenu()">Admin</a>
         </li>
         }
         <li class="socials">

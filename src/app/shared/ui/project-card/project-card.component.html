@@ -6,7 +6,7 @@
   <!-- Project Carousel -->
   @if (project().photoUrls && project().photoUrls.length > 0) {
   <div class="project-carousel-wrapper">
-    <app-carousel [photoUrls]="project().photoUrls" [projectName]="project().name"></app-carousel>
+    <app-carousel [photoUrls]="project().photoUrls" [projectName]="project().name" />
   </div>
   }
 
@@ -47,12 +47,10 @@
     </div>
 
     <div class="project-actions">
-      <app-cta-button
-        text="Details"
+      <app-cta-button text="Details"
         [routerLink]="['/projects', project().id]"
         icon="search"
-        variant="outline">
-      </app-cta-button>
+        variant="outline" />
       <a [href]="project().githubLink" target="_blank" rel="noopener noreferrer" class="github-link" aria-label="View on GitHub">
         <img src="assets/icons/github.svg" alt="GitHub" width="20" height="20" class="github-icon" />
       </a>

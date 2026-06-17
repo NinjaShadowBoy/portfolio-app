@@ -1,6 +1,6 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -91,27 +91,7 @@ export class Oauth2RedirectComponent {
 
   private processToken(token: string): void {
     try {
-      const payload = this.decodeToken(token);
-
-      if (!payload || !payload.sub) {
-        throw new Error('Invalid token payload');
-      }
-
-      // Set session with token and user data
-      this.auth.setSession({
-        token: token,
-        user: {
-          id: payload.sub,
-          email: payload.email || '',
-          name: payload.name || '',
-          role: payload.role || 'USER',
-          createdAt: payload.iat
-            ? new Date(payload.iat * 1000).toISOString()
-            : new Date().toISOString(),
-          lastLoginAt: new Date().toISOString()
-        },
-        expiresIn: payload.exp ? (payload.exp * 1000 - Date.now()) : 3600000
-      });
+      this.auth.setSessionFromToken(token);
 
       this.notifier.success('Successfully authenticated!');
       this.message.set('Redirecting...');
@@ -119,22 +99,6 @@ export class Oauth2RedirectComponent {
     } catch (err) {
       console.error('Token decode error:', err);
       this.handleAuthError('Invalid authentication token');
-    }
-  }
-
-  private decodeToken(token: string): any {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split('')
-          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      );
-      return JSON.parse(jsonPayload);
-    } catch (error) {
-      throw new Error('Failed to decode token');
     }
   }
 }

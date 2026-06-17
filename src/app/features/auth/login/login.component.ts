@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { OAuthProvider } from '../../../core/interfaces/auth.interface';
 import { NotificationService } from '../../../core/services/notification.service';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -60,14 +60,9 @@ export class LoginComponent {
     });
   }
 
-  loginWithOAuth2(provider: 'google' | 'github' | 'facebook') {
+  loginWithOAuth2(provider: OAuthProvider) {
     if (this.loading()) return;
-
-    // OAuth2 is not currently available
-    const providerName = provider.charAt(0).toUpperCase() + provider.slice(1);
-    this.notifier.error(
-      `${providerName} login is not available at the moment. Please use email and password to sign in.`
-    );
+    this.auth.startOAuth2(provider);
   }
 
   toggleMode() {

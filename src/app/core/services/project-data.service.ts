@@ -59,9 +59,9 @@ export class ProjectDataService {
     },
   ];
 
-  // Angular 20 rxResource for declarative async data fetching
+  // Angular 22 rxResource for declarative async data fetching
   private projectsResource = rxResource({
-    loader: () =>
+    stream: () =>
       this.http.get<Project[]>(this.apiUrl).pipe(
         map((projects) => this.normalizeProjects(projects)),
         catchError(() => of(this.getFallbackProjects())),

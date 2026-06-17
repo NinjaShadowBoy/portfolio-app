@@ -20,19 +20,17 @@
 
       <!-- Form Mode -->
       @if (!jsonMode()) {
-        <app-project-form
-          [formMode]="formMode()"
+        <app-project-form [formMode]="formMode()"
           [project]="editingProject()"
           (save)="onSaveProject($event)"
           (cancel)="resetForm()"
-        ></app-project-form>
+         />
       }
 
       <!-- JSON Mode -->
       @if (jsonMode()) {
-        <app-json-import
-          (importSuccess)="onJsonImport($event)"
-        ></app-json-import>
+        <app-json-import (importSuccess)="onJsonImport($event)"
+         />
       }
 
       <!-- Projects List -->
@@ -92,10 +90,9 @@
 
       <!-- Photo Management Modal -->
       @if (selectedProjectForPhotos()) {
-        <app-photo-manager
-          [project]="selectedProjectForPhotos()!"
+        <app-photo-manager [project]="selectedProjectForPhotos()!"
           (close)="closePhotoManager()"
-        ></app-photo-manager>
+         />
       }
     </div>
   }
