@@ -55,18 +55,24 @@
     }
   </ul>
 
-  <h2>Core Technologies</h2>
-  <ul class="skills-list">
-    @for (tech of coreTechnologies; track tech.name) {
-    <li class="tech-badge-item">
-      <a [href]="tech.docUrl" target="_blank" rel="noopener noreferrer" class="tech-badge-link"
-        [attr.aria-label]="tech.name + ' documentation'">
-        <img [src]="tech.logo" [alt]="tech.name" class="tech-badge-icon" width="20" height="20" />
-        <span>{{ tech.name }}</span>
-      </a>
-    </li>
+  <section class="tech-stack-section">
+    <h2>Technologies I've Touched</h2>
+    <p class="tech-stack-intro">
+      A rolling list of tools and languages I've worked with. Starred (★) items are the ones I'm most comfortable with and use actively.
+    </p>
+
+    @for (category of techCategories; track category.title) {
+    <div class="category-section">
+      <h3>{{ category.title }}</h3>
+      <app-tech-banner [technologies]="category.technologies" [direction]="category.direction" [showStars]="true" />
+    </div>
     }
-  </ul>
+
+    <p class="tech-legend">
+      <span class="legend-star good" aria-hidden="true">★</span> proficient
+      <span class="legend-star" aria-hidden="true">☆</span> had exposure
+    </p>
+  </section>
 
   <h2>Hobbies & Interests</h2>
   <ul class="skills-list hobbies-list">

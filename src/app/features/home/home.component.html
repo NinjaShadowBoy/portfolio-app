@@ -45,103 +45,31 @@
   <!-- Languages Banner (Left to Right) -->
   <div class="category-section">
     <h3>Languages</h3>
-    <div class="tools-banner-container">
-      <div class="tools-banner">
-        @for (tool of languages; track tool.name) {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-        <!-- Duplicate multiple times for seamless loop -->
-        @for (tool of languages; track tool.name + '-duplicate-1') {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-        @for (tool of languages; track tool.name + '-duplicate-2') {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-        @for (tool of languages; track tool.name + '-duplicate-3') {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-      </div>
-    </div>
+    <app-tech-banner [technologies]="languages" direction="left" [speed]="20" />
   </div>
 
   <!-- Frameworks Banner (Right to Left) -->
   <div class="category-section">
     <h3>Frameworks</h3>
-    <div class="tools-banner-container">
-      <div class="tools-banner reverse">
-        @for (tool of frameworks; track tool.name) {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-        <!-- Duplicate multiple times for seamless loop -->
-        @for (tool of frameworks; track tool.name + '-duplicate-1') {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-        @for (tool of frameworks; track tool.name + '-duplicate-2') {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-        @for (tool of frameworks; track tool.name + '-duplicate-3') {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-      </div>
-    </div>
+    <app-tech-banner [technologies]="frameworks" direction="right" [speed]="20" />
   </div>
 
   <!-- Tools Banner (Left to Right) -->
   <div class="category-section">
     <h3>Tools</h3>
-    <div class="tools-banner-container">
-      <div class="tools-banner">
-        @for (tool of tools; track tool.name) {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-        <!-- Duplicate multiple times for seamless loop -->
-        @for (tool of tools; track tool.name + '-duplicate-1') {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-        @for (tool of tools; track tool.name + '-duplicate-2') {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-        @for (tool of tools; track tool.name + '-duplicate-3') {
-          <a [href]="tool.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item" [attr.aria-label]="tool.name + ' documentation'">
-            <img appLazyLoad [src]="tool.logo" [alt]="tool.name" width="48" height="48" loading="lazy" />
-            <span>{{ tool.name }}</span>
-          </a>
-        }
-      </div>
-    </div>
+    <app-tech-banner [technologies]="tools" direction="left" [speed]="20" />
+  </div>
+
+  <!-- Frameworks Banner (Right to Left) -->
+  <div class="category-section">
+    <h3>Frameworks</h3>
+    <app-tech-banner [technologies]="frameworks" direction="right" [speed]="20" />
+  </div>
+
+  <!-- Tools Banner (Left to Right) -->
+  <div class="category-section">
+    <h3>Tools</h3>
+    <app-tech-banner [technologies]="tools" direction="left" [speed]="20" />
   </div>
 </section>
 

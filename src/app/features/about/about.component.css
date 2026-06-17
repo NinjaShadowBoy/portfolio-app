@@ -225,6 +225,63 @@ h2 {
   opacity: 1;
 }
 
+/* Technologies carousel section */
+.tech-stack-section {
+  margin: 3rem 0 2rem;
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  animation: fadeInUp 0.8s var(--motion-ease-out) 0.5s both;
+}
+
+.tech-stack-section h2 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.tech-stack-intro {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  color: var(--text-tertiary);
+  font-size: 0.95rem;
+}
+
+.category-section {
+  margin-bottom: 2.5rem;
+}
+
+.category-section:last-child {
+  margin-bottom: 0;
+}
+
+.category-section h3 {
+  text-align: center;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.tech-legend {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+}
+
+.legend-star {
+  margin: 0 0.25rem 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+}
+
+.legend-star.good {
+  color: #ffc107;
+}
+
 /* Skills grid layout for better organization */
 .skills-section {
   margin-top: 2rem;
@@ -343,6 +400,25 @@ h2 {
     display: inline-flex;
     align-items: center;
   }
+
+  .tech-stack-section {
+    margin: 2rem 0 1.5rem;
+    padding: 1.5rem 0;
+  }
+
+  .category-section {
+    margin-bottom: 1.75rem;
+  }
+
+  .category-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tech-stack-intro {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
 }
 
 /* Extra small screens */
@@ -413,6 +489,26 @@ h2 {
     font-size: 0.825rem;
     border-radius: 20px;
   }
+
+  .tech-stack-section {
+    margin: 1.5rem 0 1rem;
+    padding: 1rem 0;
+  }
+
+  .category-section {
+    margin-bottom: 1.25rem;
+  }
+
+  .category-section h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+  }
+
+  .tech-stack-intro {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
 }
 
 /* Animation keyframes */
@@ -442,28 +538,6 @@ h2 {
 [data-theme="dark"] .skills-section {
   background: var(--surface-raised);
   border-color: var(--border-default);
-}
-
-.skills-list li.tech-badge-item {
-  padding: 0;
-  display: inline-flex;
-}
-
-.tech-badge-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  text-decoration: none;
-  color: inherit;
-  width: 100%;
-  height: 100%;
-}
-
-.tech-badge-icon {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
 }
 
 /* Print optimizations */

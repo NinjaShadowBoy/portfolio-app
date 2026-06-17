@@ -4,6 +4,7 @@ export interface Technology {
   name: string;
   logo: string; // URL to logo
   docUrl: string; // Link to official documentation
+  proficiency?: number; // Optional proficiency level (0-3); 0/1 = exposed, 2/3 = proficient
 }
 
 @Injectable({
@@ -152,6 +153,11 @@ export class TechnologiesService {
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gradle/gradle-original.svg',
       docUrl: 'https://gradle.org/',
     },
+    'maven': {
+      name: 'Maven',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maven/maven-original.svg',
+      docUrl: 'https://maven.apache.org/',
+    },
     'npm': {
       name: 'npm',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg',
@@ -212,14 +218,27 @@ export class TechnologiesService {
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
       docUrl: 'https://nextjs.org/',
     },
+    'go': {
+      name: 'Go',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg',
+      docUrl: 'https://golang.org/',
+    },
+    'playwright': {
+      name: 'Playwright',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/playwright/playwright-original.svg',
+      docUrl: 'https://playwright.dev/',
+    },
   };
 
   /**
    * Look up a technology by name (case-insensitive)
    */
-  getTechnology(name: string): Technology | undefined {
+  getTechnology(name: string, proficiency?: number): Technology | undefined {
     const key = name.toLowerCase().trim();
-    return this.technologies[key];
+    const tech = this.technologies[key];
+    if (!tech) return undefined;
+    if (proficiency == null) return tech;
+    return { ...tech, proficiency };
   }
 
   /**

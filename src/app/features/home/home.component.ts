@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ProjectDataService } from '../../core/services/project-data.service';
 import { ProjectCardComponent } from '../../shared/ui/project-card/project-card.component';
 import { LazyLoadDirective } from '../../core/directives/lazy-load.directive';
+import { TechBannerComponent } from '../../shared/ui/tech-banner/tech-banner.component';
 import { TechnologiesService, Technology } from '../../core/services/technologies.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProjectCardComponent, LazyLoadDirective],
+  imports: [CommonModule, ProjectCardComponent, LazyLoadDirective, TechBannerComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
@@ -25,6 +26,7 @@ export class HomeComponent {
     this.techService.getTechnology('Java')!,
     this.techService.getTechnology('Kotlin')!,
     this.techService.getTechnology('Python')!,
+    this.techService.getTechnology('Go')!,
     this.techService.getTechnology('C')!,
     this.techService.getTechnology('C++')!,
     this.techService.getTechnology('HTML5')!,
@@ -50,6 +52,7 @@ export class HomeComponent {
     this.techService.getTechnology('Linux')!,
     this.techService.getTechnology('Gradle')!,
     this.techService.getTechnology('npm')!,
+    this.techService.getTechnology('Playwright')!,
   ].filter(Boolean);
 }
 
