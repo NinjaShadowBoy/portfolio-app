@@ -1,0 +1,23 @@
+<div class="tech-banner-container">
+  <div class="tech-banner" [class.reverse]="direction() === 'right'" [style.--speed]="speed() + 's'">
+    @for (tech of displayItems(); track $index) {
+    <a [href]="tech.docUrl" target="_blank" rel="noopener noreferrer" class="tool-item"
+      [attr.aria-label]="tech.name + ' documentation'">
+      <img appLazyLoad [src]="tech.logo" [alt]="tech.name" width="48" height="48" loading="lazy" />
+      <span class="tech-label">
+        {{ tech.name }}
+        @if (showStars()) {
+        @for (item of createRange(tech.proficiency); track $index) {
+           <span class="proficiency-star" [class.good]="isGoodAt(tech)"
+              aria-hidden="true">
+              {{ isGoodAt(tech) ? '★' : '☆' }}
+           </span>
+      }
+      }
+      </span>
+    </a>
+    }
+  </div>
+
+
+</div>
