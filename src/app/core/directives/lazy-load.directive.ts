@@ -1,4 +1,5 @@
-import { Directive, ElementRef, OnInit, OnDestroy, Renderer2, input } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Directive, ElementRef, OnInit, OnDestroy, Renderer2, PLATFORM_ID, inject, input } from '@angular/core';
 
 /**
  * Lazy Load Directive for Images
@@ -25,7 +26,9 @@ export class LazyLoadDirective implements OnInit, OnDestroy {
   loadedClass = input('lazy-loaded');
   errorClass = input('lazy-error');
 
+  private platformId = inject(PLATFORM_ID);
   private observer?: IntersectionObserver;
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   constructor(
     private el: ElementRef<HTMLImageElement>,
@@ -33,6 +36,11 @@ export class LazyLoadDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    if (!this.isBrowser) {
+      this.renderer.setAttribute(this.el.nativeElement, 'src', this.src());
+      return;
+    }
+
     if (!this.supportsIntersectionObserver()) {
       // Fallback: load image immediately if IntersectionObserver not supported
       this.loadImage();

@@ -1,4 +1,5 @@
-import { Injectable, computed, effect, signal, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Injectable, PLATFORM_ID, computed, effect, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoginRequest, LoginResponse, OAuthProvider, RegisterRequest, UserDto } from '../interfaces/auth.interface';
 import { environment } from '../../../environments/environment';
@@ -10,8 +11,10 @@ const USER_STORAGE_KEY = 'auth.user';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apiBaseUrl = `${environment.apiBaseUrl}/auth`;
+  private platformId = inject(PLATFORM_ID);
   private notificationService = inject(NotificationService);
   private http = inject(HttpClient);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   // Signals store
   private tokenSignal = signal<string | null>(this.loadToken());
@@ -25,12 +28,16 @@ export class AuthService {
 
   constructor() {
     effect(() => {
+      if (!this.isBrowser) return;
+
       const token = this.tokenSignal();
       if (token) localStorage.setItem(TOKEN_STORAGE_KEY, token);
       else localStorage.removeItem(TOKEN_STORAGE_KEY);
     });
 
     effect(() => {
+      if (!this.isBrowser) return;
+
       const user = this.userSignal();
       if (user) localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
       else localStorage.removeItem(USER_STORAGE_KEY);
@@ -46,6 +53,8 @@ export class AuthService {
   }
 
   startOAuth2(provider: OAuthProvider) {
+    if (!this.isBrowser) return;
+
     window.location.assign(`${this.apiBaseUrl}/${provider}`);
   }
 
@@ -103,10 +112,14 @@ export class AuthService {
   }
 
   private loadToken(): string | null {
+    if (!this.isBrowser) return null;
+
     return localStorage.getItem(TOKEN_STORAGE_KEY);
   }
 
   private loadUser(): UserDto | null {
+    if (!this.isBrowser) return null;
+
     const raw = localStorage.getItem(USER_STORAGE_KEY);
     if (!raw) return null;
     try {
