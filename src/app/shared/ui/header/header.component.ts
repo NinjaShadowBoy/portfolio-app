@@ -1,7 +1,7 @@
 
 import { Component, inject, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { SocialLinksService } from '../../../core/services/social-links.service';
 import { ThemeService } from '../../../core/services/theme.service';
@@ -10,7 +10,7 @@ import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, UserAvatarComponent],
+  imports: [CommonModule, RouterLink, RouterLinkActive, UserAvatarComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
@@ -39,9 +39,9 @@ export class HeaderComponent {
     return this.currentLang === 'en' ? 'Switch to French' : 'Switch to English';
   }
 
-  toggleLanguage() {
-    const newLang = this.currentLang === 'en' ? 'fr' : 'en';
-    window.location.href = `/${newLang}${this.router.url}`;
+  toggleLanguage(): void {
+    const pathWithoutLocale = this.router.url.replace(/^\/(?:en|fr)(?=\/|$)/, '') || '/home';
+    window.location.assign(this.currentLang === 'fr' ? pathWithoutLocale : `/fr${pathWithoutLocale}`);
   }
 
   downloadCV(lang: 'en' | 'fr'): void {

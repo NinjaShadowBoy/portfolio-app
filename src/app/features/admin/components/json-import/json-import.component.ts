@@ -21,7 +21,7 @@ export class JsonImportComponent {
   processJson() {
     const input = this.importData();
     if (!input.trim()) {
-      this.jsonError.set($localize`@@jsonEnterData:Please enter JSON data`);
+      this.jsonError.set($localize`:@@jsonEnterData:Please enter JSON data`);
       return;
     }
 
@@ -33,14 +33,14 @@ export class JsonImportComponent {
         const valid = data.every((p) => this.validateProjectData(p));
         if (!valid) {
           this.jsonError.set(
-            $localize`@@jsonMissingFieldsArray:One or more projects in the array are missing required fields: name, description, technologies, githubLink, challenges, whatILearned`
+            $localize`:@@jsonMissingFieldsArray:One or more projects in the array are missing required fields: name, description, technologies, githubLink, challenges, whatILearned`
           );
           return;
         }
       } else {
         if (!this.validateProjectData(data)) {
           this.jsonError.set(
-            $localize`@@jsonMissingFields:Missing required fields: name, description, technologies, githubLink, challenges, whatILearned`
+            $localize`:@@jsonMissingFields:Missing required fields: name, description, technologies, githubLink, challenges, whatILearned`
           );
           return;
         }
@@ -49,8 +49,8 @@ export class JsonImportComponent {
       this.importSuccess.emit(data);
       this.importData.set('');
     } catch (err) {
-      this.jsonError.set($localize`@@jsonInvalidFormat:Invalid JSON format. Please check your input.`);
-      this.notificationService.error($localize`@@jsonInvalidFormatShort:Invalid JSON format`);
+      this.jsonError.set($localize`:@@jsonInvalidFormat:Invalid JSON format. Please check your input.`);
+      this.notificationService.error($localize`:@@jsonInvalidFormatShort:Invalid JSON format`);
     }
   }
 
@@ -111,12 +111,12 @@ export class JsonImportComponent {
 
   copySampleJson() {
     navigator.clipboard.writeText(this.getSampleJson());
-    this.notificationService.info($localize`@@jsonCopied:Sample JSON copied to clipboard`);
+    this.notificationService.info($localize`:@@jsonCopied:Sample JSON copied to clipboard`);
   }
 
   copySampleJsonArray() {
     navigator.clipboard.writeText(this.getSampleJsonArray());
-    this.notificationService.info($localize`@@jsonArrayCopied:Sample JSON array copied to clipboard`);
+    this.notificationService.info($localize`:@@jsonArrayCopied:Sample JSON array copied to clipboard`);
   }
 
   clear() {

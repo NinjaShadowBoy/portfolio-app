@@ -50,7 +50,7 @@ export class BreadcrumbComponent {
       if (child.snapshot.params['id']) {
         const projectId = child.snapshot.params['id'];
         const project = this.projectService.getProject(projectId);
-        label = project?.name || $localize`@@breadcrumbProjectDetails:Project Details`;
+        label = project?.name || $localize`:@@breadcrumbProjectDetails:Project Details`;
       }
 
       if (label) {
