@@ -14,7 +14,7 @@ export const authGuard: CanActivateFn = () => {
     return true;
   }
 
-  notificationService.error($localize`@@authLoginRequired:Please log in to continue.`);
+  notificationService.error($localize`:@@authLoginRequired:Please log in to continue.`);
   return router.createUrlTree(['/login']);
 };
 

@@ -93,7 +93,7 @@ export class AuthService {
   logout() {
     this.tokenSignal.set(null);
     this.userSignal.set(null);
-    this.notificationService.success($localize`@@logoutSuccess:You have been logged out successfully`);
+    this.notificationService.success($localize`:@@logoutSuccess:You have been logged out successfully`);
   }
 
   private decodeToken(token: string): any {

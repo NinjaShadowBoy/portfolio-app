@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:fr": "ng serve --configuration fr",
     "build": "ng build",
     "build:gh-pages": "ng build --configuration gh-pages --base-href / --deploy-url /",
     "predeploy": "npm run build:gh-pages",
