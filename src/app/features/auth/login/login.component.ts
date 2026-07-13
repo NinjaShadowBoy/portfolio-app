@@ -1,5 +1,5 @@
 
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -23,6 +23,11 @@ export class LoginComponent {
   loading = signal(false);
   submitted = signal(false);
   isRegister = signal(false);
+
+  submitState = computed(() => {
+    if (this.loading()) return this.isRegister() ? 'creating' : 'signingin';
+    return this.isRegister() ? 'create' : 'signin';
+  });
 
   form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],

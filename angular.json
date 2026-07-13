@@ -23,7 +23,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/portfolio-app",
             "localize": true,
@@ -115,7 +115,7 @@
               "extractLicenses": false,
               "sourceMap": true
             },
-            "fr": {
+            "fr-preview": {
               "localize": ["fr"]
             },
             "gh-pages": {
@@ -145,7 +145,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "portfolio-app:build:production"
@@ -153,14 +153,14 @@
             "development": {
               "buildTarget": "portfolio-app:build:development"
             },
-            "fr": {
-              "buildTarget": "portfolio-app:build:development,fr"
+            "fr-preview": {
+              "buildTarget": "portfolio-app:build:development,fr-preview"
             }
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
             "outputPath": "src/locale",
             "format": "json"

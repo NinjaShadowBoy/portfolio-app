@@ -1,12 +1,12 @@
 <section class="auth-container">
     <div class="auth-card">
         <header class="auth-header">
-            <h1>{{ isRegister() ? 'Create account' : 'Welcome back' }}</h1>
-            <p class="subtitle">{{ isRegister() ? 'Join to continue' : 'Sign in to continue' }}</p>
+            <h1 i18n="Login page heading@@loginHeading">{isRegister() ? 'register' : 'signin', select, register {Create account} signin {Welcome back}}</h1>
+            <p class="subtitle" i18n="Login page subtitle@@loginSubtitle">{isRegister() ? 'register' : 'signin', select, register {Join to continue} signin {Sign in to continue}}</p>
             <div class="mode-toggle" (click)="toggleMode()">
-                <span [class.active]="!isRegister()">Login</span>
+                <span [class.active]="!isRegister()" i18n="Login mode toggle - login option@@loginToggleLogin">Login</span>
                 <div class="toggle-thumb" [class.right]="isRegister()"></div>
-                <span [class.active]="isRegister()">Register</span>
+                <span [class.active]="isRegister()" i18n="Login mode toggle - register option@@loginToggleRegister">Register</span>
             </div>
         </header>
 
@@ -43,7 +43,7 @@
         <!-- Divider -->
         <div class="section-divider">
             <span class="divider-line"></span>
-            <span class="divider-text">Or {{ isRegister() ? 'register' : 'sign in' }} with email</span>
+            <span class="divider-text" i18n="Login page divider - continue with email@@loginDividerWithEmail">{isRegister() ? 'register' : 'signin', select, register {Or register with email} signin {Or sign in with email}}</span>
             <span class="divider-line"></span>
         </div>
 
@@ -74,10 +74,7 @@
                 }
             </div>
 
-            <button type="submit" [disabled]="form.invalid || loading()">
-                {{ loading() ? (isRegister() ? 'Creating account…' : 'Signing in…') : (isRegister() ? 'Create account' :
-                'Sign in') }}
-            </button>
+            <button type="submit" [disabled]="form.invalid || loading()" i18n="Login page submit button@@loginSubmitButton">{submitState(), select, creating {Creating account…} signingin {Signing in…} create {Create account} signin {Sign in}}</button>
         </form>
     </div>
 </section>

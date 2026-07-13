@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:fr": "ng serve --configuration fr",
+    "// start:fr-preview": "Quick local preview of French copy only - serves at normal routes (e.g. /home), NOT /fr/home. Locale sub-path routing only works via the SSR build+server (ng build --localize && npm run serve:ssr:portfolio-app).",
+    "start:fr-preview": "ng serve --configuration fr-preview",
     "build": "ng build",
     "build:gh-pages": "ng build --configuration gh-pages --base-href / --deploy-url /",
     "predeploy": "npm run build:gh-pages",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^22.0.1",
+    "@angular/build": "22.0.1",
     "@angular/cli": "^22.0.1",
     "@angular/compiler-cli": "^22.0.1",
     "@angular/localize": "^22.0.1",
