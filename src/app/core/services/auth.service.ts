@@ -1,3 +1,4 @@
+
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, computed, effect, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -92,7 +93,7 @@ export class AuthService {
   logout() {
     this.tokenSignal.set(null);
     this.userSignal.set(null);
-    this.notificationService.success('You have been logged out successfully');
+    this.notificationService.success($localize`@@logoutSuccess:You have been logged out successfully`);
   }
 
   private decodeToken(token: string): any {

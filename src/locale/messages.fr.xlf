@@ -1,0 +1,2124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" target-language="fr" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="4654641409034492877" datatype="html">
+        <source>@@authLoginRequired:Please log in to continue.</source>
+        <target>Veuillez vous connecter pour continuer.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/guards/auth.guard.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2589852424143136367" datatype="html">
+        <source>@@logoutSuccess:You have been logged out successfully</source>
+        <target>Vous avez été déconnecté avec succès</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/auth.service.ts</context>
+          <context context-type="linenumber">95</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="120590327716468113" datatype="html">
+        <source>@@socialLinkedIn:LinkedIn</source>
+        <target>LinkedIn</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/social-links.service.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6271439290605957570" datatype="html">
+        <source>@@socialLinkedInLabel:Visit LinkedIn profile</source>
+        <target>Voir le profil LinkedIn</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/social-links.service.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7794415831356217565" datatype="html">
+        <source>@@socialGitHub:GitHub</source>
+        <target>GitHub</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/social-links.service.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5909748264198274897" datatype="html">
+        <source>@@socialGitHubLabel:Visit GitHub profile</source>
+        <target>Voir le profil GitHub</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/social-links.service.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1554704014447449849" datatype="html">
+        <source>@@socialWhatsApp:WhatsApp</source>
+        <target>WhatsApp</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/social-links.service.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7555008388478934710" datatype="html">
+        <source>@@socialWhatsAppLabel:Chat on WhatsApp</source>
+        <target>Discuter sur WhatsApp</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/services/social-links.service.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="aboutMeHeading" datatype="html">
+        <source>About Me</source>
+        <target>À propos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+        <note priority="1" from="description">About page heading</note>
+      </trans-unit>
+      <trans-unit id="aboutBio" datatype="html">
+        <source> I&apos;m a fourth-year software engineering student with experience in full-stack development and game programming. My projects include a hotel reservation system with Stripe integration, a Pac-Man clone with procedural maze generation, and a construction material tracking system. I&apos;m passionate about building scalable, user-friendly applications. </source>
+        <target> Étudiant en quatrième année de génie logiciel avec une expérience en développement full-stack et en programmation de jeux. Mes projets incluent un système de réservation d&apos;hôtel avec intégration Stripe, un clone de Pac-Man avec génération procédurale de labyrinthe, et un système de suivi des matériaux de construction. Je suis passionné par la création d&apos;applications scalables et conviviales. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">4,10</context>
+        </context-group>
+        <note priority="1" from="description">About page bio paragraph</note>
+      </trans-unit>
+      <trans-unit id="6742053750310308013" datatype="html">
+        <source>Download CV (English)</source>
+        <target>Télécharger le CV (Anglais)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">13,14</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">60,61</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">160,161</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="aboutCvButtonEn" datatype="html">
+        <source>CV</source>
+        <target>CV</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+        <note priority="1" from="description">CV button text</note>
+      </trans-unit>
+      <trans-unit id="3300592707511147087" datatype="html">
+        <source>Download CV (French)</source>
+        <target>Télécharger le CV (Français)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">32,33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">79,80</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">179,180</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="aboutCvButtonFr" datatype="html">
+        <source>CV</source>
+        <target>CV</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+        <note priority="1" from="description">CV button text</note>
+      </trans-unit>
+      <trans-unit id="aboutSkills" datatype="html">
+        <source>Skills</source>
+        <target>Compétences</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">51,53</context>
+        </context-group>
+        <note priority="1" from="description">About page skills heading</note>
+      </trans-unit>
+      <trans-unit id="aboutTechnologies" datatype="html">
+        <source>Technologies I&apos;ve Touched</source>
+        <target>Technologies que j&apos;ai utilisées</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">59,60</context>
+        </context-group>
+        <note priority="1" from="description">About page technologies heading</note>
+      </trans-unit>
+      <trans-unit id="aboutTechStackIntro" datatype="html">
+        <source> A rolling list of tools and languages I&apos;ve worked with. Starred (★) items are the ones I&apos;m most comfortable with and use actively. </source>
+        <target> Une liste des outils et langages que j&apos;ai utilisés. Les éléments étoilés (★) sont ceux que je maîtrise le mieux et que j&apos;utilise activement. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">61,64</context>
+        </context-group>
+        <note priority="1" from="description">About page tech stack intro paragraph</note>
+      </trans-unit>
+      <trans-unit id="aboutTechLegend" datatype="html">
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;legend-star good&quot; aria-hidden=&quot;true&quot;&gt;"/>★<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> proficient <x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span class=&quot;legend-star&quot; aria-hidden=&quot;true&quot;&gt;"/>☆<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> had exposure </source>
+        <target><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;legend-star good&quot; aria-hidden=&quot;true&quot;&gt;"/>★<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> compétent <x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span class=&quot;legend-star&quot; aria-hidden=&quot;true&quot;&gt;"/>☆<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> quelque expérience </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">72,75</context>
+        </context-group>
+        <note priority="1" from="description">About page tech legend</note>
+      </trans-unit>
+      <trans-unit id="aboutHobbies" datatype="html">
+        <source>Hobbies &amp; Interests</source>
+        <target>Centres d&apos;intérêt</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/about/about.component.html</context>
+          <context context-type="linenumber">77,79</context>
+        </context-group>
+        <note priority="1" from="description">About page hobbies heading</note>
+      </trans-unit>
+      <trans-unit id="adminDashboardHeading" datatype="html">
+        <source>Admin Dashboard</source>
+        <target>Tableau de bord admin</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">3,5</context>
+        </context-group>
+        <note priority="1" from="description">Admin dashboard heading</note>
+      </trans-unit>
+      <trans-unit id="adminRestricted" datatype="html">
+        <source>Restricted area. You are not authorized.</source>
+        <target>Zone restreinte. Vous n&apos;êtes pas autorisé.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+        <note priority="1" from="description">Admin restricted area message</note>
+      </trans-unit>
+      <trans-unit id="adminGoHome" datatype="html">
+        <source>Go Home</source>
+        <target>Retour à l&apos;accueil</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">8,13</context>
+        </context-group>
+        <note priority="1" from="description">Admin go home button</note>
+      </trans-unit>
+      <trans-unit id="adminFormMode" datatype="html">
+        <source>Form Mode</source>
+        <target>Mode formulaire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">16,17</context>
+        </context-group>
+        <note priority="1" from="description">Admin form mode toggle</note>
+      </trans-unit>
+      <trans-unit id="adminJsonMode" datatype="html">
+        <source>JSON Mode</source>
+        <target>Mode JSON</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">18,22</context>
+        </context-group>
+        <note priority="1" from="description">Admin JSON mode toggle</note>
+      </trans-unit>
+      <trans-unit id="adminNoProjects" datatype="html">
+        <source>No projects found. Create your first project above!</source>
+        <target>Aucun projet trouvé. Créez votre premier projet ci-dessus !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">40,42</context>
+        </context-group>
+        <note priority="1" from="description">Admin no projects message</note>
+      </trans-unit>
+      <trans-unit id="adminFeaturedBadge" datatype="html">
+        <source>Featured</source>
+        <target>En vedette</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">48,51</context>
+        </context-group>
+        <note priority="1" from="description">Admin featured badge</note>
+      </trans-unit>
+      <trans-unit id="adminGitHubLink" datatype="html">
+        <source>View on GitHub →</source>
+        <target>Voir sur GitHub →</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">73,76</context>
+        </context-group>
+        <note priority="1" from="description">Admin view on GitHub link</note>
+      </trans-unit>
+      <trans-unit id="adminChallengesLabel" datatype="html">
+        <source>Challenges:</source>
+        <target>Défis :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">77,78</context>
+        </context-group>
+        <note priority="1" from="description">Admin challenges label</note>
+      </trans-unit>
+      <trans-unit id="adminLearningsLabel" datatype="html">
+        <source>Learnings:</source>
+        <target>Ce que j&apos;ai appris :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">78,79</context>
+        </context-group>
+        <note priority="1" from="description">Admin learnings label</note>
+      </trans-unit>
+      <trans-unit id="adminEditButton" datatype="html">
+        <source>Edit</source>
+        <target>Modifier</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">81,82</context>
+        </context-group>
+        <note priority="1" from="description">Admin edit button</note>
+      </trans-unit>
+      <trans-unit id="adminPhotosButton" datatype="html">
+        <source>Photos</source>
+        <target>Photos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">82,83</context>
+        </context-group>
+        <note priority="1" from="description">Admin photos button</note>
+      </trans-unit>
+      <trans-unit id="adminDeleteButton" datatype="html">
+        <source>Delete</source>
+        <target>Supprimer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.html</context>
+          <context context-type="linenumber">83,85</context>
+        </context-group>
+        <note priority="1" from="description">Admin delete button</note>
+      </trans-unit>
+      <trans-unit id="3557413432638802251" datatype="html">
+        <source>@@projectCreated:Project &quot;<x id="PH" equiv-text="newProject.name"/>&quot; created successfully!</source>
+        <target>Projet &quot;<x id="PH" equiv-text="newProject.name"/>&quot; créé avec succès !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">187</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7611890675759022922" datatype="html">
+        <source>@@projectCreateFailed:Failed to create project. Check console for details.</source>
+        <target>Échec de la création du projet. Consultez la console pour plus de détails.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1897400541278054624" datatype="html">
+        <source>@@projectUpdated:Project &quot;<x id="PH" equiv-text="updatedProject.name"/>&quot; updated successfully!</source>
+        <target>Projet &quot;<x id="PH" equiv-text="updatedProject.name"/>&quot; mis à jour avec succès !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">174</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2841820742754823656" datatype="html">
+        <source>@@projectUpdateFailed:Failed to update project. Check console for details.</source>
+        <target>Échec de la mise à jour du projet. Consultez la console pour plus de détails.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="551579823865416842" datatype="html">
+        <source>@@projectDeleteConfirm:Are you sure you want to delete &quot;<x id="PH" equiv-text="project.name"/>&quot;? This action cannot be undone.</source>
+        <target>Êtes-vous sûr de vouloir supprimer &quot;<x id="PH" equiv-text="project.name"/>&quot; ? Cette action est irréversible.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">126</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5558251435104779271" datatype="html">
+        <source>@@projectDeleted:Project &quot;<x id="PH" equiv-text="project.name"/>&quot; deleted successfully!</source>
+        <target>Projet &quot;<x id="PH" equiv-text="project.name"/>&quot; supprimé avec succès !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">135</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5599865473093305952" datatype="html">
+        <source>@@projectDeleteFailed:Failed to delete project. Check console for details.</source>
+        <target>Échec de la suppression du projet. Consultez la console pour plus de détails.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">144</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6092357466562187776" datatype="html">
+        <source>@@projectUpdateFailed:Failed to update project</source>
+        <target>Échec de la mise à jour du projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">179</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7465350270264709943" datatype="html">
+        <source>@@projectCreateFailed:Failed to create project</source>
+        <target>Échec de la création du projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">192</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3098836171268388430" datatype="html">
+        <source>@@bulkProcessed:Successfully processed <x id="PH" equiv-text="results.length"/> project(s)</source>
+        <target><x id="PH" equiv-text="results.length"/> projet(s) traité(s) avec succès</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">208</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7061292099608184132" datatype="html">
+        <source>@@bulkProcessFailed:Some projects failed to process</source>
+        <target>Certains projets n&apos;ont pas pu être traités</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/admin.component.ts</context>
+          <context context-type="linenumber">213</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="jsonImportHeading" datatype="html">
+        <source>JSON Bulk Operations</source>
+        <target>Opérations en masse JSON</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">1,2</context>
+        </context-group>
+        <note priority="1" from="description">JSON import heading</note>
+      </trans-unit>
+      <trans-unit id="jsonImportInfo" datatype="html">
+        <source> Enter a single project object or an array of projects. Include an &quot;id&quot; field to update existing projects, omit it to create new ones.
+</source>
+        <target> Entrez un objet projet unique ou un tableau de projets. Incluez un champ &quot;id&quot; pour mettre à jour les projets existants, omittez-le pour en créer de nouveaux.
+</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">3,8</context>
+        </context-group>
+        <note priority="1" from="description">JSON import info text</note>
+      </trans-unit>
+      <trans-unit id="jsonImportCopySingle" datatype="html">
+        <source> Copy Sample JSON (Single) </source>
+        <target> Copier l&apos;exemple JSON (unique) </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">9,11</context>
+        </context-group>
+        <note priority="1" from="description">JSON import copy sample single button</note>
+      </trans-unit>
+      <trans-unit id="jsonImportCopyArray" datatype="html">
+        <source> Copy Sample JSON (Array) </source>
+        <target> Copier l&apos;exemple JSON (tableau) </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">12,17</context>
+        </context-group>
+        <note priority="1" from="description">JSON import copy sample array button</note>
+      </trans-unit>
+      <trans-unit id="jsonInputLabel" datatype="html">
+        <source>JSON Input</source>
+        <target>Entrée JSON</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">17,20</context>
+        </context-group>
+        <note priority="1" from="description">JSON import input label</note>
+      </trans-unit>
+      <trans-unit id="jsonImportProcess" datatype="html">
+        <source>Process JSON</source>
+        <target>Traiter le JSON</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">32,33</context>
+        </context-group>
+        <note priority="1" from="description">JSON import process button</note>
+      </trans-unit>
+      <trans-unit id="jsonImportClear" datatype="html">
+        <source>Clear</source>
+        <target>Effacer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">33,37</context>
+        </context-group>
+        <note priority="1" from="description">JSON import clear button</note>
+      </trans-unit>
+      <trans-unit id="jsonImportRequiredFields" datatype="html">
+        <source>Required Fields:</source>
+        <target>Champs obligatoires :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">37,39</context>
+        </context-group>
+        <note priority="1" from="description">JSON import required fields heading</note>
+      </trans-unit>
+      <trans-unit id="jsonImportNameField" datatype="html">
+        <source><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>name<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Project name</source>
+        <target><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>name<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Nom du projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+        <note priority="1" from="description">JSON import name field</note>
+      </trans-unit>
+      <trans-unit id="jsonImportDescField" datatype="html">
+        <source><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>description<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Project description</source>
+        <target><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>description<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Description du projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
+        <note priority="1" from="description">JSON import description field</note>
+      </trans-unit>
+      <trans-unit id="jsonImportTechField" datatype="html">
+        <source><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>technologies<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Array of technology names</source>
+        <target><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>technologies<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Tableau de noms de technologies</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">41,42</context>
+        </context-group>
+        <note priority="1" from="description">JSON import technologies field</note>
+      </trans-unit>
+      <trans-unit id="jsonImportGithubField" datatype="html">
+        <source><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>githubLink<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - GitHub repository URL</source>
+        <target><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>githubLink<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - URL du dépôt GitHub</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+        <note priority="1" from="description">JSON import githubLink field</note>
+      </trans-unit>
+      <trans-unit id="jsonImportChallengesField" datatype="html">
+        <source><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>challenges<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Challenges faced</source>
+        <target><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>challenges<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Défis rencontrés</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">43,44</context>
+        </context-group>
+        <note priority="1" from="description">JSON import challenges field</note>
+      </trans-unit>
+      <trans-unit id="jsonImportLearnedField" datatype="html">
+        <source><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>whatILearned<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - What you learned</source>
+        <target><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>whatILearned<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Ce que vous avez appris</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">44,46</context>
+        </context-group>
+        <note priority="1" from="description">JSON import whatILearned field</note>
+      </trans-unit>
+      <trans-unit id="jsonImportOptionalFields" datatype="html">
+        <source>Optional Fields:</source>
+        <target>Champs optionnels :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">46,48</context>
+        </context-group>
+        <note priority="1" from="description">JSON import optional fields heading</note>
+      </trans-unit>
+      <trans-unit id="jsonImportIdField" datatype="html">
+        <source><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>id<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Include to update existing project</source>
+        <target><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>id<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Incluez pour mettre à jour un projet existant</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+        <note priority="1" from="description">JSON import id field</note>
+      </trans-unit>
+      <trans-unit id="jsonImportFeaturedField" datatype="html">
+        <source><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>featured<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Boolean for featured status</source>
+        <target><x id="START_TAG_CODE" ctype="x-code" equiv-text="&lt;code&gt;"/>featured<x id="CLOSE_TAG_CODE" ctype="x-code" equiv-text="&lt;/code&gt;"/> - Booléen pour le statut en vedette</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.html</context>
+          <context context-type="linenumber">49,51</context>
+        </context-group>
+        <note priority="1" from="description">JSON import featured field</note>
+      </trans-unit>
+      <trans-unit id="3950086147253625664" datatype="html">
+        <source>@@jsonEnterData:Please enter JSON data</source>
+        <target>Veuillez saisir des données JSON</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="206947228512258347" datatype="html">
+        <source>@@jsonMissingFieldsArray:One or more projects in the array are missing required fields: name, description, technologies, githubLink, challenges, whatILearned</source>
+        <target>Un ou plusieurs projets du tableau ne contiennent pas les champs obligatoires : name, description, technologies, githubLink, challenges, whatILearned</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2875189025506087837" datatype="html">
+        <source>@@jsonMissingFields:Missing required fields: name, description, technologies, githubLink, challenges, whatILearned</source>
+        <target>Champs obligatoires manquants : name, description, technologies, githubLink, challenges, whatILearned</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2686140447353761261" datatype="html">
+        <source>@@jsonInvalidFormat:Invalid JSON format. Please check your input.</source>
+        <target>Format JSON invalide. Veuillez vérifier votre saisie.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="493609295226971451" datatype="html">
+        <source>@@jsonInvalidFormatShort:Invalid JSON format</source>
+        <target>Format JSON invalide</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6286893025054660395" datatype="html">
+        <source>@@jsonCopied:Sample JSON copied to clipboard</source>
+        <target>Exemple JSON copié dans le presse-papiers</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.ts</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4419089182619566454" datatype="html">
+        <source>@@jsonArrayCopied:Sample JSON array copied to clipboard</source>
+        <target>Exemple de tableau JSON copié dans le presse-papiers</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/json-import/json-import.component.ts</context>
+          <context context-type="linenumber">118</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="photoManagerHeading" datatype="html">
+        <source>Manage Photos - <x id="INTERPOLATION" equiv-text="{{ project().name }}"/></source>
+        <target>Gérer les photos - <x id="INTERPOLATION" equiv-text="{{ project().name }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+        <note priority="1" from="description">Photo manager heading</note>
+      </trans-unit>
+      <trans-unit id="photoManagerUploadHeading" datatype="html">
+        <source>Upload New Photos</source>
+        <target>Télécharger de nouvelles photos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.html</context>
+          <context context-type="linenumber">11,14</context>
+        </context-group>
+        <note priority="1" from="description">Photo manager upload heading</note>
+      </trans-unit>
+      <trans-unit id="photoManagerChoosePhotos" datatype="html">
+        <source> Choose Photos (JPEG, PNG, GIF) </source>
+        <target> Choisir des photos (JPEG, PNG, GIF) </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.html</context>
+          <context context-type="linenumber">22,26</context>
+        </context-group>
+        <note priority="1" from="description">Photo manager choose photos label</note>
+      </trans-unit>
+      <trans-unit id="photoManagerExistingHeading" datatype="html">
+        <source>Existing Photos (<x id="INTERPOLATION" equiv-text="{{ project().photos?.length || project().photoUrls.length }}"/>)</source>
+        <target>Photos existantes (<x id="INTERPOLATION" equiv-text="{{ project().photos?.length || project().photoUrls.length }}"/>)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.html</context>
+          <context context-type="linenumber">47,49</context>
+        </context-group>
+        <note priority="1" from="description">Photo manager existing photos heading</note>
+      </trans-unit>
+      <trans-unit id="photoManagerNoPhotos" datatype="html">
+        <source>No photos uploaded yet.</source>
+        <target>Aucune photo téléchargée.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.html</context>
+          <context context-type="linenumber">50,53</context>
+        </context-group>
+        <note priority="1" from="description">Photo manager no photos message</note>
+      </trans-unit>
+      <trans-unit id="photoManagerDeleteButton" datatype="html">
+        <source> Delete </source>
+        <target> Supprimer </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.html</context>
+          <context context-type="linenumber">58,61</context>
+        </context-group>
+        <note priority="1" from="description">Photo manager delete button</note>
+      </trans-unit>
+      <trans-unit id="photoManagerPhotoIdNotAvailable" datatype="html">
+        <source>Photo ID not available - refresh page to delete</source>
+        <target>ID de photo non disponible - actualisez la page pour supprimer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.html</context>
+          <context context-type="linenumber">67,73</context>
+        </context-group>
+        <note priority="1" from="description">Photo manager photo ID not available message</note>
+      </trans-unit>
+      <trans-unit id="8886106366856403515" datatype="html">
+        <source>@@photoNoProject:No project selected</source>
+        <target>Aucun projet sélectionné</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.ts</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3731723797844881510" datatype="html">
+        <source>@@photoSelectRequired:Please select at least one photo to upload</source>
+        <target>Veuillez sélectionner au moins une photo à télécharger</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="213014611283515701" datatype="html">
+        <source>@@photoUploadSuccess:Successfully uploaded <x id="PH" equiv-text="results.length"/> photo(s)</source>
+        <target><x id="PH" equiv-text="results.length"/> photo(s) téléchargée(s) avec succès</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7988596141230126954" datatype="html">
+        <source>@@photoUploadFailed:Failed to upload some photos</source>
+        <target>Échec du téléchargement de certaines photos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.ts</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1190540246876176824" datatype="html">
+        <source>@@photoDeleteConfirm:Are you sure you want to delete this photo?</source>
+        <target>Êtes-vous sûr de vouloir supprimer cette photo ?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.ts</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9138638275166885688" datatype="html">
+        <source>@@photoDeleted:Photo deleted successfully</source>
+        <target>Photo supprimée avec succès</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2734925050406982761" datatype="html">
+        <source>@@photoDeleteFailed:Failed to delete photo</source>
+        <target>Échec de la suppression de la photo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/photo-manager/photo-manager.component.ts</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectFormNameLabel" datatype="html">
+        <source>Project Name *</source>
+        <target>Nom du projet *</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">5,8</context>
+        </context-group>
+        <note priority="1" from="description">Project form name label</note>
+      </trans-unit>
+      <trans-unit id="805649955166837774" datatype="html">
+        <source>Enter project name</source>
+        <target>Entrez le nom du projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectFormNameError" datatype="html">
+        <source>Project name is required (min 3 characters).</source>
+        <target>Le nom du projet est requis (minimum 3 caractères).</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">13,18</context>
+        </context-group>
+        <note priority="1" from="description">Project form name required error</note>
+      </trans-unit>
+      <trans-unit id="projectFormDescLabel" datatype="html">
+        <source>Description *</source>
+        <target>Description *</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">18,21</context>
+        </context-group>
+        <note priority="1" from="description">Project form description label</note>
+      </trans-unit>
+      <trans-unit id="4179107903739240350" datatype="html">
+        <source>Enter project description</source>
+        <target>Entrez la description du projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">22,23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectFormDescError" datatype="html">
+        <source>Description is required (min 10 characters).</source>
+        <target>La description est requise (minimum 10 caractères).</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">26,31</context>
+        </context-group>
+        <note priority="1" from="description">Project form description required error</note>
+      </trans-unit>
+      <trans-unit id="projectFormTechLabel" datatype="html">
+        <source>Technologies * (comma-separated)</source>
+        <target>Technologies * (séparées par des virgules)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">31,34</context>
+        </context-group>
+        <note priority="1" from="description">Project form technologies label</note>
+      </trans-unit>
+      <trans-unit id="2086608254093991859" datatype="html">
+        <source>e.g., Angular, TypeScript, CSS</source>
+        <target>ex., Angular, TypeScript, CSS</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectFormTechError" datatype="html">
+        <source>Technologies are required.</source>
+        <target>Les technologies sont requises.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">39,44</context>
+        </context-group>
+        <note priority="1" from="description">Project form technologies required error</note>
+      </trans-unit>
+      <trans-unit id="projectFormGithubLabel" datatype="html">
+        <source>GitHub Link *</source>
+        <target>Lien GitHub *</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">44,47</context>
+        </context-group>
+        <note priority="1" from="description">Project form GitHub link label</note>
+      </trans-unit>
+      <trans-unit id="523582871418681100" datatype="html">
+        <source>https://github.com/username/repo</source>
+        <target>https://github.com/username/repo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectFormGithubError" datatype="html">
+        <source>Valid GitHub URL is required.</source>
+        <target>Une URL GitHub valide est requise.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">52,57</context>
+        </context-group>
+        <note priority="1" from="description">Project form GitHub URL required error</note>
+      </trans-unit>
+      <trans-unit id="projectFormChallengesLabel" datatype="html">
+        <source>Challenges *</source>
+        <target>Défis *</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">57,60</context>
+        </context-group>
+        <note priority="1" from="description">Project form challenges label</note>
+      </trans-unit>
+      <trans-unit id="6421806514133571744" datatype="html">
+        <source>What challenges did you face?</source>
+        <target>Quels défis avez-vous rencontrés ?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">61,62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectFormChallengesError" datatype="html">
+        <source>Challenges description is required.</source>
+        <target>La description des défis est requise.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">65,70</context>
+        </context-group>
+        <note priority="1" from="description">Project form challenges required error</note>
+      </trans-unit>
+      <trans-unit id="projectFormLearnedLabel" datatype="html">
+        <source>What I Learned *</source>
+        <target>Ce que j&apos;ai appris *</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">70,73</context>
+        </context-group>
+        <note priority="1" from="description">Project form what I learned label</note>
+      </trans-unit>
+      <trans-unit id="4079429304355646822" datatype="html">
+        <source>What did you learn from this project?</source>
+        <target>Qu&apos;avez-vous appris de ce projet ?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">74,75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectFormLearnedError" datatype="html">
+        <source>Learning description is required.</source>
+        <target>La description de l&apos;apprentissage est requise.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">78,84</context>
+        </context-group>
+        <note priority="1" from="description">Project form what I learned required error</note>
+      </trans-unit>
+      <trans-unit id="projectFormFeaturedLabel" datatype="html">
+        <source>Featured Project</source>
+        <target>Projet en vedette</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">85,90</context>
+        </context-group>
+        <note priority="1" from="description">Project form featured checkbox label</note>
+      </trans-unit>
+      <trans-unit id="projectFormCancel" datatype="html">
+        <source> Cancel </source>
+        <target> Annuler </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/components/project-form/project-form.component.html</context>
+          <context context-type="linenumber">95,100</context>
+        </context-group>
+        <note priority="1" from="description">Project form cancel button</note>
+      </trans-unit>
+      <trans-unit id="loginContinueWith" datatype="html">
+        <source>Continue with</source>
+        <target>Continuer avec</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">17,19</context>
+        </context-group>
+        <note priority="1" from="description">Login page continue with text</note>
+      </trans-unit>
+      <trans-unit id="loginGoogle" datatype="html">
+        <source>Google</source>
+        <target>Google</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">29,32</context>
+        </context-group>
+        <note priority="1" from="description">Login page Google button</note>
+      </trans-unit>
+      <trans-unit id="loginGitHub" datatype="html">
+        <source>GitHub</source>
+        <target>GitHub</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">36,40</context>
+        </context-group>
+        <note priority="1" from="description">Login page GitHub button</note>
+      </trans-unit>
+      <trans-unit id="loginFullNameLabel" datatype="html">
+        <source>Full name</source>
+        <target>Nom complet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">54,55</context>
+        </context-group>
+        <note priority="1" from="description">Login page full name label</note>
+      </trans-unit>
+      <trans-unit id="1577354948070321987" datatype="html">
+        <source>Jane Doe</source>
+        <target>Jane Doe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">55,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginEmailLabel" datatype="html">
+        <source>Email</source>
+        <target>Email</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">60,61</context>
+        </context-group>
+        <note priority="1" from="description">Login page email label</note>
+      </trans-unit>
+      <trans-unit id="8494605922302746269" datatype="html">
+        <source>you@example.com</source>
+        <target>you@example.com</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginEmailError" datatype="html">
+        <source>Valid email required</source>
+        <target>Email valide requis</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">64,68</context>
+        </context-group>
+        <note priority="1" from="description">Login page email validation error</note>
+      </trans-unit>
+      <trans-unit id="loginPasswordLabel" datatype="html">
+        <source>Password</source>
+        <target>Mot de passe</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">69,70</context>
+        </context-group>
+        <note priority="1" from="description">Login page password label</note>
+      </trans-unit>
+      <trans-unit id="5437970914458860679" datatype="html">
+        <source>••••••••</source>
+        <target>••••••••</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginPasswordError" datatype="html">
+        <source>Password is required</source>
+        <target>Le mot de passe est requis</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">73,77</context>
+        </context-group>
+        <note priority="1" from="description">Login page password validation error</note>
+      </trans-unit>
+      <trans-unit id="5831175002802570892" datatype="html">
+        <source>@@loginWelcome:Register:Welcome aboard!</source>
+        <target>Bienvenue !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="848064787675675771" datatype="html">
+        <source>@@loginWelcomeBack:Welcome back!</source>
+        <target>Bon retour !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4263103938459558715" datatype="html">
+        <source>@@registerFailed:Registration failed</source>
+        <target>Échec de l&apos;inscription</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8682241561523019720" datatype="html">
+        <source>@@loginFailed:Login failed</source>
+        <target>Échec de la connexion</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7655074817183749650" datatype="html">
+        <source>@@oauthCompleting:Completing authentication...</source>
+        <target>Finalisation de l&apos;authentification...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/oauth2-redirect/oauth2-redirect.component.ts</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7727309549287764654" datatype="html">
+        <source>@@oauthNoToken:No authentication token received</source>
+        <target>Aucun jeton d&apos;authentification reçu</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/oauth2-redirect/oauth2-redirect.component.ts</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5471646140248351510" datatype="html">
+        <source>@@oauthFailed:Authentication failed</source>
+        <target>Échec de l&apos;authentification</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/oauth2-redirect/oauth2-redirect.component.ts</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3388984539462946359" datatype="html">
+        <source>@@oauthSuccess:Successfully authenticated!</source>
+        <target>Authentifié avec succès !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/oauth2-redirect/oauth2-redirect.component.ts</context>
+          <context context-type="linenumber">96</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="547055658711902794" datatype="html">
+        <source>@@oauthRedirecting:Redirecting...</source>
+        <target>Redirection...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/oauth2-redirect/oauth2-redirect.component.ts</context>
+          <context context-type="linenumber">97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7217914599933519618" datatype="html">
+        <source>@@oauthInvalidToken:Invalid authentication token</source>
+        <target>Jeton d&apos;authentification invalide</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/oauth2-redirect/oauth2-redirect.component.ts</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="contactHeading" datatype="html">
+        <source>Contact Me</source>
+        <target>Contactez-moi</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+        <note priority="1" from="description">Contact page heading</note>
+      </trans-unit>
+      <trans-unit id="contactSubtitle" datatype="html">
+        <source>Reach out to discuss projects, collaborations, or opportunities.</source>
+        <target>N&apos;hésitez pas à me contacter pour discuter de projets, de collaborations ou d&apos;opportunités.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+        <note priority="1" from="description">Contact page subtitle</note>
+      </trans-unit>
+      <trans-unit id="contactNameLabel" datatype="html">
+        <source>Name</source>
+        <target>Nom</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+        <note priority="1" from="description">Contact form name label</note>
+      </trans-unit>
+      <trans-unit id="2297688463310993102" datatype="html">
+        <source>Your Name</source>
+        <target>Votre nom</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="contactNameRequired" datatype="html">
+        <source>Name is required.</source>
+        <target>Le nom est requis.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">9,13</context>
+        </context-group>
+        <note priority="1" from="description">Contact form name required error</note>
+      </trans-unit>
+      <trans-unit id="contactEmailLabel" datatype="html">
+        <source>Email</source>
+        <target>Email</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">13,14</context>
+        </context-group>
+        <note priority="1" from="description">Contact form email label</note>
+      </trans-unit>
+      <trans-unit id="204562474612147063" datatype="html">
+        <source>Your Email</source>
+        <target>Votre email</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="contactEmailRequired" datatype="html">
+        <source>Email is required.</source>
+        <target>L&apos;email est requis.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">18,20</context>
+        </context-group>
+        <note priority="1" from="description">Contact form email required error</note>
+      </trans-unit>
+      <trans-unit id="contactEmailInvalid" datatype="html">
+        <source>Invalid email format.</source>
+        <target>Format d&apos;email invalide.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">21,25</context>
+        </context-group>
+        <note priority="1" from="description">Contact form email invalid error</note>
+      </trans-unit>
+      <trans-unit id="contactMessageLabel" datatype="html">
+        <source>Message</source>
+        <target>Message</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+        <note priority="1" from="description">Contact form message label</note>
+      </trans-unit>
+      <trans-unit id="3901848700381049273" datatype="html">
+        <source>Your Message</source>
+        <target>Votre message</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="contactMessageRequired" datatype="html">
+        <source>Message is required.</source>
+        <target>Le message est requis.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">31,33</context>
+        </context-group>
+        <note priority="1" from="description">Contact form message required error</note>
+      </trans-unit>
+      <trans-unit id="contactMessageMinLength" datatype="html">
+        <source>Message must be at least 10 characters.</source>
+        <target>Le message doit contenir au moins 10 caractères.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.html</context>
+          <context context-type="linenumber">34,38</context>
+        </context-group>
+        <note priority="1" from="description">Contact form message min length error</note>
+      </trans-unit>
+      <trans-unit id="7098075672009264169" datatype="html">
+        <source>@@contactFillFields:Please fill out all fields correctly.</source>
+        <target>Veuillez remplir tous les champs correctement.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.ts</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6086674336340858264" datatype="html">
+        <source>@@contactSuccess:Thank you for your message! I&apos;ll get back to you soon.</source>
+        <target>Merci pour votre message ! Je vous répondrai bientôt.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7666705612887791265" datatype="html">
+        <source>@@contactSubmitFailed:Failed to submit contact form. Please try again.</source>
+        <target>Échec de l&apos;envoi du formulaire de contact. Veuillez réessayer.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2403749039324460458" datatype="html">
+        <source>@@contactSendFailed:Failed to send message. Please try again later or reach out via email.</source>
+        <target>Échec de l&apos;envoi du message. Veuillez réessayer plus tard ou me contacter par email.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.ts</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5562779776857324464" datatype="html">
+        <source>@@contactLeaveConfirm:Contact form entered data will be lost. Are you sure you want to leave?</source>
+        <target>Les données saisies dans le formulaire de contact seront perdues. Êtes-vous sûr de vouloir quitter ?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/contact/contact.component.ts</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="homeHeadline" datatype="html">
+        <source> Young, Growing, self taught, all around <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span aria-label=&quot;sweat smile&quot; role=&quot;img&quot;&gt;"/>😅<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>, programmer </source>
+        <target> Jeune, en croissance, autodidacte, programmeur tout-terrain <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span aria-label=&quot;sweat smile&quot; role=&quot;img&quot;&gt;"/>😅<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/home.component.html</context>
+          <context context-type="linenumber">30,32</context>
+        </context-group>
+        <note priority="1" from="description">Home page hero headline</note>
+      </trans-unit>
+      <trans-unit id="homeKnowMore" datatype="html">
+        <source>Know more about me!</source>
+        <target>En savoir plus sur moi !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/home.component.html</context>
+          <context context-type="linenumber">34,37</context>
+        </context-group>
+        <note priority="1" from="description">Home page call to action</note>
+      </trans-unit>
+      <trans-unit id="homeMyArsenal" datatype="html">
+        <source>My Arsenal</source>
+        <target>Mon Arsenal</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/home.component.html</context>
+          <context context-type="linenumber">43,46</context>
+        </context-group>
+        <note priority="1" from="description">Home page tools section heading</note>
+      </trans-unit>
+      <trans-unit id="homeLanguages" datatype="html">
+        <source>Languages</source>
+        <target>Langages</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/home.component.html</context>
+          <context context-type="linenumber">47,48</context>
+        </context-group>
+        <note priority="1" from="description">Home page languages section heading</note>
+      </trans-unit>
+      <trans-unit id="homeFrameworks" datatype="html">
+        <source>Frameworks</source>
+        <target>Frameworks</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/home.component.html</context>
+          <context context-type="linenumber">53,54</context>
+        </context-group>
+        <note priority="1" from="description">Home page frameworks section heading</note>
+      </trans-unit>
+      <trans-unit id="homeTools" datatype="html">
+        <source>Tools</source>
+        <target>Outils</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/home.component.html</context>
+          <context context-type="linenumber">59,60</context>
+        </context-group>
+        <note priority="1" from="description">Home page tools section heading</note>
+      </trans-unit>
+      <trans-unit id="homeFrameworks2" datatype="html">
+        <source>Frameworks</source>
+        <target>Frameworks</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/home.component.html</context>
+          <context context-type="linenumber">65,66</context>
+        </context-group>
+        <note priority="1" from="description">Home page frameworks section heading</note>
+      </trans-unit>
+      <trans-unit id="homeTools2" datatype="html">
+        <source>Tools</source>
+        <target>Outils</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/home.component.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+        <note priority="1" from="description">Home page tools section heading</note>
+      </trans-unit>
+      <trans-unit id="homeFeaturedProjects" datatype="html">
+        <source>Featured Projects</source>
+        <target>Projets en vedette</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/home.component.html</context>
+          <context context-type="linenumber">78,80</context>
+        </context-group>
+        <note priority="1" from="description">Home page featured projects heading</note>
+      </trans-unit>
+      <trans-unit id="homeNoFeaturedProjects" datatype="html">
+        <source>No featured projects available.</source>
+        <target>Aucun projet en vedette disponible.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/home.component.html</context>
+          <context context-type="linenumber">86,89</context>
+        </context-group>
+        <note priority="1" from="description">Home page no featured projects message</note>
+      </trans-unit>
+      <trans-unit id="notFoundHeading" datatype="html">
+        <source>404 - Page Not Found</source>
+        <target>404 - Page non trouvée</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/not-found/not-found.component.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+        <note priority="1" from="description">Not found page heading</note>
+      </trans-unit>
+      <trans-unit id="notFoundMessage" datatype="html">
+        <source>The page you&apos;re looking for doesn&apos;t exist.</source>
+        <target>La page que vous recherchez n&apos;existe pas.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/not-found/not-found.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+        <note priority="1" from="description">Not found page message</note>
+      </trans-unit>
+      <trans-unit id="notFoundReturnHome" datatype="html">
+        <source>Return to Home</source>
+        <target>Retour à l&apos;accueil</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/not-found/not-found.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+        <note priority="1" from="description">Not found page return home link</note>
+      </trans-unit>
+      <trans-unit id="projectDetailCreated" datatype="html">
+        <source>Created: <x id="INTERPOLATION" equiv-text="{{ project.createdAt | date:&apos;MMM yyyy&apos; }}"/></source>
+        <target>Créé : <x id="INTERPOLATION" equiv-text="{{ project.createdAt | date:&apos;MMM yyyy&apos; }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+        <note priority="1" from="description">Project detail created date label</note>
+      </trans-unit>
+      <trans-unit id="projectDetailUpdated" datatype="html">
+        <source>Updated: <x id="INTERPOLATION" equiv-text="{{ project.updatedAt | date:&apos;MMM yyyy&apos; }}"/></source>
+        <target>Mis à jour : <x id="INTERPOLATION" equiv-text="{{ project.updatedAt | date:&apos;MMM yyyy&apos; }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">7,9</context>
+        </context-group>
+        <note priority="1" from="description">Project detail updated date label</note>
+      </trans-unit>
+      <trans-unit id="projectDetailTechnologies" datatype="html">
+        <source>Technologies:</source>
+        <target>Technologies :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">12,14</context>
+        </context-group>
+        <note priority="1" from="description">Project detail technologies label</note>
+      </trans-unit>
+      <trans-unit id="projectDetailChallenges" datatype="html">
+        <source>Challenges</source>
+        <target>Défis</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">34,37</context>
+        </context-group>
+        <note priority="1" from="description">Project detail challenges heading</note>
+      </trans-unit>
+      <trans-unit id="projectDetailScreenshots" datatype="html">
+        <source>Project Screenshots</source>
+        <target>Captures d&apos;écran du projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+        <note priority="1" from="description">Project detail screenshots heading</note>
+      </trans-unit>
+      <trans-unit id="projectDetailScreenshots2" datatype="html">
+        <source>Project Screenshots</source>
+        <target>Captures d&apos;écran du projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">44,45</context>
+        </context-group>
+        <note priority="1" from="description">Project detail screenshots heading</note>
+      </trans-unit>
+      <trans-unit id="projectDetailNoScreenshots" datatype="html">
+        <source>No screenshots available yet.</source>
+        <target>Aucune capture d&apos;écran disponible.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">45,50</context>
+        </context-group>
+        <note priority="1" from="description">Project detail no screenshots message</note>
+      </trans-unit>
+      <trans-unit id="projectDetailRateHeading" datatype="html">
+        <source>Rate This Project</source>
+        <target>Évaluer ce projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">51,54</context>
+        </context-group>
+        <note priority="1" from="description">Project detail rate heading</note>
+      </trans-unit>
+      <trans-unit id="projectDetailCommentLabel" datatype="html">
+        <source>Add a comment (optional):</source>
+        <target>Ajouter un commentaire (optionnel) :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">89,92</context>
+        </context-group>
+        <note priority="1" from="description">Project detail comment label</note>
+      </trans-unit>
+      <trans-unit id="8247535465568020190" datatype="html">
+        <source>Share your thoughts about this project...</source>
+        <target>Partagez vos impressions sur ce projet...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">95,96</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectDetailCancel" datatype="html">
+        <source>Cancel</source>
+        <target>Annuler</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">105,108</context>
+        </context-group>
+        <note priority="1" from="description">Project detail cancel button</note>
+      </trans-unit>
+      <trans-unit id="projectDetailYourRating" datatype="html">
+        <source>Your Rating:</source>
+        <target>Votre note :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">112,114</context>
+        </context-group>
+        <note priority="1" from="description">Project detail your rating label</note>
+      </trans-unit>
+      <trans-unit id="projectDetailEditRating" datatype="html">
+        <source> Edit </source>
+        <target> Modifier </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">123,125</context>
+        </context-group>
+        <note priority="1" from="description">Project detail edit rating button</note>
+      </trans-unit>
+      <trans-unit id="projectDetailDeleteRating" datatype="html">
+        <source> Delete </source>
+        <target> Supprimer </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">126,130</context>
+        </context-group>
+        <note priority="1" from="description">Project detail delete rating button</note>
+      </trans-unit>
+      <trans-unit id="projectDetailAllReviews" datatype="html">
+        <source>All Reviews</source>
+        <target>Tous les avis</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">140,142</context>
+        </context-group>
+        <note priority="1" from="description">Project detail all reviews heading</note>
+      </trans-unit>
+      <trans-unit id="projectDetailGitHub" datatype="html">
+        <source>View on GitHub</source>
+        <target>Voir sur GitHub</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">166,167</context>
+        </context-group>
+        <note priority="1" from="description">Project detail view on GitHub link</note>
+      </trans-unit>
+      <trans-unit id="projectDetailNotFound" datatype="html">
+        <source>Project Not Found</source>
+        <target>Projet non trouvé</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">172,173</context>
+        </context-group>
+        <note priority="1" from="description">Project detail not found heading</note>
+      </trans-unit>
+      <trans-unit id="projectDetailNotFoundMessage" datatype="html">
+        <source>The requested project does not exist.</source>
+        <target>Le projet demandé n&apos;existe pas.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.html</context>
+          <context context-type="linenumber">173,176</context>
+        </context-group>
+        <note priority="1" from="description">Project detail not found message</note>
+      </trans-unit>
+      <trans-unit id="7056291862049480415" datatype="html">
+        <source>@@ratingLoginRequired:Please log in to rate this project</source>
+        <target>Veuillez vous connecter pour évaluer ce projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.ts</context>
+          <context context-type="linenumber">129</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5005232804718803818" datatype="html">
+        <source>@@ratingSelectRequired:Please select a rating</source>
+        <target>Veuillez sélectionner une note</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.ts</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5975031198696729610" datatype="html">
+        <source>@@ratingUpdated:Rating updated successfully</source>
+        <target>Note mise à jour avec succès</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.ts</context>
+          <context context-type="linenumber">171</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4643421448147435943" datatype="html">
+        <source>@@ratingSubmitted:Rating submitted successfully</source>
+        <target>Note soumise avec succès</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.ts</context>
+          <context context-type="linenumber">171</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="235096323087471650" datatype="html">
+        <source>@@ratingUpdateFailed:Failed to update rating</source>
+        <target>Échec de la mise à jour de la note</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.ts</context>
+          <context context-type="linenumber">178</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8118473845973821557" datatype="html">
+        <source>@@ratingSubmitFailed:Failed to submit rating</source>
+        <target>Échec de la soumission de la note</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.ts</context>
+          <context context-type="linenumber">178</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7019842133412615169" datatype="html">
+        <source>@@ratingDeleteConfirm:Are you sure you want to delete your rating?</source>
+        <target>Êtes-vous sûr de vouloir supprimer votre note ?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.ts</context>
+          <context context-type="linenumber">202</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3069412828058510986" datatype="html">
+        <source>@@ratingDeleted:Rating deleted successfully</source>
+        <target>Note supprimée avec succès</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.ts</context>
+          <context context-type="linenumber">208</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8755166660808187728" datatype="html">
+        <source>@@ratingDeleteFailed:Failed to delete rating</source>
+        <target>Échec de la suppression de la note</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/project-detail/project-detail.component.ts</context>
+          <context context-type="linenumber">217</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectsLoading" datatype="html">
+        <source>Loading projects...</source>
+        <target>Chargement des projets...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">7,11</context>
+        </context-group>
+        <note priority="1" from="description">Projects loading message</note>
+      </trans-unit>
+      <trans-unit id="projectsHeading" datatype="html">
+        <source>My Projects</source>
+        <target>Mes Projets</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">13,14</context>
+        </context-group>
+        <note priority="1" from="description">Projects page heading</note>
+      </trans-unit>
+      <trans-unit id="projectsFilterHeading" datatype="html">
+        <source> Filter Projects (<x id="INTERPOLATION" equiv-text="{{ projects().length }}"/>) - Click to expand/collapse</source>
+        <target> Filtrer les projets (<x id="INTERPOLATION" equiv-text="{{ projects().length }}"/>) - Cliquer pour développer/réduire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+        <note priority="1" from="description">Projects filter section heading</note>
+      </trans-unit>
+      <trans-unit id="projectsSearchLabel" datatype="html">
+        <source>Search Projects:</source>
+        <target>Rechercher des projets :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">24,27</context>
+        </context-group>
+        <note priority="1" from="description">Projects search label</note>
+      </trans-unit>
+      <trans-unit id="6126598926229473581" datatype="html">
+        <source>Search by name or description...</source>
+        <target>Rechercher par nom ou description...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">29,30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectsTechLabel" datatype="html">
+        <source>Technology:</source>
+        <target>Technologie :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">35,38</context>
+        </context-group>
+        <note priority="1" from="description">Projects technology filter label</note>
+      </trans-unit>
+      <trans-unit id="projectsAllTech" datatype="html">
+        <source>All Technologies</source>
+        <target>Toutes les technologies</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+        <note priority="1" from="description">Projects all technologies option</note>
+      </trans-unit>
+      <trans-unit id="projectsRatingLabel" datatype="html">
+        <source>Minimum Rating:</source>
+        <target>Note minimum :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">50,53</context>
+        </context-group>
+        <note priority="1" from="description">Projects minimum rating label</note>
+      </trans-unit>
+      <trans-unit id="projectsAnyRating" datatype="html">
+        <source>Any Rating</source>
+        <target>Toute note</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">57,58</context>
+        </context-group>
+        <note priority="1" from="description">Projects any rating option</note>
+      </trans-unit>
+      <trans-unit id="projects1Star" datatype="html">
+        <source>1 Star &amp; Up</source>
+        <target>1 étoile et plus</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">58,59</context>
+        </context-group>
+        <note priority="1" from="description">Projects 1 star rating option</note>
+      </trans-unit>
+      <trans-unit id="projects2Stars" datatype="html">
+        <source>2 Stars &amp; Up</source>
+        <target>2 étoiles et plus</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">59,60</context>
+        </context-group>
+        <note priority="1" from="description">Projects 2 star rating option</note>
+      </trans-unit>
+      <trans-unit id="projects3Stars" datatype="html">
+        <source>3 Stars &amp; Up</source>
+        <target>3 étoiles et plus</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">60,61</context>
+        </context-group>
+        <note priority="1" from="description">Projects 3 star rating option</note>
+      </trans-unit>
+      <trans-unit id="projects4Stars" datatype="html">
+        <source>4 Stars &amp; Up</source>
+        <target>4 étoiles et plus</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">61,62</context>
+        </context-group>
+        <note priority="1" from="description">Projects 4 star rating option</note>
+      </trans-unit>
+      <trans-unit id="projects5Stars" datatype="html">
+        <source>5 Stars Only</source>
+        <target>5 étoiles uniquement</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">62,66</context>
+        </context-group>
+        <note priority="1" from="description">Projects 5 star rating option</note>
+      </trans-unit>
+      <trans-unit id="projectsFeaturedOnly" datatype="html">
+        <source>Featured Projects Only</source>
+        <target>Projets en vedette uniquement</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">73,77</context>
+        </context-group>
+        <note priority="1" from="description">Projects featured only checkbox label</note>
+      </trans-unit>
+      <trans-unit id="projectsResetFilters" datatype="html">
+        <source> Reset Filters </source>
+        <target> Réinitialiser les filtres </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">79,83</context>
+        </context-group>
+        <note priority="1" from="description">Projects reset filters button</note>
+      </trans-unit>
+      <trans-unit id="projectsNoResults" datatype="html">
+        <source>No projects found</source>
+        <target>Aucun projet trouvé</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">91,92</context>
+        </context-group>
+        <note priority="1" from="description">Projects no results heading</note>
+      </trans-unit>
+      <trans-unit id="projectsNoResultsSuggestion" datatype="html">
+        <source>Try adjusting your filters to see more projects.</source>
+        <target>Essayez d&apos;ajuster vos filtres pour voir plus de projets.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">92,93</context>
+        </context-group>
+        <note priority="1" from="description">Projects no results suggestion</note>
+      </trans-unit>
+      <trans-unit id="projectsResetFilters2" datatype="html">
+        <source>Reset Filters</source>
+        <target>Réinitialiser les filtres</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/projects/projects.component.html</context>
+          <context context-type="linenumber">93,99</context>
+        </context-group>
+        <note priority="1" from="description">Projects reset filters button</note>
+      </trans-unit>
+      <trans-unit id="2979231660243304430" datatype="html">
+        <source>@@breadcrumbProjectDetails:Project Details</source>
+        <target>Détails du projet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/breadcrumb/breadcrumb.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="carouselNoImages" datatype="html">
+        <source>No images available</source>
+        <target>Aucune image disponible</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/carousel/carousel.component.html</context>
+          <context context-type="linenumber">49,52</context>
+        </context-group>
+        <note priority="1" from="description">Carousel no images message</note>
+      </trans-unit>
+      <trans-unit id="footerBrandTitle" datatype="html">
+        <source>Portfolio</source>
+        <target>Portfolio</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+        <note priority="1" from="description">Footer brand title</note>
+      </trans-unit>
+      <trans-unit id="footerBrandDescription" datatype="html">
+        <source> Showcasing software engineering projects and professional experience in my learning journey. Building the future, one line of code at a time. </source>
+        <target> Présentation de projets de génie logiciel et d&apos;expérience professionnelle dans mon parcours d&apos;apprentissage. Construire l&apos;avenir, une ligne de code à la fois. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">9,12</context>
+        </context-group>
+        <note priority="1" from="description">Footer brand description</note>
+      </trans-unit>
+      <trans-unit id="footerQuickLinks" datatype="html">
+        <source>Quick Links</source>
+        <target>Liens rapides</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">24,26</context>
+        </context-group>
+        <note priority="1" from="description">Footer quick links heading</note>
+      </trans-unit>
+      <trans-unit id="footerContact" datatype="html">
+        <source>Contact</source>
+        <target>Contact</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">29,33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">35,37</context>
+        </context-group>
+        <note priority="1" from="description">Footer contact link</note>
+      </trans-unit>
+      <trans-unit id="footerHome" datatype="html">
+        <source>Home</source>
+        <target>Accueil</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+        <note priority="1" from="description">Footer home link</note>
+      </trans-unit>
+      <trans-unit id="footerProjects" datatype="html">
+        <source>Projects</source>
+        <target>Projets</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+        <note priority="1" from="description">Footer projects link</note>
+      </trans-unit>
+      <trans-unit id="footerAbout" datatype="html">
+        <source>About</source>
+        <target>À propos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">28,29</context>
+        </context-group>
+        <note priority="1" from="description">Footer about link</note>
+      </trans-unit>
+      <trans-unit id="footerLocation" datatype="html">
+        <source>Yaounde, Cameroon</source>
+        <target>Yaoundé, Cameroun</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">51,54</context>
+        </context-group>
+        <note priority="1" from="description">Footer location</note>
+      </trans-unit>
+      <trans-unit id="footerStayUpdated" datatype="html">
+        <source>Stay Updated</source>
+        <target>Restez informé</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">59,60</context>
+        </context-group>
+        <note priority="1" from="description">Footer stay updated heading</note>
+      </trans-unit>
+      <trans-unit id="footerNewsletterDescription" datatype="html">
+        <source> Subscribe to get updates on new projects and insights. </source>
+        <target> Abonnez-vous pour recevoir les mises à jour sur les nouveaux projets. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">61,66</context>
+        </context-group>
+        <note priority="1" from="description">Footer newsletter description</note>
+      </trans-unit>
+      <trans-unit id="footerCopyright" datatype="html">
+        <source> © <x id="INTERPOLATION" equiv-text="{{ currentYear }}"/> Abena Alex Nelson Ryan. All rights reserved. </source>
+        <target> © <x id="INTERPOLATION" equiv-text="{{ currentYear }}"/> Abena Alex Nelson Ryan. Tous droits réservés. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">70,72</context>
+        </context-group>
+        <note priority="1" from="description">Footer copyright text</note>
+      </trans-unit>
+      <trans-unit id="footerPrivacyPolicy" datatype="html">
+        <source>Privacy Policy</source>
+        <target>Politique de confidentialité</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">73,74</context>
+        </context-group>
+        <note priority="1" from="description">Footer privacy policy link</note>
+      </trans-unit>
+      <trans-unit id="footerTermsOfService" datatype="html">
+        <source>Terms of Service</source>
+        <target>Conditions d&apos;utilisation</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">74,75</context>
+        </context-group>
+        <note priority="1" from="description">Footer terms of service link</note>
+      </trans-unit>
+      <trans-unit id="footerCookiePolicy" datatype="html">
+        <source>Cookie Policy</source>
+        <target>Politique de cookies</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/footer/footer.component.html</context>
+          <context context-type="linenumber">75,80</context>
+        </context-group>
+        <note priority="1" from="description">Footer cookie policy link</note>
+      </trans-unit>
+      <trans-unit id="headerLogout" datatype="html">
+        <source>Logout</source>
+        <target>Déconnexion</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">37,39</context>
+        </context-group>
+        <note priority="1" from="description">Header logout link</note>
+      </trans-unit>
+      <trans-unit id="headerLogin" datatype="html">
+        <source>Login</source>
+        <target>Connexion</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">40,43</context>
+        </context-group>
+        <note priority="1" from="description">Header login link</note>
+      </trans-unit>
+      <trans-unit id="headerAdmin" datatype="html">
+        <source>Admin</source>
+        <target>Admin</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">46,50</context>
+        </context-group>
+        <note priority="1" from="description">Header admin link</note>
+      </trans-unit>
+      <trans-unit id="langSwitch" datatype="html">
+        <source> <x id="INTERPOLATION" equiv-text="{{ langLabel }}"/> </source>
+        <target> <x id="INTERPOLATION" equiv-text="{{ langLabel }}"/> </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">53,54</context>
+        </context-group>
+        <note priority="1" from="description">Language switch button</note>
+      </trans-unit>
+      <trans-unit id="headerCvEn" datatype="html">
+        <source>CV </source>
+        <target>CV </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">67,68</context>
+        </context-group>
+        <note priority="1" from="description">Header CV English button text</note>
+      </trans-unit>
+      <trans-unit id="headerCvFr" datatype="html">
+        <source>CV</source>
+        <target>CV</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">86,87</context>
+        </context-group>
+        <note priority="1" from="description">Header CV French button text</note>
+      </trans-unit>
+      <trans-unit id="187187500641108332" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ currentTheme() === &apos;dark&apos; ? &apos;Switch to light mode&apos; : &apos;Switch to dark mode&apos; }}"/></source>
+        <target><x id="INTERPOLATION" equiv-text="{{ currentTheme() === &apos;dark&apos; ? &apos;Switch to light mode&apos; : &apos;Switch to dark mode&apos; }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">99,100</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">201,202</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="headerCvEnMobile" datatype="html">
+        <source>CV</source>
+        <target>CV</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">167,168</context>
+        </context-group>
+        <note priority="1" from="description">Header CV English mobile button text</note>
+      </trans-unit>
+      <trans-unit id="headerCvFrMobile" datatype="html">
+        <source>CV</source>
+        <target>CV</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">186,187</context>
+        </context-group>
+        <note priority="1" from="description">Header CV French mobile button text</note>
+      </trans-unit>
+      <trans-unit id="headerMobileLogout" datatype="html">
+        <source>Logout</source>
+        <target>Déconnexion</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">231,233</context>
+        </context-group>
+        <note priority="1" from="description">Header mobile logout link</note>
+      </trans-unit>
+      <trans-unit id="headerMobileLogin" datatype="html">
+        <source>Login</source>
+        <target>Connexion</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">234,237</context>
+        </context-group>
+        <note priority="1" from="description">Header mobile login link</note>
+      </trans-unit>
+      <trans-unit id="headerMobileAdmin" datatype="html">
+        <source>Admin</source>
+        <target>Admin</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">240,243</context>
+        </context-group>
+        <note priority="1" from="description">Header mobile admin link</note>
+      </trans-unit>
+      <trans-unit id="langSwitchMobile" datatype="html">
+        <source> <x id="INTERPOLATION" equiv-text="{{ langLabel }}"/> </source>
+        <target> <x id="INTERPOLATION" equiv-text="{{ langLabel }}"/> </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">246,247</context>
+        </context-group>
+        <note priority="1" from="description">Language mobile switch button</note>
+      </trans-unit>
+      <trans-unit id="headerTitle" datatype="html">
+        <source>Alex Nelson Abena aka <x id="START_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;em class=&quot;nickname&quot;&gt;"/>NinjaShadowBoy<x id="CLOSE_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;/em&gt;"/></source>
+        <target>Alex Nelson Abena alias <x id="START_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;em class=&quot;nickname&quot;&gt;"/>NinjaShadowBoy<x id="CLOSE_EMPHASISED_TEXT" ctype="x-em" equiv-text="&lt;/em&gt;"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">145,146</context>
+        </context-group>
+        <note priority="1" from="description">Header title</note>
+      </trans-unit>
+      <trans-unit id="headerSubtitle" datatype="html">
+        <source>Junior Software Engineer and Student</source>
+        <target>Ingénieur logiciel junior et étudiant</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">146,149</context>
+        </context-group>
+        <note priority="1" from="description">Header subtitle</note>
+      </trans-unit>
+      <trans-unit id="navHome" datatype="html">
+        <source>Home</source>
+        <target>Accueil</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">21,24</context>
+        </context-group>
+        <note priority="1" from="description">Nav home link</note>
+      </trans-unit>
+      <trans-unit id="navProjects" datatype="html">
+        <source>Projects</source>
+        <target>Projets</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">25,28</context>
+        </context-group>
+        <note priority="1" from="description">Nav projects link</note>
+      </trans-unit>
+      <trans-unit id="navAbout" datatype="html">
+        <source>About Me</source>
+        <target>À propos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">29,32</context>
+        </context-group>
+        <note priority="1" from="description">Nav about link</note>
+      </trans-unit>
+      <trans-unit id="navContact" datatype="html">
+        <source>Contact Me</source>
+        <target>Contact</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.html</context>
+          <context context-type="linenumber">33,36</context>
+        </context-group>
+        <note priority="1" from="description">Nav contact link</note>
+      </trans-unit>
+      <trans-unit id="5600571265484113341" datatype="html">
+        <source>@@switchToEnglish:Switch to English</source>
+        <target>Passer en anglais</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/header/header.component.ts</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8348072798509355617" datatype="html">
+        <source>Dismiss notification</source>
+        <target>Fermer la notification</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/notification-container/notification-container.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="projectCardFeatured" datatype="html">
+        <source>Featured</source>
+        <target>En vedette</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/project-card/project-card.component.html</context>
+          <context context-type="linenumber">3,7</context>
+        </context-group>
+        <note priority="1" from="description">Project card featured badge</note>
+      </trans-unit>
+      <trans-unit id="projectCardCreated" datatype="html">
+        <source>Created: <x id="INTERPOLATION" equiv-text="{{ project().createdAt | date:&apos;MMM yyyy&apos; }}"/></source>
+        <target>Créé : <x id="INTERPOLATION" equiv-text="{{ project().createdAt | date:&apos;MMM yyyy&apos; }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/project-card/project-card.component.html</context>
+          <context context-type="linenumber">16,17</context>
+        </context-group>
+        <note priority="1" from="description">Project card created date</note>
+      </trans-unit>
+      <trans-unit id="projectCardUpdated" datatype="html">
+        <source>Updated: <x id="INTERPOLATION" equiv-text="{{ project().updatedAt | date:&apos;MMM yyyy&apos; }}"/></source>
+        <target>Mis à jour : <x id="INTERPOLATION" equiv-text="{{ project().updatedAt | date:&apos;MMM yyyy&apos; }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/project-card/project-card.component.html</context>
+          <context context-type="linenumber">18,19</context>
+        </context-group>
+        <note priority="1" from="description">Project card updated date</note>
+      </trans-unit>
+      <trans-unit id="projectCardTechnologies" datatype="html">
+        <source>Technologies:</source>
+        <target>Technologies :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/project-card/project-card.component.html</context>
+          <context context-type="linenumber">27,29</context>
+        </context-group>
+        <note priority="1" from="description">Project card technologies label</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

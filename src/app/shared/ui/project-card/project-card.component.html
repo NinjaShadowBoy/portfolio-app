@@ -1,6 +1,6 @@
 <article class="project-card" [class.featured]="project().featured">
   @if (project().featured) {
-  <div class="featured-badge">Featured</div>
+  <div class="featured-badge" i18n="Project card featured badge@@projectCardFeatured">Featured</div>
   }
 
   <!-- Project Carousel -->
@@ -13,9 +13,9 @@
   <header class="project-header">
     <h3>{{ project().name }}</h3>
     <div class="project-meta">
-      <span class="created-date">Created: {{ project().createdAt | date:'MMM yyyy' }}</span>
+      <span class="created-date" i18n="Project card created date@@projectCardCreated">Created: {{ project().createdAt | date:'MMM yyyy' }}</span>
       @if (project().updatedAt.toString() !== project().createdAt.toString()) {
-      <span class="updated-date">Updated: {{ project().updatedAt | date:'MMM yyyy' }}</span>
+      <span class="updated-date" i18n="Project card updated date@@projectCardUpdated">Updated: {{ project().updatedAt | date:'MMM yyyy' }}</span>
       }
     </div>
   </header>
@@ -24,7 +24,7 @@
     <p class="project-description">{{ getTruncatedDescription() }}</p>
 
     <div class="technologies">
-      <strong>Technologies:</strong>
+      <strong i18n="Project card technologies label@@projectCardTechnologies">Technologies:</strong>
       <div class="tech-tags">
         @for (tech of project().technologies; track tech) {
           @if (getTechDocUrl(tech); as docUrl) {

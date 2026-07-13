@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 
 export interface SocialLink {
@@ -14,22 +15,22 @@ export class SocialLinksService {
   // Single source of truth for all social media links
   private readonly links: SocialLink[] = [
     {
-      name: 'LinkedIn',
+      name: $localize`@@socialLinkedIn:LinkedIn`,
       url: 'https://www.linkedin.com/in/alex-nelson-ryan-abena-439068290/',
       icon: 'assets/images/LinkedIn.png',
-      ariaLabel: 'Visit LinkedIn profile',
+      ariaLabel: $localize`@@socialLinkedInLabel:Visit LinkedIn profile`,
     },
     {
-      name: 'GitHub',
+      name: $localize`@@socialGitHub:GitHub`,
       url: 'https://github.com/NinjaShadowBoy/NinjaShadowBoy',
       icon: 'assets/images/GitHub.png',
-      ariaLabel: 'Visit GitHub profile',
+      ariaLabel: $localize`@@socialGitHubLabel:Visit GitHub profile`,
     },
     {
-      name: 'WhatsApp',
+      name: $localize`@@socialWhatsApp:WhatsApp`,
       url: 'https://wa.me/237656246826',
       icon: 'assets/images/WhatsApp.svg',
-      ariaLabel: 'Chat on WhatsApp',
+      ariaLabel: $localize`@@socialWhatsAppLabel:Chat on WhatsApp`,
     },
   ];
 

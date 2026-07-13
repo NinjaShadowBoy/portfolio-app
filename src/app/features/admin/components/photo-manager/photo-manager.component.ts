@@ -1,3 +1,4 @@
+
 import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
@@ -36,12 +37,12 @@ export class PhotoManagerComponent {
   uploadPhotos() {
     const proj = this.project();
     if (!proj) {
-      this.notificationService.error('No project selected');
+      this.notificationService.error($localize`@@photoNoProject:No project selected`);
       return;
     }
 
     if (this.selectedFiles.length === 0) {
-      this.notificationService.error('Please select at least one photo to upload');
+      this.notificationService.error($localize`@@photoSelectRequired:Please select at least one photo to upload`);
       return;
     }
 
@@ -54,7 +55,7 @@ export class PhotoManagerComponent {
     forkJoin(uploadObservables).subscribe({
       next: (results) => {
         this.notificationService.success(
-          `Successfully uploaded ${results.length} photo(s)`
+          $localize`@@photoUploadSuccess:Successfully uploaded ${results.length} photo(s)`
         );
         this.projectService.refreshProjects();
         this.selectedFiles = [];
@@ -67,25 +68,25 @@ export class PhotoManagerComponent {
       },
       error: (err) => {
         console.error('Error uploading photos:', err);
-        this.notificationService.error('Failed to upload some photos');
+        this.notificationService.error($localize`@@photoUploadFailed:Failed to upload some photos`);
         this.isUploadingPhotos.set(false);
       }
     });
   }
 
   deletePhoto(photoId: number) {
-    if (!confirm('Are you sure you want to delete this photo?')) {
+    if (!confirm($localize`@@photoDeleteConfirm:Are you sure you want to delete this photo?`)) {
       return;
     }
 
     this.photoService.deletePhoto(photoId).subscribe({
       next: () => {
-        this.notificationService.success('Photo deleted successfully');
+        this.notificationService.success($localize`@@photoDeleted:Photo deleted successfully`);
         this.projectService.refreshProjects();
       },
       error: (err) => {
         console.error('Error deleting photo:', err);
-        this.notificationService.error('Failed to delete photo');
+        this.notificationService.error($localize`@@photoDeleteFailed:Failed to delete photo`);
       }
     });
   }

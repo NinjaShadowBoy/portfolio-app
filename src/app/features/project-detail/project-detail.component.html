@@ -2,14 +2,14 @@
 <div class="project-detail-container">
   <h1>{{ project.name }}</h1>
   <div class="project-meta">
-    <span>Created: {{ project.createdAt | date:'MMM yyyy' }}</span>
+    <span i18n="Project detail created date label@@projectDetailCreated">Created: {{ project.createdAt | date:'MMM yyyy' }}</span>
     @if (project.updatedAt.toString() !== project.createdAt.toString()) {
-    <span>Updated: {{ project.updatedAt | date:'MMM yyyy' }}</span>
+    <span i18n="Project detail updated date label@@projectDetailUpdated">Updated: {{ project.updatedAt | date:'MMM yyyy' }}</span>
     }
   </div>
   <p class="description">{{ project.description }}</p>
   <div class="technologies">
-    <strong>Technologies:</strong>
+    <strong i18n="Project detail technologies label@@projectDetailTechnologies">Technologies:</strong>
     <div class="tech-tags">
       @for (tech of project.technologies; track tech) {
         @if (getTechDocUrl(tech); as docUrl) {
@@ -31,24 +31,24 @@
     </div>
   </div>
   <div class="challenges">
-    <h2>Challenges</h2>
+    <h2 i18n="Project detail challenges heading@@projectDetailChallenges">Challenges</h2>
     <p>{{ project.challenges }}</p>
   </div>
   @if (project.photoUrls && project.photoUrls.length > 0) {
   <div class="gallery">
-    <h2>Project Screenshots</h2>
+    <h2 i18n="Project detail screenshots heading@@projectDetailScreenshots">Project Screenshots</h2>
     <app-carousel [photoUrls]="project.photoUrls" [projectName]="project.name" />
   </div>
   } @else {
   <div class="gallery">
-    <h2>Project Screenshots</h2>
-    <p class="no-photos">No screenshots available yet.</p>
+    <h2 i18n="Project detail screenshots heading@@projectDetailScreenshots2">Project Screenshots</h2>
+    <p class="no-photos" i18n="Project detail no screenshots message@@projectDetailNoScreenshots">No screenshots available yet.</p>
   </div>
   }
 
   <!-- Rating & Comments Section -->
   <div class="rating-section">
-    <h2>Rate This Project</h2>
+    <h2 i18n="Project detail rate heading@@projectDetailRateHeading">Rate This Project</h2>
 
     <!-- Average Rating Display -->
     <div class="rating-summary">
@@ -86,13 +86,13 @@
           </div>
 
           <div class="form-group">
-            <label for="comment">Add a comment (optional):</label>
+            <label for="comment" i18n="Project detail comment label@@projectDetailCommentLabel">Add a comment (optional):</label>
             <textarea
               id="comment"
               [value]="commentText()"
               (input)="commentText.set($any($event.target).value)"
               [disabled]="isSubmitting()"
-              placeholder="Share your thoughts about this project..."
+              i18n-placeholder placeholder="Share your thoughts about this project..."
               rows="4"></textarea>
           </div>
 
@@ -102,14 +102,14 @@
             </button>
             @if (isEditingRating()) {
               <button type="button" (click)="cancelEditingRating()" class="cancel-btn" [disabled]="isSubmitting()">
-                Cancel
+                <span i18n="Project detail cancel button@@projectDetailCancel">Cancel</span>
               </button>
             }
           </div>
         </form>
       } @else {
         <div class="user-rating-display">
-          <p class="your-rating-label">Your Rating:</p>
+          <p class="your-rating-label" i18n="Project detail your rating label@@projectDetailYourRating">Your Rating:</p>
           <div class="stars-display">
             @for (star of stars; track star) {
               <span class="star" [class.filled]="star <= userRating()!.rating">★</span>
@@ -119,10 +119,10 @@
             <p class="user-comment">{{ userRating()!.comment }}</p>
           }
           <div class="rating-actions">
-            <button type="button" (click)="startEditingRating()" class="edit-btn">
+            <button type="button" (click)="startEditingRating()" class="edit-btn" i18n="Project detail edit rating button@@projectDetailEditRating">
               Edit
             </button>
-            <button type="button" (click)="deleteRating()" class="delete-btn">
+            <button type="button" (click)="deleteRating()" class="delete-btn" i18n="Project detail delete rating button@@projectDetailDeleteRating">
               Delete
             </button>
           </div>
@@ -137,7 +137,7 @@
     <!-- All Ratings & Comments -->
     @if (ratings().length > 0) {
       <div class="all-ratings">
-        <h3>All Reviews</h3>
+        <h3 i18n="Project detail all reviews heading@@projectDetailAllReviews">All Reviews</h3>
         @for (rating of ratings(); track rating.id) {
           <div class="rating-item">
             <div class="rating-header">
@@ -163,13 +163,13 @@
     }
   </div>
 
-  <a [href]="project.githubLink" target="_blank" class="github-link"><p>View on GitHub</p>
+  <a [href]="project.githubLink" target="_blank" class="github-link"><p i18n="Project detail view on GitHub link@@projectDetailGitHub">View on GitHub</p>
     <img src="assets/icons/github.svg" alt="GitHub" width="20" height="20" class="github-icon" />
   </a>
 </div>
 } @else {
 <div class="not-found">
-  <h2>Project Not Found</h2>
-  <p>The requested project does not exist.</p>
+  <h2 i18n="Project detail not found heading@@projectDetailNotFound">Project Not Found</h2>
+  <p i18n="Project detail not found message@@projectDetailNotFoundMessage">The requested project does not exist.</p>
 </div>
 }

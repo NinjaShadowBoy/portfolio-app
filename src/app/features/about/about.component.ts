@@ -58,6 +58,9 @@ export class AboutComponent {
         this.techService.getTechnology('Ktor', 1.5)!,
         this.techService.getTechnology('Node.js', 0)!,
         this.techService.getTechnology('Hibernate', 0)!,
+        this.techService.getTechnology('Chi', 1)!,
+        this.techService.getTechnology('SDL', 2)!,
+        this.techService.getTechnology('Arduino', 3.5)!,
       ].filter(Boolean),
     },
     {
@@ -67,6 +70,7 @@ export class AboutComponent {
         this.techService.getTechnology('PostgreSQL', 2)!,
         this.techService.getTechnology('MySQL', 3.5)!,
         this.techService.getTechnology('MongoDB', 1.5)!,
+        this.techService.getTechnology('SQLite', 1)!,
       ].filter(Boolean),
     },
     {
@@ -110,13 +114,13 @@ export class AboutComponent {
     { name: 'Teamwork', detail: 'Soft Skill' }
   ];
 
-  cvPathEn = 'assets/docs/cv-en.pdf';
-  cvPathFr = 'assets/docs/cv-fr.pdf';
+  cvPathEn = 'assets/docs/ABENA_ALEX_NELSON_RYAN_cv-en.pdf';
+  cvPathFr = 'assets/docs/ABENA_ALEX_NELSON_RYAN_cv-fr.pdf';
 
   downloadCV(lang: 'en' | 'fr'): void {
     const link = document.createElement('a');
     link.href = lang === 'en' ? this.cvPathEn : this.cvPathFr;
-    link.download = lang === 'en' ? 'cv-en.pdf' : 'cv-fr.pdf';
+    link.download = lang === 'en' ? 'ABENA_ALEX_NELSON_RYAN_cv-en.pdf' : 'ABENA_ALEX_NELSON_RYAN_cv-fr.pdf';
     link.click();
   }
 }

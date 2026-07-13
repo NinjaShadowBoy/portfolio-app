@@ -1,3 +1,4 @@
+
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
@@ -49,7 +50,7 @@ export class BreadcrumbComponent {
       if (child.snapshot.params['id']) {
         const projectId = child.snapshot.params['id'];
         const project = this.projectService.getProject(projectId);
-        label = project?.name || 'Project Details';
+        label = project?.name || $localize`@@breadcrumbProjectDetails:Project Details`;
       }
 
       if (label) {

@@ -1,3 +1,4 @@
+
 import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -59,7 +60,7 @@ export class Oauth2RedirectComponent {
   private notifier = inject(NotificationService);
   private params = toSignal(this.route.queryParams);
 
-  message = signal('Completing authentication...');
+  message = signal($localize`@@oauthCompleting:Completing authentication...`);
 
   constructor() {
     effect(() => {
@@ -75,7 +76,7 @@ export class Oauth2RedirectComponent {
       }
 
       if (!token) {
-        this.handleAuthError('No authentication token received');
+        this.handleAuthError($localize`@@oauthNoToken:No authentication token received`);
         return;
       }
 
@@ -84,7 +85,7 @@ export class Oauth2RedirectComponent {
   }
 
   private handleAuthError(errorMessage: string): void {
-    this.message.set('Authentication failed');
+    this.message.set($localize`@@oauthFailed:Authentication failed`);
     this.notifier.error(errorMessage);
     setTimeout(() => this.router.navigateByUrl('/login'), 2000);
   }
@@ -93,12 +94,12 @@ export class Oauth2RedirectComponent {
     try {
       this.auth.setSessionFromToken(token);
 
-      this.notifier.success('Successfully authenticated!');
-      this.message.set('Redirecting...');
+      this.notifier.success($localize`@@oauthSuccess:Successfully authenticated!`);
+      this.message.set($localize`@@oauthRedirecting:Redirecting...`);
       setTimeout(() => this.router.navigateByUrl('/home'), 1000);
     } catch (err) {
       console.error('Token decode error:', err);
-      this.handleAuthError('Invalid authentication token');
+      this.handleAuthError($localize`@@oauthInvalidToken:Invalid authentication token`);
     }
   }
 }

@@ -1,6 +1,6 @@
 <div class="about-container">
-  <h1>About Me</h1>
-  <p>
+  <h1 i18n="About page heading@@aboutMeHeading">About Me</h1>
+  <p i18n="About page bio paragraph@@aboutBio">
     I'm a fourth-year software engineering student with experience in full-stack development and game programming.
     My projects include a hotel reservation system with Stripe integration, a Pac-Man clone with procedural maze
     generation,
@@ -10,14 +10,14 @@
   <div class="cv-download-section">
     <div class="cv-download-group">
       <button class="cv-download-btn" (click)="downloadCV('en')" aria-label="Download CV (English)"
-        title="Download CV (English)">
+        i18n-title title="Download CV (English)">
         <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <polyline points="7 10 12 15 17 10"></polyline>
           <line x1="12" y1="15" x2="12" y2="3"></line>
         </svg>
-        CV
+        <span i18n="CV button text@@aboutCvButtonEn">CV</span>
         <svg class="lang-flag" viewBox="0 0 640 480">
           <path fill="#012169" d="M0 0h640v480H0z" />
           <path fill="#FFF"
@@ -29,14 +29,14 @@
         </svg>
       </button>
       <button class="cv-download-btn" (click)="downloadCV('fr')" aria-label="Download CV (French)"
-        title="Download CV (French)">
+        i18n-title title="Download CV (French)">
         <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
           <polyline points="7 10 12 15 17 10" />
           <line x1="12" y1="15" x2="12" y2="3" />
         </svg>
-        CV
+        <span i18n="CV button text@@aboutCvButtonFr">CV</span>
         <svg class="lang-flag" viewBox="0 0 640 480">
           <g fill-rule="evenodd" stroke-width="1pt">
             <path fill="#fff" d="M0 0h640v480H0z" />
@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <h2>Skills</h2>
+  <h2 i18n="About page skills heading@@aboutSkills">Skills</h2>
   <ul class="skills-list">
     @for (skill of skills; track skill) {
     <li>{{ skill }}</li>
@@ -56,8 +56,8 @@
   </ul>
 
   <section class="tech-stack-section">
-    <h2>Technologies I've Touched</h2>
-    <p class="tech-stack-intro">
+    <h2 i18n="About page technologies heading@@aboutTechnologies">Technologies I've Touched</h2>
+    <p class="tech-stack-intro" i18n="About page tech stack intro paragraph@@aboutTechStackIntro">
       A rolling list of tools and languages I've worked with. Starred (★) items are the ones I'm most comfortable with and use actively.
     </p>
 
@@ -68,13 +68,13 @@
     </div>
     }
 
-    <p class="tech-legend">
+    <p class="tech-legend" i18n="About page tech legend@@aboutTechLegend">
       <span class="legend-star good" aria-hidden="true">★</span> proficient
       <span class="legend-star" aria-hidden="true">☆</span> had exposure
     </p>
   </section>
 
-  <h2>Hobbies & Interests</h2>
+  <h2 i18n="About page hobbies heading@@aboutHobbies">Hobbies & Interests</h2>
   <ul class="skills-list hobbies-list">
     @for (hobby of hobbies; track hobby.name) {
     <li>

@@ -1,11 +1,11 @@
 <section class="admin-container">
   <div class="admin-header">
-    <h1>Admin Dashboard</h1>
+    <h1 i18n="Admin dashboard heading@@adminDashboardHeading">Admin Dashboard</h1>
     @if (isAdmin) {
       <p class="welcome">Welcome, {{ user?.name }} ({{ user?.email }})</p>
     } @else {
-      <p class="restricted">Restricted area. You are not authorized.</p>
-      <button class="btn-primary" (click)="goHome()">Go Home</button>
+      <p class="restricted" i18n="Admin restricted area message@@adminRestricted">Restricted area. You are not authorized.</p>
+      <button class="btn-primary" (click)="goHome()" i18n="Admin go home button@@adminGoHome">Go Home</button>
     }
   </div>
 
@@ -13,9 +13,9 @@
     <div class="admin-content">
       <!-- Mode Toggle -->
       <div class="mode-toggle" (click)="toggleJsonMode()">
-        <span [class.active]="!jsonMode()">Form Mode</span>
+        <span [class.active]="!jsonMode()" i18n="Admin form mode toggle@@adminFormMode">Form Mode</span>
         <div class="toggle-thumb" [class.right]="jsonMode()"></div>
-        <span [class.active]="jsonMode()">JSON Mode</span>
+        <span [class.active]="jsonMode()" i18n="Admin JSON mode toggle@@adminJsonMode">JSON Mode</span>
       </div>
 
       <!-- Form Mode -->
@@ -37,7 +37,7 @@
       <div class="projects-list">
         <h2>Existing Projects ({{ projects().length }})</h2>
         @if (projects().length === 0) {
-          <p class="no-projects">No projects found. Create your first project above!</p>
+          <p class="no-projects" i18n="Admin no projects message@@adminNoProjects">No projects found. Create your first project above!</p>
         } @else {
           <div class="projects-grid">
             @for (project of projects(); track project.id) {
@@ -45,7 +45,7 @@
                 <div class="project-header">
                   <h3>{{ project.name }}</h3>
                   @if (project.featured) {
-                    <span class="badge-featured">Featured</span>
+                    <span class="badge-featured" i18n="Admin featured badge@@adminFeaturedBadge">Featured</span>
                   }
                 </div>
                 <p class="project-description">{{ project.description }}</p>
@@ -70,17 +70,17 @@
                     }
                   </div>
                   <a [href]="project.githubLink" target="_blank" class="github-link">
-                    View on GitHub →
+                    <span i18n="Admin view on GitHub link@@adminGitHubLink">View on GitHub →</span>
                   </a>
                 </div>
                 <div class="project-details">
-                  <p><strong>Challenges:</strong> {{ project.challenges }}</p>
-                  <p><strong>Learnings:</strong> {{ project.whatILearned }}</p>
+                  <p><strong i18n="Admin challenges label@@adminChallengesLabel">Challenges:</strong> {{ project.challenges }}</p>
+                  <p><strong i18n="Admin learnings label@@adminLearningsLabel">Learnings:</strong> {{ project.whatILearned }}</p>
                 </div>
                 <div class="project-actions">
-                  <button (click)="editProject(project)" class="btn-edit">Edit</button>
-                  <button (click)="openPhotoManager(project)" class="btn-photos">Photos</button>
-                  <button (click)="deleteProject(project)" class="btn-delete">Delete</button>
+                  <button (click)="editProject(project)" class="btn-edit" i18n="Admin edit button@@adminEditButton">Edit</button>
+                  <button (click)="openPhotoManager(project)" class="btn-photos" i18n="Admin photos button@@adminPhotosButton">Photos</button>
+                  <button (click)="deleteProject(project)" class="btn-delete" i18n="Admin delete button@@adminDeleteButton">Delete</button>
                 </div>
               </div>
             }

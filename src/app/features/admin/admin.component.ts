@@ -1,3 +1,4 @@
+
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
@@ -82,14 +83,14 @@ export class AdminComponent {
     this.projectService.createProject(projectData).subscribe({
       next: (newProject) => {
         this.notificationService.success(
-          `Project "${newProject.name}" created successfully!`
+          $localize`@@projectCreated:Project "${newProject.name}" created successfully!`
         );
         this.resetForm();
       },
       error: (err) => {
         console.error('Error creating project:', err);
         this.notificationService.error(
-          'Failed to create project. Check console for details.'
+          $localize`@@projectCreateFailed:Failed to create project. Check console for details.`
         );
       },
     });
@@ -107,14 +108,14 @@ export class AdminComponent {
     this.projectService.updateProject(projectId, projectData).subscribe({
       next: (updatedProject) => {
         this.notificationService.success(
-          `Project "${updatedProject.name}" updated successfully!`
+          $localize`@@projectUpdated:Project "${updatedProject.name}" updated successfully!`
         );
         this.resetForm();
       },
       error: (err) => {
         console.error('Error updating project:', err);
         this.notificationService.error(
-          'Failed to update project. Check console for details.'
+          $localize`@@projectUpdateFailed:Failed to update project. Check console for details.`
         );
       },
     });
@@ -123,7 +124,7 @@ export class AdminComponent {
   deleteProject(project: Project) {
     if (
       !confirm(
-        `Are you sure you want to delete "${project.name}"? This action cannot be undone.`
+        $localize`@@projectDeleteConfirm:Are you sure you want to delete "${project.name}"? This action cannot be undone.`
       )
     ) {
       return;
@@ -132,7 +133,7 @@ export class AdminComponent {
     this.projectService.deleteProject(project.id).subscribe({
       next: () => {
         this.notificationService.success(
-          `Project "${project.name}" deleted successfully!`
+          $localize`@@projectDeleted:Project "${project.name}" deleted successfully!`
         );
         if (this.editingProject()?.id === project.id) {
           this.resetForm();
@@ -141,7 +142,7 @@ export class AdminComponent {
       error: (err) => {
         console.error('Error deleting project:', err);
         this.notificationService.error(
-          'Failed to delete project. Check console for details.'
+          $localize`@@projectDeleteFailed:Failed to delete project. Check console for details.`
         );
       },
     });
@@ -171,12 +172,12 @@ export class AdminComponent {
       this.projectService.updateProject(data.id, data).subscribe({
         next: (updatedProject: Project) => {
           this.notificationService.success(
-            `Project "${updatedProject.name}" updated successfully!`
+            $localize`@@projectUpdated:Project "${updatedProject.name}" updated successfully!`
           );
         },
         error: (err: any) => {
           console.error('Error updating project:', err);
-          this.notificationService.error('Failed to update project');
+          this.notificationService.error($localize`@@projectUpdateFailed:Failed to update project`);
         },
       });
     } else {
@@ -184,12 +185,12 @@ export class AdminComponent {
       this.projectService.createProject(data).subscribe({
         next: (newProject: Project) => {
           this.notificationService.success(
-            `Project "${newProject.name}" created successfully!`
+            $localize`@@projectCreated:Project "${newProject.name}" created successfully!`
           );
         },
         error: (err: any) => {
           console.error('Error creating project:', err);
-          this.notificationService.error('Failed to create project');
+          this.notificationService.error($localize`@@projectCreateFailed:Failed to create project`);
         },
       });
     }
@@ -205,12 +206,12 @@ export class AdminComponent {
     forkJoin(requests).subscribe({
       next: (results) => {
         this.notificationService.success(
-          `Successfully processed ${results.length} project(s)`
+          $localize`@@bulkProcessed:Successfully processed ${results.length} project(s)`
         );
       },
       error: (err: any) => {
         console.error('Error processing bulk projects:', err);
-        this.notificationService.error('Some projects failed to process');
+        this.notificationService.error($localize`@@bulkProcessFailed:Some projects failed to process`);
       },
     });
   }

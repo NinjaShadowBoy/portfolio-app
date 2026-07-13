@@ -128,6 +128,11 @@ export class TechnologiesService {
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg',
       docUrl: 'https://www.mysql.com/',
     },
+    'sqlite': {
+      name: 'SQLite',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg',
+      docUrl: 'https://www.sqlite.org/',
+    },
     'mongodb': {
       name: 'MongoDB',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
@@ -222,6 +227,21 @@ export class TechnologiesService {
       name: 'Go',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg',
       docUrl: 'https://golang.org/',
+    },
+    'chi': {
+      name: 'Chi',
+      logo: 'https://cdn.rawgit.com/go-chi/chi/master/_examples/chi.svg',
+      docUrl: 'https://go-chi.io/',
+    },
+    'sdl': {
+      name: 'SDL',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sdl/sdl-original.svg',
+      docUrl: 'https://www.libsdl.org/',
+    },
+    'arduino': {
+      name: 'Arduino',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg',
+      docUrl: 'https://www.arduino.cc/',
     },
     'playwright': {
       name: 'Playwright',

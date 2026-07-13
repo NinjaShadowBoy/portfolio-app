@@ -1,3 +1,4 @@
+
 import { Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -126,7 +127,7 @@ export class ProjectDetailComponent {
 
   onStarClick(star: number) {
     if (!this.authService.isAuthenticated()) {
-      this.notificationService.warning('Please log in to rate this project');
+      this.notificationService.warning($localize`@@ratingLoginRequired:Please log in to rate this project`);
       return;
     }
     this.selectedRating.set(star);
@@ -137,7 +138,7 @@ export class ProjectDetailComponent {
     if (!this.authService.isAuthenticated() || !project || this.isSubmitting()) return;
 
     if (this.selectedRating() === 0) {
-      this.notificationService.warning('Please select a rating');
+      this.notificationService.warning($localize`@@ratingSelectRequired:Please select a rating`);
       return;
     }
 
@@ -168,14 +169,14 @@ export class ProjectDetailComponent {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            this.userRating() ? 'Rating updated successfully' : 'Rating submitted successfully'
+            this.userRating() ? $localize`@@ratingUpdated:Rating updated successfully` : $localize`@@ratingSubmitted:Rating submitted successfully`
           );
           this.loadRatings(project.id);
           this.isEditingRating.set(false);
         },
         error: (err) => {
           this.notificationService.error(
-            this.userRating() ? 'Failed to update rating' : 'Failed to submit rating'
+            this.userRating() ? $localize`@@ratingUpdateFailed:Failed to update rating` : $localize`@@ratingSubmitFailed:Failed to submit rating`
           );
           console.error('Error saving rating:', err);
         },
@@ -199,13 +200,13 @@ export class ProjectDetailComponent {
     const rating = this.userRating();
     if (!rating) return;
 
-    if (!confirm('Are you sure you want to delete your rating?')) return;
+    if (!confirm($localize`@@ratingDeleteConfirm:Are you sure you want to delete your rating?`)) return;
 
     this.projectService.deleteRating(rating.id).pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: () => {
-        this.notificationService.success('Rating deleted successfully');
+        this.notificationService.success($localize`@@ratingDeleted:Rating deleted successfully`);
         this.selectedRating.set(0);
         this.commentText.set('');
         const project = this.project();
@@ -214,7 +215,7 @@ export class ProjectDetailComponent {
         }
       },
       error: (err) => {
-        this.notificationService.error('Failed to delete rating');
+        this.notificationService.error($localize`@@ratingDeleteFailed:Failed to delete rating`);
         console.error('Error deleting rating:', err);
       },
     });

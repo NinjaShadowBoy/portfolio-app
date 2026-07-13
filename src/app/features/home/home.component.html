@@ -26,12 +26,12 @@
   <div class="hero">
     <div class="content">
       <img class="my-face" appLazyLoad src="assets/images/2223i141.jpg" alt="Alex Nelson ABENA - Profile Picture" width="200" height="200" fetchpriority="high">
-      <p class="headline">
+      <p class="headline" i18n="Home page hero headline@@homeHeadline">
         Young, Growing, self taught, all around <span aria-label="sweat smile" role="img">😅</span>, programmer
       </p>
       <div class="meet">
         <span aria-label="point down" role="img">👇</span>
-        <span>Know more about me!</span>
+        <span i18n="Home page call to action@@homeKnowMore">Know more about me!</span>
       </div>
     </div>
     <img class="hero-illustration" src="assets/images/Ilustration-1-animated.svg" alt="Hero Illustration" width="480" height="900" fetchpriority="high">
@@ -40,42 +40,42 @@
 
 <!-- My Arsenal Section with Moving Banners -->
 <section class="my-tools-section">
-  <h2>My Arsenal</h2>
+  <h2 i18n="Home page tools section heading@@homeMyArsenal">My Arsenal</h2>
 
   <!-- Languages Banner (Left to Right) -->
   <div class="category-section">
-    <h3>Languages</h3>
+    <h3 i18n="Home page languages section heading@@homeLanguages">Languages</h3>
     <app-tech-banner [technologies]="languages" direction="left" [speed]="20" />
   </div>
 
   <!-- Frameworks Banner (Right to Left) -->
   <div class="category-section">
-    <h3>Frameworks</h3>
+    <h3 i18n="Home page frameworks section heading@@homeFrameworks">Frameworks</h3>
     <app-tech-banner [technologies]="frameworks" direction="right" [speed]="20" />
   </div>
 
   <!-- Tools Banner (Left to Right) -->
   <div class="category-section">
-    <h3>Tools</h3>
+    <h3 i18n="Home page tools section heading@@homeTools">Tools</h3>
     <app-tech-banner [technologies]="tools" direction="left" [speed]="20" />
   </div>
 
   <!-- Frameworks Banner (Right to Left) -->
   <div class="category-section">
-    <h3>Frameworks</h3>
+    <h3 i18n="Home page frameworks section heading@@homeFrameworks2">Frameworks</h3>
     <app-tech-banner [technologies]="frameworks" direction="right" [speed]="20" />
   </div>
 
   <!-- Tools Banner (Left to Right) -->
   <div class="category-section">
-    <h3>Tools</h3>
+    <h3 i18n="Home page tools section heading@@homeTools2">Tools</h3>
     <app-tech-banner [technologies]="tools" direction="left" [speed]="20" />
   </div>
 </section>
 
 <!-- Existing featured projects section remains below -->
 <section class="featured-projects">
-  <h2>Featured Projects</h2>
+  <h2 i18n="Home page featured projects heading@@homeFeaturedProjects">Featured Projects</h2>
   @if (featuredProjects().length > 0) {
   <div class="projects-grid">
     @for (project of featuredProjects(); track project.id) {
@@ -83,6 +83,6 @@
     }
   </div>
   } @else {
-  <p>No featured projects available.</p>
+  <p i18n="Home page no featured projects message@@homeNoFeaturedProjects">No featured projects available.</p>
   }
 </section>

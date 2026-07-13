@@ -1,3 +1,4 @@
+
 import { inject } from '@angular/core';
 import { CanActivateFn, CanDeactivateFn, Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
@@ -13,7 +14,7 @@ export const authGuard: CanActivateFn = () => {
     return true;
   }
 
-  notificationService.error('Please log in to continue.');
+  notificationService.error($localize`@@authLoginRequired:Please log in to continue.`);
   return router.createUrlTree(['/login']);
 };
 

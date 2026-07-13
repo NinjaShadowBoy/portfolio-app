@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+
+import { Component, inject, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { SocialLinksService } from '../../../core/services/social-links.service';
 import { ThemeService } from '../../../core/services/theme.service';
@@ -14,28 +15,11 @@ import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  title: string = 'Alex Nelson Abena';
-  nickname: string = 'NinjaShadowBoy';
-  subtitle: string = 'Junior Software Engineer and Student';
-  description: string =
-    'I am a software engineer with a passion for building web applications and mobile applications.';
-
-  navItems: { label: string; link: string }[] = [
-    { label: 'Home', link: '/home' },
-    { label: 'Projects', link: '/projects' },
-    { label: 'About Me', link: '/about' },
-    { label: 'Contact Me', link: '/contact' },
-    // {label: 'Blog', link: '/blog'},
-    // {label: 'Resume', link: '/resume'},
-    // {label: 'Skills', link: '/skills'},
-    // {label: 'Education', link: '/education'},
-    // {label: 'Experience', link: '/experience'},
-    // {label: 'Certifications', link: '/certifications'},
-  ];
-
   private auth = inject(AuthService);
   private socialLinksService = inject(SocialLinksService);
   private themeService = inject(ThemeService);
+  private router = inject(Router);
+  readonly currentLang = inject(LOCALE_ID);
 
   isAuthenticated = this.auth.isAuthenticated;
   isAdmin = this.auth.isAdmin;
@@ -44,20 +28,32 @@ export class HeaderComponent {
   currentTheme = this.themeService.currentTheme;
 
   isMenuOpen = false;
-  cvPathEn = 'assets/docs/cv-en.pdf';
-  cvPathFr = 'assets/docs/cv-fr.pdf';
+  cvPathEn = 'assets/docs/ABENA_ALEX_NELSON_RYAN_cv-en.pdf';
+  cvPathFr = 'assets/docs/ABENA_ALEX_NELSON_RYAN_cv-fr.pdf';
+
+  get langLabel(): string {
+    return this.currentLang === 'en' ? 'FR' : 'EN';
+  }
+
+  get langAriaLabel(): string {
+    return this.currentLang === 'en' ? 'Switch to French' : 'Switch to English';
+  }
+
+  toggleLanguage() {
+    const newLang = this.currentLang === 'en' ? 'fr' : 'en';
+    window.location.href = `/${newLang}${this.router.url}`;
+  }
 
   downloadCV(lang: 'en' | 'fr'): void {
     const link = document.createElement('a');
     link.href = lang === 'en' ? this.cvPathEn : this.cvPathFr;
-    link.download = lang === 'en' ? 'cv-en.pdf' : 'cv-fr.pdf';
+    link.download = lang === 'en' ? 'ABENA_ALEX_NELSON_RYAN_cv-en.pdf' : 'ABENA_ALEX_NELSON_RYAN_cv-fr.pdf';
     link.click();
   }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
 
-    // Prevent body scroll when menu is open
     if (this.isMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {

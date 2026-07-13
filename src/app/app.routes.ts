@@ -11,7 +11,7 @@ import { AdminComponent } from './features/admin/admin.component';
 import { Oauth2RedirectComponent } from './features/auth/oauth2-redirect/oauth2-redirect.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, data: { breadcrumb: 'Home' } },
   {
     path: 'projects',

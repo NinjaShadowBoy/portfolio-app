@@ -5,15 +5,16 @@
       [attr.aria-label]="tech.name + ' documentation'">
       <img appLazyLoad [src]="tech.logo" [alt]="tech.name" width="48" height="48" loading="lazy" />
       <span class="tech-label">
-        {{ tech.name }}
-        @if (showStars()) {
-        @for (item of createRange(tech.proficiency); track $index) {
-           <span class="proficiency-star" [class.good]="isGoodAt(tech)"
-              aria-hidden="true">
-              {{ isGoodAt(tech) ? '★' : '☆' }}
-           </span>
-      }
-      }
+        <div class="tech-name">{{ tech.name }}</div>
+        <div>
+          @if (showStars()) {
+          @for (item of createRange(tech.proficiency); track $index) {
+          <span class="proficiency-star" [class.good]="isGoodAt(tech)" aria-hidden="true">
+            {{ isGoodAt(tech) ? '★' : '☆' }}
+          </span>
+          }
+          }
+        </div>
       </span>
     </a>
     }

@@ -4,8 +4,8 @@
     <div class="footer-main">
       <!-- Brand Section -->
       <div class="footer-brand">
-        <h3 class="brand-title">Portfolio</h3>
-        <p class="brand-description">
+        <h3 class="brand-title" i18n="Footer brand title@@footerBrandTitle">Portfolio</h3>
+        <p class="brand-description" i18n="Footer brand description@@footerBrandDescription">
           Showcasing software engineering projects and professional experience in my learning journey.
           Building the future, one line of code at a time.
         </p>
@@ -21,19 +21,18 @@
 
       <!-- Quick Links Section -->
       <div class="footer-section">
-        <h4 class="section-title">Quick Links</h4>
+        <h4 class="section-title" i18n="Footer quick links heading@@footerQuickLinks">Quick Links</h4>
         <nav class="footer-nav">
-          @for (link of quickLinks; track link.name) {
-          <a [routerLink]="link.route" routerLinkActive="active" class="footer-link">
-            {{ link.name }}
-          </a>
-          }
+          <a routerLink="/home" routerLinkActive="active" class="footer-link" i18n="Footer home link@@footerHome">Home</a>
+          <a routerLink="/projects" routerLinkActive="active" class="footer-link" i18n="Footer projects link@@footerProjects">Projects</a>
+          <a routerLink="/about" routerLinkActive="active" class="footer-link" i18n="Footer about link@@footerAbout">About</a>
+          <a routerLink="/contact" routerLinkActive="active" class="footer-link" i18n="Footer contact link@@footerContact">Contact</a>
         </nav>
       </div>
 
       <!-- Contact Section -->
       <div class="footer-section">
-        <h4 class="section-title">Contact</h4>
+        <h4 class="section-title" i18n="Footer contact heading@@footerContact">Contact</h4>
         <div class="contact-info">
           <div class="contact-item">
             <img class="contact-icon" src="assets/icons/mail.svg" alt="Email icon" />
@@ -49,15 +48,15 @@
           </div>
           <div class="contact-item">
             <img class="contact-icon" src="assets/icons/map-pin.svg" alt="Location icon" />
-            <span class="contact-text">{{ contactInfo.location }}</span>
+            <span class="contact-text" i18n="Footer location@@footerLocation">Yaounde, Cameroon</span>
           </div>
         </div>
       </div>
 
       <!-- Newsletter Section -->
       <div class="footer-section">
-        <h4 class="section-title">Stay Updated</h4>
-        <p class="newsletter-description">
+        <h4 class="section-title" i18n="Footer stay updated heading@@footerStayUpdated">Stay Updated</h4>
+        <p class="newsletter-description" i18n="Footer newsletter description@@footerNewsletterDescription">
           Subscribe to get updates on new projects and insights.
         </p>
       </div>
@@ -66,13 +65,13 @@
     <!-- Footer Bottom -->
     <div class="footer-bottom">
       <div class="footer-bottom-content">
-        <p class="copyright">
+        <p class="copyright" i18n="Footer copyright text@@footerCopyright">
           © {{ currentYear }} Abena Alex Nelson Ryan. All rights reserved.
         </p>
         <div class="footer-bottom-links">
-          <a href="#" class="footer-bottom-link interactive">Privacy Policy</a>
-          <a href="#" class="footer-bottom-link interactive">Terms of Service</a>
-          <a href="#" class="footer-bottom-link interactive">Cookie Policy</a>
+          <a href="#" class="footer-bottom-link interactive" i18n="Footer privacy policy link@@footerPrivacyPolicy">Privacy Policy</a>
+          <a href="#" class="footer-bottom-link interactive" i18n="Footer terms of service link@@footerTermsOfService">Terms of Service</a>
+          <a href="#" class="footer-bottom-link interactive" i18n="Footer cookie policy link@@footerCookiePolicy">Cookie Policy</a>
         </div>
       </div>
     </div>

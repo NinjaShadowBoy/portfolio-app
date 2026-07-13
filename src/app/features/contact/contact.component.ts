@@ -1,3 +1,4 @@
+
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -35,7 +36,7 @@ export class ContactComponent implements CanComponentDeactivate {
 
   submitForm(): void {
     if (this.contactForm.invalid) {
-      this.notificationService.error('Please fill out all fields correctly.');
+      this.notificationService.error($localize`@@contactFillFields:Please fill out all fields correctly.`);
       return;
     }
 
@@ -55,12 +56,12 @@ export class ContactComponent implements CanComponentDeactivate {
         this.isSubmitting = false;
         if (response.success) {
           this.notificationService.success(
-            response.message || 'Thank you for your message! I\'ll get back to you soon.'
+            response.message || $localize`@@contactSuccess:Thank you for your message! I'll get back to you soon.`
           );
           this.contactForm.reset();
         } else {
           this.notificationService.error(
-            response.message || 'Failed to submit contact form. Please try again.'
+            response.message || $localize`@@contactSubmitFailed:Failed to submit contact form. Please try again.`
           );
         }
       },
@@ -68,7 +69,7 @@ export class ContactComponent implements CanComponentDeactivate {
         this.isSubmitting = false;
         console.error('Error submitting contact form:', error);
         this.notificationService.error(
-          'Failed to send message. Please try again later or reach out via email.'
+          $localize`@@contactSendFailed:Failed to send message. Please try again later or reach out via email.`
         );
       }
     });
@@ -78,7 +79,7 @@ export class ContactComponent implements CanComponentDeactivate {
     () => {
       if (this.contactForm.dirty && !this.contactForm.pristine) {
         return confirm(
-          'Contact form entered data will be lost. Are you sure you want to leave?'
+          $localize`@@contactLeaveConfirm:Contact form entered data will be lost. Are you sure you want to leave?`
         );
       }
       return true;

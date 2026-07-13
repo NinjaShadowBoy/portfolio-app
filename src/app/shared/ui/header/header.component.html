@@ -17,13 +17,22 @@
 
       <!-- Desktop navigation -->
       <ul class="desktop-nav">
-        @for(item of navItems; track item.label) {
         <li>
-          <!-- Event binding for user interactions -->
-          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active"
-            ariaCurrentWhenActive="page">{{ item.label }}</a>
+          <a class="link liquid-glass" routerLink="/home" routerLinkActive="active"
+            ariaCurrentWhenActive="page" i18n="Nav home link@@navHome">Home</a>
         </li>
-        }
+        <li>
+          <a class="link liquid-glass" routerLink="/projects" routerLinkActive="active"
+            ariaCurrentWhenActive="page" i18n="Nav projects link@@navProjects">Projects</a>
+        </li>
+        <li>
+          <a class="link liquid-glass" routerLink="/about" routerLinkActive="active"
+            ariaCurrentWhenActive="page" i18n="Nav about link@@navAbout">About Me</a>
+        </li>
+        <li>
+          <a class="link liquid-glass" routerLink="/contact" routerLinkActive="active"
+            ariaCurrentWhenActive="page" i18n="Nav contact link@@navContact">Contact Me</a>
+        </li>
         @if (isAuthenticated() && user()) {
         <li class="login-status">
           <div class="status-badge liquid-glass-subtle">
@@ -35,30 +44,37 @@
         <li class="auth-controls">
           @if (isAuthenticated()) {
           <a class="link liquid-glass" (click)="logout()" routerLinkActive="active"
-            ariaCurrentWhenActive="page">Logout</a>
+            ariaCurrentWhenActive="page" i18n="Header logout link@@headerLogout">Logout</a>
           } @else {
-          <a class="link liquid-glass" [routerLink]="['/login']" routerLinkActive="active"
-            ariaCurrentWhenActive="page">Login</a>
+          <a class="link liquid-glass" routerLink="/login" routerLinkActive="active"
+            ariaCurrentWhenActive="page" i18n="Header login link@@headerLogin">Login</a>
           }
         </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
-          <a class="link liquid-glass" [routerLink]="['/admin']" routerLinkActive="active"
-            ariaCurrentWhenActive="page">Admin</a>
+          <a class="link liquid-glass" routerLink="/admin" routerLinkActive="active"
+            ariaCurrentWhenActive="page" i18n="Header admin link@@headerAdmin">Admin</a>
         </li>
         }
+
+        <li class="lang-switch-item">
+          <button class="lang-toggle liquid-glass" type="button" (click)="toggleLanguage()"
+            [attr.aria-label]="langAriaLabel" i18n="Language switch button@@langSwitch">
+            {{ langLabel }}
+          </button>
+        </li>
 
         <li class="cv-download-n-theme-group">
           <div class="cv-download-group">
             <button class="header-cv-btn liquid-glass" (click)="downloadCV('en')" aria-label="Download CV (English)"
-              title="Download CV (English)">
+              i18n-title title="Download CV (English)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
-              <span>CV </span>
+              <span i18n="Header CV English button text@@headerCvEn">CV </span>
               <svg class="lang-flag" viewBox="0 0 640 480">
                 <path fill="#012169" d="M0 0h640v480H0z" />
                 <path fill="#FFF"
@@ -70,14 +86,14 @@
               </svg>
             </button>
             <button class="header-cv-btn liquid-glass" (click)="downloadCV('fr')" aria-label="Download CV (French)"
-              title="Download CV (French)">
+              i18n-title title="Download CV (French)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
-              <span>CV</span>
+              <span i18n="Header CV French button text@@headerCvFr">CV</span>
               <svg class="lang-flag" viewBox="0 0 640 480">
                 <g fill-rule="evenodd" stroke-width="1pt">
                   <path fill="#fff" d="M0 0h640v480H0z" />
@@ -90,7 +106,7 @@
               <button class="theme-toggle" type="button" (click)="toggleTheme()"
                 [class.dark]="currentTheme() === 'dark'"
                 [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-                title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
+                i18n-title title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
                 <span class="theme-track" aria-hidden="true">
                   <span class="theme-icon theme-icon-sun">
                     <svg viewBox="0 0 24 24" focusable="false">
@@ -126,8 +142,8 @@
 
     <!-- String interpolation for dynmic data -->
     <div class="header-content">
-      <h1>{{ title }} aka <em class="nickname">{{ nickname }}</em></h1>
-      <p>{{ subtitle }}</p>
+      <h1 i18n="Header title@@headerTitle">Alex Nelson Abena aka <em class="nickname">NinjaShadowBoy</em></h1>
+      <p i18n="Header subtitle@@headerSubtitle">Junior Software Engineer and Student</p>
     </div>
 
     <!-- Mobile sidebar modal -->
@@ -151,14 +167,14 @@
         <li class="cv-download-n-theme-group mobile-theme">
           <div class="cv-download-group">
             <button class="header-cv-btn liquid-glass" (click)="downloadCV('en')" aria-label="Download CV (English)"
-              title="Download CV (English)">
+              i18n-title title="Download CV (English)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
-              <span>CV</span>
+              <span i18n="Header CV English mobile button text@@headerCvEnMobile">CV</span>
               <svg class="lang-flag" viewBox="0 0 640 480">
                 <path fill="#012169" d="M0 0h640v480H0z" />
                 <path fill="#FFF"
@@ -170,14 +186,14 @@
               </svg>
             </button>
             <button class="header-cv-btn liquid-glass" (click)="downloadCV('fr')" aria-label="Download CV (French)"
-              title="Download CV (French)">
+              i18n-title title="Download CV (French)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
-              <span>CV</span>
+              <span i18n="Header CV French mobile button text@@headerCvFrMobile">CV</span>
               <svg class="lang-flag" viewBox="0 0 640 480">
                 <g fill-rule="evenodd" stroke-width="1pt">
                   <path fill="#fff" d="M0 0h640v480H0z" />
@@ -192,7 +208,7 @@
           <button class="theme-toggle" type="button" (click)="toggleTheme()"
             [class.dark]="currentTheme() === 'dark'"
             [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-            title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
+            i18n-title title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
             <span class="theme-track" aria-hidden="true">
               <span class="theme-icon theme-icon-sun">
                 <svg viewBox="0 0 24 24" focusable="false">
@@ -211,29 +227,43 @@
             </span>
           </button>
         </li>
-        @for(item of navItems; track item.label) {
         <li>
-          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()">{{
-            item.label
-            }}</a>
+          <a class="link liquid-glass" routerLink="/home" routerLinkActive="active"
+            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Nav mobile home link@@navMobileHome">Home</a>
         </li>
-        }
+        <li>
+          <a class="link liquid-glass" routerLink="/projects" routerLinkActive="active"
+            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Nav mobile projects link@@navMobileProjects">Projects</a>
+        </li>
+        <li>
+          <a class="link liquid-glass" routerLink="/about" routerLinkActive="active"
+            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Nav mobile about link@@navMobileAbout">About Me</a>
+        </li>
+        <li>
+          <a class="link liquid-glass" routerLink="/contact" routerLinkActive="active"
+            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Nav mobile contact link@@navMobileContact">Contact Me</a>
+        </li>
         <li class="auth-controls">
           @if (isAuthenticated()) {
           <a class="link liquid-glass" (click)="logout(); toggleMenu()" routerLinkActive="active"
-            ariaCurrentWhenActive="page">Logout</a>
+            ariaCurrentWhenActive="page" i18n="Header mobile logout link@@headerMobileLogout">Logout</a>
           } @else {
-          <a class="link liquid-glass" [routerLink]="['/login']" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()">Login</a>
+          <a class="link liquid-glass" routerLink="/login" routerLinkActive="active"
+            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Header mobile login link@@headerMobileLogin">Login</a>
           }
         </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
-          <a class="link liquid-glass" [routerLink]="['/admin']" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()">Admin</a>
+          <a class="link liquid-glass" routerLink="/admin" routerLinkActive="active"
+            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Header mobile admin link@@headerMobileAdmin">Admin</a>
         </li>
         }
+        <li class="lang-switch-item mobile-lang">
+          <button class="lang-toggle liquid-glass" type="button" (click)="toggleLanguage(); toggleMenu()"
+            [attr.aria-label]="langAriaLabel" i18n="Language mobile switch button@@langSwitchMobile">
+            {{ langLabel }}
+          </button>
+        </li>
         <li class="socials">
           @for(social of socialLinks; track social.name) {
           <a class="social liquid-glass" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"

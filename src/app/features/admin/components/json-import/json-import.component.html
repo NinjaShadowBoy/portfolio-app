@@ -1,20 +1,20 @@
-<h2>JSON Bulk Operations</h2>
-<p class="info-text">
+<h2 i18n="JSON import heading@@jsonImportHeading">JSON Bulk Operations</h2>
+<p class="info-text" i18n="JSON import info text@@jsonImportInfo">
   Enter a single project object or an array of projects. Include an "id" field to update
   existing projects, omit it to create new ones.
 </p>
 
 <div class="sample-buttons">
-  <button (click)="copySampleJson()" class="btn-secondary">
+  <button (click)="copySampleJson()" class="btn-secondary" i18n="JSON import copy sample single button@@jsonImportCopySingle">
     Copy Sample JSON (Single)
   </button>
-  <button (click)="copySampleJsonArray()" class="btn-secondary">
+  <button (click)="copySampleJsonArray()" class="btn-secondary" i18n="JSON import copy sample array button@@jsonImportCopyArray">
     Copy Sample JSON (Array)
   </button>
 </div>
 
 <div class="form-group">
-  <label for="jsonInput">JSON Input</label>
+  <label for="jsonInput" i18n="JSON import input label@@jsonInputLabel">JSON Input</label>
   <textarea
     id="jsonInput"
     [value]="importData()"
@@ -29,23 +29,23 @@
 </div>
 
 <div class="form-actions">
-  <button (click)="processJson()" class="btn-primary">Process JSON</button>
-  <button (click)="clear()" class="btn-secondary">Clear</button>
+  <button (click)="processJson()" class="btn-primary" i18n="JSON import process button@@jsonImportProcess">Process JSON</button>
+  <button (click)="clear()" class="btn-secondary" i18n="JSON import clear button@@jsonImportClear">Clear</button>
 </div>
 
 <div class="json-help">
-  <h3>Required Fields:</h3>
+  <h3 i18n="JSON import required fields heading@@jsonImportRequiredFields">Required Fields:</h3>
   <ul>
-    <li><code>name</code> - Project name</li>
-    <li><code>description</code> - Project description</li>
-    <li><code>technologies</code> - Array of technology names</li>
-    <li><code>githubLink</code> - GitHub repository URL</li>
-    <li><code>challenges</code> - Challenges faced</li>
-    <li><code>whatILearned</code> - What you learned</li>
+    <li i18n="JSON import name field@@jsonImportNameField"><code>name</code> - Project name</li>
+    <li i18n="JSON import description field@@jsonImportDescField"><code>description</code> - Project description</li>
+    <li i18n="JSON import technologies field@@jsonImportTechField"><code>technologies</code> - Array of technology names</li>
+    <li i18n="JSON import githubLink field@@jsonImportGithubField"><code>githubLink</code> - GitHub repository URL</li>
+    <li i18n="JSON import challenges field@@jsonImportChallengesField"><code>challenges</code> - Challenges faced</li>
+    <li i18n="JSON import whatILearned field@@jsonImportLearnedField"><code>whatILearned</code> - What you learned</li>
   </ul>
-  <h3>Optional Fields:</h3>
+  <h3 i18n="JSON import optional fields heading@@jsonImportOptionalFields">Optional Fields:</h3>
   <ul>
-    <li><code>id</code> - Include to update existing project</li>
-    <li><code>featured</code> - Boolean for featured status</li>
+    <li i18n="JSON import id field@@jsonImportIdField"><code>id</code> - Include to update existing project</li>
+    <li i18n="JSON import featured field@@jsonImportFeaturedField"><code>featured</code> - Boolean for featured status</li>
   </ul>
 </div>

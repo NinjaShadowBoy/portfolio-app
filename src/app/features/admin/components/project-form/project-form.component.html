@@ -2,87 +2,87 @@
 
 <form [formGroup]="projectForm" (ngSubmit)="submitForm()" class="project-form">
   <div class="form-group">
-    <label for="name">Project Name *</label>
+    <label for="name" i18n="Project form name label@@projectFormNameLabel">Project Name *</label>
     <input
       formControlName="name"
       id="name"
-      placeholder="Enter project name"
+      i18n-placeholder placeholder="Enter project name"
       required
     />
     @if(projectForm.get('name')?.invalid && projectForm.get('name')?.touched) {
-    <div class="error">Project name is required (min 3 characters).</div>
+    <div class="error" i18n="Project form name required error@@projectFormNameError">Project name is required (min 3 characters).</div>
     }
   </div>
 
   <div class="form-group">
-    <label for="description">Description *</label>
+    <label for="description" i18n="Project form description label@@projectFormDescLabel">Description *</label>
     <textarea
       formControlName="description"
       id="description"
-      placeholder="Enter project description"
+      i18n-placeholder placeholder="Enter project description"
       required
     ></textarea>
     @if(projectForm.get('description')?.invalid && projectForm.get('description')?.touched) {
-    <div class="error">Description is required (min 10 characters).</div>
+    <div class="error" i18n="Project form description required error@@projectFormDescError">Description is required (min 10 characters).</div>
     }
   </div>
 
   <div class="form-group">
-    <label for="technologies">Technologies * (comma-separated)</label>
+    <label for="technologies" i18n="Project form technologies label@@projectFormTechLabel">Technologies * (comma-separated)</label>
     <input
       formControlName="technologies"
       id="technologies"
-      placeholder="e.g., Angular, TypeScript, CSS"
+      i18n-placeholder placeholder="e.g., Angular, TypeScript, CSS"
       required
     />
     @if(projectForm.get('technologies')?.invalid && projectForm.get('technologies')?.touched) {
-    <div class="error">Technologies are required.</div>
+    <div class="error" i18n="Project form technologies required error@@projectFormTechError">Technologies are required.</div>
     }
   </div>
 
   <div class="form-group">
-    <label for="githubLink">GitHub Link *</label>
+    <label for="githubLink" i18n="Project form GitHub link label@@projectFormGithubLabel">GitHub Link *</label>
     <input
       formControlName="githubLink"
       id="githubLink"
-      placeholder="https://github.com/username/repo"
+      i18n-placeholder placeholder="https://github.com/username/repo"
       required
     />
     @if(projectForm.get('githubLink')?.invalid && projectForm.get('githubLink')?.touched) {
-    <div class="error">Valid GitHub URL is required.</div>
+    <div class="error" i18n="Project form GitHub URL required error@@projectFormGithubError">Valid GitHub URL is required.</div>
     }
   </div>
 
   <div class="form-group">
-    <label for="challenges">Challenges *</label>
+    <label for="challenges" i18n="Project form challenges label@@projectFormChallengesLabel">Challenges *</label>
     <textarea
       formControlName="challenges"
       id="challenges"
-      placeholder="What challenges did you face?"
+      i18n-placeholder placeholder="What challenges did you face?"
       required
     ></textarea>
     @if(projectForm.get('challenges')?.invalid && projectForm.get('challenges')?.touched) {
-    <div class="error">Challenges description is required.</div>
+    <div class="error" i18n="Project form challenges required error@@projectFormChallengesError">Challenges description is required.</div>
     }
   </div>
 
   <div class="form-group">
-    <label for="whatILearned">What I Learned *</label>
+    <label for="whatILearned" i18n="Project form what I learned label@@projectFormLearnedLabel">What I Learned *</label>
     <textarea
       formControlName="whatILearned"
       id="whatILearned"
-      placeholder="What did you learn from this project?"
+      i18n-placeholder placeholder="What did you learn from this project?"
       required
     ></textarea>
     @if(projectForm.get('whatILearned')?.invalid && projectForm.get('whatILearned')?.touched) {
-    <div class="error">Learning description is required.</div>
+    <div class="error" i18n="Project form what I learned required error@@projectFormLearnedError">Learning description is required.</div>
     }
   </div>
 
   <div class="form-group checkbox-group">
     <label>
       <input formControlName="featured" type="checkbox" />
-      <span>Featured Project</span>
+      <span i18n="Project form featured checkbox label@@projectFormFeaturedLabel">Featured Project</span>
     </label>
   </div>
 
@@ -91,9 +91,9 @@
       {{ formMode() === 'create' ? 'Create Project' : 'Update Project' }}
     </button>
     @if (formMode() === 'edit') {
-    <button type="button" (click)="onCancel()" class="btn-secondary">
-      Cancel
-    </button>
+      <button type="button" (click)="onCancel()" class="btn-secondary" i18n="Project form cancel button@@projectFormCancel">
+        Cancel
+      </button>
     }
   </div>
 </form>
