@@ -38,12 +38,12 @@ pnpm ng extract-i18n --output-path src/locale  # Extract translatable strings
 - **URL structure**: `/en/...` and `/fr/...` prefixes via `/:lang` route parameter
 - **Default redirect**: `/` → `/en/home`
 - **Admin**: English-only (not translated)
-- **Translation files**: `src/locale/messages.xlf` (source), `src/locale/messages.fr.xlf` (French)
+- **Translation files**: `src/locale/messages.json` (source), `src/locale/messages.fr.json` (French)
 - **Template marking**: `i18n` attribute on elements, `i18n-{attr}` for attributes
 - **TS string marking**: `$localize` tagged template literals (no explicit import — global via polyfill)
 - **Type declaration**: `src/types/localize.d.ts` declares `$localize` globally
 - **Build**: `pnpm build --localize` generates `dist/portfolio-app/browser/en-US/` and `dist/portfolio-app/browser/fr/`
-- **Extraction**: `pnpm ng extract-i18n --output-path src/locale` to regenerate `messages.xlf`
+- **Extraction**: `pnpm ng extract-i18n --output-path src/locale` to regenerate `messages.json`
 - **Language switcher**: Header component toggles between `/en/...` and `/fr/...` routes
 
 ## Key Conventions

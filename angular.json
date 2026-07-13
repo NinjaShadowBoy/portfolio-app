@@ -16,7 +16,7 @@
         },
         "locales": {
           "fr": {
-            "translation": "src/locale/messages.fr.xlf",
+            "translation": "src/locale/messages.fr.json",
             "subPath": "fr"
           }
         }
@@ -162,7 +162,8 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "outputPath": "src/locale"
+            "outputPath": "src/locale",
+            "format": "json"
           }
         },
         "test": {
