@@ -8,31 +8,31 @@
           [attr.aria-label]="isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'" (click)="toggleMenu()">
           <span></span><span></span><span></span>
         </button>
-        @if (isAuthenticated() && user()) {
-        <a class="mobile-login-indicator liquid-glass-subtle" routerLink="/profile"
-          title="View your profile" i18n-title="Header profile link title@@headerProfileTitle2">
-          <app-user-avatar [userName]="user()!.name" [imageUrl]="identity()?.imageUrl ?? null" size="small" />
+        <!-- @if (isAuthenticated() && user()) {
+        <a class="mobile-login-indicator liquid-glass-subtle" routerLink="/profile" title="View your profile"
+          i18n-title="Header profile link title@@headerProfileTitle2">
+          <app-user-avatar [userName]="user()!.name" [imageUrl]="identity()?.imageUrl ?? null" size="medium" />
         </a>
-        }
+        } -->
       </div>
 
       <!-- Desktop navigation -->
       <ul class="desktop-nav">
         <li>
-          <a class="link liquid-glass" routerLink="/home" routerLinkActive="active"
-            ariaCurrentWhenActive="page" i18n="Nav home link@@navHome">Home</a>
+          <a class="link liquid-glass" routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page"
+            i18n="Nav home link@@navHome">Home</a>
         </li>
         <li>
-          <a class="link liquid-glass" routerLink="/projects" routerLinkActive="active"
-            ariaCurrentWhenActive="page" i18n="Nav projects link@@navProjects">Projects</a>
+          <a class="link liquid-glass" routerLink="/projects" routerLinkActive="active" ariaCurrentWhenActive="page"
+            i18n="Nav projects link@@navProjects">Projects</a>
         </li>
         <li>
-          <a class="link liquid-glass" routerLink="/about" routerLinkActive="active"
-            ariaCurrentWhenActive="page" i18n="Nav about link@@navAbout">About Me</a>
+          <a class="link liquid-glass" routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page"
+            i18n="Nav about link@@navAbout">About Me</a>
         </li>
         <li>
-          <a class="link liquid-glass" routerLink="/contact" routerLinkActive="active"
-            ariaCurrentWhenActive="page" i18n="Nav contact link@@navContact">Contact Me</a>
+          <a class="link liquid-glass" routerLink="/contact" routerLinkActive="active" ariaCurrentWhenActive="page"
+            i18n="Nav contact link@@navContact">Contact Me</a>
         </li>
         @if (isAuthenticated() && user()) {
         <li class="login-status">
@@ -45,17 +45,17 @@
         }
         <li class="auth-controls">
           @if (isAuthenticated()) {
-          <a class="link liquid-glass" (click)="logout()" routerLinkActive="active"
-            ariaCurrentWhenActive="page" i18n="Header logout link@@headerLogout">Logout</a>
+          <a class="link liquid-glass" (click)="logout()" routerLinkActive="active" ariaCurrentWhenActive="page"
+            i18n="Header logout link@@headerLogout">Logout</a>
           } @else {
-          <a class="link liquid-glass" routerLink="/login" routerLinkActive="active"
-            ariaCurrentWhenActive="page" i18n="Header login link@@headerLogin">Login</a>
+          <a class="link liquid-glass" routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page"
+            i18n="Header login link@@headerLogin">Login</a>
           }
         </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
-          <a class="link liquid-glass" routerLink="/admin" routerLinkActive="active"
-            ariaCurrentWhenActive="page" i18n="Header admin link@@headerAdmin">Admin</a>
+          <a class="link liquid-glass" routerLink="/admin" routerLinkActive="active" ariaCurrentWhenActive="page"
+            i18n="Header admin link@@headerAdmin">Admin</a>
         </li>
         }
 
@@ -157,7 +157,7 @@
       @if (isAuthenticated() && user()) {
       <div class="mobile-login-status">
         <div class="status-badge liquid-glass-subtle">
-          <app-user-avatar [userName]="user()!.name" size="large" />
+          <app-user-avatar [userName]="user()!.name" [imageUrl]="identity()?.imageUrl ?? null" size="large" />
           <div class="user-info">
             <span class="user-name">{{ user()!.name }}</span>
             <span class="user-email">{{ user()!.email }}</span>
@@ -207,10 +207,9 @@
           </div>
         </li>
         <li class="theme-toggle-item mobile-theme">
-          <button class="theme-toggle" type="button" (click)="toggleTheme()"
-            [class.dark]="currentTheme() === 'dark'"
-            [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-            i18n-title title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
+          <button class="theme-toggle" type="button" (click)="toggleTheme()" [class.dark]="currentTheme() === 'dark'"
+            [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'" i18n-title
+            title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
             <span class="theme-track" aria-hidden="true">
               <span class="theme-icon theme-icon-sun">
                 <svg viewBox="0 0 24 24" focusable="false">
@@ -230,34 +229,34 @@
           </button>
         </li>
         <li>
-          <a class="link liquid-glass" routerLink="/home" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Nav home link@@navHome">Home</a>
+          <a class="link liquid-glass" routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page"
+            (click)="toggleMenu()" i18n="Nav home link@@navHome">Home</a>
         </li>
         <li>
-          <a class="link liquid-glass" routerLink="/projects" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Nav projects link@@navProjects">Projects</a>
+          <a class="link liquid-glass" routerLink="/projects" routerLinkActive="active" ariaCurrentWhenActive="page"
+            (click)="toggleMenu()" i18n="Nav projects link@@navProjects">Projects</a>
         </li>
         <li>
-          <a class="link liquid-glass" routerLink="/about" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Nav about link@@navAbout">About Me</a>
+          <a class="link liquid-glass" routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page"
+            (click)="toggleMenu()" i18n="Nav about link@@navAbout">About Me</a>
         </li>
         <li>
-          <a class="link liquid-glass" routerLink="/contact" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Nav contact link@@navContact">Contact Me</a>
+          <a class="link liquid-glass" routerLink="/contact" routerLinkActive="active" ariaCurrentWhenActive="page"
+            (click)="toggleMenu()" i18n="Nav contact link@@navContact">Contact Me</a>
         </li>
         <li class="auth-controls">
           @if (isAuthenticated()) {
           <a class="link liquid-glass" (click)="logout(); toggleMenu()" routerLinkActive="active"
             ariaCurrentWhenActive="page" i18n="Header mobile logout link@@headerMobileLogout">Logout</a>
           } @else {
-          <a class="link liquid-glass" routerLink="/login" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Header mobile login link@@headerMobileLogin">Login</a>
+          <a class="link liquid-glass" routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page"
+            (click)="toggleMenu()" i18n="Header mobile login link@@headerMobileLogin">Login</a>
           }
         </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
-          <a class="link liquid-glass" routerLink="/admin" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Header mobile admin link@@headerMobileAdmin">Admin</a>
+          <a class="link liquid-glass" routerLink="/admin" routerLinkActive="active" ariaCurrentWhenActive="page"
+            (click)="toggleMenu()" i18n="Header mobile admin link@@headerMobileAdmin">Admin</a>
         </li>
         }
         <li class="lang-switch-item mobile-lang">
