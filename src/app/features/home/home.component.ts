@@ -24,7 +24,7 @@ export class HomeComponent {
 
   readonly featuredProjects = this.projectService.featuredProjects;
 
-  // Three homes for the code — the tools I reach for wherever it runs.
+  // Three homes for the code -  the tools I reach for wherever it runs.
   readonly server = this.pillar(['Spring Boot', 'Gin', 'PostgreSQL', 'MySQL', 'Docker']);
   readonly browser = this.pillar(['Angular', 'Nuxt', 'TypeScript', 'Playwright']);
   readonly phone = this.pillar(['Expo React Native', 'Jetpack Compose']);

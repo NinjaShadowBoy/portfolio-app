@@ -35,7 +35,7 @@ export class ProjectDataService {
       createdAt: '2026-01-01T00:00:00Z',
       updatedAt: '2026-01-01T00:00:00Z',
       featured: true,
-      photoUrls: [],
+      photoUrls: ["http://localhost:4200/assets/images/2223i141.jpg"],
       isExpanded: false,
     },
     {

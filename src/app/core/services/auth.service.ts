@@ -69,7 +69,7 @@ export class AuthService {
     window.location.assign(`${this.apiBaseUrl}/${provider}`);
   }
 
-  // GitHub device flow — for clients without a usable browser redirect. Returns a
+  // GitHub device flow -  for clients without a usable browser redirect. Returns a
   // user code + verification URL; the caller then polls pollGitHubDevice().
   startGitHubDevice() {
     return this.http.post<DeviceCodeResponse>(`${this.apiBaseUrl}/github/device`, {});
