@@ -55,9 +55,37 @@
   color: var(--text-secondary);
 }
 
+/* The shared button and input-field classes provide colours only; components
+   add their own geometry (matching the login form's convention). */
+.input-field {
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.profile-container .btn-primary,
+.profile-container .btn-secondary,
+.profile-container .btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .profile-card .btn-primary,
 .profile-card .btn-secondary {
   align-self: flex-start;
+}
+
+.activity-item .btn-ghost {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
 }
 
 .hint {
