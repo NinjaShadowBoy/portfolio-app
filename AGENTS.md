@@ -50,7 +50,12 @@ pnpm ng extract-i18n --output-path src/locale  # Extract translatable strings
 
 - **Package manager**: pnpm. Do not use npm or yarn.
 - **Component prefix**: `app` (configured in `angular.json`)
-- **Styling**: Plain CSS with CSS custom properties. No Tailwind, no SCSS. Global design tokens live in `src/styles.css` (~1600 lines of CSS variables). Component styles use `.component.css` files.
+- **Styling — keep it DRY**: Plain CSS with CSS custom properties. No Tailwind, no SCSS. `src/styles.css` (~1600 lines) already defines design tokens and utility classes for almost everything — **reuse them, do not hardcode.** Before writing a new rule, check `src/styles.css` for an existing token or class.
+  - **Use tokens, not literals**: colors (`--color-primary-*`, `--color-success/warning/danger/info-*`), text (`--text-primary/secondary/tertiary/link/link-hover/...`), surfaces (`--surface-base/raised/overlay/sunken/hover/...`), borders (`--border-subtle/default/emphasis/focus/...`), shadows/depth (`--elevation-0..5`, `--shadow-primary/...`), motion (`--motion-duration-fast`, `--motion-ease-out`). Never paste a raw hex, `rgba()`, box-shadow, or transition duration that a token already covers.
+  - **Reuse utility classes** rather than re-declaring: `.btn-primary/.btn-secondary/.btn-ghost`, `.input-field`, `.surface-*`, `.elevation-*`, `.glass-morphism`, `.liquid-glass*`, `.gradient-*`, `.interactive`, `.focus-ring`, `.text-success/warning/danger/info`.
+  - **Dark mode is automatic** when you use tokens — the token values are re-mapped under `[data-theme="dark"]`, so hardcoded colors silently break dark mode.
+  - Within a component, collapse repeated declarations by grouping selectors (`.a, .b { ...shared... }`) instead of copy-pasting blocks. One-off literals are acceptable only where no token fits (e.g. an on-black fullscreen overlay).
+  - Component `.css` files are scoped — keep only component-specific layout there; promote anything reusable to `src/styles.css`.
 - **Dark mode**: `[data-theme="dark"]` attribute on an ancestor element. System preference fallback via `@media (prefers-color-scheme: dark)` when no explicit theme is set.
 - **State**: Angular signals + `rxResource` for async data (see `ProjectDataService`). No NgRx.
 - **Fonts**: Product Sans (local TTF files in `src/assets/fonts/`), loaded via `@font-face` with `font-display: swap`.
