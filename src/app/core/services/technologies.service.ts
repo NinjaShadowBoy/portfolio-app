@@ -103,6 +103,16 @@ export class TechnologiesService {
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ktor/ktor-original.svg',
       docUrl: 'https://ktor.io/',
     },
+    'gin': {
+      name: 'Gin',
+      logo: 'https://gin-gonic.com/_astro/gin.D6H2T_2v_hOrNd.webp',
+      docUrl: 'https://gin-gonic.com/',
+    },
+    'nuxt': {
+      name: 'Nuxt',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nuxtjs/nuxtjs-original.svg',
+      docUrl: 'https://nuxt.com/',
+    },
     'jetpack compose': {
       name: 'Jetpack Compose',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jetpackcompose/jetpackcompose-original.svg',
