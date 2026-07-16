@@ -2,7 +2,17 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, computed, effect, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LoginRequest, LoginResponse, OAuthProvider, RegisterRequest, UserDto } from '../interfaces/auth.interface';
+import {
+  DeviceCodeResponse,
+  DevicePollResult,
+  LoginRequest,
+  LoginResponse,
+  OAuthProvider,
+  RegisterRequest,
+  UserDto,
+} from '../interfaces/auth.interface';
+import { HttpResponse } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { NotificationService } from './notification.service';
 
@@ -57,6 +67,30 @@ export class AuthService {
     if (!this.isBrowser) return;
 
     window.location.assign(`${this.apiBaseUrl}/${provider}`);
+  }
+
+  // GitHub device flow — for clients without a usable browser redirect. Returns a
+  // user code + verification URL; the caller then polls pollGitHubDevice().
+  startGitHubDevice() {
+    return this.http.post<DeviceCodeResponse>(`${this.apiBaseUrl}/github/device`, {});
+  }
+
+  // Polls once. HTTP 200 => LoginResponse (done), HTTP 202 => still pending.
+  pollGitHubDevice(deviceCode: string) {
+    return this.http
+      .post<DevicePollResult>(
+        `${this.apiBaseUrl}/github/device/token`,
+        { deviceCode },
+        { observe: 'response' }
+      )
+      .pipe(
+        map((res: HttpResponse<DevicePollResult>): DevicePollResult => {
+          if (res.status === 202) {
+            return (res.body as DevicePollResult) ?? { status: 'pending' };
+          }
+          return res.body as LoginResponse;
+        })
+      );
   }
 
   setSession(response: LoginResponse) {

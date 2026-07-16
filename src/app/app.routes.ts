@@ -9,6 +9,7 @@ import { authGuard, contactGuard } from './core/guards/auth.guard';
 import { LoginComponent } from './features/auth/login/login.component';
 import { AdminComponent } from './features/admin/admin.component';
 import { Oauth2RedirectComponent } from './features/auth/oauth2-redirect/oauth2-redirect.component';
+import { GithubDeviceComponent } from './features/auth/github-device/github-device.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -34,6 +35,11 @@ export const routes: Routes = [
     path: 'oauth2/redirect',
     component: Oauth2RedirectComponent,
     data: { breadcrumb: 'Authenticating' },
+  },
+  {
+    path: 'login/device',
+    component: GithubDeviceComponent,
+    data: { breadcrumb: 'GitHub Device Login' },
   },
   {
     path: 'admin',
