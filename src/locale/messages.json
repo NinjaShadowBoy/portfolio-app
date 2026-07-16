@@ -187,7 +187,7 @@
     "privacyUseHeading": "How I use your information",
     "privacyUseBody": " Your information is used only to operate this site: to respond to messages, to authenticate you, and to display the ratings and comments you choose to post. I do not sell your data or use it for advertising. ",
     "privacyThirdPartyHeading": "Third-party services",
-    "privacyThirdPartyBody": " Signing in relies on Google and GitHub, and uploaded images are hosted on Cloudinary. These providers process data under their own privacy policies. ",
+    "privacyThirdPartyBody": " Signing in relies on {$START_LINK}Google{$CLOSE_LINK} and {$START_LINK_1}GitHub{$CLOSE_LINK}, and uploaded images are hosted on {$START_LINK_2}Cloudinary{$CLOSE_LINK}. These providers process data under their own privacy policies. ",
     "privacyRightsHeading": "Your rights",
     "privacyRightsBody": " You can ask me to access, correct, or delete the personal data associated with your account or your messages at any time. Signing out clears the login token from your browser. ",
     "privacyContactHeading": "Contact",
