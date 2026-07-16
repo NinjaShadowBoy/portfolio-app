@@ -306,7 +306,9 @@ h2::before {
   margin-bottom: 0.25rem;
 }
 
-.form-group textarea {
+.form-group textarea,
+.comment-form textarea,
+.comment-edit {
   padding: 0.75rem;
   border: 1px solid var(--input-border);
   border-radius: 8px;
@@ -320,19 +322,59 @@ h2::before {
   line-height: 1.5;
 }
 
-.form-group textarea::placeholder {
+.comment-edit {
+  min-height: 80px;
+  width: 100%;
+  margin-bottom: 0.75rem;
+}
+
+.form-group textarea::placeholder,
+.comment-form textarea::placeholder {
   color: var(--input-placeholder);
 }
 
-.form-group textarea:focus {
+.form-group textarea:focus,
+.comment-form textarea:focus,
+.comment-edit:focus {
   outline: none;
   border-color: var(--input-border-focus);
   box-shadow: var(--focus-ring);
   transform: translateY(-1px);
 }
 
-.form-group textarea:hover {
+.form-group textarea:hover,
+.comment-form textarea:hover,
+.comment-edit:hover {
   border-color: var(--input-border-hover);
+}
+
+.identity-note {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+.comments {
+  margin-top: 2rem;
+}
+
+.comments h3 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.comment-form textarea {
+  width: 100%;
+  min-height: 80px;
 }
 
 .comment-input {
@@ -989,7 +1031,9 @@ h2::before {
   border-color: var(--border-default);
 }
 
-[data-theme="dark"] .form-group textarea {
+[data-theme="dark"] .form-group textarea,
+[data-theme="dark"] .comment-form textarea,
+[data-theme="dark"] .comment-edit {
   background: var(--input-bg);
   border-color: var(--border-default);
 }

@@ -6,7 +6,8 @@ import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize, map } from 'rxjs/operators';
 import { ProjectDataService } from '../../core/services/project-data.service';
 import { RatingDto } from '../../core/services/rating.service';
-import { AuthService } from '../../core/services/auth.service';
+import { CommentDto, CommentService } from '../../core/services/comment.service';
+import { IdentityService } from '../../core/services/identity.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { Project } from '../../core/interfaces/project.interface';
 import { environment } from '../../../environments/environment';
@@ -24,7 +25,8 @@ import { TechnologiesService } from '../../core/services/technologies.service';
 export class ProjectDetailComponent {
   private route = inject(ActivatedRoute);
   private projectService = inject(ProjectDataService);
-  authService = inject(AuthService); // Make public for template access
+  private commentService = inject(CommentService);
+  identityService = inject(IdentityService); // public for template
   private notificationService = inject(NotificationService);
   private destroyRef = inject(DestroyRef);
   private techService = inject(TechnologiesService);
@@ -48,74 +50,82 @@ export class ProjectDetailComponent {
 
   apiBaseUrl = environment.apiBaseUrl.replace('/api/v1', '');
 
-  // Rating & Comment state
+  // Rating state (one editable star per identity per project).
   ratings = signal<RatingDto[]>([]);
   averageRating = signal(0);
   ratingCount = signal(0);
-  userRating = signal<RatingDto | null>(null);
   hoveredStar = signal(0);
-  selectedRating = signal(0);
-  commentText = signal('');
-  isEditingRating = signal(false);
-  isSubmitting = signal(false);
+  isSubmittingRating = signal(false);
+
+  // Comment thread state (many comments per identity per project).
+  comments = signal<CommentDto[]>([]);
+  newCommentText = signal('');
+  isSubmittingComment = signal(false);
+  editingCommentId = signal<number | null>(null);
+  editCommentText = signal('');
 
   readonly stars = [1, 2, 3, 4, 5];
+
+  // The current identity's star for this project, or null if not rated yet.
+  readonly userRating = computed<RatingDto | null>(() => {
+    const id = this.identityService.identity()?.id;
+    if (!id) return null;
+    return this.ratings().find((r) => r.userId === id) ?? null;
+  });
+
+  readonly selectedRating = computed(() => this.userRating()?.rating ?? 0);
 
   private readonly projectEffect = effect(() => {
     const project = this.project();
     if (!project) {
-      this.resetRatingState();
+      this.resetState();
       return;
     }
-
     this.averageRating.set(project.averageRating);
     this.ratingCount.set(project.totalRatings);
     this.loadRatings(project.id);
+    this.loadComments(project.id);
   });
 
-  private resetRatingState() {
+  private resetState() {
     this.ratings.set([]);
-    this.userRating.set(null);
-    this.selectedRating.set(0);
+    this.comments.set([]);
     this.hoveredStar.set(0);
-    this.commentText.set('');
-    this.isEditingRating.set(false);
+    this.newCommentText.set('');
+    this.editingCommentId.set(null);
     this.averageRating.set(0);
     this.ratingCount.set(0);
   }
 
   private loadRatings(projectId: number) {
-    this.projectService.getProjectRatings(projectId).pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      next: (ratings) => {
-        this.ratings.set(ratings);
-        this.findUserRating();
-      },
-      error: (err) => console.error('Error loading ratings:', err),
-    });
+    this.projectService
+      .getProjectRatings(projectId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (ratings) => this.applyRatings(ratings),
+        error: (err) => console.error('Error loading ratings:', err),
+      });
   }
 
-  private findUserRating() {
-    const user = this.authService.user();
-    if (!user) {
-      this.userRating.set(null);
-      this.selectedRating.set(0);
-      this.commentText.set('');
-      return;
-    }
-
-    const rating = this.ratings().find((r) => r.userId === user.id) || null;
-    this.userRating.set(rating);
-
-    if (rating) {
-      this.selectedRating.set(rating.rating);
-      this.commentText.set(rating.comment || '');
-    } else {
-      this.selectedRating.set(0);
-      this.commentText.set('');
-    }
+  private applyRatings(ratings: RatingDto[]) {
+    this.ratings.set(ratings);
+    this.ratingCount.set(ratings.length);
+    this.averageRating.set(
+      ratings.length ? ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length : 0
+    );
   }
+
+  private loadComments(projectId: number) {
+    this.commentService
+      .getProjectComments(projectId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (comments) => this.comments.set(comments),
+        error: (err) => console.error('Error loading comments:', err),
+      });
+  }
+
+  // --- Rating ---
 
   onStarHover(star: number) {
     this.hoveredStar.set(star);
@@ -126,99 +136,58 @@ export class ProjectDetailComponent {
   }
 
   onStarClick(star: number) {
-    if (!this.authService.isAuthenticated()) {
-      this.notificationService.warning($localize`:@@ratingLoginRequired:Please log in to rate this project`);
-      return;
-    }
-    this.selectedRating.set(star);
-  }
-
-  submitRating() {
     const project = this.project();
-    if (!this.authService.isAuthenticated() || !project || this.isSubmitting()) return;
+    if (!project || this.isSubmittingRating()) return;
 
-    if (this.selectedRating() === 0) {
-      this.notificationService.warning($localize`:@@ratingSelectRequired:Please select a rating`);
-      return;
-    }
-
-    this.isSubmitting.set(true);
-
-    const ratingData = {
-      rating: this.selectedRating(),
-      comment: this.commentText().trim() || undefined,
-    };
-
-    const request$ = this.userRating()
-      ? this.projectService.updateRating(
-          this.userRating()!.id,
-          ratingData.rating,
-          ratingData.comment
-        )
-      : this.projectService.addRating(
-          project.id,
-          ratingData.rating,
-          ratingData.comment
-        );
+    this.isSubmittingRating.set(true);
+    const existing = this.userRating();
+    const request$ = existing
+      ? this.projectService.updateRating(existing.id, star)
+      : this.projectService.addRating(project.id, star);
 
     request$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.isSubmitting.set(false))
+        finalize(() => this.isSubmittingRating.set(false))
       )
       .subscribe({
         next: () => {
           this.notificationService.success(
-            this.userRating() ? $localize`:@@ratingUpdated:Rating updated successfully` : $localize`:@@ratingSubmitted:Rating submitted successfully`
+            existing
+              ? $localize`:@@ratingUpdated:Rating updated successfully`
+              : $localize`:@@ratingSubmitted:Rating submitted successfully`
           );
           this.loadRatings(project.id);
-          this.isEditingRating.set(false);
+          // First anonymous action provisions an identity; pick it up so the
+          // star highlights as "yours".
+          this.identityService.refresh();
         },
         error: (err) => {
-          this.notificationService.error(
-            this.userRating() ? $localize`:@@ratingUpdateFailed:Failed to update rating` : $localize`:@@ratingSubmitFailed:Failed to submit rating`
-          );
+          this.notificationService.error($localize`:@@ratingSubmitFailed:Failed to submit rating`);
           console.error('Error saving rating:', err);
         },
       });
   }
 
-  startEditingRating() {
-    this.isEditingRating.set(true);
-  }
-
-  cancelEditingRating() {
-    this.isEditingRating.set(false);
-    const rating = this.userRating();
-    if (rating) {
-      this.selectedRating.set(rating.rating);
-      this.commentText.set(rating.comment || '');
-    }
-  }
-
   deleteRating() {
     const rating = this.userRating();
-    if (!rating) return;
-
+    const project = this.project();
+    if (!rating || !project) return;
     if (!confirm($localize`:@@ratingDeleteConfirm:Are you sure you want to delete your rating?`)) return;
 
-    this.projectService.deleteRating(rating.id).pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      next: () => {
-        this.notificationService.success($localize`:@@ratingDeleted:Rating deleted successfully`);
-        this.selectedRating.set(0);
-        this.commentText.set('');
-        const project = this.project();
-        if (project) {
+    this.projectService
+      .deleteRating(rating.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.notificationService.success($localize`:@@ratingDeleted:Rating deleted successfully`);
           this.loadRatings(project.id);
-        }
-      },
-      error: (err) => {
-        this.notificationService.error($localize`:@@ratingDeleteFailed:Failed to delete rating`);
-        console.error('Error deleting rating:', err);
-      },
-    });
+        },
+        error: (err) => {
+          this.notificationService.error($localize`:@@ratingDeleteFailed:Failed to delete rating`);
+          console.error('Error deleting rating:', err);
+        },
+      });
   }
 
   isStarFilled(star: number): boolean {
@@ -226,18 +195,85 @@ export class ProjectDetailComponent {
     return star <= displayRating;
   }
 
-  /**
-   * Get user name from user ID for display in ratings
-   * For now, returns "User" as a placeholder until backend provides user info
-   */
-  getUserName(userId: number): string {
-    // TODO: Fetch actual user name from backend when available
-    // For now, check if it's the current user
-    const currentUser = this.authService.user();
-    if (currentUser && currentUser.id === userId) {
-      return currentUser.name;
-    }
-    return `User ${userId}`;
+  // --- Comments ---
+
+  isMyComment(comment: CommentDto): boolean {
+    return this.identityService.identity()?.id === comment.userId;
+  }
+
+  addComment() {
+    const project = this.project();
+    const body = this.newCommentText().trim();
+    if (!project || this.isSubmittingComment() || !body) return;
+
+    this.isSubmittingComment.set(true);
+    this.commentService
+      .createComment(project.id, body)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.isSubmittingComment.set(false))
+      )
+      .subscribe({
+        next: () => {
+          this.newCommentText.set('');
+          this.loadComments(project.id);
+          this.identityService.refresh();
+        },
+        error: (err) => {
+          this.notificationService.error($localize`:@@commentSubmitFailed:Failed to post comment`);
+          console.error('Error posting comment:', err);
+        },
+      });
+  }
+
+  startEditComment(comment: CommentDto) {
+    this.editingCommentId.set(comment.id);
+    this.editCommentText.set(comment.body);
+  }
+
+  cancelEditComment() {
+    this.editingCommentId.set(null);
+    this.editCommentText.set('');
+  }
+
+  saveEditComment(comment: CommentDto) {
+    const project = this.project();
+    const body = this.editCommentText().trim();
+    if (!project || !body) return;
+
+    this.commentService
+      .updateComment(comment.id, body)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.cancelEditComment();
+          this.loadComments(project.id);
+        },
+        error: (err) => {
+          this.notificationService.error($localize`:@@commentUpdateFailed:Failed to update comment`);
+          console.error('Error updating comment:', err);
+        },
+      });
+  }
+
+  deleteComment(comment: CommentDto) {
+    const project = this.project();
+    if (!project) return;
+    if (!confirm($localize`:@@commentDeleteConfirm:Are you sure you want to delete this comment?`)) return;
+
+    this.commentService
+      .deleteComment(comment.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.notificationService.success($localize`:@@commentDeleted:Comment deleted`);
+          this.loadComments(project.id);
+        },
+        error: (err) => {
+          this.notificationService.error($localize`:@@commentDeleteFailed:Failed to delete comment`);
+          console.error('Error deleting comment:', err);
+        },
+      });
   }
 
   getTechIcon(techName: string): string | undefined {

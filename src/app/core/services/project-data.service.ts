@@ -182,11 +182,10 @@ export class ProjectDataService {
   /**
    * Add rating to a project (delegates to RatingService)
    */
-  addRating(projectId: number, rating: number, comment?: string): Observable<RatingDto> {
+  addRating(projectId: number, rating: number): Observable<RatingDto> {
     return this.ratingService.createRating({
       projectId,
       rating,
-      comment,
     }).pipe(
       tap(() => {
         // Refresh projects to get updated rating statistics
@@ -214,8 +213,8 @@ export class ProjectDataService {
   /**
    * Update a rating (delegates to RatingService)
    */
-  updateRating(ratingId: number, rating: number, comment?: string): Observable<RatingDto> {
-    return this.ratingService.updateRating(ratingId, { rating, comment }).pipe(
+  updateRating(ratingId: number, rating: number): Observable<RatingDto> {
+    return this.ratingService.updateRating(ratingId, { rating }).pipe(
       tap(() => {
         // Refresh projects to get updated rating statistics
         this.refreshProjects();

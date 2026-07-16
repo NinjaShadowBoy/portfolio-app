@@ -8,7 +8,6 @@ export interface RatingDto {
   userId: number;
   projectId: number;
   rating: number;
-  comment?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -16,12 +15,10 @@ export interface RatingDto {
 export interface RatingCreateDto {
   projectId: number;
   rating: number;
-  comment?: string;
 }
 
 export interface RatingUpdateDto {
   rating?: number;
-  comment?: string;
 }
 
 @Injectable({

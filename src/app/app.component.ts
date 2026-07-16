@@ -5,6 +5,7 @@ import { BreadcrumbComponent } from './shared/ui/breadcrumb/breadcrumb.component
 import { FooterComponent } from './shared/ui/footer/footer.component';
 import { NotificationContainerComponent } from './shared/ui/notification-container/notification-container.component';
 import { PerformanceMonitorService } from './core/services/performance-monitor.service';
+import { IdentityService } from './core/services/identity.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,8 @@ import { PerformanceMonitorService } from './core/services/performance-monitor.s
 export class AppComponent {
   title = 'portfolio-app';
   private performanceMonitor = inject(PerformanceMonitorService);
+  // Resolve the current identity (real or anonymous) on startup.
+  private identityService = inject(IdentityService);
 
   constructor() {
     // Initialize performance monitoring in production
