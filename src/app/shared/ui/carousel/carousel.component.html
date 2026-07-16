@@ -57,7 +57,7 @@
 }
 
 @if (isFullscreen()) {
-  <div class="lightbox" (click)="closeFullscreen()">
+  <div #lightbox class="lightbox" (click)="closeFullscreen()">
     <button
       type="button"
       class="lightbox-close"

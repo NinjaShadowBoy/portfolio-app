@@ -1,5 +1,5 @@
-import { Component, HostListener, effect, input, signal, ElementRef, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, HostListener, PLATFORM_ID, Renderer2, effect, inject, input, signal, ElementRef, viewChild } from '@angular/core';
+import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-carousel',
@@ -13,10 +13,26 @@ export class CarouselComponent {
   projectName = input.required<string>();
 
   readonly carouselImage = viewChild.required<ElementRef<HTMLImageElement>>('carouselImage');
+  readonly lightbox = viewChild<ElementRef<HTMLElement>>('lightbox');
+
+  private readonly renderer = inject(Renderer2);
+  private readonly document = inject(DOCUMENT);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   currentImageIndex = signal(0);
   isHovered = signal(false);
   isFullscreen = signal(false);
+
+  // A project card animates on hover with `transform`, which makes any
+  // descendant `position: fixed` element be contained by the card instead of
+  // the viewport. Teleporting the open overlay to <body> escapes that context.
+  private readonly teleportLightbox = effect(() => {
+    if (!this.isBrowser || !this.isFullscreen()) return;
+    const el = this.lightbox()?.nativeElement;
+    if (el) {
+      this.renderer.appendChild(this.document.body, el);
+    }
+  });
   private autoPlayInterval: ReturnType<typeof setInterval> | null = null;
   private autoPlayDelay = 5000; // 5 seconds
 
