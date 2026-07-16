@@ -1,0 +1,70 @@
+<div class="privacy-container">
+  <h1 i18n="Privacy policy page title@@privacyTitle">Privacy Policy</h1>
+  <p class="last-updated" i18n="Privacy policy last updated@@privacyLastUpdated">
+    Last updated: {{ lastUpdated | date:'longDate' }}
+  </p>
+
+  <p i18n="Privacy policy intro@@privacyIntro">
+    This Privacy Policy explains what information this portfolio website collects,
+    why it is collected, and how it is used. By using this site you agree to the
+    practices described below.
+  </p>
+
+  <section>
+    <h2 i18n="Privacy policy data collected heading@@privacyCollectHeading">Information I collect</h2>
+    <ul>
+      <li i18n="Privacy policy contact data@@privacyCollectContact">
+        <strong>Contact details</strong> — when you use the contact form, your name,
+        email address, and message are stored so I can read and reply to you.
+      </li>
+      <li i18n="Privacy policy account data@@privacyCollectAccount">
+        <strong>Account details</strong> — if you sign in with Google or GitHub, I
+        receive your name, email address, and profile picture from that provider to
+        create your account.
+      </li>
+      <li i18n="Privacy policy ratings data@@privacyCollectRatings">
+        <strong>Ratings and comments</strong> — any rating or review you post on a
+        project is stored and shown publicly alongside your display name.
+      </li>
+      <li i18n="Privacy policy local storage data@@privacyCollectLocal">
+        <strong>Session data</strong> — a login token is kept in your browser so you
+        stay signed in. It never leaves your device except to authenticate requests
+        to the backend.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 i18n="Privacy policy usage heading@@privacyUseHeading">How I use your information</h2>
+    <p i18n="Privacy policy usage body@@privacyUseBody">
+      Your information is used only to operate this site: to respond to messages,
+      to authenticate you, and to display the ratings and comments you choose to
+      post. I do not sell your data or use it for advertising.
+    </p>
+  </section>
+
+  <section>
+    <h2 i18n="Privacy policy third parties heading@@privacyThirdPartyHeading">Third-party services</h2>
+    <p i18n="Privacy policy third parties body@@privacyThirdPartyBody">
+      Signing in relies on Google and GitHub, and uploaded images are hosted on
+      Cloudinary. These providers process data under their own privacy policies.
+    </p>
+  </section>
+
+  <section>
+    <h2 i18n="Privacy policy rights heading@@privacyRightsHeading">Your rights</h2>
+    <p i18n="Privacy policy rights body@@privacyRightsBody">
+      You can ask me to access, correct, or delete the personal data associated
+      with your account or your messages at any time. Signing out clears the login
+      token from your browser.
+    </p>
+  </section>
+
+  <section>
+    <h2 i18n="Privacy policy contact heading@@privacyContactHeading">Contact</h2>
+    <p i18n="Privacy policy contact body@@privacyContactBody">
+      For any question about this policy or your data, reach me at
+      <a [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>.
+    </p>
+  </section>
+</div>

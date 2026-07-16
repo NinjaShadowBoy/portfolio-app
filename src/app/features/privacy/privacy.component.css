@@ -1,0 +1,39 @@
+.privacy-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+
+.privacy-container h1 {
+  margin-bottom: 0.5rem;
+}
+
+.last-updated {
+  margin-bottom: 2rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.privacy-container section {
+  margin-top: 2rem;
+}
+
+.privacy-container h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.35rem;
+}
+
+.privacy-container ul {
+  padding-left: 1.25rem;
+}
+
+.privacy-container li {
+  margin-bottom: 0.75rem;
+}
+
+.privacy-container a {
+  color: var(--color-primary, #4f46e5);
+  text-decoration: underline;
+}

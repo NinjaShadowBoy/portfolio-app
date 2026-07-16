@@ -10,6 +10,7 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { AdminComponent } from './features/admin/admin.component';
 import { Oauth2RedirectComponent } from './features/auth/oauth2-redirect/oauth2-redirect.component';
 import { GithubDeviceComponent } from './features/auth/github-device/github-device.component';
+import { PrivacyComponent } from './features/privacy/privacy.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -30,6 +31,7 @@ export const routes: Routes = [
     ],
   },
   { path: 'about', component: AboutComponent, data: { breadcrumb: 'About' } },
+  { path: 'privacy', component: PrivacyComponent, data: { breadcrumb: 'Privacy Policy' } },
   { path: 'login', component: LoginComponent, data: { breadcrumb: 'Login' } },
   {
     path: 'oauth2/redirect',
