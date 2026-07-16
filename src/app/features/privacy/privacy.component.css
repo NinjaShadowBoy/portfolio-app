@@ -34,6 +34,10 @@
 }
 
 .privacy-container a {
-  color: var(--color-primary, #4f46e5);
+  color: var(--text-link);
   text-decoration: underline;
+}
+
+.privacy-container a:hover {
+  color: var(--text-link-hover);
 }
