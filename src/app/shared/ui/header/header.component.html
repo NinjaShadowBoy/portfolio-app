@@ -43,6 +43,8 @@
         }
         <li class="auth-controls">
           @if (isAuthenticated()) {
+          <a class="link liquid-glass" routerLink="/profile" routerLinkActive="active"
+            ariaCurrentWhenActive="page" i18n="Header profile link@@headerProfile">Profile</a>
           <a class="link liquid-glass" (click)="logout()" routerLinkActive="active"
             ariaCurrentWhenActive="page" i18n="Header logout link@@headerLogout">Logout</a>
           } @else {
@@ -245,6 +247,8 @@
         </li>
         <li class="auth-controls">
           @if (isAuthenticated()) {
+          <a class="link liquid-glass" routerLink="/profile" routerLinkActive="active"
+            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Header mobile profile link@@headerMobileProfile">Profile</a>
           <a class="link liquid-glass" (click)="logout(); toggleMenu()" routerLinkActive="active"
             ariaCurrentWhenActive="page" i18n="Header mobile logout link@@headerMobileLogout">Logout</a>
           } @else {

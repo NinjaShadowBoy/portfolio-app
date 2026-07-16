@@ -1,0 +1,116 @@
+<div class="profile-container">
+  <h1 i18n="Profile page heading@@profileHeading">My Profile</h1>
+
+  <!-- Identity + avatar -->
+  <section class="profile-card">
+    <div class="avatar-row">
+      @if (identityService.identity(); as identity) {
+        <app-user-avatar [userName]="identity.name" size="large" />
+      }
+      <div class="avatar-actions">
+        <label class="btn-secondary avatar-upload">
+          <span i18n="Profile change photo@@profileChangePhoto">Change photo</span>
+          <input type="file" accept="image/*" (change)="onAvatarSelected($event)" [disabled]="isUploadingAvatar()" hidden />
+        </label>
+        @if (isUploadingAvatar()) {
+          <span class="hint" i18n="Profile uploading@@profileUploading">Uploading…</span>
+        }
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="name" i18n="Profile name label@@profileNameLabel">Display name</label>
+      <input
+        id="name"
+        class="input-field"
+        type="text"
+        [value]="name()"
+        (input)="name.set($any($event.target).value)" />
+    </div>
+
+    <button
+      type="button"
+      class="btn-primary"
+      [disabled]="isSavingProfile() || !name().trim()"
+      (click)="saveProfile()"
+      i18n="Profile save button@@profileSave">
+      Save changes
+    </button>
+  </section>
+
+  <!-- Change password (local accounts only) -->
+  @if (identityService.identity()?.provider === 'LOCAL') {
+    <section class="profile-card">
+      <h2 i18n="Profile password heading@@profilePasswordHeading">Change password</h2>
+      <div class="field">
+        <label for="currentPassword" i18n="Profile current password@@profileCurrentPassword">Current password</label>
+        <input
+          id="currentPassword"
+          class="input-field"
+          type="password"
+          [value]="currentPassword()"
+          (input)="currentPassword.set($any($event.target).value)" />
+      </div>
+      <div class="field">
+        <label for="newPassword" i18n="Profile new password@@profileNewPassword">New password</label>
+        <input
+          id="newPassword"
+          class="input-field"
+          type="password"
+          [value]="newPassword()"
+          (input)="newPassword.set($any($event.target).value)" />
+      </div>
+      <button
+        type="button"
+        class="btn-primary"
+        [disabled]="isSavingPassword()"
+        (click)="changePassword()"
+        i18n="Profile change password button@@profileChangePassword">
+        Change password
+      </button>
+    </section>
+  }
+
+  <!-- My ratings -->
+  <section class="profile-card">
+    <h2 i18n="Profile my ratings heading@@profileMyRatings">My ratings</h2>
+    @if (myRatings().length > 0) {
+      @for (rating of myRatings(); track rating.id) {
+        <div class="activity-item">
+          <a [routerLink]="['/projects', rating.projectId]" class="activity-project">{{ projectName(rating.projectId) }}</a>
+          <div class="stars-display">
+            @for (star of stars; track star) {
+              <span class="star" [class.filled]="star <= rating.rating">★</span>
+            }
+          </div>
+          <button type="button" class="btn-ghost text-danger" (click)="deleteRating(rating)" i18n="Profile delete@@profileDelete">Delete</button>
+        </div>
+      }
+    } @else {
+      <p class="hint" i18n="Profile no ratings@@profileNoRatings">You haven't rated any projects yet.</p>
+    }
+  </section>
+
+  <!-- My comments -->
+  <section class="profile-card">
+    <h2 i18n="Profile my comments heading@@profileMyComments">My comments</h2>
+    @if (myComments().length > 0) {
+      @for (comment of myComments(); track comment.id) {
+        <div class="activity-item comment">
+          <a [routerLink]="['/projects', comment.projectId]" class="activity-project">{{ projectName(comment.projectId) }}</a>
+          <p class="activity-body">{{ comment.body }}</p>
+          <button type="button" class="btn-ghost text-danger" (click)="deleteComment(comment)" i18n="Profile delete@@profileDelete2">Delete</button>
+        </div>
+      }
+    } @else {
+      <p class="hint" i18n="Profile no comments@@profileNoComments">You haven't commented on any projects yet.</p>
+    }
+  </section>
+
+  <!-- Danger zone -->
+  <section class="profile-card danger-zone">
+    <h2 i18n="Profile danger zone heading@@profileDangerZone">Delete account</h2>
+    <p class="hint" i18n="Profile danger zone text@@profileDangerText">This permanently removes your account and all your ratings and comments.</p>
+    <button type="button" class="btn-primary danger" (click)="deleteAccount()" i18n="Profile delete account button@@profileDeleteAccount">Delete my account</button>
+  </section>
+</div>

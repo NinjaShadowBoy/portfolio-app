@@ -98,6 +98,13 @@ export class AuthService {
     this.userSignal.set(response.user);
   }
 
+  updateUser(patch: Partial<UserDto>) {
+    const current = this.userSignal();
+    if (current) {
+      this.userSignal.set({ ...current, ...patch });
+    }
+  }
+
   setSessionFromToken(token: string): LoginResponse {
     const payload = this.decodeToken(token);
     const email = payload.sub || payload.email || '';

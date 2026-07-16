@@ -1,0 +1,114 @@
+.profile-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profile-container h1 {
+  color: var(--text-primary);
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--elevation-2);
+}
+
+.profile-card h2 {
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.avatar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.avatar-upload {
+  cursor: pointer;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.profile-card .btn-primary,
+.profile-card .btn-secondary {
+  align-self: flex-start;
+}
+
+.hint {
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.activity-item.comment {
+  align-items: flex-start;
+}
+
+.activity-project {
+  font-weight: 600;
+  color: var(--text-link);
+  text-decoration: none;
+  min-width: 8rem;
+}
+
+.activity-project:hover {
+  color: var(--text-link-hover);
+}
+
+.activity-body {
+  flex: 1;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.stars-display {
+  flex: 1;
+  color: var(--border-default);
+  font-size: 1.1rem;
+}
+
+.stars-display .star.filled {
+  color: #f59e0b;
+}
+
+.danger-zone {
+  border-color: var(--border-danger, var(--border-default));
+}
+
+.btn-primary.danger {
+  align-self: flex-start;
+  background: var(--color-danger-600, #dc2626);
+}

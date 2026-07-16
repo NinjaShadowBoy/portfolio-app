@@ -217,10 +217,6 @@ h2::before {
   color: #f59e0b;
 }
 
-.star.small {
-  font-size: 1rem;
-}
-
 .rating-count {
   color: var(--text-tertiary);
   font-size: 0.9rem;
@@ -241,10 +237,6 @@ h2::before {
 
 .rating-form:focus-within {
   box-shadow: var(--elevation-3);
-}
-
-.rating-input {
-  margin-top: 1.5rem;
 }
 
 .rating-prompt {
@@ -290,23 +282,6 @@ h2::before {
   border-radius: 4px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  position: relative;
-}
-
-.form-group label {
-  font-weight: 600;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.25rem;
-}
-
-.form-group textarea,
 .comment-form textarea,
 .comment-edit {
   padding: 0.75rem;
@@ -318,7 +293,6 @@ h2::before {
   transition: all var(--motion-duration-fast) var(--motion-ease-out);
   font-family: inherit;
   resize: vertical;
-  min-height: 120px;
   line-height: 1.5;
 }
 
@@ -328,12 +302,10 @@ h2::before {
   margin-bottom: 0.75rem;
 }
 
-.form-group textarea::placeholder,
 .comment-form textarea::placeholder {
   color: var(--input-placeholder);
 }
 
-.form-group textarea:focus,
 .comment-form textarea:focus,
 .comment-edit:focus {
   outline: none;
@@ -342,7 +314,6 @@ h2::before {
   transform: translateY(-1px);
 }
 
-.form-group textarea:hover,
 .comment-form textarea:hover,
 .comment-edit:hover {
   border-color: var(--input-border-hover);
@@ -375,17 +346,6 @@ h2::before {
 .comment-form textarea {
   width: 100%;
   min-height: 80px;
-}
-
-.comment-input {
-  margin-bottom: 1.5rem;
-}
-
-.comment-input label {
-  display: block;
-  color: var(--text-secondary);
-  margin-bottom: 0.5rem;
-  font-weight: 500;
 }
 
 .rating-actions {
@@ -482,37 +442,6 @@ h2::before {
   color: var(--color-danger-text);
 }
 
-.user-rating-display {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: var(--surface-brand);
-  border-radius: 8px;
-  border: 1px solid var(--border-brand);
-}
-
-.your-rating-label {
-  color: var(--text-accent);
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.user-comment {
-  color: var(--text-secondary);
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  background: var(--surface-base);
-  border-radius: 8px;
-  border: 1px solid var(--border-subtle);
-  line-height: 1.6;
-}
-
-.login-prompt {
-  text-align: center;
-  padding: 2rem;
-  color: var(--text-secondary);
-}
-
 .text-link {
   color: var(--text-link);
   text-decoration: none;
@@ -570,13 +499,6 @@ h2::before {
   font-weight: 600;
   color: var(--text-primary);
   font-size: 0.9rem;
-}
-
-.rating-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
 }
 
 .rating-date {
@@ -904,15 +826,8 @@ h2::before {
     width: 100%; /* Full width on mobile for easier tapping */
   }
 
-  .form-group {
-    gap: 0.4rem;
-  }
-
-  .form-group label {
-    font-size: 0.85rem;
-  }
-
-  .form-group textarea {
+  .comment-form textarea,
+  .comment-edit {
     padding: 0.75rem;
     font-size: 16px; /* Prevents iOS zoom on input focus */
     border-radius: 6px;
@@ -922,10 +837,6 @@ h2::before {
   .rating-actions button {
     flex: 1;
     min-width: 120px;
-  }
-
-  .user-rating-display {
-    padding: 1.25rem;
   }
 
   .rating-item {
@@ -1031,7 +942,6 @@ h2::before {
   border-color: var(--border-default);
 }
 
-[data-theme="dark"] .form-group textarea,
 [data-theme="dark"] .comment-form textarea,
 [data-theme="dark"] .comment-edit {
   background: var(--input-bg);
@@ -1054,21 +964,9 @@ h2::before {
 }
 
 [data-theme="dark"] .rating-summary,
-[data-theme="dark"] .rating-item,
-[data-theme="dark"] .user-rating-display {
+[data-theme="dark"] .rating-item {
   background: var(--surface-sunken);
   border-color: var(--border-default);
-}
-
-[data-theme="dark"] .user-comment {
-  background: var(--surface-base);
-  border-color: var(--border-default);
-}
-
-/* Loading state for form submission */
-.rating-form.submitting {
-  opacity: 0.7;
-  pointer-events: none;
 }
 
 .rating-form.submitting .submit-btn {
