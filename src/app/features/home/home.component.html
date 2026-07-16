@@ -38,40 +38,53 @@
   </div>
 </div>
 
-<!-- My Arsenal Section with Moving Banners -->
+<!-- My Arsenal Section - three homes for the code, each an orbiting 3D ring -->
 <section class="my-tools-section">
   <h2 i18n="Home page tools section heading@@homeMyArsenal">My Arsenal</h2>
+  <p class="arsenal-narrative" i18n="Home page arsenal narrative@@homeArsenalNarrative">
+    What I reach for on the server, in the browser, and on your phone.
+  </p>
 
-  <!-- Languages Banner (Left to Right) -->
-  <div class="category-section">
-    <h3 i18n="Home page languages section heading@@homeLanguages">Languages</h3>
-    <app-tech-banner [technologies]="languages" direction="left" [speed]="20" />
+  <div class="pillars">
+    <article class="pillar pillar--server">
+      <h3 class="pillar-title" i18n="Home arsenal server heading@@homeArsenalServer">On the Server</h3>
+      <ng-container *ngTemplateOutlet="ring; context: { $implicit: server }" />
+    </article>
+
+    <article class="pillar pillar--browser">
+      <h3 class="pillar-title" i18n="Home arsenal browser heading@@homeArsenalBrowser">In the Browser</h3>
+      <ng-container *ngTemplateOutlet="ring; context: { $implicit: browser, reverse: true }" />
+    </article>
+
+    <article class="pillar pillar--phone">
+      <h3 class="pillar-title" i18n="Home arsenal phone heading@@homeArsenalPhone">On Your Phone</h3>
+      <ng-container *ngTemplateOutlet="ring; context: { $implicit: phone }" />
+    </article>
   </div>
 
-  <!-- Frameworks Banner (Right to Left) -->
-  <div class="category-section">
-    <h3 i18n="Home page frameworks section heading@@homeFrameworks">Frameworks</h3>
-    <app-tech-banner [technologies]="frameworks" direction="right" [speed]="20" />
-  </div>
-
-  <!-- Tools Banner (Left to Right) -->
-  <div class="category-section">
-    <h3 i18n="Home page tools section heading@@homeTools">Tools</h3>
-    <app-tech-banner [technologies]="tools" direction="left" [speed]="20" />
-  </div>
-
-  <!-- Frameworks Banner (Right to Left) -->
-  <div class="category-section">
-    <h3 i18n="Home page frameworks section heading@@homeFrameworks2">Frameworks</h3>
-    <app-tech-banner [technologies]="frameworks" direction="right" [speed]="20" />
-  </div>
-
-  <!-- Tools Banner (Left to Right) -->
-  <div class="category-section">
-    <h3 i18n="Home page tools section heading@@homeTools2">Tools</h3>
-    <app-tech-banner [technologies]="tools" direction="left" [speed]="20" />
-  </div>
+  <a class="many-more-link" routerLink="/about" i18n="Home page many more technologies link@@homeManyMore">
+    And many more &rarr;
+  </a>
 </section>
+
+<!-- Reusable orbiting ring: logos billboarded so they always face the viewer -->
+<ng-template #ring let-pillar let-reverse="reverse">
+  <div class="stage" [style.--r]="pillar.radius + 'px'">
+    <div class="ring" [class.ring--reverse]="reverse">
+      @for (tech of pillar.tech; track tech.name; let i = $index) {
+      <a class="node" [style.--base]="i * 360 / pillar.tech.length + 'deg'" [href]="tech.docUrl" target="_blank"
+        rel="noopener noreferrer" [attr.aria-label]="tech.name + ' documentation'">
+        <span class="node-billboard">
+          <span class="node-face">
+            <img appLazyLoad [src]="tech.logo" [alt]="tech.name" width="52" height="52" loading="lazy" />
+            <span class="node-name">{{ tech.name }}</span>
+          </span>
+        </span>
+      </a>
+      }
+    </div>
+  </div>
+</ng-template>
 
 <!-- Existing featured projects section remains below -->
 <section class="featured-projects">

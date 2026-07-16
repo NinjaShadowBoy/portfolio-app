@@ -162,18 +162,227 @@
   animation: fadeInUp 0.8s var(--motion-ease-out);
 }
 
-.category-section {
-  margin-bottom: 3rem;
+.arsenal-narrative {
+  max-width: 620px;
+  margin: 0 auto 3rem;
+  padding-inline: 1.5rem;
+  text-align: center;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
 }
 
-.category-section h3 {
+/* Three homes for the code, each an orbiting 3D ring of logos */
+.pillars {
+  --arsenal-mono: ui-monospace, 'Cascadia Code', 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --stage-h: 300px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1120px;
+  margin: 0 auto 3rem;
+  padding-inline: 1.5rem;
+}
+
+.pillar {
   text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
+}
+
+/* Match the About page category headings */
+.pillar-title {
+  text-align: center;
+  font-size: 1.25rem;
+  /* margin: 0 0 1rem; */
   color: var(--text-secondary);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 2px;
+}
+
+/* The 3D scene */
+.stage {
+  position: relative;
+  height: var(--stage-h);
+  /* Shorter perspective = stronger depth: the far arc reads as going behind the screen */
+  perspective: 820px;
+}
+
+/* Faint elliptical platform to seat the ring in space */
+.stage::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  width: calc(var(--r, 0px) * 2 + 90px);
+  height: 26px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(53, 114, 239, 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  /* Tilt the turntable, and stretch it in depth so the orbit is an ellipse
+     that swings far behind the screen instead of sliding flat */
+  --tilt: -18deg;
+  --depth: 1.8;
+  animation: ringOrbit 30s linear infinite;
+}
+
+.ring--reverse {
+  animation-direction: reverse;
+}
+
+/* Pause the whole scene when a visitor wants to read it */
+.stage:hover .ring,
+.stage:hover .node-face {
+  animation-play-state: paused;
+}
+
+@keyframes ringOrbit {
+  from {
+    transform: rotateX(var(--tilt, -18deg)) scaleZ(var(--depth, 1.8)) rotateY(0);
+  }
+  to {
+    transform: rotateX(var(--tilt, -18deg)) scaleZ(var(--depth, 1.8)) rotateY(360deg);
+  }
+}
+
+@keyframes ringOrbitReverse {
+  to {
+    transform: rotateY(-360deg);
+  }
+}
+
+.node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 108px;
+  height: 108px;
+  margin: -54px;
+  transform-style: preserve-3d;
+  /* Seat this logo on the cylinder wall at its own angle */
+  transform: rotateY(var(--base, 0deg)) translateZ(var(--r, 0px));
+  text-decoration: none;
+}
+
+/* Cancel the node's base angle so the face is upright... */
+.node-billboard {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateY(calc(-1 * var(--base, 0deg)));
+}
+
+/* ...and counter-spin the live rotation so every logo keeps facing the viewer */
+.node-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  animation: ringOrbitReverse 30s linear infinite;
+}
+
+.ring--reverse .node-face {
+  animation-direction: reverse;
+}
+
+.node-face img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(15, 23, 42, 0.22));
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.node:hover .node-face img {
+  transform: scale(1.14);
+}
+
+.node-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: color var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.node:hover .node-name {
+  color: var(--text-primary);
+}
+
+.node:focus-visible {
+  outline: none;
+}
+
+.node:focus-visible .node-face {
+  border-radius: 12px;
+  box-shadow: var(--focus-ring);
+}
+
+.many-more-link {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  font-family: var(--arsenal-mono);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--motion-duration-normal) var(--motion-ease-out),
+    color var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.many-more-link:hover,
+.many-more-link:focus-visible {
+  color: var(--color-primary-500);
+  border-color: currentColor;
+}
+
+/* Motion-averse visitors get a calm, readable fan instead of a spinning ring */
+@media (prefers-reduced-motion: reduce) {
+  .ring {
+    position: static;
+    transform: none;
+    animation: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    height: 100%;
+  }
+
+  .node {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    transform: none;
+  }
+
+  .node-billboard {
+    transform: none;
+  }
+
+  .node-face {
+    flex-direction: row;
+    gap: 0.5rem;
+    animation: none;
+    padding: 0.4rem 0.7rem;
+    background: var(--surface-sunken);
+    border: 1px solid var(--border-subtle);
+    border-radius: 11px;
+  }
 }
 
 .home-container {
@@ -264,16 +473,18 @@ p {
 
   .my-tools-section h2 {
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.25rem;
   }
 
-  .category-section {
-    margin-bottom: 2rem;
+  .arsenal-narrative {
+    font-size: 1.05rem;
+    margin-bottom: 2.25rem;
   }
 
-  .category-section h3 {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+  .pillars {
+    grid-template-columns: repeat(2, 1fr);
+    --stage-h: 280px;
+    gap: 1rem;
   }
 
   .hero {
@@ -359,17 +570,14 @@ p {
 
   .my-tools-section h2 {
     font-size: 1.75rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 
-  .category-section {
-    margin-bottom: 1.5rem;
-  }
-
-  .category-section h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
-    letter-spacing: 1px;
+  /* Single column so each ring keeps room to spin */
+  .pillars {
+    grid-template-columns: 1fr;
+    max-width: 460px;
+    --stage-h: 300px;
   }
 
   .hero {
@@ -454,16 +662,17 @@ p {
 
   .my-tools-section h2 {
     font-size: 1.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
-  .category-section {
-    margin-bottom: 1rem;
-  }
-
-  .category-section h3 {
+  .arsenal-narrative {
     font-size: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .pillars {
+    padding-inline: 1rem;
+    --stage-h: 270px;
   }
 
   .hero {

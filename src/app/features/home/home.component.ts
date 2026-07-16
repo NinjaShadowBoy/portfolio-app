@@ -1,15 +1,20 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ProjectDataService } from '../../core/services/project-data.service';
 import { ProjectCardComponent } from '../../shared/ui/project-card/project-card.component';
 import { LazyLoadDirective } from '../../core/directives/lazy-load.directive';
-import { TechBannerComponent } from '../../shared/ui/tech-banner/tech-banner.component';
 import { TechnologiesService, Technology } from '../../core/services/technologies.service';
+
+interface Pillar {
+  tech: Technology[];
+  radius: number; // px radius of the orbiting ring, sized to the item count
+}
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ProjectCardComponent, LazyLoadDirective, TechBannerComponent],
+  imports: [CommonModule, RouterModule, ProjectCardComponent, LazyLoadDirective],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
@@ -19,40 +24,15 @@ export class HomeComponent {
 
   readonly featuredProjects = this.projectService.featuredProjects;
 
-  // Fetch technologies using the technologies service
-  readonly languages: Technology[] = [
-    this.techService.getTechnology('TypeScript')!,
-    this.techService.getTechnology('JavaScript')!,
-    this.techService.getTechnology('Java')!,
-    this.techService.getTechnology('Kotlin')!,
-    this.techService.getTechnology('Python')!,
-    this.techService.getTechnology('Go')!,
-    this.techService.getTechnology('C')!,
-    this.techService.getTechnology('C++')!,
-    this.techService.getTechnology('HTML5')!,
-    this.techService.getTechnology('CSS3')!,
-  ].filter(Boolean);
+  // Three homes for the code — the tools I reach for wherever it runs.
+  readonly server = this.pillar(['Spring Boot', 'Gin', 'PostgreSQL', 'MySQL', 'Docker']);
+  readonly browser = this.pillar(['Angular', 'Nuxt', 'TypeScript', 'Playwright']);
+  readonly phone = this.pillar(['Expo React Native', 'Jetpack Compose']);
 
-  readonly frameworks: Technology[] = [
-    this.techService.getTechnology('Angular')!,
-    this.techService.getTechnology('React')!,
-    this.techService.getTechnology('Spring Boot')!,
-    this.techService.getTechnology('NestJS')!,
-    this.techService.getTechnology('Ktor')!,
-    this.techService.getTechnology('Jetpack Compose')!,
-  ].filter(Boolean);
-
-  readonly tools: Technology[] = [
-    this.techService.getTechnology('Git')!,
-    this.techService.getTechnology('Docker')!,
-    this.techService.getTechnology('PostgreSQL')!,
-    this.techService.getTechnology('MySQL')!,
-    this.techService.getTechnology('MongoDB')!,
-    this.techService.getTechnology('ChatGPT')!,
-    this.techService.getTechnology('Linux')!,
-    this.techService.getTechnology('Gradle')!,
-    this.techService.getTechnology('npm')!,
-    this.techService.getTechnology('Playwright')!,
-  ].filter(Boolean);
+  private pillar(names: string[]): Pillar {
+    const tech = names.map((n) => this.techService.getTechnology(n)!).filter(Boolean);
+    // Radius that keeps neighbouring logos from overlapping as the count grows.
+    const radius = tech.length <= 1 ? 0 : Math.round(58 / Math.sin(Math.PI / tech.length));
+    return { tech, radius };
+  }
 }
-
