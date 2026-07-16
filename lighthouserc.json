@@ -2,9 +2,9 @@
   "ci": {
     "collect": {
       "numberOfRuns": 3,
-      "startServerCommand": "npx http-server dist/portfolio-app/browser -p 8080",
+      "startServerCommand": "npx http-server dist/portfolio-app/browser -p 8081",
       "url": [
-        "http://localhost:8080"
+        "http://localhost:8081"
       ]
     },
     "assert": {

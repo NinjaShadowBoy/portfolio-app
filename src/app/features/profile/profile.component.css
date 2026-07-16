@@ -27,20 +27,45 @@
   margin: 0;
 }
 
-.avatar-row {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-.avatar-actions {
+.avatar-block {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.avatar-upload {
+.avatar-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.avatar-edit {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: 2px solid var(--surface-raised);
+  box-shadow: var(--elevation-2);
   cursor: pointer;
+  transition: background var(--motion-duration-fast) var(--motion-ease-out),
+    transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.avatar-edit:hover {
+  background: var(--btn-primary-bg-hover);
+  transform: scale(1.05);
+}
+
+.avatar-edit.disabled {
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .field {

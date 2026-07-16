@@ -9,9 +9,10 @@
           <span></span><span></span><span></span>
         </button>
         @if (isAuthenticated() && user()) {
-        <div class="mobile-login-indicator liquid-glass-subtle" title="Logged in as {{ user()!.name }}">
-          <app-user-avatar [userName]="user()!.name" size="small" />
-        </div>
+        <a class="mobile-login-indicator liquid-glass-subtle" routerLink="/profile"
+          title="View your profile" i18n-title="Header profile link title@@headerProfileTitle2">
+          <app-user-avatar [userName]="user()!.name" [imageUrl]="identity()?.imageUrl ?? null" size="small" />
+        </a>
         }
       </div>
 
@@ -35,16 +36,15 @@
         </li>
         @if (isAuthenticated() && user()) {
         <li class="login-status">
-          <div class="status-badge liquid-glass-subtle">
-            <app-user-avatar [userName]="user()!.name" size="medium" />
+          <a class="status-badge liquid-glass-subtle" routerLink="/profile" routerLinkActive="active"
+            title="View your profile" i18n-title="Header profile link title@@headerProfileTitle">
+            <app-user-avatar [userName]="user()!.name" [imageUrl]="identity()?.imageUrl ?? null" size="medium" />
             <span class="user-name">{{ user()!.name }}</span>
-          </div>
+          </a>
         </li>
         }
         <li class="auth-controls">
           @if (isAuthenticated()) {
-          <a class="link liquid-glass" routerLink="/profile" routerLinkActive="active"
-            ariaCurrentWhenActive="page" i18n="Header profile link@@headerProfile">Profile</a>
           <a class="link liquid-glass" (click)="logout()" routerLinkActive="active"
             ariaCurrentWhenActive="page" i18n="Header logout link@@headerLogout">Logout</a>
           } @else {
@@ -247,8 +247,6 @@
         </li>
         <li class="auth-controls">
           @if (isAuthenticated()) {
-          <a class="link liquid-glass" routerLink="/profile" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Header mobile profile link@@headerMobileProfile">Profile</a>
           <a class="link liquid-glass" (click)="logout(); toggleMenu()" routerLinkActive="active"
             ariaCurrentWhenActive="page" i18n="Header mobile logout link@@headerMobileLogout">Logout</a>
           } @else {

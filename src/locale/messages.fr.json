@@ -331,6 +331,8 @@
     "commentUpdateFailed": "Échec de la mise à jour du commentaire",
     "commentDeleted": "Commentaire supprimé",
     "headerProfile": "Profil",
-    "headerMobileProfile": "Profil"
+    "headerMobileProfile": "Profil",
+    "headerProfileTitle": "Voir votre profil",
+    "headerProfileTitle2": "Voir votre profil"
   }
 }

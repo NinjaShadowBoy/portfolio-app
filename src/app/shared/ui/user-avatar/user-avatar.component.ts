@@ -10,7 +10,8 @@ import { CommonModule } from '@angular/common';
 })
 export class UserAvatarComponent {
   userName = input<string>('');
-  size = input<'small' | 'medium' | 'large'>('medium');
+  imageUrl = input<string | null>(null);
+  size = input<'small' | 'medium' | 'large' | 'xlarge'>('medium');
   title = input<string>('');
 
   get initials(): string {

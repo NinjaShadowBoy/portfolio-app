@@ -3,6 +3,7 @@ import { Component, inject, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { IdentityService } from '../../../core/services/identity.service';
 import { SocialLinksService } from '../../../core/services/social-links.service';
 import { ThemeService } from '../../../core/services/theme.service';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
@@ -16,6 +17,7 @@ import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 })
 export class HeaderComponent {
   private auth = inject(AuthService);
+  private identityService = inject(IdentityService);
   private socialLinksService = inject(SocialLinksService);
   private themeService = inject(ThemeService);
   private router = inject(Router);
@@ -24,6 +26,7 @@ export class HeaderComponent {
   isAuthenticated = this.auth.isAuthenticated;
   isAdmin = this.auth.isAdmin;
   user = this.auth.user;
+  identity = this.identityService.identity;
   socialLinks = this.socialLinksService.getSocialLinks();
   currentTheme = this.themeService.currentTheme;
 

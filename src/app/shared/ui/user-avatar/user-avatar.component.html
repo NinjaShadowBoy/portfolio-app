@@ -3,6 +3,12 @@
   [class.size-small]="size() === 'small'"
   [class.size-medium]="size() === 'medium'"
   [class.size-large]="size() === 'large'"
+  [class.size-xlarge]="size() === 'xlarge'"
+  [class.has-image]="!!imageUrl()"
   [title]="title()">
-  {{ initials }}
+  @if (imageUrl()) {
+    <img [src]="imageUrl()" [alt]="userName()" class="avatar-img" />
+  } @else {
+    {{ initials }}
+  }
 </span>

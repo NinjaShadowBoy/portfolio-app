@@ -28,7 +28,7 @@ pnpm ng extract-i18n --output-path src/locale  # Extract translatable strings
   - `Server` (default): all other routes including `/:lang/home`, `/:lang/projects`
 - **Entry points**: `src/main.ts` (browser), `src/main.server.ts` (SSR bootstrap), `src/server.ts` (Express server)
 - **Server listens** on `PORT` env var or `4000`
-- **Backend API**: `http://localhost:8080/portfolio` (dev), `https://vps.alexabena.me/portfolio` (prod) -  defined in `src/environments/`
+- **Backend API**: `http://localhost:8081/portfolio` (dev), `https://vps.alexabena.me/portfolio` (prod) -  defined in `src/environments/`
 - **Project structure**: `src/app/core/` (services, guards, interceptors, interfaces, directives), `src/app/features/` (page components), `src/app/shared/ui/` (reusable UI components)
 
 ## Internationalization (i18n)

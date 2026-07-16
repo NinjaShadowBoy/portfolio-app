@@ -420,7 +420,8 @@
   padding: 0.35rem;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  cursor: default;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 /* Hide hamburger on desktop */
@@ -518,6 +519,15 @@
   font-weight: 500;
   white-space: nowrap;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color var(--motion-duration-fast) var(--motion-ease-out),
+    transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.status-badge:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
 }
 
 .user-name {
