@@ -1,4 +1,4 @@
-import { Component, effect, input, signal, ElementRef, viewChild } from '@angular/core';
+import { Component, HostListener, effect, input, signal, ElementRef, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -16,6 +16,7 @@ export class CarouselComponent {
 
   currentImageIndex = signal(0);
   isHovered = signal(false);
+  isFullscreen = signal(false);
   private autoPlayInterval: ReturnType<typeof setInterval> | null = null;
   private autoPlayDelay = 5000; // 5 seconds
 
@@ -35,7 +36,7 @@ export class CarouselComponent {
 
     this.stopAutoPlay();
     this.autoPlayInterval = setInterval(() => {
-      if (!this.isHovered()) {
+      if (!this.isHovered() && !this.isFullscreen()) {
         this.nextImage();
       }
     }, this.autoPlayDelay);
@@ -44,6 +45,21 @@ export class CarouselComponent {
   private stopAutoPlay(): void {
     if (this.autoPlayInterval) {
       clearInterval(this.autoPlayInterval);
+    }
+  }
+
+  openFullscreen(): void {
+    this.isFullscreen.set(true);
+  }
+
+  closeFullscreen(): void {
+    this.isFullscreen.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.isFullscreen()) {
+      this.closeFullscreen();
     }
   }
 

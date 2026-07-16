@@ -1,11 +1,17 @@
 @if (photoUrls().length > 0) {
   <div class="carousel-container" (mouseenter)="onHover()" (mouseleave)="onLeave()">
     <div class="carousel-main">
-      <img 
+      <img
         #carouselImage
-        [src]="photoUrls()[currentImageIndex()]" 
+        [src]="photoUrls()[currentImageIndex()]"
         [alt]="projectName() + ' screenshot ' + (currentImageIndex() + 1)"
-        class="carousel-image" />
+        class="carousel-image"
+        (click)="openFullscreen()"
+        (keydown.enter)="openFullscreen()"
+        tabindex="0"
+        role="button"
+        i18n-aria-label="Carousel view fullscreen@@carouselViewFullscreen"
+        aria-label="View image fullscreen" />
     </div>
     
     @if (photoUrls().length > 1) {
@@ -47,5 +53,49 @@
 } @else {
   <div class="carousel-empty">
     <p i18n="Carousel no images message@@carouselNoImages">No images available</p>
+  </div>
+}
+
+@if (isFullscreen()) {
+  <div class="lightbox" (click)="closeFullscreen()">
+    <button
+      type="button"
+      class="lightbox-close"
+      (click)="closeFullscreen()"
+      i18n-aria-label="Carousel close fullscreen@@carouselCloseFullscreen"
+      aria-label="Close fullscreen">
+      ✕
+    </button>
+
+    @if (photoUrls().length > 1) {
+      <button
+        type="button"
+        class="lightbox-nav lightbox-prev"
+        (click)="$event.stopPropagation(); previousImage()"
+        i18n-aria-label="Carousel previous image@@carouselPrevImage"
+        aria-label="Previous image">
+        ⟨
+      </button>
+      <button
+        type="button"
+        class="lightbox-nav lightbox-next"
+        (click)="$event.stopPropagation(); nextImage()"
+        i18n-aria-label="Carousel next image@@carouselNextImage"
+        aria-label="Next image">
+        ⟩
+      </button>
+    }
+
+    <img
+      [src]="photoUrls()[currentImageIndex()]"
+      [alt]="projectName() + ' screenshot ' + (currentImageIndex() + 1)"
+      class="lightbox-image"
+      (click)="$event.stopPropagation()" />
+
+    @if (photoUrls().length > 1) {
+      <div class="lightbox-counter">
+        {{ currentImageIndex() + 1 }} / {{ photoUrls().length }}
+      </div>
+    }
   </div>
 }
