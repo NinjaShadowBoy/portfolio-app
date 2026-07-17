@@ -92,10 +92,19 @@ Output goes to a generated folder consumed by Angular (kept out of hand-edited s
 
 ### 3. Routing, SSR & prerender
 
-- Routes: `/:lang/articles` (index), `/:lang/articles/:slug` (detail).
-- `app.routes.server.ts`: register both with `getPrerenderParams` enumerating **every
-  published slug × lang** from the manifest, so articles prerender fully on **both**
-  GitHub Pages (static mirror) and the VPS SSR server.
+> **i18n model correction (from codebase mapping):** this project does **not** use a
+> `/:lang/...` route param. Locales are compiled builds via `@angular/localize`
+> (`sourceLocale` en served at `/`, `fr` served at `/fr`), so there is **one** set of
+> routes compiled once per locale. AGENTS.md's `/:lang/` claims are stale — the source is
+> authoritative.
+
+- Routes: `/articles` (index), `/articles/:slug` (detail) — **no `:lang` segment**.
+  Components are **eager-imported**, matching the repo (no lazy-load precedent).
+- `app.routes.server.ts`: register both as `RenderMode.Prerender` with `getPrerenderParams`
+  enumerating **published slugs only** (not slug × lang — the dual-locale `--localize`
+  build runs prerender once per locale automatically). This is a new pattern for the repo
+  (no existing Prerender entries).
+- The language switcher (`toggleLanguage()`) is route-agnostic and needs **no change**.
 - **Graceful i18n fallback**: if `fr.md` is missing for a slug, serve the `en` body with a
   small "not yet translated" notice instead of a 404. `draft: true` articles are excluded
   from index, sitemap, and RSS.
