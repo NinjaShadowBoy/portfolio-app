@@ -53,28 +53,55 @@ export class CodeCopyDirective {
 
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = 'copy-button btn-ghost';
-      button.textContent = this.copyLabel;
+      button.className = 'copy-button';
       button.setAttribute('aria-label', this.copyLabel);
-      button.addEventListener('click', () => this.copy(pre, button));
+      button.setAttribute('title', this.copyLabel);
+      // Icon-only: a copy glyph swapped for a check while in the copied state.
+      button.innerHTML =
+        '<svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+        '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>' +
+        '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>' +
+        '</svg>' +
+        '<svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+        '<polyline points="20 6 9 17 4 12"></polyline>' +
+        '</svg>';
+      this.attachCopyHandler(pre, button);
       wrapper.appendChild(button);
     });
   }
 
-  private copy(pre: HTMLPreElement, button: HTMLButtonElement): void {
-    const code = pre.querySelector('code')?.innerText ?? pre.innerText;
-    navigator.clipboard
-      ?.writeText(code.replace(/\n$/, ''))
-      .then(() => {
-        button.textContent = this.copiedLabel;
-        button.classList.add('copied');
-        setTimeout(() => {
-          button.textContent = this.copyLabel;
+  private attachCopyHandler(
+    pre: HTMLPreElement,
+    button: HTMLButtonElement,
+  ): void {
+    // Timer lives in the closure so rapid re-clicks restart the copied state
+    // instead of an old timer reverting the fresh one early.
+    let revertTimer: ReturnType<typeof setTimeout> | null = null;
+
+    button.addEventListener('click', () => {
+      const code = pre.querySelector('code')?.innerText ?? pre.innerText;
+      navigator.clipboard
+        ?.writeText(code.replace(/\n$/, ''))
+        .then(() => {
+          if (revertTimer !== null) {
+            clearTimeout(revertTimer);
+          }
+          // Remove + reflow + re-add so the check-pop animation restarts
+          // even when the button is clicked again mid-animation.
           button.classList.remove('copied');
-        }, 2000);
-      })
-      .catch(() => {
-        /* Clipboard denied (permissions / insecure context) — keep quiet. */
-      });
+          void button.offsetWidth;
+          button.classList.add('copied');
+          button.setAttribute('aria-label', this.copiedLabel);
+          button.setAttribute('title', this.copiedLabel);
+          revertTimer = setTimeout(() => {
+            button.classList.remove('copied');
+            button.setAttribute('aria-label', this.copyLabel);
+            button.setAttribute('title', this.copyLabel);
+          }, 1600);
+        })
+        .catch(() => {
+          /* Clipboard denied (permissions / insecure context) — keep quiet. */
+        });
+    });
   }
 }

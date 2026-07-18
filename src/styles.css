@@ -1921,45 +1921,89 @@ body * {
   color: inherit;
 }
 
-/* Copy button injected by CodeCopyDirective — composes the ghost button
-   utility, with a raised surface so it stays readable over highlighted code */
+/* Copy control injected by CodeCopyDirective: a quiet, semi-transparent icon
+   floating over the code — no chrome — that pops into a check when clicked. */
 .code-block .copy-button {
   position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
-  padding: 0.35rem 0.6rem;
-  font-size: 0.75rem;
-  font-weight: 600;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: 0;
+  border: none;
   border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
   cursor: pointer;
-  background: var(--surface-raised);
-  border-color: var(--border-default);
-  box-shadow: var(--elevation-1);
-  opacity: 0;
+  opacity: 0.45;
   transition: opacity var(--motion-duration-fast) var(--motion-ease-out),
-    background var(--motion-duration-fast) var(--motion-ease-out);
+    background var(--motion-duration-fast) var(--motion-ease-out),
+    transform var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.code-block:hover .copy-button,
+.code-block .copy-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.code-block .copy-button:hover {
+  opacity: 1;
+  background: var(--surface-hover);
+}
+
+.code-block .copy-button:active {
+  transform: scale(0.88);
+}
+
 .code-block .copy-button:focus-visible {
   opacity: 1;
-}
-
-.code-block .copy-button:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 
-.code-block .copy-button.copied {
-  opacity: 1;
-  color: var(--text-accent);
-  border-color: var(--border-brand);
+/* Copied micro-interaction: the copy glyph gives way to a check that pops in. */
+.code-block .copy-button .icon-check {
+  display: none;
 }
 
-/* No hover on touch devices: keep the button always visible there. */
-@media (hover: none) {
-  .code-block .copy-button {
+.code-block .copy-button.copied {
+  opacity: 1;
+  color: var(--color-success-text);
+}
+
+.code-block .copy-button.copied .icon-copy {
+  display: none;
+}
+
+.code-block .copy-button.copied .icon-check {
+  display: block;
+  animation: copy-check-pop 0.35s var(--motion-ease-out);
+}
+
+@keyframes copy-check-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
     opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .code-block .copy-button.copied .icon-check {
+    animation: none;
+  }
+
+  .code-block .copy-button:active {
+    transform: none;
   }
 }
 
