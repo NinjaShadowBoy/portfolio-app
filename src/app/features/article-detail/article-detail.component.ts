@@ -2,12 +2,11 @@ import {
   Component,
   DestroyRef,
   LOCALE_ID,
-  PLATFORM_ID,
   computed,
   effect,
   inject,
 } from '@angular/core';
-import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title, DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
@@ -61,7 +60,6 @@ export class ArticleDetailComponent {
   private document = inject(DOCUMENT);
   private locale = inject(LOCALE_ID);
   private destroyRef = inject(DestroyRef);
-  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   /** Absolute origin used for canonical / OG / hreflang URLs. */
   private readonly siteUrl = 'https://www.alexabena.me';
@@ -99,10 +97,10 @@ export class ArticleDetailComponent {
   readonly payload = toSignal<ArticlePayload | null>(
     toObservable(this.slug).pipe(
       switchMap((slug) =>
-        // Browser-only: fetching the payload over HTTP during prerender/SSR would
-        // block on an asset the static render can't serve. Metadata SEO is still
-        // emitted server-side from the manifest; the body hydrates on the client.
-        slug && this.isBrowser
+        // Loaded on both platforms: the server reads the payload from disk during
+        // prerender (body baked into static HTML for SEO), the browser fetches it
+        // over HTTP on client navigation.
+        slug
           ? this.articleData
               .getArticle(slug, this.lang)
               .pipe(catchError(() => of(null)))

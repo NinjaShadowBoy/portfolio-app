@@ -1,5 +1,4 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { articlesManifest } from '../../../generated/articles-manifest';
@@ -8,6 +7,7 @@ import {
   ArticlePayload,
   ArticleSummary,
 } from '../interfaces/article.interface';
+import { ArticleContentLoader } from './article-content-loader';
 
 /**
  * Reads the build-generated article manifest and per-article payloads.
@@ -27,10 +27,8 @@ import {
   providedIn: 'root',
 })
 export class ArticleDataService {
-  private http = inject(HttpClient);
-
-  /** Root-relative base for the per-article payload JSON assets. */
-  private readonly payloadBase = '/assets/articles';
+  /** Platform-swapped: HTTP in the browser, filesystem on the server (prerender). */
+  private loader = inject(ArticleContentLoader);
 
   /** The manifest is build-imported; drafts are already excluded at build. */
   private readonly manifestSignal = signal<ArticleSummary[]>(articlesManifest);
@@ -54,19 +52,22 @@ export class ArticleDataService {
    * payload is served instead and flagged `notTranslated` so the detail page can
    * render a "not yet translated" notice rather than 404.
    */
-  getArticle(slug: string, lang: ArticleLang): Observable<ArticlePayload> {
+  getArticle(slug: string, lang: ArticleLang): Observable<ArticlePayload | null> {
     const summary = this.getArticleSummary(slug);
     const hasRequestedLang = summary?.langs.includes(lang) ?? false;
     const servedLang: ArticleLang = hasRequestedLang ? lang : 'en';
     const fellBack = servedLang !== lang;
-    const url = `${this.payloadBase}/${slug}.${servedLang}.json`;
 
-    return this.http.get<ArticlePayload>(url).pipe(
-      map((payload) => ({
-        ...payload,
-        lang: servedLang,
-        notTranslated: payload.notTranslated || fellBack,
-      }))
+    return this.loader.load(slug, servedLang).pipe(
+      map((payload) =>
+        payload
+          ? {
+              ...payload,
+              lang: servedLang,
+              notTranslated: payload.notTranslated || fellBack,
+            }
+          : null,
+      ),
     );
   }
 }

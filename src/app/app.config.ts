@@ -5,6 +5,10 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { provideClientHydration } from '@angular/platform-browser';
+import {
+  ArticleContentLoader,
+  HttpArticleContentLoader,
+} from './core/services/article-content-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,5 +33,8 @@ export const appConfig: ApplicationConfig = {
       withFetch()
     ),
     provideClientHydration(),
+    // Browser: load article payloads over HTTP. The server overrides this with a
+    // filesystem loader (app.config.server.ts) so the body prerenders into HTML.
+    { provide: ArticleContentLoader, useClass: HttpArticleContentLoader },
   ],
 };
