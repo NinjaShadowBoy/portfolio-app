@@ -6,15 +6,16 @@
   max-width: 100%;
 }
 
+/* Pill track — the original login/register toggle look. */
 .segmented-toggle {
   position: relative;
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-  padding: 0.25rem;
+  padding: 0.35rem;
   background: var(--surface-sunken);
-  border: 1px solid var(--border-default);
-  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
 }
 
 /* The measured pill that slides under the active option. */
@@ -22,10 +23,9 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: var(--surface-raised);
-  border: 1px solid var(--border-brand);
-  border-radius: 7px;
-  box-shadow: var(--elevation-1);
+  background: var(--surface-base);
+  border-radius: 999px;
+  box-shadow: var(--elevation-2);
   pointer-events: none;
 }
 
@@ -46,14 +46,15 @@ button {
   position: relative;
   z-index: 1;
   appearance: none;
-  border: 1px solid transparent;
+  border: none;
   background: transparent;
-  color: var(--btn-ghost-text);
-  padding: 0.5rem 1rem;
-  border-radius: 7px;
+  color: var(--text-tertiary);
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
   font-weight: 600;
   font-size: 0.9rem;
   font-family: inherit;
+  text-align: center;
   cursor: pointer;
   transition:
     color var(--motion-duration-fast) var(--motion-ease-out),
@@ -62,19 +63,18 @@ button {
 
 button:hover:not(.selected) {
   background: var(--surface-hover);
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 
 button.selected {
-  color: var(--text-accent);
+  color: var(--text-primary);
 }
 
 /* SSR / pre-measure fallback: until the thumb exists, the active button
    carries its own pill so the initial paint looks identical. */
 .segmented-toggle:not(.has-thumb) button.selected {
-  background: var(--surface-raised);
-  border-color: var(--border-brand);
-  box-shadow: var(--elevation-1);
+  background: var(--surface-base);
+  box-shadow: var(--elevation-2);
 }
 
 button:focus-visible {
