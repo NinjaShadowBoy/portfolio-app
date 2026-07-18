@@ -187,7 +187,7 @@
 }
 
 .navigation .socials a:hover {
-  transform: translateY(-4px) scale(1.1);
+  transform: translateY(-0.5px) scale(1.23);
   box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.35),
     inset 0 -1px 2px rgba(255, 255, 255, 0.15), 0 6px 20px rgba(0, 0, 0, 0.25),
     0 10px 40px rgba(53, 114, 239, 0.3);

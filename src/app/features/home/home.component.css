@@ -431,6 +431,7 @@ p {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   animation: fadeInUp 0.8s var(--motion-ease-out) 0.6s both;
+  padding-top: 10px;
 }
 
 /* Large tablets and small desktops */
