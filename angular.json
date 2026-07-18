@@ -43,6 +43,16 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/generated/public",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/generated/articles",
+                "output": "/assets/articles"
               }
             ],
             "styles": [

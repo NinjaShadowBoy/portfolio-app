@@ -1,0 +1,45 @@
+<article class="article-card">
+  @if (coverImageUrl(); as cover) {
+  <div class="article-cover-wrapper">
+    <img
+      appLazyLoad
+      [src]="cover"
+      [alt]="article().title"
+      class="article-cover"
+      width="640"
+      height="360" />
+  </div>
+  }
+
+  <header class="article-header">
+    <h3>{{ article().title }}</h3>
+    <div class="article-meta">
+      <span class="article-meta-chip" i18n="Article card published date@@articleCardDate"
+        >{{ article().date | date:'MMM d, y' }}</span
+      >
+      <span class="article-meta-chip" i18n="Article card reading time@@articleCardReadingTime"
+        >{{ article().readingTime }} min read</span
+      >
+    </div>
+  </header>
+
+  <div class="article-content">
+    <p class="article-description">{{ article().description }}</p>
+
+    @if (article().tags.length > 0) {
+    <div class="article-tags">
+      @for (tag of article().tags; track tag) {
+      <span class="tag">{{ tag }}</span>
+      }
+    </div>
+    }
+
+    <div class="article-actions">
+      <app-cta-button
+        [text]="readLabel"
+        [routerLink]="['/articles', article().slug]"
+        icon="arrow-right"
+        variant="outline" />
+    </div>
+  </div>
+</article>

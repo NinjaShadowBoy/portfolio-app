@@ -22,17 +22,8 @@ export interface Photo {
   projectId: number;
 }
 
-export interface Rating {
-  id: string;
-  userId: string; // In a real app, this would be the actual user ID
-  rating: number;
-  comment?: string;
-  createdAt: Date;
-}
-
 export interface ProjectFilters {
   searchTerm: string;
   technology: string;
-  minRating: number;
   featured: boolean;
 }

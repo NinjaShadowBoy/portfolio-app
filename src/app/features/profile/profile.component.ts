@@ -7,7 +7,6 @@ import { AuthService } from '../../core/services/auth.service';
 import { IdentityService } from '../../core/services/identity.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { PhotoService } from '../../core/services/photo.service';
-import { RatingService, RatingDto } from '../../core/services/rating.service';
 import { CommentService, CommentDto } from '../../core/services/comment.service';
 import { ProjectDataService } from '../../core/services/project-data.service';
 import { NotificationService } from '../../core/services/notification.service';
@@ -25,7 +24,6 @@ export class ProfileComponent {
   identityService = inject(IdentityService); // public for template
   private profileService = inject(ProfileService);
   private photoService = inject(PhotoService);
-  private ratingService = inject(RatingService);
   private commentService = inject(CommentService);
   private projectService = inject(ProjectDataService);
   private notificationService = inject(NotificationService);
@@ -41,7 +39,6 @@ export class ProfileComponent {
   isSavingPassword = signal(false);
   isUploadingAvatar = signal(false);
 
-  myRatings = signal<RatingDto[]>([]);
   myComments = signal<CommentDto[]>([]);
 
   private readonly initEffect = effect(() => {
@@ -56,13 +53,6 @@ export class ProfileComponent {
   }
 
   private loadActivity() {
-    this.ratingService
-      .getMyRatings()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (ratings) => this.myRatings.set(ratings),
-        error: (err) => console.error('Error loading ratings:', err),
-      });
     this.commentService
       .getMyComments()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -155,17 +145,6 @@ export class ProfileComponent {
       });
   }
 
-  deleteRating(rating: RatingDto) {
-    if (!confirm($localize`:@@ratingDeleteConfirm:Are you sure you want to delete your rating?`)) return;
-    this.ratingService
-      .deleteRating(rating.id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => this.myRatings.update((list) => list.filter((r) => r.id !== rating.id)),
-        error: () => this.notificationService.error($localize`:@@ratingDeleteFailed:Failed to delete rating`),
-      });
-  }
-
   deleteComment(comment: CommentDto) {
     if (!confirm($localize`:@@commentDeleteConfirm:Are you sure you want to delete this comment?`)) return;
     this.commentService
@@ -178,7 +157,7 @@ export class ProfileComponent {
   }
 
   deleteAccount() {
-    if (!confirm($localize`:@@profileDeleteConfirm:Permanently delete your account and all your ratings and comments? This cannot be undone.`)) return;
+    if (!confirm($localize`:@@profileDeleteConfirm:Permanently delete your account and all your comments? This cannot be undone.`)) return;
     this.profileService
       .deleteAccount()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -192,6 +171,4 @@ export class ProfileComponent {
         error: () => this.notificationService.error($localize`:@@profileDeleteFailed:Failed to delete account`),
       });
   }
-
-  readonly stars = [1, 2, 3, 4, 5];
 }

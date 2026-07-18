@@ -5,6 +5,7 @@ on:
     branches: [main, staging]
     paths:
       - "src/**"
+      - "scripts/**"
       - "angular.json"
       - "package.json"
       - "pnpm-lock.yaml"
@@ -31,7 +32,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Angular SSR
-        run: pnpm ng build
+        run: pnpm run build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4

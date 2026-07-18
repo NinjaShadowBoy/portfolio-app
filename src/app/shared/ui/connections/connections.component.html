@@ -1,0 +1,61 @@
+@if (hasAny()) {
+<section class="connections" aria-labelledby="connections-heading">
+  <h2 id="connections-heading" i18n="Connections block heading@@connectionsHeading">Connections</h2>
+
+  @if (hasArticles()) {
+  <div class="connections-group">
+    <h3 i18n="Connections related articles subheading@@connectionsRelatedArticles">Related articles</h3>
+    <div class="connections-grid">
+      @for (article of relatedArticles(); track article.slug) {
+      <app-article-card [article]="article" />
+      }
+    </div>
+  </div>
+  }
+
+  @if (hasProjects()) {
+  <div class="connections-group">
+    <h3 i18n="Connections related projects subheading@@connectionsRelatedProjects">Related projects</h3>
+    <div class="connections-grid">
+      @for (project of relatedProjects(); track project.id) {
+      <app-project-card [project]="project" />
+      }
+    </div>
+  </div>
+  }
+
+  @if (hasPapers()) {
+  <div class="connections-group">
+    <h3 i18n="Connections research papers subheading@@connectionsResearchPapers">Research papers</h3>
+    <ul class="connections-links">
+      @for (paper of researchPapers(); track paper.url) {
+      <li>
+        <a
+          class="connections-link"
+          [href]="paper.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          >{{ paper.title }}</a
+        >
+        @if (paper.authors) {
+        <span class="connections-authors">{{ paper.authors }}</span>
+        }
+      </li>
+      }
+    </ul>
+  </div>
+  }
+
+  @if (hasLinkedIn()) {
+  <div class="connections-group">
+    <h3 i18n="Connections LinkedIn subheading@@connectionsLinkedIn">On LinkedIn</h3>
+    <app-cta-button
+      [text]="linkedInLabel"
+      [href]="linkedInUrl()"
+      target="_blank"
+      icon="external"
+      variant="outline" />
+  </div>
+  }
+</section>
+}

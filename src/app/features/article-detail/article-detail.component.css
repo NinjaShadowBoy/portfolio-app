@@ -1,0 +1,114 @@
+/* Article detail — layout only; visual language comes from src/styles.css tokens
+   and the promoted .article-body / .toc / .tag classes. */
+
+.article-detail-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.article-detail-header {
+  margin-bottom: 1.5rem;
+}
+
+.article-detail-header h1 {
+  margin: 0 0 1rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+.article-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Date / reading-time chips — mirror the project-detail .project-meta chip. */
+.meta-chip {
+  padding: 0.4rem 0.85rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+}
+
+.not-translated-notice {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-brand);
+  border-left-width: 3px;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.article-detail-cover {
+  margin: 0 0 2rem;
+}
+
+.article-cover-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--elevation-1);
+}
+
+/* Single column on mobile: the TOC collapses above the body.
+   Two columns on desktop: sticky TOC beside the reading measure. */
+.article-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .article-detail-layout {
+    grid-template-columns: 15rem minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* app-connections and app-feedback space out below the body. */
+app-connections,
+app-feedback {
+  display: block;
+  margin-top: 2.5rem;
+}
+
+.not-found {
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 2rem;
+  text-align: center;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+}
+
+.not-found h2 {
+  color: var(--text-primary);
+  margin: 0 0 0.5rem;
+}
+
+.not-found p {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .article-detail-container {
+    padding: 1.25rem;
+  }
+
+  .article-detail-header h1 {
+    font-size: 1.9rem;
+  }
+}

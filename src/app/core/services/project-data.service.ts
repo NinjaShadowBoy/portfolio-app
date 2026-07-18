@@ -9,14 +9,12 @@ import {
 } from '../interfaces/project.interface';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { RatingService, RatingDto } from './rating.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectDataService {
   private http = inject(HttpClient);
-  private ratingService = inject(RatingService);
   private apiUrl = `${environment.apiBaseUrl}/projects`;
   private readonly fallbackProjects: Project[] = [
     {
@@ -72,7 +70,6 @@ export class ProjectDataService {
   private filtersSignal = signal<ProjectFilters>({
     searchTerm: '',
     technology: '',
-    minRating: 0,
     featured: false,
   });
 
@@ -180,61 +177,6 @@ export class ProjectDataService {
   }
 
   /**
-   * Add rating to a project (delegates to RatingService)
-   */
-  addRating(projectId: number, rating: number): Observable<RatingDto> {
-    return this.ratingService.createRating({
-      projectId,
-      rating,
-    }).pipe(
-      tap(() => {
-        // Refresh projects to get updated rating statistics
-        this.refreshProjects();
-      })
-    );
-  }
-
-  /**
-   * Check if user can rate a project (delegates to RatingService)
-   */
-  canRateProject(projectId: number): Observable<boolean> {
-    return this.ratingService.hasUserRatedProject(projectId).pipe(
-      map((result) => !result.hasRated)
-    );
-  }
-
-  /**
-   * Get ratings for a project (delegates to RatingService)
-   */
-  getProjectRatings(projectId: number): Observable<RatingDto[]> {
-    return this.ratingService.getRatingsByProject(projectId);
-  }
-
-  /**
-   * Update a rating (delegates to RatingService)
-   */
-  updateRating(ratingId: number, rating: number): Observable<RatingDto> {
-    return this.ratingService.updateRating(ratingId, { rating }).pipe(
-      tap(() => {
-        // Refresh projects to get updated rating statistics
-        this.refreshProjects();
-      })
-    );
-  }
-
-  /**
-   * Delete a rating (delegates to RatingService)
-   */
-  deleteRating(ratingId: number): Observable<void> {
-    return this.ratingService.deleteRating(ratingId).pipe(
-      tap(() => {
-        // Refresh projects to get updated rating statistics
-        this.refreshProjects();
-      })
-    );
-  }
-
-  /**
    * Update filters
    */
   updateFilters(filters: Partial<ProjectFilters>): void {
@@ -248,21 +190,8 @@ export class ProjectDataService {
     this.filtersSignal.set({
       searchTerm: '',
       technology: '',
-      minRating: 0,
       featured: false,
     });
-  }
-
-  /**
-   * Reset all ratings for a project (admin function, delegates to RatingService)
-   */
-  resetProjectRatings(projectId: number): Observable<void> {
-    return this.ratingService.resetProjectRatings(projectId).pipe(
-      tap(() => {
-        // Refresh projects to get updated rating statistics
-        this.refreshProjects();
-      })
-    );
   }
 
   // Private helper methods
@@ -282,13 +211,9 @@ export class ProjectDataService {
         !filters.technology ||
         project.technologies.includes(filters.technology);
 
-      const matchesRating = project.averageRating >= filters.minRating;
-
       const matchesFeatured = !filters.featured || project.featured;
 
-      return (
-        matchesSearch && matchesTechnology && matchesRating && matchesFeatured
-      );
+      return matchesSearch && matchesTechnology && matchesFeatured;
     });
     return result;
   }

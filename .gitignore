@@ -6,6 +6,10 @@
 /out-tsc
 /bazel-out
 
+# Generated content build output (reproducible via `pnpm content:build`)
+# Authored source under src/content/** stays tracked.
+/src/generated
+
 # Node
 /node_modules
 npm-debug.log

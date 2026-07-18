@@ -27,6 +27,17 @@
             i18n="Nav projects link@@navProjects">Projects</a>
         </li>
         <li>
+          <a class="link liquid-glass" routerLink="/articles" routerLinkActive="active" ariaCurrentWhenActive="page"
+            i18n="Nav articles link@@navArticles">Articles</a>
+        </li>
+        <!-- Dormant Tools slot: reserved for a future Tools section, renders nothing yet -->
+        @if (false) {
+        <li>
+          <a class="link liquid-glass" routerLink="/tools" routerLinkActive="active" ariaCurrentWhenActive="page"
+            i18n="Nav tools link@@navTools">Tools</a>
+        </li>
+        }
+        <li>
           <a class="link liquid-glass" routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page"
             i18n="Nav about link@@navAbout">About Me</a>
         </li>
@@ -156,13 +167,13 @@
       <button class="close-btn" type="button" aria-label="Close navigation menu" (click)="toggleMenu()">×</button>
       @if (isAuthenticated() && user()) {
       <div class="mobile-login-status">
-        <div class="status-badge liquid-glass-subtle">
+        <a routerLink="/profile" class="status-badge liquid-glass-subtle" (click)="toggleMenu()">
           <app-user-avatar [userName]="user()!.name" [imageUrl]="identity()?.imageUrl ?? null" size="large" />
           <div class="user-info">
             <span class="user-name">{{ user()!.name }}</span>
             <span class="user-email">{{ user()!.email }}</span>
           </div>
-        </div>
+        </a>
       </div>
       }
       <ul class="mobile-nav">
@@ -236,6 +247,17 @@
           <a class="link liquid-glass" routerLink="/projects" routerLinkActive="active" ariaCurrentWhenActive="page"
             (click)="toggleMenu()" i18n="Nav projects link@@navProjects">Projects</a>
         </li>
+        <li>
+          <a class="link liquid-glass" routerLink="/articles" routerLinkActive="active" ariaCurrentWhenActive="page"
+            (click)="toggleMenu()" i18n="Nav articles link@@navArticles">Articles</a>
+        </li>
+        <!-- Dormant Tools slot: reserved for a future Tools section, renders nothing yet -->
+        @if (false) {
+        <li>
+          <a class="link liquid-glass" routerLink="/tools" routerLinkActive="active" ariaCurrentWhenActive="page"
+            (click)="toggleMenu()" i18n="Nav tools link@@navTools">Tools</a>
+        </li>
+        }
         <li>
           <a class="link liquid-glass" routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page"
             (click)="toggleMenu()" i18n="Nav about link@@navAbout">About Me</a>

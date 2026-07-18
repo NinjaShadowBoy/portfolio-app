@@ -4,6 +4,8 @@ import { ProjectsComponent } from './features/projects/projects.component';
 import { AboutComponent } from './features/about/about.component';
 import { ContactComponent } from './features/contact/contact.component';
 import { ProjectDetailComponent } from './features/project-detail/project-detail.component';
+import { ArticlesComponent } from './features/articles/articles.component';
+import { ArticleDetailComponent } from './features/article-detail/article-detail.component';
 import { NotFoundComponent } from './features/not-found/not-found.component';
 import { authGuard, contactGuard } from './core/guards/auth.guard';
 import { LoginComponent } from './features/auth/login/login.component';
@@ -28,6 +30,21 @@ export const routes: Routes = [
         path: ':id',
         component: ProjectDetailComponent,
         data: { breadcrumb: 'Project Details' },
+      },
+    ],
+  },
+  {
+    path: 'articles',
+    data: { breadcrumb: 'Articles' },
+    children: [
+      {
+        path: '',
+        component: ArticlesComponent,
+      },
+      {
+        path: ':slug',
+        component: ArticleDetailComponent,
+        data: { breadcrumb: 'Article' },
       },
     ],
   },

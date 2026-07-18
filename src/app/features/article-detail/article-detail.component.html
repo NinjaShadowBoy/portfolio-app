@@ -1,0 +1,66 @@
+<!-- src/app/features/article-detail/article-detail.component.html -->
+@if (summary(); as article) {
+<div class="article-detail-container">
+  <article class="article-detail">
+    <header class="article-detail-header">
+      <h1>{{ article.title }}</h1>
+      <div class="article-detail-meta">
+        <span class="meta-chip" i18n="Article detail published date@@articleDetailDate"
+          >{{ article.date | date:'MMM d, y' }}</span
+        >
+        <span
+          class="meta-chip"
+          i18n="Article detail reading time@@articleDetailReadingTime"
+          >{{ article.readingTime }} min read</span
+        >
+        @for (tag of article.tags; track tag) {
+        <span class="tag">{{ tag }}</span>
+        }
+      </div>
+    </header>
+
+    @if (notTranslated()) {
+    <p
+      class="not-translated-notice"
+      role="note"
+      i18n="Article detail untranslated notice@@articleDetailNotTranslated"
+    >
+      This article has not been translated yet — showing the English version.
+    </p>
+    }
+
+    @if (coverImageUrl(); as cover) {
+    <figure class="article-detail-cover">
+      <img
+        appLazyLoad
+        [src]="cover"
+        [alt]="article.title"
+        class="article-cover-image"
+        width="1200"
+        height="630" />
+    </figure>
+    }
+
+    <div class="article-detail-layout">
+      <aside class="article-detail-toc">
+        <app-toc [nodes]="toc()" />
+      </aside>
+
+      <div class="article-body" [innerHTML]="bodyHtml()"></div>
+    </div>
+
+    <app-connections [connections]="article.connections" />
+
+    <app-feedback [articleSlug]="article.slug" />
+  </article>
+</div>
+} @else {
+<div class="not-found">
+  <h2 i18n="Article detail not found heading@@articleDetailNotFound">
+    Article Not Found
+  </h2>
+  <p i18n="Article detail not found message@@articleDetailNotFoundMessage">
+    The requested article does not exist.
+  </p>
+</div>
+}

@@ -1,0 +1,108 @@
+<section class="feedback">
+  <h3 class="feedback-heading" i18n="Feedback section heading@@feedbackHeading">Feedback</h3>
+
+  <!-- New feedback form -->
+  <div class="feedback-form">
+    <div
+      class="segmented-control"
+      role="group"
+      i18n-aria-label="Feedback type selector label@@feedbackTypeGroupLabel"
+      aria-label="Feedback type">
+      @for (option of typeOptions; track option.value) {
+        <button
+          type="button"
+          [class.selected]="selectedType() === option.value"
+          [attr.aria-pressed]="selectedType() === option.value"
+          (click)="selectType(option.value)">
+          {{ option.label }}
+        </button>
+      }
+    </div>
+
+    <textarea
+      class="feedback-textarea"
+      [value]="newCommentText()"
+      (input)="newCommentText.set($any($event.target).value)"
+      [disabled]="isSubmitting()"
+      i18n-placeholder="Feedback textarea placeholder@@feedbackPlaceholder"
+      placeholder="Share your thoughts..."
+      rows="3"></textarea>
+
+    <button
+      type="button"
+      class="submit-btn"
+      [disabled]="isSubmitting() || !newCommentText().trim()"
+      (click)="addComment()"
+      i18n="Feedback submit button@@feedbackSubmit">
+      Submit Feedback
+    </button>
+
+    @if (identityService.identity(); as identity) {
+      <p class="identity-note" i18n="Feedback participating-as note@@feedbackParticipatingAs">
+        You are participating as {{ identity.name }}
+      </p>
+    }
+  </div>
+
+  <!-- Existing feedback grouped by type -->
+  @if (groupedComments().length > 0) {
+    <div class="feedback-groups">
+      @for (group of groupedComments(); track group.value) {
+        <div class="feedback-group">
+          <h4 class="feedback-group-title">
+            <span
+              class="feedback-badge"
+              [class.bg-danger]="group.tone === 'danger'"
+              [class.text-danger]="group.tone === 'danger'"
+              [class.border-danger]="group.tone === 'danger'"
+              [class.bg-info]="group.tone === 'info'"
+              [class.text-info]="group.tone === 'info'"
+              [class.border-info]="group.tone === 'info'"
+              [class.bg-success]="group.tone === 'success'"
+              [class.text-success]="group.tone === 'success'"
+              [class.border-success]="group.tone === 'success'">
+              {{ group.label }}
+            </span>
+            <span class="feedback-group-count">{{ group.comments.length }}</span>
+          </h4>
+
+          @for (comment of group.comments; track comment.id) {
+            <div class="feedback-item">
+              <div class="feedback-item-header">
+                <div class="feedback-user-info">
+                  <app-user-avatar [userName]="comment.userName" size="small" />
+                  <span class="feedback-user-name">{{ comment.userName }}</span>
+                </div>
+                <span class="feedback-date">{{ comment.createdAt | date: 'MMM dd, yyyy' }}</span>
+              </div>
+
+              @if (editingCommentId() === comment.id) {
+                <textarea
+                  class="feedback-textarea feedback-edit"
+                  [value]="editCommentText()"
+                  (input)="editCommentText.set($any($event.target).value)"
+                  rows="3"></textarea>
+                <div class="feedback-actions">
+                  <button type="button" class="edit-btn" (click)="saveEdit(comment)" i18n="Feedback save edit button@@feedbackSave">Save</button>
+                  <button type="button" class="cancel-btn" (click)="cancelEdit()" i18n="Feedback cancel edit button@@feedbackCancel">Cancel</button>
+                </div>
+              } @else {
+                <p class="feedback-body">{{ comment.body }}</p>
+                @if (isMyComment(comment)) {
+                  <div class="feedback-actions">
+                    <button type="button" class="edit-btn" (click)="startEdit(comment)" i18n="Feedback edit button@@feedbackEdit">Edit</button>
+                    <button type="button" class="delete-btn" (click)="deleteComment(comment)" i18n="Feedback delete button@@feedbackDelete">Delete</button>
+                  </div>
+                }
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="feedback-empty" i18n="Feedback empty-state message@@feedbackNoComments">
+      No feedback yet. Be the first to share your thoughts!
+    </p>
+  }
+</section>

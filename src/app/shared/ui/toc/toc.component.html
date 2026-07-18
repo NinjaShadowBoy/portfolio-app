@@ -1,0 +1,34 @@
+@if (hasNodes()) {
+  <details class="toc" open>
+    <summary i18n="Table of contents heading@@tocContents">Contents</summary>
+    <nav
+      i18n-aria-label="Table of contents landmark label@@tocAriaLabel"
+      aria-label="Table of contents"
+    >
+      <ng-container
+        *ngTemplateOutlet="tocList; context: { $implicit: nodes() }"
+      ></ng-container>
+    </nav>
+  </details>
+}
+
+<ng-template #tocList let-items>
+  <ul>
+    @for (item of items; track item.id) {
+      <li>
+        <a
+          [routerLink]="[]"
+          [fragment]="item.id"
+          [class.active]="activeId() === item.id"
+          [attr.aria-current]="activeId() === item.id ? 'true' : null"
+          >{{ item.text }}</a
+        >
+        @if (item.children && item.children.length) {
+          <ng-container
+            *ngTemplateOutlet="tocList; context: { $implicit: item.children }"
+          ></ng-container>
+        }
+      </li>
+    }
+  </ul>
+</ng-template>

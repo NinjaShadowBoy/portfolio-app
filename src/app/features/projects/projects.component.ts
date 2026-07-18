@@ -29,14 +29,12 @@ export class ProjectsComponent {
   // Form controls
   public searchTerm = signal('');
   public selectedTechnology = signal('');
-  public minRating = signal(0);
   public showFeaturedOnly = signal(false);
 
   private readonly filterEffect = effect(() => {
     this.projectService.updateFilters({
       searchTerm: this.searchTerm(),
       technology: this.selectedTechnology(),
-      minRating: this.minRating(),
       featured: this.showFeaturedOnly(),
     });
   });
@@ -46,7 +44,6 @@ export class ProjectsComponent {
   resetFilters(): void {
     this.searchTerm.set('');
     this.selectedTechnology.set('');
-    this.minRating.set(0);
     this.showFeaturedOnly.set(false);
     this.projectService.resetFilters();
   }

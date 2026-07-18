@@ -22,25 +22,25 @@ describe('UserAvatarComponent', () => {
   });
 
   it('should display the first letter of the user name', () => {
-    component.userName = 'John Doe';
+    fixture.componentRef.setInput('userName', 'John Doe');
     fixture.detectChanges();
     expect(component.initials).toBe('J');
   });
 
   it('should display uppercase initial', () => {
-    component.userName = 'alice';
+    fixture.componentRef.setInput('userName', 'alice');
     fixture.detectChanges();
     expect(component.initials).toBe('A');
   });
 
   it('should handle empty userName', () => {
-    component.userName = '';
+    fixture.componentRef.setInput('userName', '');
     fixture.detectChanges();
     expect(component.initials).toBe('');
   });
 
   it('should apply correct size class', () => {
-    component.size = 'small';
+    fixture.componentRef.setInput('size', 'small');
     fixture.detectChanges();
     const element: HTMLElement = fixture.nativeElement;
     const avatarElement = element.querySelector('.user-avatar');

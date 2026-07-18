@@ -1691,3 +1691,537 @@ body * {
       rgba(139, 92, 246, 0.35),
       rgba(255, 255, 255, 0.45));
 }
+
+/* ============================================
+   TECHNICAL WRITING SYSTEM — SHARED PRIMITIVES
+   Promoted globals (DS1): long-form prose, code
+   blocks, canonical tag/chip, sticky TOC, and the
+   feedback segmented control. Token-only — dark
+   mode is automatic through the design tokens.
+   ============================================ */
+
+/* --------------------------------------------
+   1. Long-form prose / article body
+   -------------------------------------------- */
+.article-body,
+.prose {
+  max-width: 48rem;
+  /* ~768px reading measure */
+  margin-inline: auto;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Headings — reuse the h2 gradient accent-bar language */
+.article-body h2,
+.prose h2 {
+  color: var(--text-accent);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 2.5rem 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  scroll-margin-top: 6rem;
+}
+
+.article-body h2::before,
+.prose h2::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 4px;
+  height: 1.5rem;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+}
+
+.article-body h3,
+.prose h3 {
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 2rem 0 0.75rem;
+  scroll-margin-top: 6rem;
+}
+
+.article-body h4,
+.prose h4 {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+  scroll-margin-top: 6rem;
+}
+
+/* Anchored headings — subtle link affordance on hover */
+.article-body :is(h2, h3, h4) a,
+.prose :is(h2, h3, h4) a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.article-body p,
+.prose p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0 0 1.25rem;
+}
+
+.article-body a,
+.prose a {
+  color: var(--text-link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--motion-duration-fast) var(--motion-ease-out),
+    border-color var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.article-body a:hover,
+.prose a:hover {
+  color: var(--text-link-hover);
+  border-bottom-color: currentColor;
+}
+
+.article-body :is(ul, ol),
+.prose :is(ul, ol) {
+  margin: 0 0 1.25rem;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.article-body li,
+.prose li {
+  margin: 0.4rem 0;
+  line-height: 1.7;
+}
+
+.article-body li::marker,
+.prose li::marker {
+  color: var(--text-tertiary);
+}
+
+.article-body blockquote,
+.prose blockquote {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1.25rem;
+  background: var(--surface-sunken);
+  border-left: 4px solid var(--border-brand);
+  border-radius: 0 8px 8px 0;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.article-body blockquote p,
+.prose blockquote p {
+  margin: 0.5rem 0;
+}
+
+.article-body hr,
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: 2.5rem 0;
+}
+
+.article-body img,
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  margin: 1.5rem 0;
+}
+
+/* Tables */
+.article-body table,
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+  overflow-x: auto;
+  display: block;
+}
+
+.article-body :is(th, td),
+.prose :is(th, td) {
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border-default);
+  text-align: left;
+}
+
+.article-body th,
+.prose th {
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Inline code — exclude code inside <pre> code blocks */
+.article-body code,
+.prose code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
+.article-body :not(pre) > code,
+.prose :not(pre) > code {
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-size: 0.9em;
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------
+   2. Code blocks (Shiki build-time output)
+   -------------------------------------------- */
+.code-block {
+  position: relative;
+  margin: 1.5rem 0;
+}
+
+.code-block pre,
+.article-body pre,
+.prose pre {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  box-shadow: var(--elevation-1);
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
+.code-block pre {
+  margin: 0;
+}
+
+.code-block pre code,
+.article-body pre code,
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Optional copy button — composes the ghost button utility */
+.code-block .copy-button {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--motion-duration-fast) var(--motion-ease-out),
+    background var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.code-block:hover .copy-button,
+.code-block .copy-button:focus-visible {
+  opacity: 1;
+}
+
+/* Shiki dual light/dark theme mapped to [data-theme] so highlighting
+   follows the rest of the design system automatically. Shiki emits
+   --shiki-light / --shiki-dark CSS variables on each token span and
+   --shiki-light-bg / --shiki-dark-bg on the .shiki wrapper. */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+[data-theme="dark"] .shiki,
+[data-theme="dark"] .shiki span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+
+@media (prefers-color-scheme: dark) {
+
+  :root:not([data-theme]) .shiki,
+  :root:not([data-theme]) .shiki span {
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+  }
+}
+
+/* --------------------------------------------
+   3. Canonical tag / chip (consolidated)
+   -------------------------------------------- */
+.tag,
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+a.tag:hover,
+a.chip:hover,
+button.tag:hover,
+button.chip:hover,
+.tag.interactive:hover,
+.chip.interactive:hover {
+  background: var(--color-primary-200);
+  transform: translateY(-1px);
+}
+
+/* Keep the promoted chip visually identical to the legacy project-card
+   chip in dark mode — declared in BOTH dark contexts (explicit theme
+   and system preference) so automatic dark mode is preserved. */
+[data-theme="dark"] .tag,
+[data-theme="dark"] .chip {
+  background: var(--color-primary-900);
+  color: var(--color-primary-200);
+}
+
+[data-theme="dark"] a.tag:hover,
+[data-theme="dark"] a.chip:hover,
+[data-theme="dark"] button.tag:hover,
+[data-theme="dark"] button.chip:hover,
+[data-theme="dark"] .tag.interactive:hover,
+[data-theme="dark"] .chip.interactive:hover {
+  background: var(--color-primary-800);
+}
+
+@media (prefers-color-scheme: dark) {
+
+  :root:not([data-theme]) .tag,
+  :root:not([data-theme]) .chip {
+    background: var(--color-primary-900);
+    color: var(--color-primary-200);
+  }
+
+  :root:not([data-theme]) a.tag:hover,
+  :root:not([data-theme]) a.chip:hover,
+  :root:not([data-theme]) button.tag:hover,
+  :root:not([data-theme]) button.chip:hover,
+  :root:not([data-theme]) .tag.interactive:hover,
+  :root:not([data-theme]) .chip.interactive:hover {
+    background: var(--color-primary-800);
+  }
+}
+
+/* Meta chip — surface-sunken pill for date / reading-time style metadata */
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.9rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+}
+
+/* --------------------------------------------
+   4. Sticky / collapsible Table of Contents
+   -------------------------------------------- */
+.toc {
+  position: sticky;
+  top: 6rem;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  padding: 1.25rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: var(--elevation-1);
+}
+
+.toc-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+
+.toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc li {
+  margin: 0;
+}
+
+.toc a {
+  display: block;
+  padding: 0.35rem 0.75rem;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.toc a:hover {
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+}
+
+.toc a.active,
+.toc a[aria-current="true"] {
+  color: var(--text-accent);
+  border-left-color: var(--border-brand);
+  background: var(--surface-selected);
+  font-weight: 600;
+}
+
+/* Nested (h3+) entries indent under their h2 parent */
+.toc ul ul a {
+  padding-left: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.toc ul ul ul a {
+  padding-left: 2.25rem;
+}
+
+/* Mobile collapse: native <details>/<summary> with marker hidden */
+.toc summary {
+  list-style: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.toc summary::-webkit-details-marker {
+  display: none;
+}
+
+.toc summary::marker {
+  content: "";
+}
+
+.toc summary::after {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+details.toc[open] summary::after {
+  transform: rotate(-135deg);
+}
+
+/* --------------------------------------------
+   5. Segmented control (feedback type selector)
+   -------------------------------------------- */
+.segmented-control {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+}
+
+.segmented-control button,
+.segmented-control .segment {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--btn-ghost-text);
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.segmented-control button:hover:not(.selected),
+.segmented-control .segment:hover:not(.selected) {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.segmented-control button.selected,
+.segmented-control .segment.selected {
+  background: var(--surface-raised);
+  color: var(--text-accent);
+  border-color: var(--border-brand);
+  box-shadow: var(--elevation-1);
+}
+
+.segmented-control button:focus-visible,
+.segmented-control .segment:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* --------------------------------------------
+   Responsive tuning
+   -------------------------------------------- */
+@media (max-width: 768px) {
+  .article-body,
+  .prose {
+    font-size: 1rem;
+  }
+
+  .article-body pre,
+  .prose pre,
+  .code-block pre {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .toc {
+    position: static;
+    max-height: none;
+    top: auto;
+  }
+
+  .segmented-control {
+    width: 100%;
+  }
+
+  .segmented-control button,
+  .segmented-control .segment {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}

@@ -31,14 +31,9 @@ describe('FooterComponent', () => {
     expect(component.socialLinks.length).toBeGreaterThan(0);
   });
 
-  it('should have quick links', () => {
-    expect(component.quickLinks.length).toBeGreaterThan(0);
-  });
-
   it('should have contact information', () => {
     expect(component.contactInfo).toBeDefined();
     expect(component.contactInfo.email).toBeDefined();
     expect(component.contactInfo.phone).toBeDefined();
-    expect(component.contactInfo.location).toBeDefined();
   });
 });

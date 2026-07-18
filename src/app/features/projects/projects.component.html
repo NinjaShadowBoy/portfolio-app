@@ -47,23 +47,6 @@
       </div>
 
       <div class="filter-group">
-        <label for="minRating" i18n="Projects minimum rating label@@projectsRatingLabel">Minimum Rating:</label>
-        <select
-          id="minRating"
-          [value]="minRating()"
-          (change)="minRating.set(Number($any($event.target).value))"
-          class="rating-filter"
-        >
-          <option [value]="0" i18n="Projects any rating option@@projectsAnyRating">Any Rating</option>
-          <option [value]="1" i18n="Projects 1 star rating option@@projects1Star">1 Star & Up</option>
-          <option [value]="2" i18n="Projects 2 star rating option@@projects2Stars">2 Stars & Up</option>
-          <option [value]="3" i18n="Projects 3 star rating option@@projects3Stars">3 Stars & Up</option>
-          <option [value]="4" i18n="Projects 4 star rating option@@projects4Stars">4 Stars & Up</option>
-          <option [value]="5" i18n="Projects 5 star rating option@@projects5Stars">5 Stars Only</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
         <label class="checkbox-label">
           <input
             type="checkbox"

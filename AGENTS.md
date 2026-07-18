@@ -22,10 +22,10 @@ pnpm ng extract-i18n --output-path src/locale  # Extract translatable strings
 
 ## Architecture
 
-- **SSR modes** (`src/app/app.routes.server.ts`):
-  - `Prerender`: `/:lang/about`, `/:lang/contact`, `/:lang/login` (with `getPrerenderParams` for en/fr)
-  - `Client-only`: `/:lang/admin`, `/:lang/oauth2/redirect`
-  - `Server` (default): all other routes including `/:lang/home`, `/:lang/projects`
+- **SSR modes** (`src/app/app.routes.server.ts`) — routes carry **no `/:lang` prefix** (locale is a build-time subPath, see i18n below):
+  - `Prerender`: `articles`, `articles/:slug` (the article detail route supplies `getPrerenderParams` returning **slugs only** — the en/fr split is handled by the per-locale build, not by prerender params). This is the repo's first-ever `Prerender` route.
+  - `Client-only`: `admin`, `oauth2/redirect`
+  - `Server` (default): all other routes including `about`, `contact`, `login`, `home`, `projects`, and the `**` catch-all
 - **Entry points**: `src/main.ts` (browser), `src/main.server.ts` (SSR bootstrap), `src/server.ts` (Express server)
 - **Server listens** on `PORT` env var or `4000`
 - **Backend API**: `http://localhost:8081/portfolio` (dev), `https://vps.alexabena.me/portfolio` (prod) -  defined in `src/environments/`
@@ -33,18 +33,20 @@ pnpm ng extract-i18n --output-path src/locale  # Extract translatable strings
 
 ## Internationalization (i18n)
 
-- **Source locale**: `en-US`
-- **Target locales**: `fr` (expandable in `angular.json` → `i18n.locales`)
-- **URL structure**: `/en/...` and `/fr/...` prefixes via `/:lang` route parameter
-- **Default redirect**: `/` → `/en/home`
-- **Admin**: English-only (not translated)
-- **Translation files**: `src/locale/messages.json` (source), `src/locale/messages.fr.json` (French)
-- **Template marking**: `i18n` attribute on elements, `i18n-{attr}` for attributes
-- **TS string marking**: `$localize` tagged template literals (no explicit import -  global via polyfill)
-- **Type declaration**: `src/types/localize.d.ts` declares `$localize` globally
-- **Build**: `pnpm build --localize` generates `dist/portfolio-app/browser/en-US/` and `dist/portfolio-app/browser/fr/`
-- **Extraction**: `pnpm ng extract-i18n --output-path src/locale` to regenerate `messages.json`
-- **Language switcher**: Header component toggles between `/en/...` and `/fr/...` routes
+- **Per-locale builds, NOT a route param**: i18n uses `@angular/localize`'s **subPath** mechanism (`angular.json` → `projects.portfolio-app.i18n`). Each locale is compiled into its own separate build; the locale is baked in at build time, it is **not** a runtime `/:lang` route segment. There is no `/:lang` route parameter anywhere — application routes are plain (`/home`, `/projects`, `/articles`, `/articles/:slug`, ...).
+- **Source locale**: `en`, `subPath: ""` → served at the site **root** (`/home`, `/articles`, ...).
+- **Target locale**: `fr`, `subPath: "fr"` → served under **`/fr/`** (`/fr/home`, `/fr/articles`, ...). Add more locales in `angular.json` → `i18n.locales`.
+- **URL structure**: en at `/…`, fr at `/fr/…`. The `/fr/` prefix is a build-output directory, not something the router matches — the `fr` build's `<base href="/fr/">` makes all its in-app links resolve under `/fr/`.
+- **Default redirect**: `/` → `/home` (`app.routes.ts`); no locale in the redirect target.
+- **Admin**: English-only (not translated).
+- **Translation files**: `src/locale/messages.json` (source), `src/locale/messages.fr.json` (French).
+- **Template marking**: `i18n="desc@@stableId"` on elements (always give an explicit `@@id`), `i18n-{attr}` for attributes.
+- **TS string marking**: `$localize` tagged template literals (no explicit import -  global via polyfill).
+- **Type declaration**: `src/types/localize.d.ts` declares `$localize` globally.
+- **Build**: `pnpm build --localize` runs the build **once per locale**, emitting `dist/portfolio-app/browser/` (en, at root) and `dist/portfolio-app/browser/fr/`. Prerendering runs once per locale, so prerendered article routes exist under both `/…` and `/fr/…`.
+- **Prerender params**: for `articles/:slug`, `getPrerenderParams` enumerates **published slugs only** (drafts excluded) — it does **not** cross-product slug × lang. The per-locale build already covers en/fr; enumerating lang here would produce broken/duplicated routes.
+- **Extraction**: `pnpm ng extract-i18n --output-path src/locale` to regenerate `messages.json`.
+- **Language switcher**: Header component toggles between the root (`/…`) and `/fr/…` output paths; it is route-agnostic (adds/strips the `/fr/` prefix), not a route param change.
 
 ## Key Conventions
 
@@ -76,5 +78,5 @@ Lighthouse CI is configured (`lighthouserc.json`) with strict thresholds. If mod
 - The `public/` directory is copied as-is to the build output (favicon, 404.html, .nojekyll, _headers).
 - `src/assets/` is mapped to `/assets` in the build. Do not reference `src/assets` directly in component templates -  use `assets/` path.
 - `index.html` contains inline critical CSS and SPA routing hack for GitHub Pages -  edit carefully.
-- `src/app/app.routes.server.ts` has a duplicate `/login` entry (prerender + client). This appears intentional but is unusual -  verify before modifying.
+- `src/app/app.routes.server.ts` render modes use bare paths (no `/:lang`). `articles` / `articles/:slug` are `Prerender` (with slug-only `getPrerenderParams`); `admin` / `oauth2/redirect` are `Client`; everything else falls through the `**` `Server` default.
 - The `.htaccess` file is empty; SPA routing is handled by the GitHub Pages script in `index.html`.

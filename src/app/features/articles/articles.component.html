@@ -1,0 +1,24 @@
+<!-- src/app/features/articles/articles.component.html -->
+<div class="articles-container">
+  <!-- Articles Header -->
+  <div class="articles-header">
+    <h1 i18n="Articles page heading@@articlesHeading">Articles</h1>
+    <p class="articles-subtitle" i18n="Articles page subtitle@@articlesSubtitle">
+      Notes, essays, and write-ups on what I am building and learning.
+    </p>
+  </div>
+
+  <!-- Articles Grid -->
+  <div class="articles-grid">
+    @for (article of articles(); track article.slug) {
+    <app-article-card [article]="article" />
+    } @empty {
+    <div class="no-results">
+      <h3 i18n="Articles empty state heading@@articlesEmptyHeading">No articles yet</h3>
+      <p i18n="Articles empty state message@@articlesEmptyMessage">
+        Check back soon — new writing is on the way.
+      </p>
+    </div>
+    }
+  </div>
+</div>

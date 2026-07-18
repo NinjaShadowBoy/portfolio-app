@@ -1,0 +1,6 @@
+/* The reusable table-of-contents visual language (sticky container, links,
+   active state, mobile <details> collapse) lives in src/styles.css under the
+   canonical .toc class (promoted in DS1). This file holds only host layout. */
+:host {
+  display: block;
+}

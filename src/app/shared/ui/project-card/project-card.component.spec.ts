@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ProjectCardComponent } from './project-card.component';
 import { Project } from '../../../core/interfaces/project.interface';
 
@@ -9,7 +10,7 @@ describe('ProjectCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProjectCardComponent]
+      imports: [ProjectCardComponent, RouterTestingModule]
     })
     .compileComponents();
 
@@ -34,7 +35,8 @@ describe('ProjectCardComponent', () => {
       photoUrls: []
     };
 
-    component.project = mockProject;
+    // project is a required input signal now.
+    fixture.componentRef.setInput('project', mockProject);
     fixture.detectChanges();
   });
 
@@ -47,37 +49,29 @@ describe('ProjectCardComponent', () => {
     expect(compiled.querySelector('h3')?.textContent).toContain('Test Project');
   });
 
-  it('should emit toggleDetails event when toggle button clicked', () => {
-    spyOn(component.toggleDetails, 'emit');
-    component.onToggleDetails();
-    expect(component.toggleDetails.emit).toHaveBeenCalledWith(mockProject);
-  });
-
-  it('should emit addRating event when rating button clicked', () => {
-    spyOn(component.addRating, 'emit');
-    const rating = 5;
-    component.onAddRating(rating);
-    expect(component.addRating.emit).toHaveBeenCalledWith({
-      project: mockProject,
-      rating
-    });
-  });
-
   it('should show featured badge when project is featured', () => {
-    component.project.featured = true;
+    fixture.componentRef.setInput('project', { ...mockProject, featured: true });
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.featured-badge')).toBeTruthy();
   });
 
-  it('should calculate star array correctly', () => {
-    const starArray = component.getStarArray(3);
-    expect(starArray).toEqual([1, 2, 3, 4, 5]);
+  it('should not show featured badge when project is not featured', () => {
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.featured-badge')).toBeFalsy();
   });
 
-  it('should return correct rating class', () => {
-    expect(component.getRatingClass(1, 3.5)).toBe('star-filled');
-    expect(component.getRatingClass(4, 3.5)).toBe('star-half');
-    expect(component.getRatingClass(5, 3.5)).toBe('star-empty');
+  it('should truncate description longer than maxDescriptionLength', () => {
+    const longDescription = 'a'.repeat(200);
+    fixture.componentRef.setInput('project', { ...mockProject, description: longDescription });
+    fixture.componentRef.setInput('maxDescriptionLength', 150);
+    fixture.detectChanges();
+    const truncated = component.getTruncatedDescription();
+    expect(truncated.endsWith('...')).toBe(true);
+    expect(truncated.length).toBe(153);
+  });
+
+  it('should not truncate description shorter than maxDescriptionLength', () => {
+    expect(component.getTruncatedDescription()).toBe('A test project');
   });
 });
