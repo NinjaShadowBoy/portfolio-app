@@ -743,6 +743,9 @@
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   transition: all var(--motion-duration-normal) var(--motion-ease-out);
 }
 

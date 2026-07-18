@@ -3,11 +3,13 @@
         <header class="auth-header">
             <h1 i18n="Login page heading@@loginHeading">{isRegister() ? 'register' : 'signin', select, register {Create account} signin {Welcome back}}</h1>
             <p class="subtitle" i18n="Login page subtitle@@loginSubtitle">{isRegister() ? 'register' : 'signin', select, register {Join to continue} signin {Sign in to continue}}</p>
-            <div class="mode-toggle" (click)="toggleMode()">
-                <span [class.active]="!isRegister()" i18n="Login mode toggle - login option@@loginToggleLogin">Login</span>
-                <div class="toggle-thumb" [class.right]="isRegister()"></div>
-                <span [class.active]="isRegister()" i18n="Login mode toggle - register option@@loginToggleRegister">Register</span>
-            </div>
+            <app-segmented-toggle
+                class="mode-toggle"
+                [options]="modeOptions"
+                [selected]="isRegister() ? 'register' : 'login'"
+                i18n-ariaLabel="Login mode toggle group label@@loginModeToggleLabel"
+                ariaLabel="Login or register"
+                (selectedChange)="setMode($event)" />
         </header>
 
         <!-- OAuth2 Social Login Section -->

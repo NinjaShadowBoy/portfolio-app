@@ -74,6 +74,14 @@
     grid-template-columns: 15rem minmax(0, 1fr);
     align-items: start;
   }
+
+  /* Sticky must live on the start-aligned grid item: its grid area spans the
+     full row (article body) height, so the TOC follows the reader all the way
+     down instead of scrolling away with its content-height container. */
+  .article-detail-toc {
+    position: sticky;
+    top: 6rem;
+  }
 }
 
 /* app-connections and app-feedback space out below the body. */

@@ -1921,15 +1921,20 @@ body * {
   color: inherit;
 }
 
-/* Optional copy button — composes the ghost button utility */
+/* Copy button injected by CodeCopyDirective — composes the ghost button
+   utility, with a raised surface so it stays readable over highlighted code */
 .code-block .copy-button {
   position: absolute;
   top: 0.6rem;
   right: 0.6rem;
   padding: 0.35rem 0.6rem;
   font-size: 0.75rem;
+  font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
+  background: var(--surface-raised);
+  border-color: var(--border-default);
+  box-shadow: var(--elevation-1);
   opacity: 0;
   transition: opacity var(--motion-duration-fast) var(--motion-ease-out),
     background var(--motion-duration-fast) var(--motion-ease-out);
@@ -1938,6 +1943,24 @@ body * {
 .code-block:hover .copy-button,
 .code-block .copy-button:focus-visible {
   opacity: 1;
+}
+
+.code-block .copy-button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.code-block .copy-button.copied {
+  opacity: 1;
+  color: var(--text-accent);
+  border-color: var(--border-brand);
+}
+
+/* No hover on touch devices: keep the button always visible there. */
+@media (hover: none) {
+  .code-block .copy-button {
+    opacity: 1;
+  }
 }
 
 /* Shiki dual light/dark theme mapped to [data-theme] so highlighting
@@ -2047,11 +2070,12 @@ button.chip:hover,
 /* --------------------------------------------
    4. Sticky / collapsible Table of Contents
    -------------------------------------------- */
+/* Visual card only. Stickiness is a layout concern and lives on the grid item
+   in article-detail (the aside), where sticky can actually travel the full
+   row height — on a content-height child it silently never sticks. No
+   max-height/overflow either: the TOC expands to its content, scrollbar-free,
+   and stays fully visible while reading. */
 .toc {
-  position: sticky;
-  top: 6rem;
-  max-height: calc(100vh - 8rem);
-  overflow-y: auto;
   padding: 1.25rem;
   background: var(--surface-raised);
   border: 1px solid var(--border-subtle);
@@ -2150,52 +2174,8 @@ details.toc[open] summary::after {
   transform: rotate(-135deg);
 }
 
-/* --------------------------------------------
-   5. Segmented control (feedback type selector)
-   -------------------------------------------- */
-.segmented-control {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  background: var(--surface-sunken);
-  border: 1px solid var(--border-default);
-  border-radius: 10px;
-}
-
-.segmented-control button,
-.segmented-control .segment {
-  appearance: none;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--btn-ghost-text);
-  padding: 0.5rem 1rem;
-  border-radius: 7px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-}
-
-.segmented-control button:hover:not(.selected),
-.segmented-control .segment:hover:not(.selected) {
-  background: var(--surface-hover);
-  color: var(--text-primary);
-}
-
-.segmented-control button.selected,
-.segmented-control .segment.selected {
-  background: var(--surface-raised);
-  color: var(--text-accent);
-  border-color: var(--border-brand);
-  box-shadow: var(--elevation-1);
-}
-
-.segmented-control button:focus-visible,
-.segmented-control .segment:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
+/* (The old global .segmented-control was promoted into the shared
+   app-segmented-toggle component — see shared/ui/segmented-toggle.) */
 
 /* --------------------------------------------
    Responsive tuning
@@ -2213,19 +2193,4 @@ details.toc[open] summary::after {
     border-radius: 8px;
   }
 
-  .toc {
-    position: static;
-    max-height: none;
-    top: auto;
-  }
-
-  .segmented-control {
-    width: 100%;
-  }
-
-  .segmented-control button,
-  .segmented-control .segment {
-    flex: 1 1 auto;
-    text-align: center;
-  }
 }

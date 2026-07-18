@@ -8,21 +8,12 @@
 
   <!-- Workload presets -->
   <section class="scenario-section">
-    <div
-      class="segmented-control"
-      role="group"
-      i18n-aria-label="Workload preset selector label@@aiCalcPresetGroupLabel"
-      aria-label="Workload preset">
-      @for (preset of presets; track preset.id) {
-        <button
-          type="button"
-          [class.selected]="activePresetId() === preset.id"
-          [attr.aria-pressed]="activePresetId() === preset.id"
-          (click)="selectPreset(preset)">
-          {{ preset.label }}
-        </button>
-      }
-    </div>
+    <app-segmented-toggle
+      [options]="presetOptions"
+      [selected]="activePresetId()"
+      i18n-ariaLabel="Workload preset selector label@@aiCalcPresetGroupLabel"
+      ariaLabel="Workload preset"
+      (selectedChange)="selectPresetById($event)" />
   </section>
 
   <!-- Workload inputs -->

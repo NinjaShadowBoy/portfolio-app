@@ -1,0 +1,99 @@
+/* Segmented toggle — the sliding-thumb control promoted from the login page.
+   All colors/motion come from global tokens (dark mode is automatic). */
+
+:host {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.segmented-toggle {
+  position: relative;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+}
+
+/* The measured pill that slides under the active option. */
+.segmented-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-brand);
+  border-radius: 7px;
+  box-shadow: var(--elevation-1);
+  pointer-events: none;
+}
+
+.segmented-toggle.animate .segmented-thumb {
+  transition:
+    transform var(--motion-duration-normal) var(--motion-ease-out),
+    width var(--motion-duration-normal) var(--motion-ease-out),
+    height var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segmented-toggle.animate .segmented-thumb {
+    transition: none;
+  }
+}
+
+button {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--btn-ghost-text);
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    color var(--motion-duration-fast) var(--motion-ease-out),
+    background var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+button:hover:not(.selected) {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+button.selected {
+  color: var(--text-accent);
+}
+
+/* SSR / pre-measure fallback: until the thumb exists, the active button
+   carries its own pill so the initial paint looks identical. */
+.segmented-toggle:not(.has-thumb) button.selected {
+  background: var(--surface-raised);
+  border-color: var(--border-brand);
+  box-shadow: var(--elevation-1);
+}
+
+button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+@media (max-width: 768px) {
+  :host {
+    display: block;
+  }
+
+  .segmented-toggle {
+    display: flex;
+    width: 100%;
+  }
+
+  button {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}

@@ -20,6 +20,7 @@ import {
 } from '../../core/interfaces/article.interface';
 import { ArticleDataService } from '../../core/services/article-data.service';
 import { LazyLoadDirective } from '../../core/directives/lazy-load.directive';
+import { CodeCopyDirective } from '../../core/directives/code-copy.directive';
 import { TocComponent } from '../../shared/ui/toc/toc.component';
 import { ConnectionsComponent } from '../../shared/ui/connections/connections.component';
 import { FeedbackComponent } from '../../shared/ui/feedback/feedback.component';
@@ -44,6 +45,7 @@ import { FeedbackComponent } from '../../shared/ui/feedback/feedback.component';
   imports: [
     CommonModule,
     LazyLoadDirective,
+    CodeCopyDirective,
     TocComponent,
     ConnectionsComponent,
     FeedbackComponent,

@@ -6,11 +6,21 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { OAuthProvider } from '../../../core/interfaces/auth.interface';
 import { NotificationService } from '../../../core/services/notification.service';
+import {
+  SegmentedToggleComponent,
+  SegmentedToggleOption,
+} from '../../../shared/ui/segmented-toggle/segmented-toggle.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterLink,
+    SegmentedToggleComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -23,6 +33,19 @@ export class LoginComponent {
   loading = signal(false);
   submitted = signal(false);
   isRegister = signal(false);
+
+  /** Options for the login/register segmented toggle (ids kept from the old
+   *  inline toggle so the existing fr translations still apply). */
+  readonly modeOptions: readonly SegmentedToggleOption[] = [
+    {
+      value: 'login',
+      label: $localize`:Login mode toggle - login option@@loginToggleLogin:Login`,
+    },
+    {
+      value: 'register',
+      label: $localize`:Login mode toggle - register option@@loginToggleRegister:Register`,
+    },
+  ];
 
   submitState = computed(() => {
     if (this.loading()) return this.isRegister() ? 'creating' : 'signingin';
@@ -71,8 +94,10 @@ export class LoginComponent {
     this.auth.startOAuth2(provider);
   }
 
-  toggleMode() {
-    this.isRegister.update((v) => !v);
+  setMode(mode: string) {
+    const register = mode === 'register';
+    if (register === this.isRegister()) return;
+    this.isRegister.set(register);
     if (this.isRegister()) {
       this.form.controls.name.addValidators([Validators.required, Validators.minLength(2)]);
     } else {

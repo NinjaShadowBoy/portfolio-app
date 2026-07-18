@@ -3,21 +3,12 @@
 
   <!-- New feedback form -->
   <div class="feedback-form">
-    <div
-      class="segmented-control"
-      role="group"
-      i18n-aria-label="Feedback type selector label@@feedbackTypeGroupLabel"
-      aria-label="Feedback type">
-      @for (option of typeOptions; track option.value) {
-        <button
-          type="button"
-          [class.selected]="selectedType() === option.value"
-          [attr.aria-pressed]="selectedType() === option.value"
-          (click)="selectType(option.value)">
-          {{ option.label }}
-        </button>
-      }
-    </div>
+    <app-segmented-toggle
+      [options]="typeOptions"
+      [selected]="selectedType()"
+      i18n-ariaLabel="Feedback type selector label@@feedbackTypeGroupLabel"
+      ariaLabel="Feedback type"
+      (selectedChange)="selectType($event)" />
 
     <textarea
       class="feedback-textarea"

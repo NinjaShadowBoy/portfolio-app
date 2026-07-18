@@ -46,7 +46,10 @@
         <app-toc [nodes]="toc()" />
       </aside>
 
-      <div class="article-body" [innerHTML]="bodyHtml()"></div>
+      <div
+        class="article-body"
+        [innerHTML]="bodyHtml()"
+        [appCodeCopy]="bodyHtml()"></div>
     </div>
 
     <app-connections [connections]="article.connections" />

@@ -8,11 +8,20 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { DOCUMENT, DecimalPipe, isPlatformBrowser } from '@angular/common';
+import {
+  DOCUMENT,
+  DecimalPipe,
+  Location,
+  isPlatformBrowser,
+} from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { CalculatorInputs, CostEstimate, estimateAll } from './cost-engine';
 import { LLM_PRICING, PRICING_AS_OF } from './llm-pricing.data';
+import {
+  SegmentedToggleComponent,
+  SegmentedToggleOption,
+} from '../../../shared/ui/segmented-toggle/segmented-toggle.component';
 
 /**
  * A workload scenario preset: pre-filled token/cache values for a common
@@ -46,8 +55,9 @@ const URL_SYNC_DEBOUNCE_MS = 300;
  *
  * Shareable URLs: inputs are read ONCE from the query string at init
  * (`u`, `r`, `in`, `out`, `cache` — snapshot read, server-safe) and written
- * back debounced with `replaceUrl` — guarded to the browser platform so
- * prerendering never triggers a navigation.
+ * back debounced via `Location.replaceState` (not a router navigation, which
+ * would scroll the page to the top) — guarded to the browser platform so
+ * prerendering never touches the URL.
  *
  * Owns its SEO the same way article-detail does: `<title>` + meta description
  * set in the constructor (baked into the prerendered HTML), canonical +
@@ -57,13 +67,14 @@ const URL_SYNC_DEBOUNCE_MS = 300;
 @Component({
   selector: 'app-ai-cost-calculator',
   standalone: true,
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, SegmentedToggleComponent],
   templateUrl: './ai-cost-calculator.component.html',
   styleUrls: ['./ai-cost-calculator.component.css'],
 })
 export class AiCostCalculatorComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private location = inject(Location);
   private meta = inject(Meta);
   private titleService = inject(Title);
   private document = inject(DOCUMENT);
@@ -120,6 +131,11 @@ export class AiCostCalculatorComponent {
       cachedInputPercent: 10,
     },
   ];
+
+  /** Preset options shaped for the shared segmented toggle. */
+  readonly presetOptions: readonly SegmentedToggleOption[] = this.presets.map(
+    (preset) => ({ value: preset.id, label: preset.label }),
+  );
 
   // Workload inputs — one signal per field, defaults = support-chatbot preset
   // at 1 000 users x 10 requests/day. Query params may override these at init.
@@ -193,12 +209,17 @@ export class AiCostCalculatorComponent {
           clearTimeout(this.syncTimer);
         }
         this.syncTimer = setTimeout(() => {
-          void this.router.navigate([], {
+          // Location.replaceState instead of Router.navigate: a router
+          // navigation counts as "forward" for scrollPositionRestoration and
+          // yanks the page back to the top on every input change. The URL is
+          // only a share artifact (read once at init), so bypassing the
+          // router entirely is safe.
+          const tree = this.router.createUrlTree([], {
             relativeTo: this.route,
             queryParams,
             queryParamsHandling: 'merge',
-            replaceUrl: true,
           });
+          this.location.replaceState(this.router.serializeUrl(tree));
         }, URL_SYNC_DEBOUNCE_MS);
       });
       this.destroyRef.onDestroy(() => {
@@ -218,6 +239,14 @@ export class AiCostCalculatorComponent {
     this.avgInputTokens.set(preset.avgInputTokens);
     this.avgOutputTokens.set(preset.avgOutputTokens);
     this.cachedInputPercent.set(preset.cachedInputPercent);
+  }
+
+  /** Segmented-toggle handler: resolve the preset by id and apply it. */
+  selectPresetById(id: string): void {
+    const preset = this.presets.find((candidate) => candidate.id === id);
+    if (preset) {
+      this.selectPreset(preset);
+    }
   }
 
   /**

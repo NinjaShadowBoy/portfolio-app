@@ -7,11 +7,18 @@ import { IdentityService } from '../../../core/services/identity.service';
 import { SocialLinksService } from '../../../core/services/social-links.service';
 import { ThemeService } from '../../../core/services/theme.service';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
+import { FlagComponent } from '../flag/flag.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, UserAvatarComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    UserAvatarComponent,
+    FlagComponent,
+  ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
@@ -36,6 +43,11 @@ export class HeaderComponent {
 
   get langLabel(): string {
     return this.currentLang === 'en' ? 'FR' : 'EN';
+  }
+
+  /** The language the toggle switches TO — drives the flag shown on it. */
+  get targetLang(): 'en' | 'fr' {
+    return this.currentLang === 'en' ? 'fr' : 'en';
   }
 
   get langAriaLabel(): string {

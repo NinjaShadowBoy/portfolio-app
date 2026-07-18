@@ -32,48 +32,12 @@
   margin-bottom: 1rem;
 }
 
+/* Placement of the shared segmented toggle (its look lives in the component). */
 .mode-toggle {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 0.5rem;
+  display: flex;
+  justify-content: center;
   margin-top: 1rem;
   margin-bottom: 1.5rem;
-  padding: 0.35rem;
-  border-radius: 999px;
-  background: var(--surface-sunken);
-  border: 1px solid var(--border-subtle);
-  cursor: pointer;
-  max-width: 420px;
-  margin-inline: auto;
-}
-
-.mode-toggle span {
-  text-align: center;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  z-index: 1;
-}
-
-.mode-toggle span.active {
-  color: var(--text-primary);
-}
-
-.mode-toggle .toggle-thumb {
-  position: absolute;
-  top: 3px;
-  bottom: 3px;
-  left: 3px;
-  width: calc(50% - 6px);
-  border-radius: 999px;
-  background: var(--surface-base);
-  box-shadow: var(--elevation-2);
-  transition: transform var(--motion-duration-normal) var(--motion-ease-out);
-}
-
-.mode-toggle .toggle-thumb.right {
-  transform: translateX(100%);
 }
 
 /* OAuth2 Section Styling */
@@ -435,14 +399,8 @@
   }
 
   .mode-toggle {
-    max-width: 100%;
-    font-size: 0.95rem;
     margin-top: 0.875rem;
     margin-bottom: 1.25rem;
-  }
-
-  .mode-toggle span {
-    padding: 0.65rem;
   }
 
   .oauth-section {
@@ -534,14 +492,8 @@
   }
 
   .mode-toggle {
-    font-size: 0.9rem;
     margin-top: 0.75rem;
     margin-bottom: 1rem;
-    padding: 0.3rem;
-  }
-
-  .mode-toggle span {
-    padding: 0.55rem;
   }
 
   .oauth-section {

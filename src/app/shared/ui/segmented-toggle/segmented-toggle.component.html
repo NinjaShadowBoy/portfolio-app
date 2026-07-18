@@ -1,0 +1,28 @@
+<div
+  class="segmented-toggle"
+  role="radiogroup"
+  [attr.aria-label]="ariaLabel() || null"
+  [class.has-thumb]="thumbRect() !== null"
+  [class.animate]="thumbReady()">
+  @if (thumbRect(); as rect) {
+    <span
+      class="segmented-thumb"
+      aria-hidden="true"
+      [style.transform]="'translate(' + rect.x + 'px,' + rect.y + 'px)'"
+      [style.width.px]="rect.w"
+      [style.height.px]="rect.h"></span>
+  }
+  @for (option of options(); track option.value; let i = $index) {
+    <button
+      #btn
+      type="button"
+      role="radio"
+      [attr.aria-checked]="option.value === selected()"
+      [class.selected]="option.value === selected()"
+      [tabindex]="tabIndexFor(i)"
+      (click)="select(option.value)"
+      (keydown)="onKeydown($event, i)">
+      {{ option.label }}
+    </button>
+  }
+</div>

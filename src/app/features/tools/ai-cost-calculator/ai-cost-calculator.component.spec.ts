@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Location } from '@angular/common';
 import {
   ActivatedRoute,
   Router,
@@ -15,8 +16,9 @@ describe('AiCostCalculatorComponent', () => {
 
   /**
    * Build the component with controllable query params. ActivatedRoute is
-   * stubbed so the one-shot snapshot read can be exercised; Router is stubbed
-   * so the debounced query-param write-back never performs a real navigation.
+   * stubbed so the one-shot snapshot read can be exercised; Router and
+   * Location are stubbed so the debounced URL write-back never touches the
+   * real browser history.
    */
   function setup(queryParams: Record<string, string> = {}) {
     TestBed.configureTestingModule({
@@ -31,7 +33,16 @@ describe('AiCostCalculatorComponent', () => {
         },
         {
           provide: Router,
-          useValue: { navigate: jasmine.createSpy('navigate').and.resolveTo(true) },
+          useValue: {
+            createUrlTree: jasmine.createSpy('createUrlTree').and.returnValue({}),
+            serializeUrl: jasmine
+              .createSpy('serializeUrl')
+              .and.returnValue('/tools/ai-cost-calculator'),
+          },
+        },
+        {
+          provide: Location,
+          useValue: { replaceState: jasmine.createSpy('replaceState') },
         },
       ],
     });
@@ -59,7 +70,7 @@ describe('AiCostCalculatorComponent', () => {
   it('updates token signals when a preset is clicked', () => {
     setup();
     const buttons: NodeListOf<HTMLButtonElement> =
-      fixture.nativeElement.querySelectorAll('.segmented-control button');
+      fixture.nativeElement.querySelectorAll('app-segmented-toggle button');
     buttons[1].click(); // RAG search
     fixture.detectChanges();
 
@@ -67,7 +78,7 @@ describe('AiCostCalculatorComponent', () => {
     expect(component.avgOutputTokens()).toBe(500);
     expect(component.cachedInputPercent()).toBe(30);
     expect(component.activePresetId()).toBe('rag-search');
-    expect(buttons[1].getAttribute('aria-pressed')).toBe('true');
+    expect(buttons[1].getAttribute('aria-checked')).toBe('true');
   });
 
   it('switches to the custom state on a manual token edit', () => {
@@ -81,7 +92,7 @@ describe('AiCostCalculatorComponent', () => {
     expect(component.avgInputTokens()).toBe(2000);
     expect(component.activePresetId()).toBeNull();
     const selected = fixture.nativeElement.querySelector(
-      '.segmented-control button.selected',
+      'app-segmented-toggle button.selected',
     );
     expect(selected).toBeFalsy();
   });

@@ -69,8 +69,9 @@
 
         <li class="lang-switch-item">
           <button class="lang-toggle liquid-glass" type="button" (click)="toggleLanguage()"
-            [attr.aria-label]="langAriaLabel" i18n="Language switch button@@langSwitch">
-            {{ langLabel }}
+            [attr.aria-label]="langAriaLabel">
+            <app-flag class="lang-flag" [lang]="targetLang" />
+            <span>{{ langLabel }}</span>
           </button>
         </li>
 
@@ -85,15 +86,7 @@
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
               <span i18n="Header CV English button text@@headerCvEn">CV </span>
-              <svg class="lang-flag" viewBox="0 0 640 480">
-                <path fill="#012169" d="M0 0h640v480H0z" />
-                <path fill="#FFF"
-                  d="m75 0 244 181L562 0h78v62L400 240l240 178v62h-78L320 300 77 480H0v-62l240-178L0 62V0h75z" />
-                <path fill="#C8102E"
-                  d="m424 281 216 159v40L369 281h55zM640 0v3L447 149h-55L640 0zM0 440l216-159h55L0 480v-40zM0 0l239 176h-55L0 44V0z" />
-                <path fill="#FFF" d="M240 0h160v480H240zM0 160h640v160H0z" />
-                <path fill="#C8102E" d="M0 192h640v96H0zM272 0h96v480h-96z" />
-              </svg>
+              <app-flag class="lang-flag" lang="en" />
             </button>
             <button class="header-cv-btn liquid-glass" (click)="downloadCV('fr')" aria-label="Download CV (French)"
               i18n-title title="Download CV (French)">
@@ -104,13 +97,7 @@
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
               <span i18n="Header CV French button text@@headerCvFr">CV</span>
-              <svg class="lang-flag" viewBox="0 0 640 480">
-                <g fill-rule="evenodd" stroke-width="1pt">
-                  <path fill="#fff" d="M0 0h640v480H0z" />
-                  <path fill="#00267f" d="M0 0h213.3v480H0z" />
-                  <path fill="#f31830" d="M426.7 0H640v480H426.7z" />
-                </g>
-              </svg>
+              <app-flag class="lang-flag" lang="fr" />
             </button>
             <div class="theme-toggle-item">
               <button class="theme-toggle" type="button" (click)="toggleTheme()"
@@ -185,15 +172,7 @@
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
               <span i18n="Header CV English mobile button text@@headerCvEnMobile">CV</span>
-              <svg class="lang-flag" viewBox="0 0 640 480">
-                <path fill="#012169" d="M0 0h640v480H0z" />
-                <path fill="#FFF"
-                  d="m75 0 244 181L562 0h78v62L400 240l240 178v62h-78L320 300 77 480H0v-62l240-178L0 62V0h75z" />
-                <path fill="#C8102E"
-                  d="m424 281 216 159v40L369 281h55zM640 0v3L447 149h-55L640 0zM0 440l216-159h55L0 480v-40zM0 0l239 176h-55L0 44V0z" />
-                <path fill="#FFF" d="M240 0h160v480H240zM0 160h640v160H0z" />
-                <path fill="#C8102E" d="M0 192h640v96H0zM272 0h96v480h-96z" />
-              </svg>
+              <app-flag class="lang-flag" lang="en" />
             </button>
             <button class="header-cv-btn liquid-glass" (click)="downloadCV('fr')" aria-label="Download CV (French)"
               i18n-title title="Download CV (French)">
@@ -204,13 +183,7 @@
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
               <span i18n="Header CV French mobile button text@@headerCvFrMobile">CV</span>
-              <svg class="lang-flag" viewBox="0 0 640 480">
-                <g fill-rule="evenodd" stroke-width="1pt">
-                  <path fill="#fff" d="M0 0h640v480H0z" />
-                  <path fill="#00267f" d="M0 0h213.3v480H0z" />
-                  <path fill="#f31830" d="M426.7 0H640v480H426.7z" />
-                </g>
-              </svg>
+              <app-flag class="lang-flag" lang="fr" />
             </button>
           </div>
         </li>
@@ -277,8 +250,9 @@
         }
         <li class="lang-switch-item mobile-lang">
           <button class="lang-toggle liquid-glass" type="button" (click)="toggleLanguage(); toggleMenu()"
-            [attr.aria-label]="langAriaLabel" i18n="Language mobile switch button@@langSwitchMobile">
-            {{ langLabel }}
+            [attr.aria-label]="langAriaLabel">
+            <app-flag class="lang-flag" [lang]="targetLang" />
+            <span>{{ langLabel }}</span>
           </button>
         </li>
         <li class="socials">

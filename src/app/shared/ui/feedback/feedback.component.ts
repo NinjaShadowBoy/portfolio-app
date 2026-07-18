@@ -20,6 +20,7 @@ import {
 import { IdentityService } from '../../../core/services/identity.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
+import { SegmentedToggleComponent } from '../segmented-toggle/segmented-toggle.component';
 
 type FeedbackTone = 'danger' | 'info' | 'success';
 
@@ -44,7 +45,7 @@ interface CommentGroup extends CommentTypeOption {
 @Component({
   selector: 'app-feedback',
   standalone: true,
-  imports: [CommonModule, UserAvatarComponent],
+  imports: [CommonModule, UserAvatarComponent, SegmentedToggleComponent],
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.css'],
 })
@@ -143,8 +144,9 @@ export class FeedbackComponent {
     });
   }
 
-  selectType(type: CommentType) {
-    this.selectedType.set(type);
+  /** Segmented-toggle handler; values always come from `typeOptions`. */
+  selectType(type: string) {
+    this.selectedType.set(type as CommentType);
   }
 
   isMyComment(comment: CommentDto): boolean {
