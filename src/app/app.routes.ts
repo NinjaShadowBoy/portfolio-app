@@ -14,6 +14,8 @@ import { Oauth2RedirectComponent } from './features/auth/oauth2-redirect/oauth2-
 import { GithubDeviceComponent } from './features/auth/github-device/github-device.component';
 import { PrivacyComponent } from './features/privacy/privacy.component';
 import { ProfileComponent } from './features/profile/profile.component';
+import { ToolsComponent } from './features/tools/tools.component';
+import { AiCostCalculatorComponent } from './features/tools/ai-cost-calculator/ai-cost-calculator.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -45,6 +47,21 @@ export const routes: Routes = [
         path: ':slug',
         component: ArticleDetailComponent,
         data: { breadcrumb: 'Article' },
+      },
+    ],
+  },
+  {
+    path: 'tools',
+    data: { breadcrumb: 'Tools' },
+    children: [
+      {
+        path: '',
+        component: ToolsComponent,
+      },
+      {
+        path: 'ai-cost-calculator',
+        component: AiCostCalculatorComponent,
+        data: { breadcrumb: 'AI Cost Calculator' },
       },
     ],
   },

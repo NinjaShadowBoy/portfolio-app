@@ -1,0 +1,33 @@
+<!-- src/app/features/tools/tools.component.html -->
+<div class="tools-container">
+  <!-- Tools Hero -->
+  <div class="tools-hero">
+    <h1 i18n="Tools page heading@@toolsHeroTitle">Developer Tools</h1>
+    <p class="tools-pitch" i18n="Tools page pitch@@toolsHeroPitch">
+      Free, client-side tools I built to answer real engineering questions.
+      Everything runs entirely in your browser — no sign-up, no tracking, no
+      backend — and the data behind each tool links straight to its sources.
+    </p>
+  </div>
+
+  <!-- Tools Grid -->
+  <div class="tools-grid">
+    <a class="tool-card" routerLink="/tools/ai-cost-calculator">
+      <h2 class="tool-title" i18n="AI cost calculator card title@@toolsCalcCardTitle">
+        AI API Cost Calculator
+      </h2>
+      <p class="tool-description" i18n="AI cost calculator card description@@toolsCalcCardDescription">
+        Estimate what your AI feature will cost per month across 18 models from
+        OpenAI, Anthropic, Google, DeepSeek, Mistral, xAI, and Groq — with
+        prompt caching factored into the math.
+      </p>
+      <p class="tool-meta" i18n="AI cost calculator card pricing date@@toolsCalcPricesAsOf">
+        Prices as of {{ pricingAsOf }}
+      </p>
+    </a>
+  </div>
+
+  <p class="tools-more" i18n="More tools teaser@@toolsMoreOnTheWay">
+    More tools are on the way.
+  </p>
+</div>

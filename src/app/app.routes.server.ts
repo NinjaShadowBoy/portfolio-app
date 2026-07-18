@@ -42,6 +42,17 @@ export const serverRoutes: ServerRoute[] = [
       return articlesManifest.map((article) => ({ slug: article.slug }));
     }
   },
+  // Tools pages are fully static (client-side calculators) and prerendered
+  // for SEO. Bare paths only — locales are per-locale BUILDS (en at `/`,
+  // fr at `/fr`), so never enumerate `/fr/...` variants here.
+  {
+    path: 'tools',
+    renderMode: RenderMode.Prerender
+  },
+  {
+    path: 'tools/ai-cost-calculator',
+    renderMode: RenderMode.Prerender
+  },
   {
     path: '**',
     renderMode: RenderMode.Server

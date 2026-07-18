@@ -39,6 +39,10 @@ const articlesOutDir = path.join(generatedDir, 'articles');
 const publicOutDir = path.join(generatedDir, 'public');
 
 const SITE_URL = 'https://www.alexabena.me';
+// Static app routes emitted into the sitemap ahead of the article entries.
+// '' is the home page. Bare (en) paths only — the /fr alternate is derived.
+// No <lastmod>: these pages have no meaningful modification date.
+const STATIC_ROUTES = ['', 'projects', 'about', 'contact', 'articles', 'tools', 'tools/ai-cost-calculator'];
 const LANGS = ['en', 'fr'];
 const WORDS_PER_MINUTE = 200;
 const SHIKI_LANGS = [
@@ -266,6 +270,22 @@ function writeManifest(manifest) {
 }
 
 function writeSitemap(manifest) {
+  // Static routes first. Every static route exists in both locale builds, so
+  // en + fr + x-default alternates are emitted unconditionally, matching the
+  // alternate format used for articles below.
+  const staticUrls = STATIC_ROUTES.map((route) => {
+    const enHref = route ? `${SITE_URL}/${route}` : SITE_URL;
+    const frHref = route ? `${SITE_URL}/fr/${route}` : `${SITE_URL}/fr`;
+    return [
+      '  <url>',
+      `    <loc>${enHref}</loc>`,
+      `      <xhtml:link rel="alternate" hreflang="en" href="${enHref}"/>`,
+      `      <xhtml:link rel="alternate" hreflang="x-default" href="${enHref}"/>`,
+      `      <xhtml:link rel="alternate" hreflang="fr" href="${frHref}"/>`,
+      '  </url>',
+    ].join('\n');
+  });
+
   const urls = manifest
     .map((a) => {
       const enHref = `${SITE_URL}/articles/${a.slug}`;
@@ -292,7 +312,7 @@ function writeSitemap(manifest) {
     '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" ' +
     'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' +
-    `${urls}\n` +
+    `${[...staticUrls, urls].filter(Boolean).join('\n')}\n` +
     '</urlset>\n';
   writeFileSync(path.join(publicOutDir, 'sitemap.xml'), xml);
 }

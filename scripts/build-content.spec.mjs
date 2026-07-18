@@ -319,6 +319,59 @@ describe('content build script', () => {
   // Sitemap + RSS content
   // -------------------------------------------------------------------------
   describe('sitemap and rss', () => {
+    test('sitemap lists static app routes with hreflang alternates', () => {
+      const sitemap = readPublic('sitemap.xml');
+      // Home is the bare site URL (no trailing slash), fr alternate at /fr.
+      assert.match(sitemap, /<loc>https:\/\/www\.alexabena\.me<\/loc>/, 'home listed');
+      assert.match(
+        sitemap,
+        /hreflang="fr" href="https:\/\/www\.alexabena\.me\/fr"\/>/,
+        'home fr alternate listed',
+      );
+      // The new tools section, including the calculator deep link.
+      assert.match(
+        sitemap,
+        /<loc>https:\/\/www\.alexabena\.me\/tools<\/loc>/,
+        'tools index listed',
+      );
+      assert.match(
+        sitemap,
+        /<loc>https:\/\/www\.alexabena\.me\/tools\/ai-cost-calculator<\/loc>/,
+        'calculator route listed',
+      );
+      assert.match(
+        sitemap,
+        /hreflang="fr" href="https:\/\/www\.alexabena\.me\/fr\/tools\/ai-cost-calculator"\/>/,
+        'calculator fr alternate listed',
+      );
+      assert.match(
+        sitemap,
+        /hreflang="x-default" href="https:\/\/www\.alexabena\.me\/tools"\/>/,
+        'x-default alternate points at the en tools URL',
+      );
+    });
+
+    test('static block precedes article entries and carries no lastmod', () => {
+      const sitemap = readPublic('sitemap.xml');
+      const firstLoc = sitemap.match(/<loc>([^<]+)<\/loc>/);
+      assert.ok(firstLoc, 'sitemap should contain at least one <loc>');
+      assert.equal(
+        firstLoc[1],
+        'https://www.alexabena.me',
+        'the home page should be the first sitemap entry',
+      );
+      // Static <url> blocks have no <lastmod>; only article entries do.
+      const toolsBlock = sitemap
+        .split('<url>')
+        .find((block) => block.includes('/tools/ai-cost-calculator</loc>'));
+      assert.ok(toolsBlock, 'calculator <url> block should exist');
+      assert.doesNotMatch(
+        toolsBlock,
+        /<lastmod>/,
+        'static entries must not carry a <lastmod>',
+      );
+    });
+
     test('sitemap lists published article routes with hreflang alternates', () => {
       const sitemap = readPublic('sitemap.xml');
       assert.match(sitemap, /\/articles\/hello-world/, 'hello-world route listed');

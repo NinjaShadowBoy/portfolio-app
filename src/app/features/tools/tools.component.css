@@ -1,0 +1,114 @@
+/* Tools Container — mirrors .articles-container / .projects-container */
+.tools-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 2rem 0;
+  background: var(--surface-base);
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+/* Tools Hero */
+.tools-hero {
+  margin-bottom: 2rem;
+  text-align: center;
+  animation: fadeInUp 0.6s var(--motion-ease-out);
+}
+
+.tools-hero h1 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tools-pitch {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  max-width: 46rem;
+  margin: 0 auto;
+}
+
+/* Tools Grid — same auto-fill card grid as the other index pages */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 2rem;
+  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Tool card — a whole-card link on raised surface with hover lift */
+.tool-card {
+  display: block;
+  padding: 1.5rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--elevation-1);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
+    transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.tool-card:hover {
+  box-shadow: var(--elevation-3);
+  transform: translateY(-2px);
+}
+
+.tool-card:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.tool-title {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
+}
+
+.tool-description {
+  color: var(--text-secondary);
+  margin: 0 0 1rem;
+}
+
+.tool-meta {
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Teaser line below the grid */
+.tools-more {
+  text-align: center;
+  color: var(--text-tertiary);
+  margin: 2rem 0;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive — mirrors articles/projects breakpoints */
+@media (max-width: 768px) {
+  .tools-container { padding: 0.75rem; }
+  .tools-hero { margin-bottom: 1rem; }
+  .tools-hero h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  .tools-pitch { font-size: 0.95rem; }
+  .tools-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .tools-container { padding: 0.5rem; }
+  .tools-hero h1 { font-size: 1.35rem; }
+  .tools-pitch { font-size: 0.85rem; }
+  .tool-card { padding: 1.25rem; border-radius: 12px; }
+}

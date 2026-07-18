@@ -1,0 +1,187 @@
+/* AI cost calculator — component-scoped layout only. All colors, borders,
+   shadows and motion come from the global design tokens; the segmented
+   control reuses the global .segmented-control class from styles.css. */
+
+.calculator-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Header */
+.calculator-header h1 {
+  margin: 0 0 0.5rem;
+  color: var(--text-primary);
+  font-size: 2rem;
+}
+
+.calculator-lead {
+  margin: 0 0 1.5rem;
+  color: var(--text-secondary);
+  max-width: 65ch;
+  line-height: 1.6;
+}
+
+/* Presets */
+.scenario-section {
+  margin-bottom: 1.5rem;
+}
+
+/* Inputs — replicates the projects-page filter styling with tokens */
+.inputs-section {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--elevation-2);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.calc-input {
+  padding: 0.75rem;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--input-bg);
+  color: var(--input-text);
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.calc-input:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+  box-shadow: var(--focus-ring);
+}
+
+/* Results table — horizontal scroll container keeps mobile usable */
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  background: var(--surface-raised);
+  box-shadow: var(--elevation-1);
+}
+
+.results-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+}
+
+.results-table th,
+.results-table td {
+  padding: 0.65rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+
+.results-table thead th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  background: var(--surface-sunken);
+}
+
+.results-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.results-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.results-table a {
+  color: var(--text-link);
+  text-decoration: none;
+}
+
+.results-table a:hover {
+  color: var(--text-link-hover);
+  text-decoration: underline;
+}
+
+/* Cheapest-row highlight (token-based accent) */
+.results-table tr.cheapest td {
+  background: var(--surface-selected);
+}
+
+.results-table tr.cheapest td:first-child {
+  border-left: 3px solid var(--border-brand);
+}
+
+.cheapest-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-accent);
+  background: var(--surface-brand);
+  border: 1px solid var(--border-brand);
+  vertical-align: middle;
+}
+
+.model-note {
+  margin-left: 0.15rem;
+  color: var(--text-accent);
+  cursor: help;
+}
+
+/* Assumptions footer */
+.assumptions {
+  margin-top: 1.5rem;
+}
+
+.assumptions p {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  max-width: 75ch;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .calculator-container {
+    padding: 1rem;
+  }
+
+  .calculator-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .inputs-section {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  /* 16px prevents iOS zoom-on-focus */
+  .calc-input {
+    font-size: 16px;
+  }
+}

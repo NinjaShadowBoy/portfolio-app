@@ -1,0 +1,140 @@
+<div class="calculator-container">
+  <header class="calculator-header">
+    <h1 i18n="Calculator page heading@@aiCalcHeading">AI API Cost Calculator</h1>
+    <p class="calculator-lead" i18n="Calculator page lead paragraph@@aiCalcLead">
+      Estimate what your AI feature will cost per month across 18 LLM APIs, using each provider's official pricing.
+    </p>
+  </header>
+
+  <!-- Workload presets -->
+  <section class="scenario-section">
+    <div
+      class="segmented-control"
+      role="group"
+      i18n-aria-label="Workload preset selector label@@aiCalcPresetGroupLabel"
+      aria-label="Workload preset">
+      @for (preset of presets; track preset.id) {
+        <button
+          type="button"
+          [class.selected]="activePresetId() === preset.id"
+          [attr.aria-pressed]="activePresetId() === preset.id"
+          (click)="selectPreset(preset)">
+          {{ preset.label }}
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- Workload inputs -->
+  <section class="inputs-section">
+    <div class="inputs-grid">
+      <div class="filter-group">
+        <label for="aiCalcUsers" i18n="Calculator users input label@@aiCalcUsersLabel">Monthly active users</label>
+        <input
+          id="aiCalcUsers"
+          class="calc-input"
+          type="number"
+          min="0"
+          [value]="users()"
+          (input)="users.set(parseNumber($any($event.target).value))" />
+      </div>
+
+      <div class="filter-group">
+        <label for="aiCalcRequests" i18n="Calculator requests input label@@aiCalcRequestsLabel">Requests per user per day</label>
+        <input
+          id="aiCalcRequests"
+          class="calc-input"
+          type="number"
+          min="0"
+          [value]="requestsPerUserPerDay()"
+          (input)="requestsPerUserPerDay.set(parseNumber($any($event.target).value))" />
+      </div>
+
+      <div class="filter-group">
+        <label for="aiCalcInputTokens" i18n="Calculator input tokens label@@aiCalcInputTokensLabel">Avg input tokens per request</label>
+        <input
+          id="aiCalcInputTokens"
+          class="calc-input"
+          type="number"
+          min="0"
+          [value]="avgInputTokens()"
+          (input)="avgInputTokens.set(parseNumber($any($event.target).value))" />
+      </div>
+
+      <div class="filter-group">
+        <label for="aiCalcOutputTokens" i18n="Calculator output tokens label@@aiCalcOutputTokensLabel">Avg output tokens per request</label>
+        <input
+          id="aiCalcOutputTokens"
+          class="calc-input"
+          type="number"
+          min="0"
+          [value]="avgOutputTokens()"
+          (input)="avgOutputTokens.set(parseNumber($any($event.target).value))" />
+      </div>
+
+      <div class="filter-group">
+        <label for="aiCalcCache" i18n="Calculator cached input share label@@aiCalcCachedShareLabel">Cached input share (%)</label>
+        <input
+          id="aiCalcCache"
+          class="calc-input"
+          type="number"
+          min="0"
+          max="100"
+          [value]="cachedInputPercent()"
+          (input)="cachedInputPercent.set(parseNumber($any($event.target).value))" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Results, cheapest first -->
+  <section class="results-section">
+    <div class="table-scroll">
+      <table
+        class="results-table"
+        i18n-aria-label="Calculator results table label@@aiCalcTableLabel"
+        aria-label="Cost comparison across models">
+        <thead>
+          <tr>
+            <th i18n="Results column: provider@@aiCalcColProvider">Provider</th>
+            <th i18n="Results column: model@@aiCalcColModel">Model</th>
+            <th class="num" i18n="Results column: context window@@aiCalcColContext">Context</th>
+            <th class="num" i18n="Results column: cost per request@@aiCalcColPerRequest">$/request</th>
+            <th class="num" i18n="Results column: cost per day@@aiCalcColPerDay">$/day</th>
+            <th class="num" i18n="Results column: cost per month@@aiCalcColPerMonth">$/month</th>
+            <th class="num" i18n="Results column: cost per user per month@@aiCalcColPerUserMonth">$/user/month</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of estimates(); track row.model.id; let first = $first) {
+            <tr [class.cheapest]="first">
+              <td>{{ row.model.provider }}</td>
+              <td class="model-cell">
+                <a [href]="row.model.sourceUrl" target="_blank" rel="noopener">{{ row.model.name }}</a>
+                @if (row.model.note) {
+                  <sup class="model-note" [title]="row.model.note" [attr.aria-label]="row.model.note">*</sup>
+                }
+                @if (first) {
+                  <span class="cheapest-badge" i18n="Cheapest row badge@@aiCalcCheapestBadge">Cheapest</span>
+                }
+              </td>
+              <td class="num">{{ formatContext(row.model.contextWindow) }}</td>
+              <td class="num">{{ row.costPerRequest | number: '1.2-4' }}</td>
+              <td class="num">{{ row.costPerDay | number: '1.2-2' }}</td>
+              <td class="num">{{ row.costPerMonth | number: '1.2-2' }}</td>
+              <td class="num">{{ row.costPerUserPerMonth | number: '1.2-2' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Modeling assumptions -->
+  <footer class="assumptions">
+    <p i18n="Calculator assumptions footer@@aiCalcAssumptions">
+      Prices as of {{ pricingAsOf }}, in USD at each provider's standard API tier, assuming a 30-day month.
+      Cache reads are modeled; cache writes, batch discounts and long-context pricing tiers are not.
+      Models without a published cache-read rate bill the cached share at the full input price.
+    </p>
+  </footer>
+</div>

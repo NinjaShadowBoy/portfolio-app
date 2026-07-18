@@ -9,7 +9,7 @@ Files: `src/app/features/tools/ai-cost-calculator/llm-pricing.data.ts`,
 `cost-engine.ts`, `cost-engine.spec.ts`.
 
 Exports (the frozen contract Tasks B/C build against):
-- `LlmModelPricing`, `PRICING_AS_OF: string`, `LLM_PRICING: LlmModelPricing[]` (17 models, data in design doc §Pricing data — verified 2026-07-18 research pass).
+- `LlmModelPricing`, `PRICING_AS_OF: string`, `LLM_PRICING: LlmModelPricing[]` (18 models, data in design doc §Pricing data — verified 2026-07-18 research pass).
 - `CalculatorInputs`, `CostEstimate`, `estimateCost(model, inputs)`, `estimateAll(models, inputs)` (sorted `costPerMonth` asc).
 - Pure TS only — no Angular imports in `cost-engine.ts` / `llm-pricing.data.ts`.
 

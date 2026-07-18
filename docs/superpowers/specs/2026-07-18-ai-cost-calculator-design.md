@@ -55,10 +55,10 @@ export interface LlmModelPricing {
   note?: string;          // short caveat surfaced in the UI (e.g. intro pricing, >200K surcharge)
 }
 export const PRICING_AS_OF = '2026-07-18';
-export const LLM_PRICING: LlmModelPricing[] = [/* 17 models */];
+export const LLM_PRICING: LlmModelPricing[] = [/* 18 models */];
 ```
 
-17 models (researched 2026-07-18 from official pricing pages): OpenAI GPT-5.6
+18 models (researched 2026-07-18 from official pricing pages): OpenAI GPT-5.6
 Sol/Terra/Luna + GPT-5.4 mini; Anthropic Claude Fable 5 / Opus 4.8 / Sonnet 5 (intro
 price, note) / Haiku 4.5; Google Gemini 3.1 Pro (note: 2x above 200K) / 3.5 Flash /
 3.1 Flash-Lite; DeepSeek v4-pro / v4-flash; Mistral Medium 3.5 / Small 4; xAI Grok 4.5
