@@ -1,4 +1,5 @@
 /// <reference types="@angular/localize" />
+/// <reference types="jasmine" />
 
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
