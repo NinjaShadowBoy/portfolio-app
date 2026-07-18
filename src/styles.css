@@ -368,7 +368,7 @@ img {
   --color-primary-100: #1e40af;
   --color-primary-200: #1d4ed8;
   --color-primary-300: #2563eb;
-  --color-primary-400: #02060b;
+  --color-primary-400: #3b82f6;
   --color-primary-500: #60a5fa;
   --color-primary-600: #93c5fd;
   --color-primary-700: #bfdbfe;
@@ -462,8 +462,10 @@ img {
   --text-disabled: #334155;
   --text-inverse: #0f172a;
   --text-accent: var(--color-primary-500);
-  --text-link: var(--color-primary-400);
-  --text-link-hover: var(--color-primary-300);
+  /* Dark scale is inverted (higher = lighter): hover must go UP the scale so
+     links brighten on hover instead of sinking toward the background. */
+  --text-link: var(--color-primary-500);
+  --text-link-hover: var(--color-primary-600);
   --text-muted: #64748b;
 
   /* ==========================================
@@ -1070,7 +1072,7 @@ img {
     --color-primary-100: #1e40af;
     --color-primary-200: #1d4ed8;
     --color-primary-300: #2563eb;
-    --color-primary-400: #02060b;
+    --color-primary-400: #3b82f6;
     --color-primary-500: #60a5fa;
     --color-primary-600: #93c5fd;
     --color-primary-700: #bfdbfe;
@@ -1168,8 +1170,10 @@ img {
     --text-disabled: #334155;
     --text-inverse: #0f172a;
     --text-accent: var(--color-primary-500);
-    --text-link: var(--color-primary-400);
-    --text-link-hover: var(--color-primary-300);
+    /* Dark scale is inverted (higher = lighter): hover must go UP the scale so
+       links brighten on hover instead of sinking toward the background. */
+    --text-link: var(--color-primary-500);
+    --text-link-hover: var(--color-primary-600);
     --text-muted: #64748b;
 
     /* ==========================================
