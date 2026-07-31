@@ -50,10 +50,13 @@ app.use((req, res, next) => {
 /**
  * Start the server if this module is the main entry point, or it is ran via PM2.
  * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
+ *
+ * Bound to 127.0.0.1, not all interfaces: nginx is the only intended public
+ * path, and there is no container boundary enforcing that for us.
  */
 if (isMainModule(import.meta.url) || process.env['pm_id']) {
-  const port = process.env['PORT'] || 4000;
-  app.listen(port, (error) => {
+  const port = Number(process.env['PORT']) || 4000;
+  app.listen(port, '127.0.0.1', (error) => {
     if (error) {
       throw error;
     }

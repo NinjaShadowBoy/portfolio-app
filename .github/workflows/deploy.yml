@@ -1,12 +1,13 @@
 name: Deploy Frontend
 
-# Builds the Angular SSR app into a container image, pushes it to GHCR, then
-# tells the VPS to pull it and roll the compose stack. Pushing to `main` deploys
-# production; `staging` deploys the staging instance.
+# Builds the Angular SSR bundle, scp's it to a fresh release directory on the
+# VPS, then repoints the `current` symlink and restarts the systemd --user
+# service. Pushing to `main` deploys production; `staging` deploys the
+# staging instance.
 #
-# The build happens inside the image (see Dockerfile), not here - so there is
-# exactly one definition of how this app is built, and CI cannot produce an
-# artifact the image would not.
+# The frontend holds no secrets - apiBaseUrl is compiled into the browser
+# bundle at build time - so .env on the VPS is only PORT/DEPLOY_ENV, written
+# fresh each deploy.
 on:
   push:
     branches: [main, staging]
@@ -17,8 +18,7 @@ on:
       - "angular.json"
       - "package.json"
       - "pnpm-lock.yaml"
-      - "Dockerfile"
-      - "deploy/docker-compose.yml"
+      - "deploy/portfolio-frontend@.service"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
@@ -26,50 +26,49 @@ concurrency:
   group: deploy-frontend-${{ github.ref }}
   cancel-in-progress: false
 
+env:
+  NODE_VERSION: "24"
+  PNPM_VERSION: "11"
+
 jobs:
   build:
-    name: Build & push image
+    name: Build SSR bundle
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    outputs:
-      image: ${{ steps.meta.outputs.image }}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: docker/setup-buildx-action@v3
-
-      - uses: docker/login-action@v3
+      - uses: pnpm/action-setup@v4
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          version: ${{ env.PNPM_VERSION }}
 
-      # GHCR rejects uppercase path segments, and the owner here is mixed-case.
-      - name: Resolve image reference
-        id: meta
-        run: |
-          repo_lc="$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')"
-          echo "image=ghcr.io/${repo_lc}:${{ github.sha }}" >> "$GITHUB_OUTPUT"
-
-      - name: Build & push
-        uses: docker/build-push-action@v6
+      - uses: actions/setup-node@v4
         with:
-          context: .
-          push: true
-          # NOTE: staging builds with the `production` Angular configuration
-          # because there is no staging environment file yet. apiBaseUrl is
-          # compiled into the browser bundle, so staging currently talks to the
-          # production API. To split them: add src/environments/environment.staging.ts
-          # and a `staging` configuration in angular.json with a fileReplacements
-          # entry, then set this to the branch-derived name.
-          build-args: BUILD_CONFIG=production
-          # Immutable SHA tag only. A moving `:latest` would let the VPS pull a
-          # different image than the one this run built.
-          tags: ${{ steps.meta.outputs.image }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # `pnpm build` runs content:build first, which generates the
+      # src/generated assets angular.json expects, then `ng build` with its
+      # defaultConfiguration (production).
+      #
+      # NOTE: staging builds with the same `production` Angular configuration
+      # because there is no staging environment file yet. apiBaseUrl is
+      # compiled into the browser bundle, so staging currently talks to the
+      # production API. To split them: add
+      # src/environments/environment.staging.ts and a `staging` configuration
+      # in angular.json with a fileReplacements entry, then build with
+      # `--configuration staging` on the staging branch here.
+      - name: Build
+        run: pnpm build
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ github.sha }}
+          path: dist/portfolio-app
+          retention-days: 7
 
   deploy:
     name: Deploy to VPS
@@ -77,8 +76,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
     steps:
-      - uses: actions/checkout@v4
-
       - name: Resolve deployment environment
         id: vars
         run: |
@@ -90,53 +87,74 @@ jobs:
             echo "port=4001" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Copy compose file to VPS
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-${{ github.sha }}
+          path: release/dist/portfolio-app
+
+      # New, self-contained directory per deploy - nothing on the box is
+      # overwritten until the symlink swap below, so a failed scp never
+      # leaves a half-written release live.
+      - name: Copy release to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          source: deploy/docker-compose.yml
-          target: ${{ vars.APP_PATH }}/${{ steps.vars.outputs.env }}/
+          source: release/dist
+          target: ${{ vars.APP_PATH }}/${{ steps.vars.outputs.env }}/releases/${{ github.sha }}/
           strip_components: 1
 
-      # One SSH session: write the compose env, log in to GHCR, pull, roll,
-      # verify. `--wait` blocks on the compose healthcheck, so an image that
-      # starts but never serves fails the deploy instead of passing silently.
-      - name: Deploy stack
+      # One SSH session: write .env, activate the release, restart, verify,
+      # prune old releases.
+      - name: Deploy release
         uses: appleboy/ssh-action@v1.2.0
         env:
           DEPLOY_ENV: ${{ steps.vars.outputs.env }}
           FRONTEND_PORT: ${{ steps.vars.outputs.port }}
-          FRONTEND_IMAGE: ${{ needs.build.outputs.image }}
-          REGISTRY_USER: ${{ github.actor }}
-          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_SHA: ${{ github.sha }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          envs: DEPLOY_ENV,FRONTEND_PORT,FRONTEND_IMAGE,REGISTRY_USER,REGISTRY_TOKEN
+          envs: DEPLOY_ENV,FRONTEND_PORT,RELEASE_SHA
           script: |
             set -euo pipefail
             target="${{ vars.APP_PATH }}/$DEPLOY_ENV"
-            install -d -m 755 "$target"
             cd "$target"
 
-            # The frontend holds no secrets, so this .env is purely the values
-            # compose interpolates - rewritten each deploy to pin the image.
+            # The frontend holds no secrets, so this .env is just what the
+            # systemd unit needs - rewritten fresh each deploy.
             cat > .env <<ENVFILE
             DEPLOY_ENV=$DEPLOY_ENV
-            FRONTEND_IMAGE=$FRONTEND_IMAGE
-            FRONTEND_PORT=$FRONTEND_PORT
+            NODE_ENV=production
+            PORT=$FRONTEND_PORT
             ENVFILE
 
-            echo "$REGISTRY_TOKEN" | docker login ghcr.io -u "$REGISTRY_USER" --password-stdin
-            trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
+            ln -sfn "releases/$RELEASE_SHA" current
+            systemctl --user restart "portfolio-frontend@$DEPLOY_ENV"
 
-            docker compose pull
-            docker compose up -d --wait --remove-orphans
+            # Same probe the deploy has always waited on - a process that
+            # starts but never serves fails the deploy instead of passing
+            # silently.
+            ok=""
+            for _ in $(seq 1 15); do
+              if curl -fsS "http://127.0.0.1:$FRONTEND_PORT/" >/dev/null; then
+                ok=1
+                break
+              fi
+              sleep 2
+            done
+            if [ -z "$ok" ]; then
+              echo "portfolio-frontend@$DEPLOY_ENV did not become healthy" >&2
+              systemctl --user status "portfolio-frontend@$DEPLOY_ENV" --no-pager || true
+              exit 1
+            fi
 
-            docker compose ps
-            # Reclaim disk from superseded images; without this the VPS fills up
-            # after a few dozen deploys.
-            docker image prune -f --filter "until=168h"
+            systemctl --user status "portfolio-frontend@$DEPLOY_ENV" --no-pager
+
+            # Reclaim disk from superseded releases; without this the VPS
+            # fills up after a few dozen deploys.
+            ls -1t releases | tail -n +6 | while read -r old; do
+              rm -rf "releases/$old"
+            done

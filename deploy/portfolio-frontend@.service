@@ -1,0 +1,24 @@
+# Templated systemd --user unit for the portfolio frontend (Angular SSR).
+# %i is the environment (production | staging). Not installed directly -
+# bootstrap.sh substitutes __APP_PATH__ for the real APP_PATH and writes the
+# rendered file to ~/.config/systemd/user/. Re-run bootstrap.sh (or redo the
+# substitution by hand) if this template changes; CI never touches it.
+#
+# Runs under the same deploy user - and the same linger-enabled systemd
+# session - as the backend's portfolio-backend@.service; both apps share the
+# box.
+[Unit]
+Description=Portfolio frontend SSR server (%i)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=__APP_PATH__/%i/current
+EnvironmentFile=__APP_PATH__/%i/.env
+ExecStart=/usr/bin/node __APP_PATH__/%i/current/dist/portfolio-app/server/server.mjs
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target
