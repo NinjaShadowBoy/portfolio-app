@@ -33,8 +33,16 @@ import * as shiki from 'shiki';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
-const contentDir = path.join(repoRoot, 'src', 'content', 'articles');
-const generatedDir = path.join(repoRoot, 'src', 'generated');
+// Input/output roots are overridable so the spec can build the checked-in
+// fixtures (scripts/__fixtures__/articles) into a throwaway directory without
+// touching the real src/generated tree, which the build wipes on every run.
+// Unset in normal use: `pnpm content:build` uses the defaults below.
+const contentDir = process.env.CONTENT_DIR
+  ? path.resolve(repoRoot, process.env.CONTENT_DIR)
+  : path.join(repoRoot, 'src', 'content', 'articles');
+const generatedDir = process.env.GENERATED_DIR
+  ? path.resolve(repoRoot, process.env.GENERATED_DIR)
+  : path.join(repoRoot, 'src', 'generated');
 const articlesOutDir = path.join(generatedDir, 'articles');
 const publicOutDir = path.join(generatedDir, 'public');
 

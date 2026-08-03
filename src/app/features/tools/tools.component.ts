@@ -69,7 +69,7 @@ export class ToolsComponent {
     );
     this.meta.updateTag({
       name: 'description',
-      content: $localize`:@@toolsSeoDescription:Free, browser-based developer tools by Alex Abena — starting with an AI cost calculator that compares LLM API pricing across OpenAI, Anthropic, Google, and more.`,
+      content: $localize`:@@toolsSeoDescription:Free developer tools that run in your browser. Compare LLM API pricing across OpenAI, Anthropic, Google and four other providers with the AI cost calculator.`,
     });
 
     this.upsertLink('canonical', { rel: 'canonical', href: url });

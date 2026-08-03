@@ -77,7 +77,7 @@ export class LoginComponent {
     action$.subscribe({
       next: (res) => {
         this.auth.setSession(res);
-        this.notifier.success(isRegistering ? $localize`:@@loginWelcome:Register:Welcome aboard!` : $localize`:@@loginWelcomeBack:Welcome back!`);
+        this.notifier.success(isRegistering ? $localize`:Toast shown after a successful registration@@loginWelcome:Welcome aboard!` : $localize`:@@loginWelcomeBack:Welcome back!`);
         this.router.navigateByUrl('/home');
       },
       error: (err) => {

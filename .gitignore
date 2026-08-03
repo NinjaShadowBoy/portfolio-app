@@ -10,6 +10,9 @@
 # Authored source under src/content/** stays tracked.
 /src/generated
 
+# Throwaway output root used by scripts/build-content.spec.mjs
+/.tmp-content-spec
+
 # Node
 /node_modules
 npm-debug.log

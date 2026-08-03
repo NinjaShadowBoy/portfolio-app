@@ -12,7 +12,7 @@
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-  padding: 0.35rem;
+  padding: 0.15rem;
   background: var(--surface-sunken);
   border: 1px solid var(--border-subtle);
   border-radius: 999px;

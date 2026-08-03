@@ -3,11 +3,17 @@
 // Run with:  node --test scripts/build-content.spec.mjs
 //
 // These tests are intentionally BLACK-BOX: they invoke the real build script
-// once against the checked-in fixtures under src/content/articles/** (authored
-// in task BP0) and then assert on the generated artefacts it emits into
-// src/generated/**. They are decoupled from the script's internal function
-// signatures so BP2 is free to refactor as long as the documented output
-// contract (typed manifest, per-article payloads, sitemap.xml, rss.xml) holds.
+// once against the checked-in fixtures under scripts/__fixtures__/articles/**
+// and then assert on the generated artefacts it emits. They are decoupled from
+// the script's internal function signatures so the pipeline is free to refactor
+// as long as the documented output contract (typed manifest, per-article
+// payloads, sitemap.xml, rss.xml) holds.
+//
+// The fixtures live under scripts/ rather than src/content/articles/ so they are
+// never published: src/content/articles/ holds only real, shippable writing. The
+// build script's CONTENT_DIR / GENERATED_DIR env overrides point it at the
+// fixtures and at a throwaway output directory, so running this spec never
+// clobbers the real src/generated tree (the build wipes its output root).
 //
 // Coverage (per plan task BP5):
 //   - frontmatter parse of the BP0 fixtures
@@ -17,17 +23,19 @@
 //   - draft exclusion (draft-sample absent from manifest / sitemap / rss)
 //   - sitemap + rss omit drafts and carry hreflang alternates
 
-import { test, describe, before } from 'node:test';
+import { test, describe, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const buildScript = path.join(repoRoot, 'scripts', 'build-content.mjs');
-const generatedDir = path.join(repoRoot, 'src', 'generated');
+const fixturesDir = path.join(repoRoot, 'scripts', '__fixtures__', 'articles');
+// Throwaway output root, wiped and rebuilt by the `before` hook below.
+const generatedDir = path.join(repoRoot, '.tmp-content-spec');
 const manifestPath = path.join(generatedDir, 'articles-manifest.ts');
 const articlesOutDir = path.join(generatedDir, 'articles');
 const publicOutDir = path.join(generatedDir, 'public');
@@ -124,15 +132,29 @@ describe('content build script', () => {
   before(() => {
     assert.ok(
       existsSync(buildScript),
-      `Expected build script at ${buildScript}. This spec (BP5) depends on ` +
-        'scripts/build-content.mjs (task BP2), which must be implemented first.',
+      `Expected build script at ${buildScript}. This spec depends on ` +
+        'scripts/build-content.mjs, which must be implemented first.',
     );
-    // Run the real build against the checked-in BP0 fixtures. Fails loudly
-    // (non-zero exit) on malformed frontmatter or missing required fields.
+    assert.ok(
+      existsSync(fixturesDir),
+      `Expected article fixtures at ${fixturesDir}.`,
+    );
+    // Run the real build against the checked-in fixtures, into a throwaway
+    // output root. Fails loudly (non-zero exit) on malformed frontmatter or
+    // missing required fields.
     execFileSync(process.execPath, [buildScript], {
       cwd: repoRoot,
       stdio: 'pipe',
+      env: {
+        ...process.env,
+        CONTENT_DIR: fixturesDir,
+        GENERATED_DIR: generatedDir,
+      },
     });
+  });
+
+  after(() => {
+    rmSync(generatedDir, { recursive: true, force: true });
   });
 
   // -------------------------------------------------------------------------

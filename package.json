@@ -7,6 +7,7 @@
     "// start:fr-preview": "Quick local preview of French copy only - serves at normal routes (e.g. /home), NOT /fr/home. Locale sub-path routing only works via the SSR build+server (ng build --localize && npm run serve:ssr:portfolio-app).",
     "start:fr-preview": "ng serve --configuration fr-preview",
     "content:build": "node scripts/build-content.mjs",
+    "test:content": "node --test scripts/build-content.spec.mjs",
     "build": "pnpm content:build && ng build",
     "build:gh-pages": "pnpm content:build && ng build --configuration gh-pages --base-href / --deploy-url /",
     "predeploy": "npm run build:gh-pages",

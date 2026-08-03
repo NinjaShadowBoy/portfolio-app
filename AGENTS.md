@@ -40,12 +40,14 @@ pnpm ng extract-i18n --output-path src/locale  # Extract translatable strings
 - **Default redirect**: `/` → `/home` (`app.routes.ts`); no locale in the redirect target.
 - **Admin**: English-only (not translated).
 - **Translation files**: `src/locale/messages.json` (source), `src/locale/messages.fr.json` (French).
+- **File layout**: Angular's simple-JSON parser only accepts a **flat** `translations` map of `id → string` (`SimpleJsonTranslationParser`); nested objects are not a supported format. To keep the files navigable, both are instead grouped into blank-line-separated blocks in a fixed order (Header, Navigation, Footer, Shared UI, Auth, Profile, Feedback, Home, About, Projects, Articles, Tools, Contact, Privacy, Not found, Admin). **The two files must stay in the same key order** so they can be diffed side by side. Blank lines are legal JSON whitespace and survive the build; `extract-i18n` does *not* preserve them (see below).
 - **Template marking**: `i18n="desc@@stableId"` on elements (always give an explicit `@@id`), `i18n-{attr}` for attributes.
 - **TS string marking**: `$localize` tagged template literals (no explicit import -  global via polyfill).
 - **Type declaration**: `src/types/localize.d.ts` declares `$localize` globally.
 - **Build**: `pnpm build --localize` runs the build **once per locale**, emitting `dist/portfolio-app/browser/` (en, at root) and `dist/portfolio-app/browser/fr/`. Prerendering runs once per locale, so prerendered article routes exist under both `/…` and `/fr/…`.
 - **Prerender params**: for `articles/:slug`, `getPrerenderParams` enumerates **published slugs only** (drafts excluded) — it does **not** cross-product slug × lang. The per-locale build already covers en/fr; enumerating lang here would produce broken/duplicated routes.
-- **Extraction**: `pnpm ng extract-i18n --output-path src/locale` to regenerate `messages.json`.
+- **Extraction**: `pnpm ng extract-i18n --output-path src/locale` to regenerate `messages.json`. It rewrites the file flat and unsectioned, in template-scan order — after running it, re-apply the section grouping and mirror any new keys into `messages.fr.json` in the same position.
+- **English copy lives in the templates**, not in `messages.json`. The `en` build renders the text inside the `i18n` element; `messages.json` is extraction *output*. Editing it alone changes nothing on the English site.
 - **Language switcher**: Header component toggles between the root (`/…`) and `/fr/…` output paths; it is route-agnostic (adds/strips the `/fr/` prefix), not a route param change.
 
 ## Key Conventions
