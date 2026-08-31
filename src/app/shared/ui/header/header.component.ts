@@ -7,7 +7,6 @@ import { SocialLinksService } from '../../../core/services/social-links.service'
 import { ThemeService } from '../../../core/services/theme.service';
 import { downloadCV } from '../../../core/constants/cv';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
-import { FlagComponent } from '../flag/flag.component';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +16,6 @@ import { FlagComponent } from '../flag/flag.component';
     RouterLink,
     RouterLinkActive,
     UserAvatarComponent,
-    FlagComponent,
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],

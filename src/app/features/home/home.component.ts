@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ProjectDataService } from '../../core/services/project-data.service';
 import { ProjectCardComponent } from '../../shared/ui/project-card/project-card.component';
 import { LazyLoadDirective } from '../../core/directives/lazy-load.directive';
+import { TechBannerComponent } from '../../shared/ui/tech-banner/tech-banner.component';
 import { TechnologiesService, Technology } from '../../core/services/technologies.service';
 
 interface Pillar {
@@ -14,7 +15,7 @@ interface Pillar {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, ProjectCardComponent, LazyLoadDirective],
+  imports: [CommonModule, RouterModule, ProjectCardComponent, LazyLoadDirective, TechBannerComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
@@ -28,6 +29,28 @@ export class HomeComponent {
   readonly server = this.pillar(['Spring Boot', 'Gin', 'PostgreSQL', 'MySQL', 'Docker']);
   readonly browser = this.pillar(['Angular', 'Nuxt', 'TypeScript', 'Playwright']);
   readonly phone = this.pillar(['Expo React Native', 'Jetpack Compose']);
+
+  readonly frameworks: Technology[] = [
+    this.techService.getTechnology('Angular')!,
+    this.techService.getTechnology('React')!,
+    this.techService.getTechnology('Spring Boot')!,
+    this.techService.getTechnology('NestJS')!,
+    this.techService.getTechnology('Ktor')!,
+    this.techService.getTechnology('Jetpack Compose')!,
+  ].filter(Boolean);
+
+  readonly tools: Technology[] = [
+    this.techService.getTechnology('Git')!,
+    this.techService.getTechnology('Docker')!,
+    this.techService.getTechnology('PostgreSQL')!,
+    this.techService.getTechnology('MySQL')!,
+    this.techService.getTechnology('MongoDB')!,
+    this.techService.getTechnology('ChatGPT')!,
+    this.techService.getTechnology('Linux')!,
+    this.techService.getTechnology('Gradle')!,
+    this.techService.getTechnology('npm')!,
+    this.techService.getTechnology('Playwright')!,
+  ].filter(Boolean);
 
   private pillar(names: string[]): Pillar {
     const tech = names.map((n) => this.techService.getTechnology(n)!).filter(Boolean);
