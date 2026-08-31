@@ -4,16 +4,16 @@
   "scripts": {
     "ng": "ng",
     "start": "bun run content:build && ng serve",
-    "content:build": "node scripts/build-content.mjs",
-    "test:content": "node --test scripts/build-content.spec.mjs",
-    "// ng build": "Invoked through node --require so scripts/fs-cp-retry.cjs is preloaded; it retries the asset copy that intermittently fails with EPERM/utime on Windows and aborts the build half-written. No-op on other platforms.",
+    "content:build": "bun scripts/build-content.mjs",
+    "test:content": "bun test scripts/build-content.spec.mjs",
+    "// ng build": "ng must run under node (the SSR route extraction fails under the bun runtime); node --require preloads scripts/fs-cp-retry.cjs, which retries the asset copy that intermittently fails with EPERM/utime on Windows and aborts the build half-written. No-op on other platforms.",
     "build": "bun run content:build && node --require ./scripts/fs-cp-retry.cjs node_modules/@angular/cli/bin/ng.js build",
     "build:gh-pages": "bun run content:build && node --require ./scripts/fs-cp-retry.cjs node_modules/@angular/cli/bin/ng.js build --configuration gh-pages --base-href / --deploy-url /",
     "deploy": "bun run build:gh-pages && bunx angular-cli-ghpages --dir=dist/portfolio-app/browser",
     "watch": "bun run content:build && node --require ./scripts/fs-cp-retry.cjs node_modules/@angular/cli/bin/ng.js build --watch --configuration development",
     "test": "ng test",
-    "test:fs-cp-retry": "node --test scripts/fs-cp-retry.spec.mjs",
-    "serve": "node dist/portfolio-app/server/server.mjs"
+    "test:fs-cp-retry": "bun test scripts/fs-cp-retry.spec.mjs",
+    "serve": "bun dist/portfolio-app/server/server.mjs"
   },
   "private": true,
   "trustedDependencies": [
