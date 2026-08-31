@@ -7,18 +7,18 @@ Angular 22 SSR portfolio site (Express server) with JWT auth, Cloudinary image h
 ## Commands
 
 ```bash
-# Package manager: pnpm (not npm/yarn)
-pnpm install          # Install dependencies
-pnpm start            # Dev server at localhost:4200
-pnpm build            # Production build (output: dist/portfolio-app/)
-pnpm build --localize # Build with i18n (en-US + fr)
-pnpm test             # Karma/Jasmine unit tests
-pnpm run build:gh-pages  # Build for GitHub Pages deployment
-pnpm run deploy       # Deploy to GitHub Pages via angular-cli-ghpages
-pnpm ng extract-i18n --output-path src/locale  # Extract translatable strings
+# Package manager: bun (not npm/yarn/pnpm)
+bun install           # Install dependencies
+bun start             # Dev server at localhost:4200
+bun run build         # Production build (output: dist/portfolio-app/)
+bun run build --localize # Build with i18n (en-US + fr)
+bun run test          # Karma/Jasmine unit tests
+bun run build:gh-pages   # Build for GitHub Pages deployment
+bun run deploy        # Build for GitHub Pages, then deploy via angular-cli-ghpages
+bun run ng extract-i18n --output-path src/locale  # Extract translatable strings
 ```
 
-**No lint or typecheck scripts defined.** The project relies on Angular CLI build (`ng build`) to catch TS errors. Run `pnpm build` to verify types.
+**No lint or typecheck scripts defined.** The project relies on Angular CLI build (`ng build`) to catch TS errors. Run `bun run build` to verify types.
 
 ## Architecture
 
@@ -32,26 +32,22 @@ pnpm ng extract-i18n --output-path src/locale  # Extract translatable strings
 
 ## Internationalization (i18n)
 
-- **Per-locale builds, NOT a route param**: i18n uses `@angular/localize`'s **subPath** mechanism (`angular.json` → `projects.portfolio-app.i18n`). Each locale is compiled into its own separate build; the locale is baked in at build time, it is **not** a runtime `/:lang` route segment. There is no `/:lang` route parameter anywhere — application routes are plain (`/home`, `/projects`, `/articles`, `/articles/:slug`, ...).
-- **Source locale**: `en`, `subPath: ""` → served at the site **root** (`/home`, `/articles`, ...).
-- **Target locale**: `fr`, `subPath: "fr"` → served under **`/fr/`** (`/fr/home`, `/fr/articles`, ...). Add more locales in `angular.json` → `i18n.locales`.
-- **URL structure**: en at `/…`, fr at `/fr/…`. The `/fr/` prefix is a build-output directory, not something the router matches — the `fr` build's `<base href="/fr/">` makes all its in-app links resolve under `/fr/`.
-- **Default redirect**: `/` → `/home` (`app.routes.ts`); no locale in the redirect target.
-- **Admin**: English-only (not translated).
-- **Translation files**: `src/locale/messages.json` (source), `src/locale/messages.fr.json` (French).
-- **File layout**: Angular's simple-JSON parser only accepts a **flat** `translations` map of `id → string` (`SimpleJsonTranslationParser`); nested objects are not a supported format. To keep the files navigable, both are instead grouped into blank-line-separated blocks in a fixed order (Header, Navigation, Footer, Shared UI, Auth, Profile, Feedback, Home, About, Projects, Articles, Tools, Contact, Privacy, Not found, Admin). **The two files must stay in the same key order** so they can be diffed side by side. Blank lines are legal JSON whitespace and survive the build; `extract-i18n` does *not* preserve them (see below).
-- **Template marking**: `i18n="desc@@stableId"` on elements (always give an explicit `@@id`), `i18n-{attr}` for attributes.
-- **TS string marking**: `$localize` tagged template literals (no explicit import -  global via polyfill).
-- **Type declaration**: `src/types/localize.d.ts` declares `$localize` globally.
-- **Build**: `pnpm build --localize` runs the build **once per locale**, emitting `dist/portfolio-app/browser/` (en, at root) and `dist/portfolio-app/browser/fr/`. Prerendering runs once per locale, so prerendered article routes exist under both `/…` and `/fr/…`.
-- **Prerender params**: for `articles/:slug`, `getPrerenderParams` enumerates **published slugs only** (drafts excluded) — it does **not** cross-product slug × lang. The per-locale build already covers en/fr; enumerating lang here would produce broken/duplicated routes.
-- **Extraction**: `pnpm ng extract-i18n --output-path src/locale` to regenerate `messages.json`. It rewrites the file flat and unsectioned, in template-scan order — after running it, re-apply the section grouping and mirror any new keys into `messages.fr.json` in the same position.
-- **English copy lives in the templates**, not in `messages.json`. The `en` build renders the text inside the `i18n` element; `messages.json` is extraction *output*. Editing it alone changes nothing on the English site.
-- **Language switcher**: Header component toggles between the root (`/…`) and `/fr/…` output paths; it is route-agnostic (adds/strips the `/fr/` prefix), not a route param change.
+- **Source locale**: `en-US`
+- **Target locales**: `fr` (expandable in `angular.json` → `i18n.locales`)
+- **URL structure**: `/en/...` and `/fr/...` prefixes via `/:lang` route parameter
+- **Default redirect**: `/` → `/en/home`
+- **Admin**: English-only (not translated)
+- **Translation files**: `src/locale/messages.xlf` (source), `src/locale/messages.fr.xlf` (French)
+- **Template marking**: `i18n` attribute on elements, `i18n-{attr}` for attributes
+- **TS string marking**: `$localize` tagged template literals (no explicit import — global via polyfill)
+- **Type declaration**: `src/types/localize.d.ts` declares `$localize` globally
+- **Build**: `bun run build --localize` generates `dist/portfolio-app/browser/en-US/` and `dist/portfolio-app/browser/fr/`
+- **Extraction**: `bun run ng extract-i18n --output-path src/locale` to regenerate `messages.xlf`
+- **Language switcher**: Header component toggles between `/en/...` and `/fr/...` routes
 
 ## Key Conventions
 
-- **Package manager**: pnpm. Do not use npm or yarn.
+- **Package manager**: bun. Do not use npm, yarn, or pnpm. Bun blocks postinstall scripts by default; packages that need them are listed in `trustedDependencies` in `package.json`.
 - **Component prefix**: `app` (configured in `angular.json`)
 - **Styling -  keep it DRY**: Plain CSS with CSS custom properties. No Tailwind, no SCSS. `src/styles.css` (~1600 lines) already defines design tokens and utility classes for almost everything -  **reuse them, do not hardcode.** Before writing a new rule, check `src/styles.css` for an existing token or class.
   - **Use tokens, not literals**: colors (`--color-primary-*`, `--color-success/warning/danger/info-*`), text (`--text-primary/secondary/tertiary/link/link-hover/...`), surfaces (`--surface-base/raised/overlay/sunken/hover/...`), borders (`--border-subtle/default/emphasis/focus/...`), shadows/depth (`--elevation-0..5`, `--shadow-primary/...`), motion (`--motion-duration-fast`, `--motion-ease-out`). Never paste a raw hex, `rgba()`, box-shadow, or transition duration that a token already covers.

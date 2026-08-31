@@ -17,14 +17,7 @@ on:
       - "scripts/**"
       - "angular.json"
       - "package.json"
-      - "pnpm-lock.yaml"
-      - "deploy/portfolio-frontend@.service"
-      - ".github/workflows/deploy.yml"
-  workflow_dispatch:
-
-concurrency:
-  group: deploy-frontend-${{ github.ref }}
-  cancel-in-progress: false
+      - "bun.lock"
 
 env:
   NODE_VERSION: "24"
@@ -37,20 +30,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          version: ${{ env.PNPM_VERSION }}
+          bun-version: latest
 
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Build Angular SSR
-        run: pnpm build
+        run: bun run build
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
