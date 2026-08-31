@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TechnologiesService, Technology } from '../../core/services/technologies.service';
+import { downloadCV } from '../../core/constants/cv';
 import { TechBannerComponent } from '../../shared/ui/tech-banner/tech-banner.component';
 
 interface TechCategory {
@@ -114,13 +115,5 @@ export class AboutComponent {
     { name: 'Teamwork', detail: 'Soft Skill' }
   ];
 
-  cvPathEn = 'assets/docs/ABENA_ALEX_NELSON_RYAN_cv-en.pdf';
-  cvPathFr = 'assets/docs/ABENA_ALEX_NELSON_RYAN_cv-fr.pdf';
-
-  downloadCV(lang: 'en' | 'fr'): void {
-    const link = document.createElement('a');
-    link.href = lang === 'en' ? this.cvPathEn : this.cvPathFr;
-    link.download = lang === 'en' ? 'ABENA_ALEX_NELSON_RYAN_cv-en.pdf' : 'ABENA_ALEX_NELSON_RYAN_cv-fr.pdf';
-    link.click();
-  }
+  readonly downloadCV = downloadCV;
 }

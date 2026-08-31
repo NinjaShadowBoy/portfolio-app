@@ -1,4 +1,3 @@
-
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, computed, effect, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';

@@ -46,6 +46,17 @@
     <h2 i18n="Project detail challenges heading@@projectDetailChallenges">Challenges</h2>
     <p>{{ project.challenges }}</p>
   </div>
+  @if (project.photoUrls && project.photoUrls.length > 0) {
+  <div class="gallery">
+    <h2 i18n="Project detail screenshots heading@@projectDetailScreenshots">Project Screenshots</h2>
+    <app-carousel [photoUrls]="project.photoUrls" [projectName]="project.name" />
+  </div>
+  } @else {
+  <div class="gallery">
+    <h2 i18n="Project detail screenshots heading@@projectDetailScreenshots">Project Screenshots</h2>
+    <p class="no-photos" i18n="Project detail no screenshots message@@projectDetailNoScreenshots">No screenshots available yet.</p>
+  </div>
+  }
 
   <!-- Structured feedback (critique / suggestion / feature request) -->
   <app-feedback [projectId]="project.id" />

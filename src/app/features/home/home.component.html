@@ -62,9 +62,29 @@
     </article>
   </div>
 
-  <a class="many-more-link" routerLink="/about" i18n="Home page many more technologies link@@homeManyMore">
-    And many more &rarr;
-  </a>
+  <!-- Frameworks Banner (Right to Left) -->
+  <div class="category-section">
+    <h3 i18n="Home page frameworks section heading@@homeFrameworks">Frameworks</h3>
+    <app-tech-banner [technologies]="frameworks" direction="right" [speed]="20" />
+  </div>
+
+  <!-- Tools Banner (Left to Right) -->
+  <div class="category-section">
+    <h3 i18n="Home page tools section heading@@homeTools">Tools</h3>
+    <app-tech-banner [technologies]="tools" direction="left" [speed]="20" />
+  </div>
+
+  <!-- Frameworks Banner (Right to Left) -->
+  <div class="category-section">
+    <h3 i18n="Home page frameworks section heading@@homeFrameworks">Frameworks</h3>
+    <app-tech-banner [technologies]="frameworks" direction="right" [speed]="20" />
+  </div>
+
+  <!-- Tools Banner (Left to Right) -->
+  <div class="category-section">
+    <h3 i18n="Home page tools section heading@@homeTools">Tools</h3>
+    <app-tech-banner [technologies]="tools" direction="left" [speed]="20" />
+  </div>
 </section>
 
 <!-- Reusable orbiting ring: logos billboarded so they always face the viewer -->

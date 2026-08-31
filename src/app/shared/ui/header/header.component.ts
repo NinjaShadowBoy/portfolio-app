@@ -1,4 +1,3 @@
-
 import { Component, inject, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router, RouterLinkActive } from '@angular/router';
@@ -6,6 +5,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { IdentityService } from '../../../core/services/identity.service';
 import { SocialLinksService } from '../../../core/services/social-links.service';
 import { ThemeService } from '../../../core/services/theme.service';
+import { downloadCV } from '../../../core/constants/cv';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 import { FlagComponent } from '../flag/flag.component';
 
@@ -29,6 +29,14 @@ export class HeaderComponent {
   private themeService = inject(ThemeService);
   private router = inject(Router);
   readonly currentLang = inject(LOCALE_ID);
+  private readonly otherLang = this.currentLang === 'en' ? 'fr' : 'en';
+
+  navItems: { label: string; link: string }[] = [
+    { label: $localize`:Nav home link@@navHome:Home`, link: '/home' },
+    { label: $localize`:Nav projects link@@navProjects:Projects`, link: '/projects' },
+    { label: $localize`:Nav about link@@navAbout:About Me`, link: '/about' },
+    { label: $localize`:Nav contact link@@navContact:Contact Me`, link: '/contact' },
+  ];
 
   isAuthenticated = this.auth.isAuthenticated;
   isAdmin = this.auth.isAdmin;
@@ -38,33 +46,15 @@ export class HeaderComponent {
   currentTheme = this.themeService.currentTheme;
 
   isMenuOpen = false;
-  cvPathEn = 'assets/docs/ABENA_ALEX_NELSON_RYAN_cv-en.pdf';
-  cvPathFr = 'assets/docs/ABENA_ALEX_NELSON_RYAN_cv-fr.pdf';
 
-  get langLabel(): string {
-    return this.currentLang === 'en' ? 'FR' : 'EN';
+  readonly langLabel = this.otherLang.toUpperCase();
+  readonly langAriaLabel = this.otherLang === 'fr' ? 'Switch to French' : 'Switch to English';
+
+  toggleLanguage() {
+    window.location.href = `/${this.otherLang}${this.router.url}`;
   }
 
-  /** The language the toggle switches TO — drives the flag shown on it. */
-  get targetLang(): 'en' | 'fr' {
-    return this.currentLang === 'en' ? 'fr' : 'en';
-  }
-
-  get langAriaLabel(): string {
-    return this.currentLang === 'en' ? 'Switch to French' : 'Switch to English';
-  }
-
-  toggleLanguage(): void {
-    const pathWithoutLocale = this.router.url.replace(/^\/(?:en|fr)(?=\/|$)/, '') || '/home';
-    window.location.assign(this.currentLang === 'fr' ? pathWithoutLocale : `/fr${pathWithoutLocale}`);
-  }
-
-  downloadCV(lang: 'en' | 'fr'): void {
-    const link = document.createElement('a');
-    link.href = lang === 'en' ? this.cvPathEn : this.cvPathFr;
-    link.download = lang === 'en' ? 'ABENA_ALEX_NELSON_RYAN_cv-en.pdf' : 'ABENA_ALEX_NELSON_RYAN_cv-fr.pdf';
-    link.click();
-  }
+  readonly downloadCV = downloadCV;
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;

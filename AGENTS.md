@@ -22,10 +22,9 @@ pnpm ng extract-i18n --output-path src/locale  # Extract translatable strings
 
 ## Architecture
 
-- **SSR modes** (`src/app/app.routes.server.ts`) — routes carry **no `/:lang` prefix** (locale is a build-time subPath, see i18n below):
-  - `Prerender`: `articles`, `articles/:slug` (the article detail route supplies `getPrerenderParams` returning **slugs only** — the en/fr split is handled by the per-locale build, not by prerender params). This is the repo's first-ever `Prerender` route.
+- **SSR modes** (`src/app/app.routes.server.ts`):
   - `Client-only`: `admin`, `oauth2/redirect`
-  - `Server` (default): all other routes including `about`, `contact`, `login`, `home`, `projects`, and the `**` catch-all
+  - `Server` (default): all other routes including `home`, `projects`, `about`, `contact`, `login`
 - **Entry points**: `src/main.ts` (browser), `src/main.server.ts` (SSR bootstrap), `src/server.ts` (Express server)
 - **Server listens** on `PORT` env var or `4000`
 - **Backend API**: `http://localhost:8081/portfolio` (dev), `https://vps.alexabena.me/portfolio` (prod) -  defined in `src/environments/`
@@ -78,7 +77,6 @@ Lighthouse CI is configured (`lighthouserc.json`) with strict thresholds. If mod
 ## Gotchas
 
 - The `public/` directory is copied as-is to the build output (favicon, 404.html, .nojekyll, _headers).
-- `src/assets/` is mapped to `/assets` in the build. Do not reference `src/assets` directly in component templates -  use `assets/` path.
-- `index.html` contains inline critical CSS and SPA routing hack for GitHub Pages -  edit carefully.
-- `src/app/app.routes.server.ts` render modes use bare paths (no `/:lang`). `articles` / `articles/:slug` are `Prerender` (with slug-only `getPrerenderParams`); `admin` / `oauth2/redirect` are `Client`; everything else falls through the `**` `Server` default.
+- `src/assets/` is mapped to `/assets` in the build. Do not reference `src/assets` directly in component templates — use `assets/` path.
+- `index.html` contains inline critical CSS and SPA routing hack for GitHub Pages — edit carefully.
 - The `.htaccess` file is empty; SPA routing is handled by the GitHub Pages script in `index.html`.
