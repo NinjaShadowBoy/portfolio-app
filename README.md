@@ -32,29 +32,37 @@ mounted at `/portfolio/v1`.
 
 ## Getting started
 
-The package manager is **pnpm**. npm and yarn will produce a lockfile nobody
-else uses.
+You need [Bun](https://bun.sh) (the package manager, see `bun.lock`) and
+Node.js 24 (the version CI and the VPS run).
 
 ```bash
-pnpm install
-pnpm start                  # dev server at localhost:4200
+git clone https://github.com/NinjaShadowBoy/portfolio-app.git
+cd portfolio-app
+bun install
+node scripts/build-content.mjs   # generate src/generated/ from src/content/
+bun start                        # dev server at http://localhost:4200
 ```
+
+In development the site calls the API at `http://localhost:8081/portfolio/v1`
+(`src/environments/environment.ts`). Run
+[portfolio-backend-go](https://github.com/NinjaShadowBoy/portfolio-backend-go)
+locally if you want projects, feedback, login and contact to work.
 
 ```bash
-pnpm content:build          # regenerate src/generated/ from src/content/
-pnpm build                  # content:build, then ng build, into dist/portfolio-app/
-pnpm build --localize       # one build per locale (en at root, fr under /fr/)
-pnpm serve                  # run the built SSR server (PORT, or 4000)
-pnpm test                   # Karma/Jasmine watcher
-pnpm test:content           # article pipeline tests, against scripts/__fixtures__/
-pnpm run deploy             # GitHub Pages via angular-cli-ghpages
+node scripts/build-content.mjs   # regenerate src/generated/ after editing articles
+bun run build                    # ng build, into dist/portfolio-app/
+bun run serve                    # run the built SSR server (PORT, or 4000)
+bun run test                     # Karma/Jasmine watcher
+bun run test:fs-cp-retry         # tests for the copy-retry build helper
+bun run deploy                   # GitHub Pages via angular-cli-ghpages
 ```
 
-There is no lint or typecheck script. `pnpm build` is the type check. There is
+There is no lint or typecheck script. The build is the type check. There is
 no e2e framework either.
 
-`src/generated/` is build output: never edit it, and note that a bare `ng build`
-fails without it, which is why `pnpm build` chains `content:build` first.
+`src/generated/` is build output and is not committed: never edit it, and run
+`node scripts/build-content.mjs` before `ng serve` or `ng build`, which both
+fail without it.
 
 ## Where things are
 
