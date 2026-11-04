@@ -17,26 +17,22 @@ describe('UserAvatarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should display the first letter of the user name', () => {
     fixture.componentRef.setInput('userName', 'John Doe');
     fixture.detectChanges();
-    expect(component.initials).toBe('J');
+    expect(component.initials()).toBe('J');
   });
 
   it('should display uppercase initial', () => {
     fixture.componentRef.setInput('userName', 'alice');
     fixture.detectChanges();
-    expect(component.initials).toBe('A');
+    expect(component.initials()).toBe('A');
   });
 
   it('should handle empty userName', () => {
     fixture.componentRef.setInput('userName', '');
     fixture.detectChanges();
-    expect(component.initials).toBe('');
+    expect(component.initials()).toBe('');
   });
 
   it('should apply correct size class', () => {

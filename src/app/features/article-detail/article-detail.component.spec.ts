@@ -89,11 +89,6 @@ describe('ArticleDetailComponent', () => {
     fixture.detectChanges();
   }
 
-  it('should create', async () => {
-    await setup();
-    expect(fixture.componentInstance).toBeTruthy();
-  });
-
   it('renders the title and meta row from the manifest summary', async () => {
     await setup();
     const el = fixture.nativeElement as HTMLElement;

@@ -18,10 +18,6 @@ describe('NotificationContainerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should display notifications from the service', () => {
     notificationService.success('Test success message');
     fixture.detectChanges();

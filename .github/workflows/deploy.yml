@@ -1,13 +1,13 @@
 name: Deploy Frontend
 
-# Builds the Angular SSR bundle, scp's it to a fresh release directory on the
-# VPS, then repoints the `current` symlink and restarts the systemd --user
-# service. Pushing to `main` deploys production; `staging` deploys the
-# staging instance.
+# Builds the SSR image, pushes it to GHCR, then runs the Ansible deploy
+# playbook from the infra repo against the VPS. Pushing to `main` deploys
+# production; `staging` deploys the staging instance.
 #
-# The frontend holds no secrets - apiBaseUrl is compiled into the browser
-# bundle at build time - so .env on the VPS is only PORT/DEPLOY_ENV, written
-# fresh each deploy.
+# Every image is tagged with the commit SHA and the playbook is told that
+# exact tag, so a rollback is re-running the workflow (or the playbook by
+# hand) with an older SHA. No files are copied to the box: the VPS only ever
+# pulls images.
 on:
   push:
     branches: [main, staging]
@@ -15,41 +15,61 @@ on:
       - "src/**"
       - "public/**"
       - "scripts/**"
+      - "otel/**"
       - "angular.json"
       - "package.json"
       - "bun.lock"
+      - "Dockerfile"
+      - ".dockerignore"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+# Never let two deploys of the same branch overlap on the box.
+concurrency:
+  group: deploy-frontend-${{ github.ref }}
+  cancel-in-progress: false
 
 env:
-  NODE_VERSION: "24"
-  PNPM_VERSION: "11"
+  IMAGE: ghcr.io/${{ github.repository_owner }}/portfolio-app
 
 jobs:
   build:
-    name: Build SSR bundle
+    name: Build & push image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
+      - id: meta
+        name: Compute image tag
+        run: echo "tag=sha-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
         with:
-          bun-version: latest
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/setup-node@v4
+      # Two tags per build: the immutable SHA tag the deploy pins, and a
+      # moving branch tag for humans browsing the registry.
+      - uses: docker/build-push-action@v6
         with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Build Angular SSR
-        run: bun run build
-
-      - name: Upload release artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-${{ github.sha }}
-          path: dist/portfolio-app
-          retention-days: 7
+          context: .
+          push: true
+          build-args: |
+            VERSION=${{ steps.meta.outputs.tag }}
+            NG_CONFIGURATION=${{ github.ref_name == 'main' && 'production' || 'staging' }}
+          tags: |
+            ${{ env.IMAGE }}:${{ steps.meta.outputs.tag }}
+            ${{ env.IMAGE }}:${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy:
     name: Deploy to VPS
@@ -59,50 +79,40 @@ jobs:
     env:
       DEPLOY_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
     steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
+      # The Ansible project lives in the infra repo; INFRA_REPO is a repo
+      # variable like "NinjaShadowBoy/vps-infra". INFRA_REPO_TOKEN is
+      # only needed if that repo is private.
+      - uses: actions/checkout@v4
         with:
-          name: frontend-dist
-          path: dist/
+          repository: ${{ vars.INFRA_REPO }}
+          token: ${{ secrets.INFRA_REPO_TOKEN || github.token }}
 
-      - name: Deploy to VPS
-        uses: burnett01/rsync-deployments@7.0.1
+      - uses: actions/setup-python@v5
         with:
-          switches: -avzr --delete
-          path: dist/portfolio-app/
-          remote_path: ${{ vars.APP_PATH }}/${{ env.DEPLOY_ENV }}/dist/
-          remote_host: ${{ secrets.VPS_HOST }}
-          remote_user: ${{ secrets.VPS_USER }}
-          remote_key: ${{ secrets.VPS_SSH_KEY }}
+          python-version: "3.12"
 
-      # New, self-contained directory per deploy - nothing on the box is
-      # overwritten until the symlink swap below, so a failed scp never
-      # leaves a half-written release live.
-      - name: Copy release to VPS
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          source: release/dist
-          target: ${{ vars.APP_PATH }}/${{ steps.vars.outputs.env }}/releases/${{ github.sha }}/
-          strip_components: 1
+      - name: Install Ansible
+        run: |
+          pip install --quiet ansible-core
+          ansible-galaxy collection install -r requirements.yml
 
-      # One SSH session: write .env, activate the release, restart, verify,
-      # prune old releases.
-      - name: Deploy release
-        uses: appleboy/ssh-action@v1.2.0
+      - name: Configure SSH and vault
+        run: |
+          umask 077
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > ~/.vault_pass
+
+      - name: Run deploy playbook
         env:
-          DEPLOY_ENV: ${{ steps.vars.outputs.env }}
-          FRONTEND_PORT: ${{ steps.vars.outputs.port }}
-          RELEASE_SHA: ${{ github.sha }}
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          envs: DEPLOY_ENV,FRONTEND_PORT,RELEASE_SHA
-          script: |
-            cd ${{ vars.APP_PATH }}/${{ env.DEPLOY_ENV }}
-            pm2 restart ecosystem.config.js --env ${{ env.DEPLOY_ENV }} || \
-            pm2 start ecosystem.config.js --env ${{ env.DEPLOY_ENV }}
-            pm2 save
+          ANSIBLE_VAULT_PASSWORD_FILE: ~/.vault_pass
+        run: |
+          ansible-playbook deploy.yml \
+            -i inventory/hosts.yml \
+            --private-key ~/.ssh/deploy_key \
+            -e "ansible_host=${{ secrets.VPS_HOST }}" \
+            -e "ansible_user=${{ secrets.VPS_USER }}" \
+            -e "target_env=${{ env.DEPLOY_ENV }}" \
+            -e "app=portfolio" -e "service=frontend" \
+            -e "frontend_image_tag=${{ needs.build.outputs.tag }}"

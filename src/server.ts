@@ -48,20 +48,22 @@ app.use((req, res, next) => {
 });
 
 /**
- * Start the server if this module is the main entry point, or it is ran via PM2.
+ * Start the server if this module is the main entry point.
  * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
  *
- * Bound to 127.0.0.1, not all interfaces: nginx is the only intended public
- * path, and there is no container boundary enforcing that for us.
+ * Bound to 127.0.0.1 by default so a bare-metal run stays private behind
+ * nginx. The container image sets HOST=0.0.0.0 because there Docker's port
+ * mapping is the boundary.
  */
-if (isMainModule(import.meta.url) || process.env['pm_id']) {
+if (isMainModule(import.meta.url)) {
   const port = Number(process.env['PORT']) || 4000;
-  app.listen(port, '127.0.0.1', (error) => {
+  const host = process.env['HOST'] || '127.0.0.1';
+  app.listen(port, host, (error) => {
     if (error) {
       throw error;
     }
 
-    console.log(`Node Express server listening on http://localhost:${port}`);
+    console.log(`Node Express server listening on http://${host}:${port}`);
   });
 }
 

@@ -1,6 +1,5 @@
-import { Component, inject, input, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { forkJoin } from 'rxjs';
+import { Component, ElementRef, inject, input, output, signal, viewChild } from '@angular/core';
+import { finalize, forkJoin } from 'rxjs';
 import { PhotoService } from '../../../../core/services/photo.service';
 import { ProjectDataService } from '../../../../core/services/project-data.service';
 import { NotificationService } from '../../../../core/services/notification.service';
@@ -10,7 +9,6 @@ import { environment } from '../../../../../environments/environment';
 @Component({
   selector: 'app-photo-manager',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './photo-manager.component.html',
   styleUrls: ['./photo-manager.component.css'],
 })
@@ -22,61 +20,46 @@ export class PhotoManagerComponent {
   project = input.required<Project>();
   close = output<void>();
 
-  selectedFiles: File[] = [];
+  private fileInput = viewChild<ElementRef<HTMLInputElement>>('photoInput');
+
+  selectedFiles = signal<File[]>([]);
   isUploadingPhotos = signal(false);
+  /** Photo records store API-relative paths; the origin is prepended for display. */
   apiBaseUrl = environment.apiBaseUrl.replace('/api/v1', '');
 
   onFilesSelected(event: Event) {
-    const inputEl = event.target as HTMLInputElement;
-    if (inputEl.files) {
-      this.selectedFiles = Array.from(inputEl.files);
-    }
+    this.selectedFiles.set(Array.from((event.target as HTMLInputElement).files ?? []));
   }
 
   uploadPhotos() {
-    const proj = this.project();
-    if (!proj) {
-      this.notificationService.error($localize`:@@photoNoProject:No project selected`);
-      return;
-    }
-
-    if (this.selectedFiles.length === 0) {
+    const files = this.selectedFiles();
+    if (files.length === 0) {
       this.notificationService.error($localize`:@@photoSelectRequired:Please select at least one photo to upload`);
       return;
     }
 
     this.isUploadingPhotos.set(true);
-
-    const uploadObservables = this.selectedFiles.map(file =>
-      this.photoService.uploadProjectPhoto(proj.id, file)
-    );
-
-    forkJoin(uploadObservables).subscribe({
-      next: (results) => {
-        this.notificationService.success(
-          $localize`:@@photoUploadSuccess:Successfully uploaded ${results.length} photo(s)`
-        );
-        this.projectService.refreshProjects();
-        this.selectedFiles = [];
-        this.isUploadingPhotos.set(false);
-
-        const fileInput = document.getElementById('photoInput') as HTMLInputElement;
-        if (fileInput) {
-          fileInput.value = '';
-        }
-      },
-      error: (err) => {
-        console.error('Error uploading photos:', err);
-        this.notificationService.error($localize`:@@photoUploadFailed:Failed to upload some photos`);
-        this.isUploadingPhotos.set(false);
-      }
-    });
+    forkJoin(files.map((file) => this.photoService.uploadProjectPhoto(this.project().id, file)))
+      .pipe(finalize(() => this.isUploadingPhotos.set(false)))
+      .subscribe({
+        next: (results) => {
+          this.notificationService.success(
+            $localize`:@@photoUploadSuccess:Successfully uploaded ${results.length} photo(s)`
+          );
+          this.projectService.refreshProjects();
+          this.selectedFiles.set([]);
+          const inputEl = this.fileInput()?.nativeElement;
+          if (inputEl) inputEl.value = '';
+        },
+        error: (err) => {
+          console.error('Error uploading photos:', err);
+          this.notificationService.error($localize`:@@photoUploadFailed:Failed to upload some photos`);
+        },
+      });
   }
 
   deletePhoto(photoId: number) {
-    if (!confirm($localize`:@@photoDeleteConfirm:Are you sure you want to delete this photo?`)) {
-      return;
-    }
+    if (!confirm($localize`:@@photoDeleteConfirm:Are you sure you want to delete this photo?`)) return;
 
     this.photoService.deletePhoto(photoId).subscribe({
       next: () => {
@@ -86,7 +69,7 @@ export class PhotoManagerComponent {
       error: (err) => {
         console.error('Error deleting photo:', err);
         this.notificationService.error($localize`:@@photoDeleteFailed:Failed to delete photo`);
-      }
+      },
     });
   }
 

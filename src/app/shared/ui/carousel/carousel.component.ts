@@ -1,10 +1,11 @@
 import { Component, HostListener, PLATFORM_ID, Renderer2, effect, inject, input, signal, ElementRef, viewChild } from '@angular/core';
-import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+
+const AUTO_PLAY_DELAY = 5000;
 
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css'],
 })
@@ -29,40 +30,18 @@ export class CarouselComponent {
   private readonly teleportLightbox = effect(() => {
     if (!this.isBrowser || !this.isFullscreen()) return;
     const el = this.lightbox()?.nativeElement;
-    if (el) {
-      this.renderer.appendChild(this.document.body, el);
-    }
-  });
-  private autoPlayInterval: ReturnType<typeof setInterval> | null = null;
-  private autoPlayDelay = 5000; // 5 seconds
-
-  private readonly autoPlayEffect = effect(() => {
-    const urls = this.photoUrls();
-    if (urls.length <= 1) {
-      this.stopAutoPlay();
-      return;
-    }
-
-    this.startAutoPlay();
-    return () => this.stopAutoPlay();
+    if (el) this.renderer.appendChild(this.document.body, el);
   });
 
-  private startAutoPlay(): void {
-    if (this.photoUrls().length <= 1) return;
-
-    this.stopAutoPlay();
-    this.autoPlayInterval = setInterval(() => {
-      if (!this.isHovered() && !this.isFullscreen()) {
-        this.nextImage();
-      }
-    }, this.autoPlayDelay);
-  }
-
-  private stopAutoPlay(): void {
-    if (this.autoPlayInterval) {
-      clearInterval(this.autoPlayInterval);
-    }
-  }
+  // Auto-advance while there is more than one image and nobody is looking closely.
+  private readonly autoPlay = effect((onCleanup) => {
+    // Server render waits for the zone to settle; an interval there never ends.
+    if (!this.isBrowser || this.photoUrls().length <= 1) return;
+    const interval = setInterval(() => {
+      if (!this.isHovered() && !this.isFullscreen()) this.nextImage();
+    }, AUTO_PLAY_DELAY);
+    onCleanup(() => clearInterval(interval));
+  });
 
   openFullscreen(): void {
     this.isFullscreen.set(true);
@@ -74,9 +53,7 @@ export class CarouselComponent {
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    if (this.isFullscreen()) {
-      this.closeFullscreen();
-    }
+    this.closeFullscreen();
   }
 
   onHover(): void {
@@ -88,41 +65,25 @@ export class CarouselComponent {
   }
 
   nextImage(): void {
-    if (this.photoUrls().length > 0) {
-      this.fadeOutAndChangeImage(() => {
-        this.currentImageIndex.update((index) => (index + 1) % this.photoUrls().length);
-      });
-    }
+    this.goToImage(this.currentImageIndex() + 1);
   }
 
   previousImage(): void {
-    if (this.photoUrls().length > 0) {
-      this.fadeOutAndChangeImage(() => {
-        this.currentImageIndex.update(
-          (index) => (index - 1 + this.photoUrls().length) % this.photoUrls().length
-        );
-      });
-    }
+    this.goToImage(this.currentImageIndex() - 1);
   }
 
+  /** Show the image at `index`, wrapping around at both ends, with a fade. */
   goToImage(index: number): void {
-    if (index >= 0 && index < this.photoUrls().length) {
-      this.fadeOutAndChangeImage(() => {
-        this.currentImageIndex.set(index);
-      });
-    }
-  }
+    const count = this.photoUrls().length;
+    if (count === 0) return;
+    const target = ((index % count) + count) % count;
 
-  private fadeOutAndChangeImage(changeImageCallback: () => void): void {
     const image = this.carouselImage()?.nativeElement;
-    if (image) {
-      image.style.opacity = '0.3';
-      setTimeout(() => {
-        changeImageCallback();
-        setTimeout(() => {
-          image.style.opacity = '1';
-        }, 50);
-      }, 300);
-    }
+    if (!image) return;
+    image.style.opacity = '0.3';
+    setTimeout(() => {
+      this.currentImageIndex.set(target);
+      setTimeout(() => (image.style.opacity = '1'), 50);
+    }, 300);
   }
 }

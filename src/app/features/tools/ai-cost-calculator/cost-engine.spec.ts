@@ -30,20 +30,20 @@ function makeInputs(overrides: Partial<CalculatorInputs> = {}): CalculatorInputs
 
 describe('estimateCost', () => {
   it('computes exact per-request, per-day, per-month and per-user costs for a known model', () => {
-    // Claude Sonnet 5: $2 in / $10 out / $0.2 cache-read per MTok.
-    const sonnet = LLM_PRICING.find((m) => m.id === 'claude-sonnet-5')!;
+    // Claude Sonnet 5.5: $2 in / $10 out / $0.1 cache-read per MTok.
+    const sonnet = LLM_PRICING.find((m) => m.id === 'claude-sonnet-5-5')!;
     const result = estimateCost(
       sonnet,
       makeInputs({ cachedInputShare: 0.7 }),
     );
 
-    // effectiveInputRate = 0.3 * 2 + 0.7 * 0.2 = 0.74
-    // costPerRequest = (1500 * 0.74 + 300 * 10) / 1e6 = 0.00411
+    // effectiveInputRate = 0.3 * 2 + 0.7 * 0.1 = 0.67
+    // costPerRequest = (1500 * 0.67 + 300 * 10) / 1e6 = 0.004005
     expect(result.model).toBe(sonnet);
-    expect(result.costPerRequest).toBeCloseTo(0.00411, 10);
-    expect(result.costPerDay).toBeCloseTo(41.1, 8);
-    expect(result.costPerMonth).toBeCloseTo(1233, 6);
-    expect(result.costPerUserPerMonth).toBeCloseTo(1.233, 8);
+    expect(result.costPerRequest).toBeCloseTo(0.004005, 10);
+    expect(result.costPerDay).toBeCloseTo(40.05, 8);
+    expect(result.costPerMonth).toBeCloseTo(1201.5, 6);
+    expect(result.costPerUserPerMonth).toBeCloseTo(1.2015, 8);
   });
 
   it('bills all input at the full rate when cachedInputShare is 0', () => {

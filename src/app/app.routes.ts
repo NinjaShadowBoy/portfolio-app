@@ -9,7 +9,6 @@ import { ArticleDetailComponent } from './features/article-detail/article-detail
 import { NotFoundComponent } from './features/not-found/not-found.component';
 import { authGuard, contactGuard } from './core/guards/auth.guard';
 import { LoginComponent } from './features/auth/login/login.component';
-import { AdminComponent } from './features/admin/admin.component';
 import { Oauth2RedirectComponent } from './features/auth/oauth2-redirect/oauth2-redirect.component';
 import { GithubDeviceComponent } from './features/auth/github-device/github-device.component';
 import { PrivacyComponent } from './features/privacy/privacy.component';
@@ -86,7 +85,8 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    component: AdminComponent,
+    // Lazy: only admins open it, so its panels stay out of the initial bundle.
+    loadComponent: () => import('./features/admin/admin.component').then((m) => m.AdminComponent),
     data: { breadcrumb: 'Admin' },
     canActivate: [authGuard],
   },

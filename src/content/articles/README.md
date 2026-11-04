@@ -8,7 +8,7 @@ src/content/articles/<slug>/
   fr.md          # optional — a missing translation falls back to the English body
 ```
 
-`pnpm content:build` (chained ahead of `ng build`) compiles this directory into
+`bun run content:build` (chained ahead of `ng build`) compiles this directory into
 `src/generated/`. Sample/fixture articles that exercise the pipeline live under
 `scripts/__fixtures__/articles/` instead, so they never reach the site.
 

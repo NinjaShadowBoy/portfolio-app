@@ -1,15 +1,66 @@
 <section class="admin-container">
   <div class="admin-header">
     <h1 i18n="Admin dashboard heading@@adminDashboardHeading">Admin Dashboard</h1>
-    @if (isAdmin) {
-      <p class="welcome">Welcome, {{ user?.name }} ({{ user?.email }})</p>
+    @if (isAdmin()) {
+      <p class="welcome">Welcome, {{ user()?.name }} ({{ user()?.email }})</p>
     } @else {
       <p class="restricted" i18n="Admin restricted area message@@adminRestricted">Restricted area. You are not authorized.</p>
       <button class="btn-primary" (click)="goHome()" i18n="Admin go home button@@adminGoHome">Go Home</button>
     }
   </div>
 
-  @if (isAdmin) {
+  @if (isAdmin()) {
+    <nav class="admin-tabs">
+      <app-segmented-toggle [options]="tabs" [selected]="tab()" ariaLabel="Admin sections"
+        (selectedChange)="selectTab($event)" />
+    </nav>
+
+    @switch (tab()) {
+      @case ('overview') {
+        <section class="admin-panel">
+          <h2>Overview</h2>
+          @if (statsFailed()) {
+            <p class="panel-empty">Could not load the counts.</p>
+          } @else if (stats(); as s) {
+            <div class="stat-grid">
+              <button type="button" class="stat-card" (click)="selectTab('users')">
+                <span class="stat-value">{{ s.users }}</span>
+                <span class="stat-label">Accounts ({{ s.admins }} admin)</span>
+              </button>
+              <button type="button" class="stat-card" (click)="selectTab('users')">
+                <span class="stat-value">{{ s.anonymousUsers }}</span>
+                <span class="stat-label">Anonymous identities</span>
+              </button>
+              <button type="button" class="stat-card" (click)="selectTab('projects')">
+                <span class="stat-value">{{ s.projects }}</span>
+                <span class="stat-label">Projects</span>
+              </button>
+              <button type="button" class="stat-card" (click)="selectTab('feedback')">
+                <span class="stat-value">{{ s.comments }}</span>
+                <span class="stat-label">Feedback comments</span>
+              </button>
+              <div class="stat-card">
+                <span class="stat-value">{{ s.ratings }}</span>
+                <span class="stat-label">Ratings</span>
+              </div>
+              <button type="button" class="stat-card" [class.attention]="s.unreadMessages > 0" (click)="selectTab('messages')">
+                <span class="stat-value">{{ s.unreadMessages }}</span>
+                <span class="stat-label">Unread messages</span>
+              </button>
+            </div>
+          } @else {
+            <p class="panel-empty">Loading...</p>
+          }
+        </section>
+      }
+      @case ('users') { <app-users-panel /> }
+      @case ('feedback') { <app-feedback-panel /> }
+      @case ('messages') { <app-messages-panel /> }
+      @case ('articles') { <app-articles-panel /> }
+    }
+  }
+
+  @if (isAdmin() && tab() === 'projects') {
     <div class="admin-content">
       <!-- Mode Toggle -->
       <div class="mode-toggle" (click)="toggleJsonMode()">
@@ -50,25 +101,7 @@
                 </div>
                 <p class="project-description">{{ project.description }}</p>
                 <div class="project-meta">
-                  <div class="technologies">
-                    @for (tech of project.technologies; track tech) {
-                      @if (getTechDocUrl(tech); as docUrl) {
-                        <a [href]="docUrl" target="_blank" rel="noopener noreferrer" class="tech-tag" [attr.aria-label]="tech + ' documentation'">
-                          @if (getTechIcon(tech); as iconUrl) {
-                            <img [src]="iconUrl" [alt]="tech" class="tech-icon" width="16" height="16" />
-                          }
-                          <span>{{ tech }}</span>
-                        </a>
-                      } @else {
-                        <span class="tech-tag">
-                          @if (getTechIcon(tech); as iconUrl) {
-                            <img [src]="iconUrl" [alt]="tech" class="tech-icon" width="16" height="16" />
-                          }
-                          <span>{{ tech }}</span>
-                        </span>
-                      }
-                    }
-                  </div>
+                  <app-tech-tags [technologies]="project.technologies" />
                   <a [href]="project.githubLink" target="_blank" class="github-link">
                     <span i18n="Admin view on GitHub link@@adminGitHubLink">View on GitHub →</span>
                   </a>

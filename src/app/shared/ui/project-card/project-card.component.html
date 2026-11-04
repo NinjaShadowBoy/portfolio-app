@@ -21,29 +21,11 @@
   </header>
 
   <div class="project-content">
-    <p class="project-description">{{ getTruncatedDescription() }}</p>
+    <p class="project-description">{{ truncatedDescription() }}</p>
 
     <div class="technologies">
       <strong i18n="Project card technologies label@@projectCardTechnologies">Technologies:</strong>
-      <div class="tech-tags">
-        @for (tech of project().technologies; track tech) {
-          @if (getTechDocUrl(tech); as docUrl) {
-            <a [href]="docUrl" target="_blank" rel="noopener noreferrer" class="tech-tag" [attr.aria-label]="tech + ' documentation'">
-              @if (getTechIcon(tech); as iconUrl) {
-                <img [src]="iconUrl" [alt]="tech" class="tech-icon" width="16" height="16" />
-              }
-              <span>{{ tech }}</span>
-            </a>
-          } @else {
-            <span class="tech-tag">
-              @if (getTechIcon(tech); as iconUrl) {
-                <img [src]="iconUrl" [alt]="tech" class="tech-icon" width="16" height="16" />
-              }
-              <span>{{ tech }}</span>
-            </span>
-          }
-        }
-      </div>
+      <app-tech-tags [technologies]="project().technologies" />
     </div>
 
     <div class="project-actions">

@@ -14,57 +14,54 @@ describe('CtaButtonComponent', () => {
 
     fixture = TestBed.createComponent(CtaButtonComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should display default text', () => {
+  it('should display default text', async () => {
     const compiled = fixture.nativeElement;
     expect(compiled.textContent).toContain('Learn More');
   });
 
-  it('should display custom text', () => {
-    component.text = 'View Details';
-    fixture.detectChanges();
+  it('should display custom text', async () => {
+    fixture.componentRef.setInput('text', 'View Details');
+    await fixture.whenStable();
     const compiled = fixture.nativeElement;
     expect(compiled.textContent).toContain('View Details');
   });
 
-  it('should render as anchor with routerLink', () => {
-    component.routerLink = '/test';
-    fixture.detectChanges();
+  it('should render as anchor with routerLink', async () => {
+    fixture.componentRef.setInput('routerLink', '/test');
+    await fixture.whenStable();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('a')).toBeTruthy();
   });
 
-  it('should render as anchor with href', () => {
-    component.href = 'https://example.com';
-    fixture.detectChanges();
+  it('should render as anchor with href', async () => {
+    fixture.componentRef.setInput('href', 'https://example.com');
+    await fixture.whenStable();
     const compiled = fixture.nativeElement;
     const anchor = compiled.querySelector('a');
     expect(anchor).toBeTruthy();
     expect(anchor.getAttribute('href')).toBe('https://example.com');
   });
 
-  it('should render as button when no link provided', () => {
+  it('should render as button when no link provided', async () => {
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('button')).toBeTruthy();
   });
 
-  it('should apply correct variant class', () => {
-    component.variant = 'primary';
-    fixture.detectChanges();
+  it('should apply correct variant class', async () => {
+    fixture.componentRef.setInput('variant', 'primary');
+    await fixture.whenStable();
     const compiled = fixture.nativeElement;
     const button = compiled.querySelector('.cta-button');
     expect(button.classList.contains('cta-primary')).toBeTruthy();
   });
 
-  it('should render explore icon', () => {
-    component.icon = 'explore';
-    fixture.detectChanges();
+  it('should render explore icon', async () => {
+    fixture.componentRef.setInput('icon', 'explore');
+    await fixture.whenStable();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.icon-explore')).toBeTruthy();
   });

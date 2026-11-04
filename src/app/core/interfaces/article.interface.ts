@@ -67,7 +67,7 @@ export interface TocNode {
   text: string;
   /** Heading level (2 = h2, 3 = h3, ...). */
   level: number;
-  children: TocNode[];
+  children?: TocNode[];
 }
 
 /**

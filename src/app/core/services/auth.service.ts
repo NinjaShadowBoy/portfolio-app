@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, computed, effect, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 import {
   DeviceCodeResponse,
   DevicePollResult,
@@ -10,47 +11,33 @@ import {
   RegisterRequest,
   UserDto,
 } from '../interfaces/auth.interface';
-import { HttpResponse } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { NotificationService } from './notification.service';
 
-const TOKEN_STORAGE_KEY = 'auth.token';
-const USER_STORAGE_KEY = 'auth.user';
+export const TOKEN_STORAGE_KEY = 'auth.token';
+export const USER_STORAGE_KEY = 'auth.user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apiBaseUrl = `${environment.apiBaseUrl}/auth`;
-  private platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private notificationService = inject(NotificationService);
   private http = inject(HttpClient);
-  private readonly isBrowser = isPlatformBrowser(this.platformId);
 
-  // Signals store
-  private tokenSignal = signal<string | null>(this.loadToken());
-  private userSignal = signal<UserDto | null>(this.loadUser());
+  private tokenSignal = signal<string | null>(this.load(TOKEN_STORAGE_KEY));
+  private userSignal = signal<UserDto | null>(this.load(USER_STORAGE_KEY, JSON.parse));
 
-  // Derived state
   readonly token = this.tokenSignal.asReadonly();
   readonly user = this.userSignal.asReadonly();
   readonly isAuthenticated = computed(() => !!this.tokenSignal());
   readonly isAdmin = computed(() => this.userSignal()?.role === 'ADMIN');
 
   constructor() {
+    // Mirror the session into localStorage so it survives reloads.
+    effect(() => this.persist(TOKEN_STORAGE_KEY, this.tokenSignal()));
     effect(() => {
-      if (!this.isBrowser) return;
-
-      const token = this.tokenSignal();
-      if (token) localStorage.setItem(TOKEN_STORAGE_KEY, token);
-      else localStorage.removeItem(TOKEN_STORAGE_KEY);
-    });
-
-    effect(() => {
-      if (!this.isBrowser) return;
-
       const user = this.userSignal();
-      if (user) localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
-      else localStorage.removeItem(USER_STORAGE_KEY);
+      this.persist(USER_STORAGE_KEY, user && JSON.stringify(user));
     });
   }
 
@@ -63,12 +50,10 @@ export class AuthService {
   }
 
   startOAuth2(provider: OAuthProvider) {
-    if (!this.isBrowser) return;
-
-    window.location.assign(`${this.apiBaseUrl}/${provider}`);
+    if (this.isBrowser) window.location.assign(`${this.apiBaseUrl}/${provider}`);
   }
 
-  // GitHub device flow -  for clients without a usable browser redirect. Returns a
+  // GitHub device flow, for clients without a usable browser redirect. Returns a
   // user code + verification URL; the caller then polls pollGitHubDevice().
   startGitHubDevice() {
     return this.http.post<DeviceCodeResponse>(`${this.apiBaseUrl}/github/device`, {});
@@ -83,12 +68,9 @@ export class AuthService {
         { observe: 'response' }
       )
       .pipe(
-        map((res: HttpResponse<DevicePollResult>): DevicePollResult => {
-          if (res.status === 202) {
-            return (res.body as DevicePollResult) ?? { status: 'pending' };
-          }
-          return res.body as LoginResponse;
-        })
+        map((res): DevicePollResult =>
+          res.status === 202 ? res.body ?? { status: 'pending' } : (res.body as LoginResponse)
+        )
       );
   }
 
@@ -98,32 +80,27 @@ export class AuthService {
   }
 
   updateUser(patch: Partial<UserDto>) {
-    const current = this.userSignal();
-    if (current) {
-      this.userSignal.set({ ...current, ...patch });
-    }
+    this.userSignal.update((current) => current && { ...current, ...patch });
   }
 
+  /** Build a session from a bare JWT (OAuth2 redirect). Throws on a malformed token. */
   setSessionFromToken(token: string): LoginResponse {
     const payload = this.decodeToken(token);
-    const email = payload.sub || payload.email || '';
-    const roles = Array.isArray(payload.roles) ? payload.roles : payload.role ? [payload.role] : ['USER'];
-    const role = roles.includes('ADMIN') ? 'ADMIN' : 'USER';
-    const name = payload.name || email.split('@')[0] || 'User';
-    const createdAt = payload.iat
-      ? new Date(payload.iat * 1000).toISOString()
-      : new Date().toISOString();
+    const email = payload['sub'] || payload['email'] || '';
+    const roles: string[] = Array.isArray(payload['roles'])
+      ? payload['roles']
+      : [payload['role'] ?? 'USER'];
     const response: LoginResponse = {
       token,
       user: {
-        id: Number(payload.userId ?? payload.sub),
+        id: Number(payload['userId'] ?? payload['sub']),
         email,
-        name,
-        role,
-        createdAt,
+        name: payload['name'] || email.split('@')[0] || 'User',
+        role: roles.includes('ADMIN') ? 'ADMIN' : 'USER',
+        createdAt: new Date(payload['iat'] ? payload['iat'] * 1000 : Date.now()).toISOString(),
         lastLoginAt: new Date().toISOString(),
       },
-      expiresIn: payload.exp ? payload.exp * 1000 - Date.now() : 3600000,
+      expiresIn: payload['exp'] ? payload['exp'] * 1000 - Date.now() : 3600000,
     };
 
     this.setSession(response);
@@ -136,39 +113,35 @@ export class AuthService {
     this.notificationService.success($localize`:@@logoutSuccess:You have been logged out successfully`);
   }
 
-  private decodeToken(token: string): any {
+  private decodeToken(token: string): Record<string, any> {
     try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
+      const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(
         atob(base64)
           .split('')
-          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .map((c) => '%' + c.charCodeAt(0).toString(16).padStart(2, '0'))
           .join('')
       );
-      return JSON.parse(jsonPayload);
-    } catch (error) {
+      return JSON.parse(json);
+    } catch {
       throw new Error('Failed to decode token');
     }
   }
 
-  private loadToken(): string | null {
+  private load<T = string>(key: string, parse: (raw: string) => T = (raw) => raw as T): T | null {
     if (!this.isBrowser) return null;
-
-    return localStorage.getItem(TOKEN_STORAGE_KEY);
-  }
-
-  private loadUser(): UserDto | null {
-    if (!this.isBrowser) return null;
-
-    const raw = localStorage.getItem(USER_STORAGE_KEY);
-    if (!raw) return null;
+    const raw = localStorage.getItem(key);
+    if (raw === null) return null;
     try {
-      return JSON.parse(raw) as UserDto;
+      return parse(raw);
     } catch {
       return null;
     }
   }
+
+  private persist(key: string, value: string | null): void {
+    if (!this.isBrowser) return;
+    if (value) localStorage.setItem(key, value);
+    else localStorage.removeItem(key);
+  }
 }
-
-

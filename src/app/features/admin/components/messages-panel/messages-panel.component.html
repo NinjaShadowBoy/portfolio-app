@@ -1,0 +1,49 @@
+<section class="admin-panel">
+  <h2>Messages @if (unreadCount() > 0) { <span class="badge badge-unread">{{ unreadCount() }} unread</span> }</h2>
+
+  <div class="panel-toolbar">
+    <label>
+      <input type="checkbox" [checked]="unreadOnly()" (change)="unreadOnly.set($any($event.target).checked)" />
+      Unread only
+    </label>
+  </div>
+
+  @if (failed()) {
+    <p class="panel-empty">Could not load messages.</p>
+  } @else if (visible(); as messages) {
+    @if (messages.length === 0) {
+      <p class="panel-empty">{{ unreadOnly() ? 'No unread messages.' : 'No messages yet.' }}</p>
+    } @else {
+      <ul class="panel-list">
+        @for (message of messages; track message.id) {
+          <li class="panel-item" [class.unread]="!message.isRead">
+            <div class="panel-item-main">
+              <div class="panel-item-title">
+                {{ message.name }}
+                @if (!message.isRead) { <span class="badge badge-unread">Unread</span> }
+                @if (message.isReplied) { <span class="badge badge-success">Replied</span> }
+              </div>
+              <div class="panel-item-meta">{{ message.email }} · {{ message.submittedAt | date: 'medium' }}</div>
+              <p class="panel-item-body">{{ message.message }}</p>
+            </div>
+            <div class="panel-item-actions">
+              <a class="btn-secondary" [href]="replyLink(message)">Reply</a>
+              @if (!message.isRead) {
+                <button type="button" class="btn-secondary" [disabled]="busyId() === message.id"
+                  (click)="markRead(message)">Mark read</button>
+              }
+              @if (!message.isReplied) {
+                <button type="button" class="btn-secondary" [disabled]="busyId() === message.id"
+                  (click)="markReplied(message)">Mark replied</button>
+              }
+              <button type="button" class="btn-delete" [disabled]="busyId() === message.id"
+                (click)="deleteMessage(message)">Delete</button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  } @else {
+    <p class="panel-empty">Loading...</p>
+  }
+</section>

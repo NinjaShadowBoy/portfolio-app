@@ -40,10 +40,6 @@ describe('ProjectCardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should display project name', () => {
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('h3')?.textContent).toContain('Test Project');
@@ -66,12 +62,12 @@ describe('ProjectCardComponent', () => {
     fixture.componentRef.setInput('project', { ...mockProject, description: longDescription });
     fixture.componentRef.setInput('maxDescriptionLength', 150);
     fixture.detectChanges();
-    const truncated = component.getTruncatedDescription();
+    const truncated = component.truncatedDescription();
     expect(truncated.endsWith('...')).toBe(true);
     expect(truncated.length).toBe(153);
   });
 
   it('should not truncate description shorter than maxDescriptionLength', () => {
-    expect(component.getTruncatedDescription()).toBe('A test project');
+    expect(component.truncatedDescription()).toBe('A test project');
   });
 });

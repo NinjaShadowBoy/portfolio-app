@@ -1,34 +1,23 @@
 import { Injectable, signal } from '@angular/core';
-import {
-  Notification,
-  NotificationAction,
-} from '../interfaces/notification.interface';
+import { Notification } from '../interfaces/notification.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+export const DEFAULT_NOTIFICATION_DURATION = 5000;
+
+@Injectable({ providedIn: 'root' })
 export class NotificationService {
   private notificationsSignal = signal<Notification[]>([]);
 
-  public readonly notifications = this.notificationsSignal.asReadonly();
+  readonly notifications = this.notificationsSignal.asReadonly();
 
+  /** Show a notification. A duration of 0 keeps it until dismissed. */
   show(notification: Omit<Notification, 'id'>): string {
-    const id = this.generateId();
-    const newNotification: Notification = {
-      ...notification,
-      id,
-      duration: notification.duration ?? 5000,
-    };
+    const id = Date.now().toString(36) + Math.random().toString(36).substring(2);
+    const duration = notification.duration ?? DEFAULT_NOTIFICATION_DURATION;
 
-    this.notificationsSignal.update((notifications) => [
-      ...notifications,
-      newNotification,
-    ]);
-
-    if (newNotification.duration ?? 5000 > 0) {
-      setTimeout(() => this.dismiss(id), newNotification.duration);
+    this.notificationsSignal.update((list) => [...list, { ...notification, id, duration }]);
+    if (duration > 0) {
+      setTimeout(() => this.dismiss(id), duration);
     }
-
     return id;
   }
 
@@ -49,16 +38,10 @@ export class NotificationService {
   }
 
   dismiss(id: string): void {
-    this.notificationsSignal.update((notifications) =>
-      notifications.filter((n) => n.id !== id)
-    );
+    this.notificationsSignal.update((list) => list.filter((n) => n.id !== id));
   }
 
   clear(): void {
     this.notificationsSignal.set([]);
-  }
-
-  private generateId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substring(2);
   }
 }

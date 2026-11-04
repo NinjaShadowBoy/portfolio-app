@@ -48,11 +48,6 @@ describe('ArticlesComponent', () => {
     fixture.detectChanges();
   }
 
-  it('should create', async () => {
-    await setup([]);
-    expect(fixture.componentInstance).toBeTruthy();
-  });
-
   it('should render one card per manifest entry (drafts already excluded at build)', async () => {
     await setup([
       makeArticle('hello-world', 'Hello World'),

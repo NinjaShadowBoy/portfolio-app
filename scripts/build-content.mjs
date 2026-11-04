@@ -36,7 +36,7 @@ const repoRoot = path.resolve(__dirname, '..');
 // Input/output roots are overridable so the spec can build the checked-in
 // fixtures (scripts/__fixtures__/articles) into a throwaway directory without
 // touching the real src/generated tree, which the build wipes on every run.
-// Unset in normal use: `pnpm content:build` uses the defaults below.
+// Unset in normal use: `bun run content:build` uses the defaults below.
 const contentDir = process.env.CONTENT_DIR
   ? path.resolve(repoRoot, process.env.CONTENT_DIR)
   : path.join(repoRoot, 'src', 'content', 'articles');

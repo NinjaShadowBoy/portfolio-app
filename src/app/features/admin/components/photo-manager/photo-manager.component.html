@@ -13,6 +13,7 @@
           <input
             type="file"
             id="photoInput"
+            #photoInput
             accept="image/jpeg,image/jpg,image/png,image/gif"
             multiple
             (change)="onFilesSelected($event)"
@@ -23,11 +24,11 @@
           </label>
         </div>
 
-        @if (selectedFiles.length > 0) {
+        @if (selectedFiles().length > 0) {
         <div class="selected-files">
-          <p>Selected {{ selectedFiles.length }} file(s):</p>
+          <p>Selected {{ selectedFiles().length }} file(s):</p>
           <ul>
-            @for (file of selectedFiles; track file.name) {
+            @for (file of selectedFiles(); track file.name) {
             <li>{{ file.name }} ({{ (file.size / 1024).toFixed(2) }} KB)</li>
             }
           </ul>

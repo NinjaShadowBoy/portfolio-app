@@ -1,21 +1,16 @@
-import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-user-avatar',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './user-avatar.component.html',
   styleUrls: ['./user-avatar.component.css'],
 })
 export class UserAvatarComponent {
-  userName = input<string>('');
+  userName = input('');
   imageUrl = input<string | null>(null);
   size = input<'small' | 'medium' | 'large' | 'xlarge'>('medium');
-  title = input<string>('');
+  title = input('');
 
-  get initials(): string {
-    if (!this.userName()) return '';
-    return this.userName().charAt(0).toUpperCase();
-  }
+  readonly initials = computed(() => this.userName().charAt(0).toUpperCase());
 }

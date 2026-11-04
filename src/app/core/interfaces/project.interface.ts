@@ -22,6 +22,15 @@ export interface Photo {
   projectId: number;
 }
 
+export type ProjectCreateRequest = Pick<
+  Project,
+  'name' | 'description' | 'technologies' | 'githubLink' | 'challenges' | 'whatILearned'
+> & { featured?: boolean };
+
+export type ProjectUpdateRequest = Partial<ProjectCreateRequest>;
+
+export type ProjectImport = ProjectCreateRequest & { id?: number };
+
 export interface ProjectFilters {
   searchTerm: string;
   technology: string;

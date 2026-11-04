@@ -1,0 +1,13 @@
+.git
+.github
+.angular
+node_modules
+otel/node_modules
+dist
+coverage
+docs
+specs
+deploy
+.tmp-content-spec
+*.md
+!src/**/*.md

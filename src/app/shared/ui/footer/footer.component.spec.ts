@@ -1,39 +1,45 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 
 import { FooterComponent } from './footer.component';
+import { CONTACT_EMAIL, CONTACT_PHONE } from '../../../core/constants/contact';
 
 describe('FooterComponent', () => {
-  let component: FooterComponent;
   let fixture: ComponentFixture<FooterComponent>;
+  let el: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FooterComponent, RouterTestingModule],
+      imports: [FooterComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FooterComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
+    el = fixture.nativeElement;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('shows the current year in the copyright line', () => {
+    expect(el.querySelector('.copyright')?.textContent).toContain(String(new Date().getFullYear()));
   });
 
-  it('should display current year in copyright', () => {
-    const currentYear = new Date().getFullYear();
-    const compiled = fixture.nativeElement;
-    expect(compiled.textContent).toContain(currentYear.toString());
+  it('renders every social link as a new-tab anchor with an accessible label', () => {
+    const links = Array.from(el.querySelectorAll<HTMLAnchorElement>('.social-links a'));
+    expect(links.length).toBeGreaterThan(0);
+    for (const link of links) {
+      expect(link.getAttribute('target')).toBe('_blank');
+      expect(link.getAttribute('rel')).toContain('noopener');
+      expect(link.getAttribute('aria-label')).toBeTruthy();
+    }
   });
 
-  it('should have social links', () => {
-    expect(component.socialLinks.length).toBeGreaterThan(0);
+  it('links the contact email and phone with mailto: and tel:', () => {
+    expect(el.querySelector(`a[href="mailto:${CONTACT_EMAIL}"]`)).toBeTruthy();
+    expect(el.querySelector(`a[href="tel:${CONTACT_PHONE}"]`)).toBeTruthy();
   });
 
-  it('should have contact information', () => {
-    expect(component.contactInfo).toBeDefined();
-    expect(component.contactInfo.email).toBeDefined();
-    expect(component.contactInfo.phone).toBeDefined();
+  it('routes the quick links to their pages', () => {
+    const hrefs = Array.from(el.querySelectorAll('.footer-nav a')).map((a) => a.getAttribute('href'));
+    expect(hrefs).toEqual(['/home', '/projects', '/about', '/contact']);
   });
 });

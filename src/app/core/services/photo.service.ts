@@ -1,70 +1,35 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { CloudinaryService } from './cloudinary.service';
+import { Photo } from '../interfaces/project.interface';
 
-export interface PhotoDto {
-  id: number;
-  photoUrl: string;
-  projectId: number;
-}
-
-export interface PhotoCreateRequest {
-  photoUrl: string;
-  projectId: number;
-}
-
-export interface ProfilePhotoCreateRequest {
-  photoUrl: string;
-}
-
-@Injectable({
-  providedIn: 'root',
-})
+/** Uploads photos to Cloudinary, then records the resulting URL on the backend. */
+@Injectable({ providedIn: 'root' })
 export class PhotoService {
   private http = inject(HttpClient);
   private cloudinary = inject(CloudinaryService);
   private apiUrl = `${environment.apiBaseUrl}/photos`;
 
-  /**
-   * Upload a photo for a specific project
-   * First uploads to Cloudinary, then saves the URL to backend
-   */
-  uploadProjectPhoto(projectId: number, file: File): Observable<PhotoDto> {
+  uploadProjectPhoto(projectId: number, file: File): Observable<Photo> {
     return this.cloudinary.uploadProjectPhoto(file, projectId).pipe(
-      switchMap((cloudinaryResponse) => {
-        const request: PhotoCreateRequest = {
-          photoUrl: cloudinaryResponse.secure_url,
-          projectId: projectId,
-        };
-        return this.http.post<PhotoDto>(`${this.apiUrl}/${projectId}`, request);
-      })
+      switchMap(({ secure_url }) =>
+        this.http.post<Photo>(`${this.apiUrl}/${projectId}`, { photoUrl: secure_url, projectId })
+      )
     );
   }
 
-  /**
-   * Delete a photo by ID
-   * Note: This only deletes the database record
-   * Cloudinary images should be managed via Cloudinary dashboard or backend
-   */
+  uploadProfilePhoto(file: File): Observable<Photo> {
+    return this.cloudinary.uploadProfilePhoto(file).pipe(
+      switchMap(({ secure_url }) =>
+        this.http.post<Photo>(`${this.apiUrl}/profile`, { photoUrl: secure_url })
+      )
+    );
+  }
+
+  /** Deletes the database record only; Cloudinary assets are managed elsewhere. */
   deletePhoto(photoId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${photoId}`);
-  }
-
-  /**
-   * Upload or update profile photo
-   * First uploads to Cloudinary, then saves the URL to backend
-   */
-  uploadProfilePhoto(file: File): Observable<PhotoDto> {
-    return this.cloudinary.uploadProfilePhoto(file).pipe(
-      switchMap((cloudinaryResponse) => {
-        const request: ProfilePhotoCreateRequest = {
-          photoUrl: cloudinaryResponse.secure_url,
-        };
-        return this.http.post<PhotoDto>(`${this.apiUrl}/profile`, request);
-      })
-    );
   }
 }

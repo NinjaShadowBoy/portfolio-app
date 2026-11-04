@@ -1,0 +1,19 @@
+@for (tag of tags(); track tag.name) {
+  @if (tag.docUrl) {
+    <a [href]="tag.docUrl" target="_blank" rel="noopener noreferrer" class="tech-tag"
+      [attr.aria-label]="tag.name + ' documentation'">
+      <ng-container *ngTemplateOutlet="label; context: { $implicit: tag }" />
+    </a>
+  } @else {
+    <span class="tech-tag">
+      <ng-container *ngTemplateOutlet="label; context: { $implicit: tag }" />
+    </span>
+  }
+}
+
+<ng-template #label let-tag>
+  @if (tag.logo) {
+    <img [src]="tag.logo" [alt]="tag.name" class="tech-icon" width="16" height="16" />
+  }
+  <span>{{ tag.name }}</span>
+</ng-template>

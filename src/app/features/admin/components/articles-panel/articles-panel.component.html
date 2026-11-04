@@ -1,0 +1,34 @@
+<section class="admin-panel">
+  <h2>Articles ({{ articles().length }})</h2>
+  <p class="panel-item-meta">
+    Articles are Markdown files in <code>src/content/articles/&lt;slug&gt;/en.md</code> (and an optional
+    <code>fr.md</code>), compiled into the site at build time. Edit them in the repo; changes go live on the next
+    deploy. Reader feedback on articles is in the Feedback tab.
+  </p>
+
+  @if (articles().length === 0) {
+    <p class="panel-empty">No published articles. Drafts (<code>draft: true</code>) are not listed.</p>
+  } @else {
+    <ul class="panel-list">
+      @for (article of articles(); track article.slug) {
+        <li class="panel-item">
+          <div class="panel-item-main">
+            <div class="panel-item-title">
+              {{ article.title }}
+              @for (lang of article.langs; track lang) { <span class="badge">{{ lang }}</span> }
+            </div>
+            <div class="panel-item-meta">
+              {{ article.date | date: 'mediumDate' }}
+              @if (article.updated) { · updated {{ article.updated | date: 'mediumDate' }} }
+              · {{ article.readingTime }} min · <code>src/content/articles/{{ article.slug }}/</code>
+            </div>
+            <p class="panel-item-body">{{ article.description }}</p>
+          </div>
+          <div class="panel-item-actions">
+            <a class="btn-secondary" [routerLink]="['/articles', article.slug]">View</a>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>

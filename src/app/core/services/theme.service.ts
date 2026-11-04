@@ -2,156 +2,60 @@ import { Injectable, signal, effect, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 export type Theme = 'light' | 'dark' | 'system';
+export type ResolvedTheme = Exclude<Theme, 'system'>;
 
-@Injectable({
-  providedIn: 'root',
-})
+const STORAGE_KEY = 'theme-preference';
+const DARK_QUERY = '(prefers-color-scheme: dark)';
+
+@Injectable({ providedIn: 'root' })
 export class ThemeService {
-  private platformId = inject(PLATFORM_ID);
-  private readonly STORAGE_KEY = 'theme-preference';
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  // Current theme preference (light, dark, or system)
-  private themePreference = signal<Theme>(this.getInitialTheme());
+  /** The stored preference: an explicit theme or "follow the system". */
+  private themePreference = signal<Theme>(this.loadPreference());
 
-  // Computed actual theme based on preference and system settings
-  public readonly currentTheme = signal<'light' | 'dark'>(this.getInitialResolvedTheme());
+  /** The theme actually applied to the document. */
+  readonly currentTheme = signal<ResolvedTheme>(this.resolve(this.themePreference()));
 
   constructor() {
-    if (isPlatformBrowser(this.platformId)) {
-      // Watch for theme preference changes
-      effect(() => {
-        const preference = this.themePreference();
-        this.saveThemePreference(preference);
-        const resolvedTheme = this.resolveTheme(preference);
-        this.currentTheme.set(resolvedTheme);
-      });
+    if (!this.isBrowser) return;
 
-      // Watch for actual theme changes and apply to DOM
-      effect(() => {
-        this.applyTheme(this.currentTheme());
-      });
+    effect(() => {
+      const preference = this.themePreference();
+      localStorage.setItem(STORAGE_KEY, preference);
+      this.currentTheme.set(this.resolve(preference));
+    });
 
-      // Listen for system theme changes
-      this.watchSystemTheme();
-    }
+    // Always set data-theme explicitly so the CSS media-query fallback never
+    // overrides an explicit choice.
+    effect(() => document.documentElement.setAttribute('data-theme', this.currentTheme()));
+
+    const mediaQuery = window.matchMedia(DARK_QUERY);
+    const followSystem = () => {
+      if (this.themePreference() === 'system') this.currentTheme.set(this.resolve('system'));
+    };
+    if (mediaQuery.addEventListener) mediaQuery.addEventListener('change', followSystem);
+    else mediaQuery.addListener(followSystem); // older Safari
   }
 
-  /**
-   * Get the current theme preference
-   */
   getThemePreference(): Theme {
     return this.themePreference();
   }
 
-  /**
-   * Set theme preference
-   */
   setTheme(theme: Theme): void {
     this.themePreference.set(theme);
   }
 
-  /**
-   * Toggle between light and dark themes
-   */
   toggleTheme(): void {
-    const current = this.currentTheme();
-    this.setTheme(current === 'light' ? 'dark' : 'light');
+    this.setTheme(this.currentTheme() === 'light' ? 'dark' : 'light');
   }
 
-  /**
-   * Get initial theme from localStorage or default to system
-   */
-  private getInitialTheme(): Theme {
-    if (!isPlatformBrowser(this.platformId)) {
-      return 'system';
-    }
-
-    const saved = localStorage.getItem(this.STORAGE_KEY) as Theme | null;
-    return saved || 'system';
+  private loadPreference(): Theme {
+    return (this.isBrowser && (localStorage.getItem(STORAGE_KEY) as Theme | null)) || 'system';
   }
 
-  /**
-   * Get initial resolved theme
-   */
-  private getInitialResolvedTheme(): 'light' | 'dark' {
-    const preference = this.getInitialTheme();
-    return this.resolveTheme(preference);
-  }
-
-  /**
-   * Resolve the actual theme based on preference and system settings
-   */
-  private resolveTheme(preference: Theme): 'light' | 'dark' {
-    if (preference === 'system') {
-      return this.getSystemTheme();
-    }
-
-    return preference;
-  }
-
-  /**
-   * Get system theme preference
-   */
-  private getSystemTheme(): 'light' | 'dark' {
-    if (!isPlatformBrowser(this.platformId)) {
-      return 'light';
-    }
-
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
-  }
-
-  /**
-   * Apply theme to document
-   */
-  private applyTheme(theme: 'light' | 'dark'): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-
-    const html = document.documentElement;
-
-    // Always set the data-theme attribute explicitly
-    // This prevents CSS media query from overriding our choice
-    html.setAttribute('data-theme', theme);
-  }
-
-  /**
-   * Save theme preference to localStorage
-   */
-  private saveThemePreference(theme: Theme): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-
-    localStorage.setItem(this.STORAGE_KEY, theme);
-  }
-
-  /**
-   * Watch for system theme changes
-   */
-  private watchSystemTheme(): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-    // Modern browsers
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', () => {
-        if (this.themePreference() === 'system') {
-          this.currentTheme.set(this.resolveTheme('system'));
-        }
-      });
-    } else {
-      // Fallback for older browsers
-      mediaQuery.addListener(() => {
-        if (this.themePreference() === 'system') {
-          this.currentTheme.set(this.resolveTheme('system'));
-        }
-      });
-    }
+  private resolve(preference: Theme): ResolvedTheme {
+    if (preference !== 'system') return preference;
+    return this.isBrowser && window.matchMedia(DARK_QUERY).matches ? 'dark' : 'light';
   }
 }

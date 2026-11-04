@@ -32,37 +32,53 @@ mounted at `/portfolio/v1`.
 
 ## Getting started
 
-You need [Bun](https://bun.sh) (the package manager, see `bun.lock`) and
-Node.js 24 (the version CI and the VPS run).
+The package manager is **bun**. npm, yarn and pnpm will produce a lockfile
+nobody else uses.
+
+Develop:
 
 ```bash
-git clone https://github.com/NinjaShadowBoy/portfolio-app.git
-cd portfolio-app
 bun install
-node scripts/build-content.mjs   # generate src/generated/ from src/content/
-bun start                        # dev server at http://localhost:4200
+bun start                   # dev server at localhost:4200, API at localhost:8081
 ```
 
-In development the site calls the API at `http://localhost:8081/portfolio/v1`
-(`src/environments/environment.ts`). Run
-[portfolio-backend-go](https://github.com/NinjaShadowBoy/portfolio-backend-go)
-locally if you want projects, feedback, login and contact to work.
+The dev server talks to the Go backend on `localhost:8081`. Without it running
+the site still works: projects fall back to a built-in list and feedback forms
+fail politely. Start it from `portfolio-backend-go` with `docker compose up`.
+
+Build and run what production runs:
 
 ```bash
-node scripts/build-content.mjs   # regenerate src/generated/ after editing articles
-bun run build                    # ng build, into dist/portfolio-app/
-bun run serve                    # run the built SSR server (PORT, or 4000)
-bun run test                     # Karma/Jasmine watcher
-bun run test:fs-cp-retry         # tests for the copy-retry build helper
-bun run deploy                   # GitHub Pages via angular-cli-ghpages
+bun run build               # content:build, then ng build, into dist/portfolio-app/
+bun run build:staging       # same, against the staging API
+bun run serve               # run the built SSR server (PORT, or 4000)
+bun run docker:build        # the deploy image, from the same Dockerfile CI uses
+bun run docker:run          # serve that image on localhost:4000
 ```
 
-There is no lint or typecheck script. The build is the type check. There is
-no e2e framework either.
+Test:
 
-`src/generated/` is build output and is not committed: never edit it, and run
-`node scripts/build-content.mjs` before `ng serve` or `ng build`, which both
-fail without it.
+```bash
+bun run test                # Karma/Jasmine watcher
+bun run test:ci             # one headless run, as in CI
+bun run test:content        # article pipeline tests, against scripts/__fixtures__/
+```
+
+`bun run deploy` publishes the GitHub Pages build. The VPS deploy is the
+Docker image, pushed by `.github/workflows/deploy.yml` (see `deploy/DEPLOY.md`).
+
+There is no lint or typecheck script. `bun run build` is the type check. There
+is no e2e framework either.
+
+`src/generated/` is build output: never edit it, and note that a bare `ng build`
+fails without it, which is why `bun run build` chains `content:build` first.
+
+The build prerenders `articles` and `tools` pages, and rendering them calls the
+API for the project list. On the server every API call gives up after 2 seconds
+(`server-api-timeout.interceptor.ts`) and the page uses the fallback data, so a
+slow or down API makes the build a few seconds longer instead of stalling it.
+The Docker build prints nothing between `Building...` and the bundle table; two
+minutes there is normal on a 4-CPU Docker VM.
 
 ## Where things are
 

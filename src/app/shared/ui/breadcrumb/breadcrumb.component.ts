@@ -1,14 +1,19 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
-import { RouterLink } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import { Router, NavigationEnd, ActivatedRoute, RouterLink } from '@angular/router';
+import { filter, map } from 'rxjs';
 import { ProjectDataService } from '../../../core/services/project-data.service';
 
+export interface Breadcrumb {
+  label: string;
+  url: string;
+}
+
+/** Builds the trail from each activated route's `breadcrumb` data; project ids resolve to names. */
 @Component({
   selector: 'app-breadcrumb',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [AsyncPipe, RouterLink],
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.css'],
 })
@@ -17,48 +22,26 @@ export class BreadcrumbComponent {
   private activatedRoute = inject(ActivatedRoute);
   private projectService = inject(ProjectDataService);
 
-  breadcrumbs = this.router.events.pipe(
+  readonly breadcrumbs = this.router.events.pipe(
     filter((event) => event instanceof NavigationEnd),
     map(() => this.buildBreadcrumbs(this.activatedRoute.root))
   );
 
-  private buildBreadcrumbs(
-    route: ActivatedRoute,
-    url: string = '',
-    breadcrumbs: { label: string; url: string }[] = []
-  ): { label: string; url: string }[] {
-    const children: ActivatedRoute[] = route.children;
+  private buildBreadcrumbs(route: ActivatedRoute, url = '', crumbs: Breadcrumb[] = []): Breadcrumb[] {
+    const child = route.children[0];
+    if (!child) return crumbs;
 
-    if (children.length === 0) {
-      return breadcrumbs;
-    }
+    const segment = child.snapshot.url.map((s) => s.path).join('/');
+    if (segment === '') return crumbs;
+    url += `/${segment}`;
 
-    for (const child of children) {
-      const routeURL: string = child.snapshot.url
-        .map((segment) => segment.path)
-        .join('/');
+    const projectId = child.snapshot.params['id'];
+    const label = projectId
+      ? this.projectService.getProject(projectId)?.name ||
+        $localize`:@@breadcrumbProjectDetails:Project Details`
+      : child.snapshot.data['breadcrumb'] || '';
+    if (label) crumbs.push({ label, url });
 
-      if (routeURL === '') {
-        return breadcrumbs;
-      }
-
-      url += `/${routeURL}`;
-
-      let label = child.snapshot.data['breadcrumb'] || '';
-
-      if (child.snapshot.params['id']) {
-        const projectId = child.snapshot.params['id'];
-        const project = this.projectService.getProject(projectId);
-        label = project?.name || $localize`:@@breadcrumbProjectDetails:Project Details`;
-      }
-
-      if (label) {
-        breadcrumbs.push({ label, url });
-      }
-
-      return this.buildBreadcrumbs(child, url, breadcrumbs);
-    }
-
-    return breadcrumbs;
+    return this.buildBreadcrumbs(child, url, crumbs);
   }
 }

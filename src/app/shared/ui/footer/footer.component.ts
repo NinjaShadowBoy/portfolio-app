@@ -1,29 +1,25 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { SocialLinksService } from '../../../core/services/social-links.service';
+import { CONTACT_EMAIL, CONTACT_PHONE } from '../../../core/constants/contact';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css'],
 })
 export class FooterComponent {
-  currentYear = new Date().getFullYear();
+  readonly currentYear = new Date().getFullYear();
+  readonly socialLinks = inject(SocialLinksService).getSocialLinks();
 
-  socialLinks = new SocialLinksService().getSocialLinks();
-
-  quickLinks = [
+  readonly quickLinks = [
     { name: $localize`:Footer home link@@footerHome:Home`, route: '/home' },
     { name: $localize`:Footer projects link@@footerProjects:Projects`, route: '/projects' },
     { name: $localize`:Footer about link@@footerAbout:About`, route: '/about' },
     { name: $localize`:Footer contact link@@footerContact:Contact`, route: '/contact' },
   ];
 
-  contactInfo = {
-    email: 'alex.nelson.bryan@gmail.com',
-    phone: '+237 656 246 826',
-  };
+  readonly contactInfo = { email: CONTACT_EMAIL, phone: CONTACT_PHONE };
 }

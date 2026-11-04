@@ -1,0 +1,73 @@
+<section class="admin-panel">
+  <h2>Feedback @if (page(); as p) { ({{ p.total }}) }</h2>
+
+  <div class="panel-toolbar">
+    <label>
+      Type
+      <select class="input-field" [value]="type()" (change)="setType($any($event.target).value)">
+        <option value="">All types</option>
+        @for (t of types; track t) {
+          <option [value]="t">{{ typeLabels[t] }}</option>
+        }
+      </select>
+    </label>
+    <label>
+      On
+      <select class="input-field" [value]="target()" (change)="setTarget($any($event.target).value)">
+        <option value="">Projects and articles</option>
+        <option value="project">Projects</option>
+        <option value="article">Articles</option>
+      </select>
+    </label>
+  </div>
+
+  @if (failed()) {
+    <p class="panel-empty">Could not load feedback.</p>
+  } @else if (page(); as p) {
+    @if (p.items.length === 0) {
+      <p class="panel-empty">{{ isLoading() ? 'Loading...' : 'No feedback matches.' }}</p>
+      @if (p.offset > 0 && !isLoading()) {
+        <div class="pager"><button type="button" class="btn-secondary" (click)="previousPage()">Previous</button></div>
+      }
+    } @else {
+      <ul class="panel-list">
+        @for (comment of p.items; track comment.id) {
+          <li class="panel-item">
+            <div class="panel-item-main">
+              <div class="panel-item-title">
+                <span class="badge" [class.badge-warning]="comment.type === 'critique'"
+                  [class.badge-success]="comment.type === 'feature_request'">{{ typeLabels[comment.type] }}</span>
+                @if (comment.projectId !== null) {
+                  <a [routerLink]="['/projects', comment.projectId]">{{ comment.projectName ?? 'Project #' + comment.projectId }}</a>
+                } @else if (comment.articleSlug) {
+                  <a [routerLink]="['/articles', comment.articleSlug]">{{ articleTitle(comment.articleSlug) }}</a>
+                }
+              </div>
+              <p class="panel-item-body">{{ comment.body }}</p>
+              <div class="panel-item-meta">
+                {{ comment.userName }}
+                @if (comment.userProvider === 'ANON') { <span class="badge">Anonymous</span> }
+                · {{ comment.createdAt | date: 'medium' }}
+                @if (comment.updatedAt !== comment.createdAt) { · edited }
+              </div>
+            </div>
+            <div class="panel-item-actions">
+              <button type="button" class="btn-delete" [disabled]="busyId() === comment.id"
+                (click)="deleteComment(comment)">Delete</button>
+            </div>
+          </li>
+        }
+      </ul>
+
+      <div class="pager">
+        <span>{{ p.offset + 1 }}-{{ p.offset + p.items.length }} of {{ p.total }}</span>
+        <button type="button" class="btn-secondary" [disabled]="p.offset === 0 || isLoading()"
+          (click)="previousPage()">Previous</button>
+        <button type="button" class="btn-secondary" [disabled]="p.offset + p.items.length >= p.total || isLoading()"
+          (click)="nextPage()">Next</button>
+      </div>
+    }
+  } @else {
+    <p class="panel-empty">Loading...</p>
+  }
+</section>

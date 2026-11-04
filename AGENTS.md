@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Angular 22 SSR portfolio site (Express server) with JWT auth, Cloudinary image hosting, and a custom CSS design system. Deployed to GitHub Pages and a VPS.
+Angular 22 SSR portfolio site (Express server) with JWT auth, Cloudinary image hosting, and a custom CSS design system. Deployed to GitHub Pages and, as a Docker image rolled out by Ansible, to a VPS (see `deploy/DEPLOY.md`). The SSR server is instrumented with OpenTelemetry via `otel/instrumentation.mjs`, active only when `OTEL_EXPORTER_OTLP_ENDPOINT` is set.
 
 ## Commands
 
@@ -12,7 +12,11 @@ bun install           # Install dependencies
 bun start             # Dev server at localhost:4200
 bun run build         # Production build (output: dist/portfolio-app/)
 bun run build --localize # Build with i18n (en-US + fr)
-bun run test          # Karma/Jasmine unit tests
+bun run build:staging # Same build against the staging API
+bun run serve         # Run the built SSR server on PORT (default 4000)
+bun run test          # Karma/Jasmine unit tests (watch)
+bun run test:ci       # One headless Karma run, as in CI
+bun run docker:build  # Build the deploy image; docker:run serves it on :4000
 bun run build:gh-pages   # Build for GitHub Pages deployment
 bun run deploy        # Build for GitHub Pages, then deploy via angular-cli-ghpages
 bun run ng extract-i18n --output-path src/locale  # Extract translatable strings
@@ -26,16 +30,17 @@ bun run ng extract-i18n --output-path src/locale  # Extract translatable strings
   - `Client-only`: `admin`, `oauth2/redirect`
   - `Server` (default): all other routes including `home`, `projects`, `about`, `contact`, `login`
 - **Entry points**: `src/main.ts` (browser), `src/main.server.ts` (SSR bootstrap), `src/server.ts` (Express server)
-- **Server listens** on `PORT` env var or `4000`
-- **Backend API**: `http://localhost:8081/portfolio` (dev), `https://vps.alexabena.me/portfolio` (prod) -  defined in `src/environments/`
+- **Server listens** on `HOST`:`PORT` env vars, default `127.0.0.1:4000` (the Docker image sets `HOST=0.0.0.0`)
+- **Backend API**: `http://localhost:8081/portfolio/v1` (dev), `https://alexabena.me/portfolio/v1` (prod), `https://staging.alexabena.me/portfolio/v1` (staging build configuration) -  defined in `src/environments/`
 - **Project structure**: `src/app/core/` (services, guards, interceptors, interfaces, directives), `src/app/features/` (page components), `src/app/shared/ui/` (reusable UI components)
+- **Shared building blocks (reuse, do not re-implement)**: `SeoService` (title, description, canonical, hreflang, JSON-LD for every prerendered page; call `setPage()` and `clear()` on destroy), `TechTagsComponent` (technology chips with docs links, `variant="pill"` on project detail), `FlagComponent` (en/fr flag SVGs), `resolveCoverImage()` (article cover paths), `core/constants/contact.ts` (email/phone)
 
 ## Internationalization (i18n)
 
 - **Source locale**: `en-US`
 - **Target locales**: `fr` (expandable in `angular.json` → `i18n.locales`)
-- **URL structure**: `/en/...` and `/fr/...` prefixes via `/:lang` route parameter
-- **Default redirect**: `/` → `/en/home`
+- **URL structure**: `en` is the source locale with an empty `subPath` (served at `/...`); `fr` is served under `/fr/...`. The locale prefix comes from the build's base href, not from a route parameter.
+- **Default redirect**: `/` → `/home` (English)
 - **Admin**: English-only (not translated)
 - **Translation files**: `src/locale/messages.xlf` (source), `src/locale/messages.fr.xlf` (French)
 - **Template marking**: `i18n` attribute on elements, `i18n-{attr}` for attributes
@@ -43,7 +48,7 @@ bun run ng extract-i18n --output-path src/locale  # Extract translatable strings
 - **Type declaration**: `src/types/localize.d.ts` declares `$localize` globally
 - **Build**: `bun run build --localize` generates `dist/portfolio-app/browser/en-US/` and `dist/portfolio-app/browser/fr/`
 - **Extraction**: `bun run ng extract-i18n --output-path src/locale` to regenerate `messages.xlf`
-- **Language switcher**: Header component toggles between `/en/...` and `/fr/...` routes
+- **Language switcher**: Header component toggles between `/...` (en) and `/fr/...` routes
 
 ## Key Conventions
 
@@ -72,6 +77,7 @@ Lighthouse CI is configured (`lighthouserc.json`) with strict thresholds. If mod
 
 ## Gotchas
 
+- `ng build` prerenders `articles` and `tools`, and the app shell (breadcrumb -> `ProjectDataService`) calls the API while rendering. `serverApiTimeoutInterceptor` caps every server-side API call at 2 s so an unresponsive API cannot stall or fail the build. Any new service called during SSR must handle the resulting `TimeoutError` with a fallback.
 - The `public/` directory is copied as-is to the build output (favicon, 404.html, .nojekyll, _headers).
 - `src/assets/` is mapped to `/assets` in the build. Do not reference `src/assets` directly in component templates — use `assets/` path.
 - `index.html` contains inline critical CSS and SPA routing hack for GitHub Pages — edit carefully.

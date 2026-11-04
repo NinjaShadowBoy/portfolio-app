@@ -89,13 +89,6 @@ describe('FeedbackComponent', () => {
     httpMock.verify();
   });
 
-  it('should create', () => {
-    configure();
-    mount({ projectId: 1 });
-    flushProjectLoad(1);
-    expect(component).toBeTruthy();
-  });
-
   describe('dev-time exactly-one-target guard', () => {
     it('logs an error when neither projectId nor articleSlug is set', () => {
       configure();

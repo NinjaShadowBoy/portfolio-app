@@ -43,15 +43,7 @@
           <h4 class="feedback-group-title">
             <span
               class="feedback-badge"
-              [class.bg-danger]="group.tone === 'danger'"
-              [class.text-danger]="group.tone === 'danger'"
-              [class.border-danger]="group.tone === 'danger'"
-              [class.bg-info]="group.tone === 'info'"
-              [class.text-info]="group.tone === 'info'"
-              [class.border-info]="group.tone === 'info'"
-              [class.bg-success]="group.tone === 'success'"
-              [class.text-success]="group.tone === 'success'"
-              [class.border-success]="group.tone === 'success'">
+              [class]="'bg-' + group.tone + ' text-' + group.tone + ' border-' + group.tone">
               {{ group.label }}
             </span>
             <span class="feedback-group-count">{{ group.comments.length }}</span>

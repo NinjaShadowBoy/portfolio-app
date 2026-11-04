@@ -24,10 +24,6 @@ describe('CommentService', () => {
     httpMock.verify();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('createComment posts the correct polymorphic project body', () => {
     const payload: CommentCreatePayload = {
       projectId: 7,

@@ -1,0 +1,108 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tech-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.tech-tag:hover {
+  background: var(--color-primary-200);
+  transform: translateY(-1px);
+}
+
+.tech-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .tech-tag {
+  background: var(--color-primary-900);
+  color: var(--color-primary-200);
+}
+
+[data-theme="dark"] .tech-tag:hover {
+  background: var(--color-primary-800);
+}
+
+/* Pill variant: project detail page */
+:host(.pill) {
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+:host(.pill) .tech-tag {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-brand);
+  color: var(--text-accent);
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-brand);
+}
+
+:host(.pill) .tech-tag::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
+  z-index: -1;
+}
+
+:host(.pill) .tech-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--elevation-2);
+  border-color: var(--color-primary-600);
+  color: var(--text-inverse);
+  background: var(--surface-brand);
+}
+
+:host(.pill) .tech-tag:hover::before {
+  opacity: 1;
+}
+
+[data-theme="dark"] :host(.pill) .tech-tag {
+  background: var(--surface-brand);
+  color: var(--text-accent);
+  border-color: var(--border-brand);
+}
+
+@media (max-width: 768px) {
+  :host { gap: 0.4rem; }
+  .tech-tag { padding: 0.2rem 0.65rem; font-size: 0.75rem; border-radius: 16px; }
+  :host(.pill) { gap: 0.5rem; }
+  :host(.pill) .tech-tag { padding: 0.4rem 0.875rem; font-size: 0.85rem; border-radius: 20px; }
+}
+
+@media (max-width: 480px) {
+  :host { gap: 0.35rem; }
+  .tech-tag { padding: 0.15rem 0.5rem; font-size: 0.7rem; }
+  :host(.pill) { gap: 0.4rem; }
+  :host(.pill) .tech-tag { padding: 0.35rem 0.75rem; font-size: 0.8rem; border-radius: 16px; }
+}
+
+@media print {
+  .tech-tag {
+    background: transparent !important;
+    border: 1px solid var(--border-default) !important;
+    color: var(--text-primary) !important;
+  }
+}

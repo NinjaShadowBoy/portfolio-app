@@ -1,14 +1,13 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
 
+/** Landing page for the OAuth2 callback: reads `token` (or `error`) from the query string. */
 @Component({
   selector: 'app-oauth2-redirect',
   standalone: true,
-  imports: [CommonModule],
   template: `
     <div class="oauth2-redirect-container">
       <div class="loading-spinner">
@@ -53,11 +52,10 @@ import { NotificationService } from '../../../core/services/notification.service
   `]
 })
 export class Oauth2RedirectComponent {
-  private route = inject(ActivatedRoute);
   private router = inject(Router);
   private auth = inject(AuthService);
   private notifier = inject(NotificationService);
-  private params = toSignal(this.route.queryParams);
+  private params = toSignal(inject(ActivatedRoute).queryParams);
 
   message = signal($localize`:@@oauthCompleting:Completing authentication...`);
 
@@ -66,24 +64,17 @@ export class Oauth2RedirectComponent {
       const params = this.params();
       if (!params || Object.keys(params).length === 0) return;
 
-      const token = params['token'];
-      const error = params['error'];
-
-      if (error) {
-        this.handleAuthError(error);
-        return;
+      if (params['error']) {
+        this.fail(params['error']);
+      } else if (!params['token']) {
+        this.fail($localize`:@@oauthNoToken:No authentication token received`);
+      } else {
+        this.processToken(params['token']);
       }
-
-      if (!token) {
-        this.handleAuthError($localize`:@@oauthNoToken:No authentication token received`);
-        return;
-      }
-
-      this.processToken(token);
     });
   }
 
-  private handleAuthError(errorMessage: string): void {
+  private fail(errorMessage: string): void {
     this.message.set($localize`:@@oauthFailed:Authentication failed`);
     this.notifier.error(errorMessage);
     setTimeout(() => this.router.navigateByUrl('/login'), 2000);
@@ -92,13 +83,13 @@ export class Oauth2RedirectComponent {
   private processToken(token: string): void {
     try {
       this.auth.setSessionFromToken(token);
-
-      this.notifier.success($localize`:@@oauthSuccess:Successfully authenticated!`);
-      this.message.set($localize`:@@oauthRedirecting:Redirecting...`);
-      setTimeout(() => this.router.navigateByUrl('/home'), 1000);
     } catch (err) {
       console.error('Token decode error:', err);
-      this.handleAuthError($localize`:@@oauthInvalidToken:Invalid authentication token`);
+      this.fail($localize`:@@oauthInvalidToken:Invalid authentication token`);
+      return;
     }
+    this.notifier.success($localize`:@@oauthSuccess:Successfully authenticated!`);
+    this.message.set($localize`:@@oauthRedirecting:Redirecting...`);
+    setTimeout(() => this.router.navigateByUrl('/home'), 1000);
   }
 }

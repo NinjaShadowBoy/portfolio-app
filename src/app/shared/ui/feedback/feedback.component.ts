@@ -8,11 +8,10 @@ import {
   isDevMode,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { finalize } from 'rxjs/operators';
+import { Observable, finalize } from 'rxjs';
 import {
-  CommentCreatePayload,
   CommentDto,
   CommentService,
   CommentType,
@@ -34,18 +33,20 @@ interface CommentGroup extends CommentTypeOption {
   comments: CommentDto[];
 }
 
+/** Exactly one of `projectId` / `articleSlug`, as the create payload expects. */
+type FeedbackTarget = { projectId: number } | { articleSlug: string };
+
 /**
  * Reusable structured feedback thread. Mounts on both project and article pages
- * via two mutually-exclusive inputs — exactly one of `projectId` / `articleSlug`
- * must be provided. All CommentService calls are derived from a single target so
- * the component is target-agnostic. Anonymous submission works because the global
+ * via two mutually-exclusive inputs: exactly one of `projectId` / `articleSlug`
+ * must be provided. Anonymous submission works because the global
  * authInterceptor sets `withCredentials`; the first submit provisions an anon
- * identity which we pick up via identityService.refresh().
+ * identity which is picked up via identityService.refresh().
  */
 @Component({
   selector: 'app-feedback',
   standalone: true,
-  imports: [CommonModule, UserAvatarComponent, SegmentedToggleComponent],
+  imports: [DatePipe, UserAvatarComponent, SegmentedToggleComponent],
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.css'],
 })
@@ -55,23 +56,13 @@ export class FeedbackComponent {
   private notificationService = inject(NotificationService);
   private destroyRef = inject(DestroyRef);
 
-  // Mutually-exclusive target inputs — exactly one must be set.
   projectId = input<number | null>(null);
   articleSlug = input<string | null>(null);
 
-  // The three structured feedback types, in render order, with the semantic
-  // tone used for their grouped badge/border.
+  /** The three feedback types, in render order, with the tone of their badge. */
   readonly typeOptions: readonly CommentTypeOption[] = [
-    {
-      value: 'critique',
-      label: $localize`:@@feedbackTypeCritique:Critique`,
-      tone: 'danger',
-    },
-    {
-      value: 'suggestion',
-      label: $localize`:@@feedbackTypeSuggestion:Suggestion`,
-      tone: 'info',
-    },
+    { value: 'critique', label: $localize`:@@feedbackTypeCritique:Critique`, tone: 'danger' },
+    { value: 'suggestion', label: $localize`:@@feedbackTypeSuggestion:Suggestion`, tone: 'info' },
     {
       value: 'feature_request',
       label: $localize`:@@feedbackTypeFeatureRequest:Feature request`,
@@ -79,64 +70,52 @@ export class FeedbackComponent {
     },
   ];
 
-  // Selected type for the new-feedback form (defaults to critique).
   selectedType = signal<CommentType>('critique');
-
   comments = signal<CommentDto[]>([]);
   newCommentText = signal('');
   isSubmitting = signal(false);
   editingCommentId = signal<number | null>(null);
   editCommentText = signal('');
 
-  // Derived target: exactly one of projectId / articleSlug. Null when neither
-  // is set (misconfigured usage — guarded in dev below).
-  readonly target = computed<{ projectId?: number; articleSlug?: string } | null>(() => {
-    const pid = this.projectId();
-    if (pid !== null && pid !== undefined) return { projectId: pid };
-    const slug = this.articleSlug();
-    if (slug !== null && slug !== undefined) return { articleSlug: slug };
+  /** Null when neither input is set (misconfigured usage, reported in dev). */
+  readonly target = computed<FeedbackTarget | null>(() => {
+    const projectId = this.projectId();
+    const articleSlug = this.articleSlug();
+    if (projectId != null) return { projectId };
+    if (articleSlug != null) return { articleSlug };
     return null;
   });
 
-  // Existing feedback grouped by type; empty groups are dropped.
-  readonly groupedComments = computed<CommentGroup[]>(() => {
-    const all = this.comments();
-    return this.typeOptions
-      .map((opt) => ({ ...opt, comments: all.filter((c) => c.type === opt.value) }))
-      .filter((group) => group.comments.length > 0);
-  });
+  /** Existing feedback grouped by type; empty groups are dropped. */
+  readonly groupedComments = computed<CommentGroup[]>(() =>
+    this.typeOptions
+      .map((opt) => ({ ...opt, comments: this.comments().filter((c) => c.type === opt.value) }))
+      .filter((group) => group.comments.length > 0)
+  );
 
   constructor() {
-    // Dev-time guard: exactly one of the two target inputs must be set.
     effect(() => {
-      const hasProject = this.projectId() !== null && this.projectId() !== undefined;
-      const hasArticle = this.articleSlug() !== null && this.articleSlug() !== undefined;
+      const hasProject = this.projectId() != null;
+      const hasArticle = this.articleSlug() != null;
       if (isDevMode() && hasProject === hasArticle) {
         console.error(
           '[FeedbackComponent] exactly one of [projectId] / [articleSlug] must be set ' +
-            `(projectId=${this.projectId()}, articleSlug=${this.articleSlug()})`,
+            `(projectId=${this.projectId()}, articleSlug=${this.articleSlug()})`
         );
       }
     });
 
     // Reload the thread whenever the target changes.
-    effect(() => {
-      const target = this.target();
-      if (!target) {
-        this.comments.set([]);
-        return;
-      }
-      this.loadComments();
-    });
+    effect(() => (this.target() ? this.loadComments() : this.comments.set([])));
   }
 
   private loadComments() {
     const target = this.target();
     if (!target) return;
     const request$ =
-      target.projectId !== undefined
+      'projectId' in target
         ? this.commentService.getProjectComments(target.projectId)
-        : this.commentService.getArticleComments(target.articleSlug!);
+        : this.commentService.getArticleComments(target.articleSlug);
 
     request$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (comments) => this.comments.set(comments),
@@ -158,34 +137,19 @@ export class FeedbackComponent {
     const body = this.newCommentText().trim();
     if (!target || this.isSubmitting() || !body) return;
 
-    const payload: CommentCreatePayload = {
-      ...target,
-      type: this.selectedType(),
-      body,
-    };
-
     this.isSubmitting.set(true);
-    this.commentService
-      .createComment(payload)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.isSubmitting.set(false)),
-      )
-      .subscribe({
-        next: () => {
-          this.newCommentText.set('');
-          this.loadComments();
-          // First anonymous action provisions an identity; pick it up so the
-          // new item is recognised as "yours" for edit/delete.
-          this.identityService.refresh();
-        },
-        error: (err) => {
-          this.notificationService.error(
-            $localize`:@@commentSubmitFailed:Failed to post comment`,
-          );
-          console.error('Error posting feedback:', err);
-        },
-      });
+    this.mutate(
+      this.commentService
+        .createComment({ ...target, type: this.selectedType(), body })
+        .pipe(finalize(() => this.isSubmitting.set(false))),
+      $localize`:@@commentSubmitFailed:Failed to post comment`,
+      () => {
+        this.newCommentText.set('');
+        // The first anonymous action provisions an identity; pick it up so the
+        // new item is recognised as "yours" for edit/delete.
+        this.identityService.refresh();
+      }
+    );
   }
 
   startEdit(comment: CommentDto) {
@@ -201,47 +165,35 @@ export class FeedbackComponent {
   saveEdit(comment: CommentDto) {
     const body = this.editCommentText().trim();
     if (!body) return;
-
-    this.commentService
-      .updateComment(comment.id, body)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          this.cancelEdit();
-          this.loadComments();
-        },
-        error: (err) => {
-          this.notificationService.error(
-            $localize`:@@commentUpdateFailed:Failed to update comment`,
-          );
-          console.error('Error updating feedback:', err);
-        },
-      });
+    this.mutate(
+      this.commentService.updateComment(comment.id, body),
+      $localize`:@@commentUpdateFailed:Failed to update comment`,
+      () => this.cancelEdit()
+    );
   }
 
   deleteComment(comment: CommentDto) {
-    if (
-      !confirm(
-        $localize`:@@commentDeleteConfirm:Are you sure you want to delete this comment?`,
-      )
-    ) {
+    if (!confirm($localize`:@@commentDeleteConfirm:Are you sure you want to delete this comment?`)) {
       return;
     }
+    this.mutate(
+      this.commentService.deleteComment(comment.id),
+      $localize`:@@commentDeleteFailed:Failed to delete comment`,
+      () => this.notificationService.success($localize`:@@commentDeleted:Comment deleted`)
+    );
+  }
 
-    this.commentService
-      .deleteComment(comment.id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          this.notificationService.success($localize`:@@commentDeleted:Comment deleted`);
-          this.loadComments();
-        },
-        error: (err) => {
-          this.notificationService.error(
-            $localize`:@@commentDeleteFailed:Failed to delete comment`,
-          );
-          console.error('Error deleting feedback:', err);
-        },
-      });
+  /** Run a write, then reload the thread; on failure notify and log. */
+  private mutate(request$: Observable<unknown>, failureMessage: string, onSuccess: () => void) {
+    request$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: () => {
+        onSuccess();
+        this.loadComments();
+      },
+      error: (err) => {
+        this.notificationService.error(failureMessage);
+        console.error('Feedback request failed:', err);
+      },
+    });
   }
 }

@@ -1,61 +1,20 @@
-@if (routerLink) {
-  <a [routerLink]="routerLink" class="cta-button" [class]="'cta-' + variant">
-    <span class="cta-text">{{ text }}</span>
-    <span class="cta-icon" [class]="'icon-' + icon">
-      @switch (icon) {
-        @case ('explore') {
-          <img ngSrc="assets/icons/explore.svg" alt="Explore icon" width="20" height="20" />
-        }
-        @case ('arrow-right') {
-          <img ngSrc="assets/icons/arrow-right.svg" alt="Arrow icon" width="20" height="20" />
-        }
-        @case ('external') {
-          <img ngSrc="assets/icons/external.svg" alt="External link icon" width="20" height="20" />
-        }
-        @case ('search') {
-          <img ngSrc="assets/icons/search.svg" alt="Search icon" width="20" height="20" />
-        }
-      }
-    </span>
+@if (routerLink(); as link) {
+  <a [routerLink]="link" class="cta-button" [class]="'cta-' + variant()">
+    <ng-container *ngTemplateOutlet="content" />
   </a>
-} @else if (href) {
-  <a [href]="href" [target]="target()" class="cta-button" [class]="'cta-' + variant">
-    <span class="cta-text">{{ text }}</span>
-    <span class="cta-icon" [class]="'icon-' + icon">
-      @switch (icon) {
-        @case ('explore') {
-          <img ngSrc="assets/icons/explore.svg" alt="Explore icon" width="20" height="20" />
-        }
-        @case ('arrow-right') {
-          <img ngSrc="assets/icons/arrow-right.svg" alt="Arrow icon" width="20" height="20" />
-        }
-        @case ('external') {
-          <img ngSrc="assets/icons/external.svg" alt="External link icon" width="20" height="20" />
-        }
-        @case ('search') {
-          <img ngSrc="assets/icons/search.svg" alt="Search icon" width="20" height="20" />
-        }
-      }
-    </span>
+} @else if (href(); as url) {
+  <a [href]="url" [target]="target()" class="cta-button" [class]="'cta-' + variant()">
+    <ng-container *ngTemplateOutlet="content" />
   </a>
 } @else {
-  <button class="cta-button" [class]="'cta-' + variant">
-    <span class="cta-text">{{ text }}</span>
-    <span class="cta-icon" [class]="'icon-' + icon">
-      @switch (icon) {
-        @case ('explore') {
-          <img ngSrc="assets/icons/explore.svg" alt="Explore icon" width="20" height="20" />
-        }
-        @case ('arrow-right') {
-          <img ngSrc="assets/icons/arrow-right.svg" alt="Arrow icon" width="20" height="20" />
-        }
-        @case ('external') {
-          <img ngSrc="assets/icons/external.svg" alt="External link icon" width="20" height="20" />
-        }
-        @case ('search') {
-          <img ngSrc="assets/icons/search.svg" alt="Search icon" width="20" height="20" />
-        }
-      }
-    </span>
+  <button class="cta-button" [class]="'cta-' + variant()">
+    <ng-container *ngTemplateOutlet="content" />
   </button>
 }
+
+<ng-template #content>
+  <span class="cta-text">{{ text() }}</span>
+  <span class="cta-icon" [class]="'icon-' + icon()">
+    <img [ngSrc]="iconSrc()" [alt]="iconAlt()" width="20" height="20" />
+  </span>
+</ng-template>

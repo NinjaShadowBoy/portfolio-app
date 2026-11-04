@@ -20,14 +20,9 @@ import { IdentityService } from './core/services/identity.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'portfolio-app';
-  private performanceMonitor = inject(PerformanceMonitorService);
-  // Resolve the current identity (real or anonymous) on startup.
-  private identityService = inject(IdentityService);
-
   constructor() {
-    // Initialize performance monitoring in production
-    // Comment out if you don't want console logs in production
-    this.performanceMonitor.initializePerformanceMonitoring();
+    // Resolve the current identity (real or anonymous) on startup.
+    inject(IdentityService);
+    inject(PerformanceMonitorService).initializePerformanceMonitoring();
   }
 }

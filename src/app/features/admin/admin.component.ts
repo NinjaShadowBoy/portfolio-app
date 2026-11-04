@@ -1,142 +1,120 @@
-import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { forkJoin } from 'rxjs';
+import { AdminService } from '../../core/services/admin.service';
+import { SegmentedToggleComponent, SegmentedToggleOption } from '../../shared/ui/segmented-toggle/segmented-toggle.component';
+import { UsersPanelComponent } from './components/users-panel/users-panel.component';
+import { FeedbackPanelComponent } from './components/feedback-panel/feedback-panel.component';
+import { MessagesPanelComponent } from './components/messages-panel/messages-panel.component';
+import { ArticlesPanelComponent } from './components/articles-panel/articles-panel.component';
 import { AuthService } from '../../core/services/auth.service';
-import { Router } from '@angular/router';
 import { ProjectDataService } from '../../core/services/project-data.service';
 import { NotificationService } from '../../core/services/notification.service';
-import { Project } from '../../core/interfaces/project.interface';
-import { forkJoin } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Project, ProjectCreateRequest, ProjectImport } from '../../core/interfaces/project.interface';
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { JsonImportComponent } from './components/json-import/json-import.component';
 import { PhotoManagerComponent } from './components/photo-manager/photo-manager.component';
-import { TechnologiesService } from '../../core/services/technologies.service';
+import { TechTagsComponent } from '../../shared/ui/tech-tags/tech-tags.component';
+
+type AdminTab = 'overview' | 'projects' | 'users' | 'feedback' | 'messages' | 'articles';
+
+const ADMIN_TABS: readonly SegmentedToggleOption[] = [
+  { value: 'overview', label: 'Overview' },
+  { value: 'projects', label: 'Projects' },
+  { value: 'users', label: 'Users' },
+  { value: 'feedback', label: 'Feedback' },
+  { value: 'messages', label: 'Messages' },
+  { value: 'articles', label: 'Articles' },
+];
+
+function parseTab(value: string | null): AdminTab {
+  return ADMIN_TABS.some((tab) => tab.value === value) ? (value as AdminTab) : 'overview';
+}
 
 @Component({
   selector: 'app-admin',
   standalone: true,
   imports: [
-    CommonModule,
     ProjectFormComponent,
     JsonImportComponent,
     PhotoManagerComponent,
+    TechTagsComponent,
+    SegmentedToggleComponent,
+    UsersPanelComponent,
+    FeedbackPanelComponent,
+    MessagesPanelComponent,
+    ArticlesPanelComponent,
   ],
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css'],
+  styleUrls: ['./admin-shared.css', './admin.component.css'],
 })
 export class AdminComponent {
   private auth = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private projectService = inject(ProjectDataService);
   private notificationService = inject(NotificationService);
-  private techService = inject(TechnologiesService);
+  private adminService = inject(AdminService);
 
-  getTechIcon(techName: string): string | undefined {
-    return this.techService.getTechnology(techName)?.logo;
+  readonly user = this.auth.user;
+  readonly isAdmin = this.auth.isAdmin;
+  readonly projects = this.projectService.projects;
+
+  readonly tabs = ADMIN_TABS;
+  /** Synced to `?tab=` so a reload or shared link opens the same section. */
+  readonly tab = signal<AdminTab>(parseTab(this.route.snapshot.queryParamMap.get('tab')));
+
+  /** Overview counts, fetched by admins only and refetched each time the tab opens. */
+  private statsResource = rxResource({
+    params: () => (this.isAdmin() && this.tab() === 'overview' ? true : undefined),
+    stream: () => this.adminService.getStats(),
+  });
+  readonly stats = computed(() => (this.statsResource.hasValue() ? this.statsResource.value() : null));
+  readonly statsFailed = computed(() => this.statsResource.status() === 'error');
+
+  selectTab(value: string) {
+    const tab = parseTab(value);
+    this.tab.set(tab);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tab: tab === 'overview' ? null : tab },
+      replaceUrl: true,
+    });
   }
 
-  getTechDocUrl(techName: string): string | undefined {
-    return this.techService.getTechnology(techName)?.docUrl;
-  }
-
-  apiBaseUrl = environment.apiBaseUrl.replace('/api/v1', '');
-
-  get user() {
-    return this.auth.user();
-  }
-
-  get isAdmin() {
-    return this.auth.isAdmin();
-  }
-
-  // Project form mode
-  formMode = signal<'create' | 'edit'>('create');
-  editingProject = signal<Project | null>(null);
-
-  // JSON mode
-  jsonMode = signal(false);
-
-  // Projects list
-  projects = this.projectService.projects;
-
-  // Photo management
-  selectedProjectForPhotos = signal<Project | null>(null);
+  /** The project loaded into the form, or null when creating. */
+  readonly editingProject = signal<Project | null>(null);
+  readonly formMode = computed(() => (this.editingProject() ? 'edit' : 'create'));
+  readonly jsonMode = signal(false);
+  readonly selectedProjectForPhotos = signal<Project | null>(null);
 
   goHome() {
     this.router.navigateByUrl('/home');
   }
 
-  // CRUD operations
-  onSaveProject(projectData: any) {
-    if (this.formMode() === 'create') {
-      this.createProject(projectData);
-    } else {
-      const proj = this.editingProject();
-      if (proj) {
-        this.updateProject(proj.id, projectData);
-      }
-    }
-  }
-
-  createProject(projectData: any) {
-    this.projectService.createProject(projectData).subscribe({
-      next: (newProject) => {
-        this.notificationService.success(
-          $localize`:@@projectCreated:Project "${newProject.name}" created successfully!`
-        );
-        this.resetForm();
-      },
-      error: (err) => {
-        console.error('Error creating project:', err);
-        this.notificationService.error(
-          $localize`:@@projectCreateFailed:Failed to create project. Check console for details.`
-        );
-      },
-    });
+  onSaveProject(projectData: ProjectCreateRequest) {
+    const id = this.editingProject()?.id;
+    this.saveProject({ ...projectData, id }, () => this.resetForm());
   }
 
   editProject(project: Project) {
-    this.formMode.set('edit');
     this.editingProject.set(project);
-
-    // Scroll to form
     document.querySelector('.project-form')?.scrollIntoView({ behavior: 'smooth' });
   }
 
-  updateProject(projectId: number, projectData: any) {
-    this.projectService.updateProject(projectId, projectData).subscribe({
-      next: (updatedProject) => {
-        this.notificationService.success(
-          $localize`:@@projectUpdated:Project "${updatedProject.name}" updated successfully!`
-        );
-        this.resetForm();
-      },
-      error: (err) => {
-        console.error('Error updating project:', err);
-        this.notificationService.error(
-          $localize`:@@projectUpdateFailed:Failed to update project. Check console for details.`
-        );
-      },
-    });
-  }
-
   deleteProject(project: Project) {
-    if (
-      !confirm(
-        $localize`:@@projectDeleteConfirm:Are you sure you want to delete "${project.name}"? This action cannot be undone.`
-      )
-    ) {
-      return;
-    }
+    const confirmed = confirm(
+      $localize`:@@projectDeleteConfirm:Are you sure you want to delete "${project.name}"? This action cannot be undone.`
+    );
+    if (!confirmed) return;
 
     this.projectService.deleteProject(project.id).subscribe({
       next: () => {
         this.notificationService.success(
           $localize`:@@projectDeleted:Project "${project.name}" deleted successfully!`
         );
-        if (this.editingProject()?.id === project.id) {
-          this.resetForm();
-        }
+        if (this.editingProject()?.id === project.id) this.resetForm();
       },
       error: (err) => {
         console.error('Error deleting project:', err);
@@ -148,74 +126,32 @@ export class AdminComponent {
   }
 
   resetForm() {
-    this.formMode.set('create');
     this.editingProject.set(null);
   }
 
-  // JSON Mode Toggle
   toggleJsonMode() {
     this.jsonMode.update((mode) => !mode);
   }
 
-  onJsonImport(data: any) {
-    if (Array.isArray(data)) {
-      this.processBulkProjects(data);
-    } else {
-      this.processSingleProject(data);
+  /** Imported records with an id update that project; the rest are created. */
+  onJsonImport(data: ProjectImport | ProjectImport[]) {
+    if (!Array.isArray(data)) {
+      this.saveProject(data);
+      return;
     }
-  }
-
-  processSingleProject(data: any) {
-    if (data.id) {
-      // Update existing project
-      this.projectService.updateProject(data.id, data).subscribe({
-        next: (updatedProject: Project) => {
-          this.notificationService.success(
-            $localize`:@@projectUpdated:Project "${updatedProject.name}" updated successfully!`
-          );
-        },
-        error: (err: any) => {
-          console.error('Error updating project:', err);
-          this.notificationService.error($localize`:@@projectUpdateFailedShort:Failed to update project`);
-        },
-      });
-    } else {
-      // Create new project
-      this.projectService.createProject(data).subscribe({
-        next: (newProject: Project) => {
-          this.notificationService.success(
-            $localize`:@@projectCreated:Project "${newProject.name}" created successfully!`
-          );
-        },
-        error: (err: any) => {
-          console.error('Error creating project:', err);
-          this.notificationService.error($localize`:@@projectCreateFailedShort:Failed to create project`);
-        },
-      });
-    }
-  }
-
-  processBulkProjects(data: any[]) {
-    const requests = data.map((project) =>
-      project.id
-        ? this.projectService.updateProject(project.id, project)
-        : this.projectService.createProject(project)
-    );
-
-    forkJoin(requests).subscribe({
+    forkJoin(data.map((project) => this.importProject(project))).subscribe({
       next: (results) => {
         this.notificationService.success(
           $localize`:@@bulkProcessed:Successfully processed ${results.length} project(s)`
         );
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('Error processing bulk projects:', err);
         this.notificationService.error($localize`:@@bulkProcessFailed:Some projects failed to process`);
       },
     });
   }
 
-  // Photo Management Methods
   openPhotoManager(project: Project) {
     this.selectedProjectForPhotos.set(project);
   }
@@ -224,7 +160,31 @@ export class AdminComponent {
     this.selectedProjectForPhotos.set(null);
   }
 
-  getApiBaseUrl(): string {
-    return this.apiBaseUrl;
+  private saveProject(project: ProjectImport, onSuccess?: () => void) {
+    const updating = project.id !== undefined;
+    this.importProject(project).subscribe({
+      next: (saved) => {
+        this.notificationService.success(
+          updating
+            ? $localize`:@@projectUpdated:Project "${saved.name}" updated successfully!`
+            : $localize`:@@projectCreated:Project "${saved.name}" created successfully!`
+        );
+        onSuccess?.();
+      },
+      error: (err) => {
+        console.error('Error saving project:', err);
+        this.notificationService.error(
+          updating
+            ? $localize`:@@projectUpdateFailed:Failed to update project. Check console for details.`
+            : $localize`:@@projectCreateFailed:Failed to create project. Check console for details.`
+        );
+      },
+    });
+  }
+
+  private importProject(project: ProjectImport) {
+    return project.id !== undefined
+      ? this.projectService.updateProject(project.id, project)
+      : this.projectService.createProject(project);
   }
 }

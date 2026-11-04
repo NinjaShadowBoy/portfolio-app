@@ -1,8 +1,7 @@
 import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { finalize } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { IdentityService } from '../../core/services/identity.service';
 import { ProfileService } from '../../core/services/profile.service';
@@ -15,7 +14,7 @@ import { UserAvatarComponent } from '../../shared/ui/user-avatar/user-avatar.com
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterLink, UserAvatarComponent],
+  imports: [RouterLink, UserAvatarComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
 })
@@ -38,21 +37,14 @@ export class ProfileComponent {
   isSavingProfile = signal(false);
   isSavingPassword = signal(false);
   isUploadingAvatar = signal(false);
-
   myComments = signal<CommentDto[]>([]);
 
-  private readonly initEffect = effect(() => {
-    const current = this.user();
-    if (current) {
-      this.name.set(current.name);
-    }
-  });
-
   constructor() {
-    this.loadActivity();
-  }
+    effect(() => {
+      const current = this.user();
+      if (current) this.name.set(current.name);
+    });
 
-  private loadActivity() {
     this.commentService
       .getMyComments()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -88,34 +80,23 @@ export class ProfileComponent {
   }
 
   onAvatarSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
+    const file = (event.target as HTMLInputElement).files?.[0];
     if (!file || this.isUploadingAvatar()) return;
 
     this.isUploadingAvatar.set(true);
     this.photoService
       .uploadProfilePhoto(file)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        switchMap((photo) => this.profileService.updateProfile({ imageUrl: photo.photoUrl })),
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.isUploadingAvatar.set(false))
+      )
       .subscribe({
-        next: (photo) => {
-          this.profileService
-            .updateProfile({ imageUrl: photo.photoUrl })
-            .pipe(
-              takeUntilDestroyed(this.destroyRef),
-              finalize(() => this.isUploadingAvatar.set(false))
-            )
-            .subscribe({
-              next: () => {
-                this.identityService.refresh();
-                this.notificationService.success($localize`:@@profileAvatarUpdated:Profile photo updated`);
-              },
-              error: () => this.notificationService.error($localize`:@@profileUpdateFailed:Failed to update profile`),
-            });
+        next: () => {
+          this.identityService.refresh();
+          this.notificationService.success($localize`:@@profileAvatarUpdated:Profile photo updated`);
         },
-        error: () => {
-          this.isUploadingAvatar.set(false);
-          this.notificationService.error($localize`:@@profileAvatarFailed:Failed to upload photo`);
-        },
+        error: () => this.notificationService.error($localize`:@@profileAvatarFailed:Failed to upload photo`),
       });
   }
 

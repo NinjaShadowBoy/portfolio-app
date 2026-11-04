@@ -9,6 +9,6 @@
   @if (imageUrl()) {
     <img [src]="imageUrl()" [alt]="userName()" class="avatar-img" />
   } @else {
-    {{ initials }}
+    {{ initials() }}
   }
 </span>

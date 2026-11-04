@@ -1,7 +1,8 @@
 export const environment = {
   production: true,
-  // Cloudflare Tunnel (valid SSL) - Note: Temporary URL, will change on restart
-  apiBaseUrl: 'https://vps.alexabena.me/portfolio/v1',
+  // Production API, same origin as the site (nginx proxies /portfolio/ to
+  // the backend), so the browser never needs a CORS preflight.
+  apiBaseUrl: 'https://alexabena.me/portfolio/v1',
   cloudinary: {
     cloudName: 'dct6fuenh',
     uploadPreset: 'portfolio_unsigned', // Create this in Cloudinary dashboard

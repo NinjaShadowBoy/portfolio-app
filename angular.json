@@ -79,7 +79,9 @@
                 "127.0.0.1",
                 "vps.alexabena.me",
                 "alexabena.me",
-                "www.alexabena.me"
+                "www.alexabena.me",
+                "alexabena.space",
+                "www.alexabena.space"
               ]
             },
             "ssr": {
@@ -119,6 +121,38 @@
               "namedChunks": false,
               "extractLicenses": true
             },
+            "staging": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "700kB",
+                  "maximumError": "1.2MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "16kB",
+                  "maximumError": "20kB"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": true
+              },
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true
+            },
             "development": {
               "localize": false,
               "optimization": false,
@@ -126,7 +160,9 @@
               "sourceMap": true
             },
             "fr-preview": {
-              "localize": ["fr"]
+              "localize": [
+                "fr"
+              ]
             },
             "gh-pages": {
               "localize": true,

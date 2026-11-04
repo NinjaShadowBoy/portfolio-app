@@ -4,6 +4,7 @@ import { provideRouter, withInMemoryScrolling, withViewTransitions } from '@angu
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { serverApiTimeoutInterceptor } from './core/interceptors/server-api-timeout.interceptor';
 import { provideClientHydration } from '@angular/platform-browser';
 import {
   ArticleContentLoader,
@@ -29,7 +30,7 @@ export const appConfig: ApplicationConfig = {
     ),
     // Use fetch API instead of XHR for better performance
     provideHttpClient(
-      withInterceptors([authInterceptor]),
+      withInterceptors([authInterceptor, serverApiTimeoutInterceptor]),
       withFetch()
     ),
     provideClientHydration(),

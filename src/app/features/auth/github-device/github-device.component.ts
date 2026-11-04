@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -10,7 +10,6 @@ type Phase = 'starting' | 'waiting' | 'done' | 'error';
 @Component({
   selector: 'app-github-device',
   standalone: true,
-  imports: [CommonModule],
   template: `
     <div class="device-container">
       <div class="device-card">
@@ -33,10 +32,10 @@ type Phase = 'starting' | 'waiting' | 'done' | 'error';
           </div>
 
           <div class="device-actions">
-            <a class="btn btn-primary" [href]="verificationUri()" target="_blank" rel="noopener" i18n="@@deviceOpen">
+            <a class="btn-primary" [href]="verificationUri()" target="_blank" rel="noopener" i18n="@@deviceOpen">
               Open GitHub
             </a>
-            <button type="button" class="btn btn-ghost" (click)="copyCode()" i18n="@@deviceCopy">Copy code</button>
+            <button type="button" class="btn-ghost" (click)="copyCode()" i18n="@@deviceCopy">Copy code</button>
           </div>
 
           <p class="device-hint">
@@ -52,7 +51,7 @@ type Phase = 'starting' | 'waiting' | 'done' | 'error';
 
         @if (phase() === 'error') {
           <p class="device-error">{{ message() }}</p>
-          <button type="button" class="btn btn-primary" (click)="start()" i18n="@@deviceRetry">Try again</button>
+          <button type="button" class="btn-primary" (click)="start()" i18n="@@deviceRetry">Try again</button>
         }
       </div>
     </div>
@@ -65,9 +64,6 @@ type Phase = 'starting' | 'waiting' | 'done' | 'error';
     .device-link { display: inline-block; word-break: break-all; color: var(--color-primary-500); }
     .device-code { font-family: ui-monospace, monospace; font-size: 2rem; letter-spacing: 0.35rem; font-weight: 700; margin: 0.5rem auto 1rem; padding: 0.75rem 1rem; border: 1px dashed var(--border-subtle); border-radius: 12px; cursor: pointer; user-select: all; }
     .device-actions { display: flex; gap: 0.75rem; justify-content: center; margin: 1rem 0; }
-    .btn { padding: 0.6rem 1.1rem; border-radius: 10px; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid transparent; }
-    .btn-primary { background: var(--color-primary-500); color: #fff; }
-    .btn-ghost { background: transparent; border-color: var(--border-subtle); color: var(--text-primary); }
     .device-hint { display: flex; gap: 0.5rem; align-items: center; justify-content: center; color: var(--text-secondary); margin-top: 1rem; }
     .device-error { color: var(--color-danger-500, #e5484d); margin-bottom: 1rem; }
     .spinner { width: 42px; height: 42px; margin: 0 auto 1rem; border: 4px solid var(--border-subtle); border-top-color: var(--color-primary-500); border-radius: 50%; animation: spin 0.8s linear infinite; }

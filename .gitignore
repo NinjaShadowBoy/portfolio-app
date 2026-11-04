@@ -47,3 +47,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# OpenTelemetry bootstrap deps (installed inside the image)
+/otel/node_modules

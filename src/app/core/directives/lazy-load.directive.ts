@@ -2,21 +2,17 @@ import { isPlatformBrowser } from '@angular/common';
 import { Directive, ElementRef, OnInit, OnDestroy, Renderer2, PLATFORM_ID, inject, input } from '@angular/core';
 
 /**
- * Lazy Load Directive for Images
+ * Lazy-loads an image with an IntersectionObserver: a placeholder is shown
+ * until the element nears the viewport, then the real `src`/`srcset` is
+ * preloaded and swapped in. Loading/loaded/error state classes drive the
+ * blur-up effect. On the server, and in browsers without the observer, the
+ * image loads immediately.
  *
- * Improves LCP, FCP, and SI by:
- * - Using Intersection Observer API for efficient lazy loading
- * - Loading images only when they're about to enter the viewport
- * - Adding loading states with blur-up effect
- * - Supporting responsive images with srcset
- *
- * Usage:
- * <img appLazyLoad [src]="imageUrl" [alt]="altText">
- * <img appLazyLoad [src]="imageUrl" [placeholder]="thumbUrl">
+ * Usage: <img appLazyLoad [src]="imageUrl" [alt]="altText" [placeholder]="thumbUrl">
  */
 @Directive({
   selector: 'img[appLazyLoad]',
-  standalone: true
+  standalone: true,
 })
 export class LazyLoadDirective implements OnInit, OnDestroy {
   src = input('');
@@ -26,102 +22,59 @@ export class LazyLoadDirective implements OnInit, OnDestroy {
   loadedClass = input('lazy-loaded');
   errorClass = input('lazy-error');
 
-  private platformId = inject(PLATFORM_ID);
+  private readonly img = inject<ElementRef<HTMLImageElement>>(ElementRef).nativeElement;
+  private readonly renderer = inject(Renderer2);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private observer?: IntersectionObserver;
-  private readonly isBrowser = isPlatformBrowser(this.platformId);
-
-  constructor(
-    private el: ElementRef<HTMLImageElement>,
-    private renderer: Renderer2
-  ) {}
 
   ngOnInit(): void {
     if (!this.isBrowser) {
-      this.renderer.setAttribute(this.el.nativeElement, 'src', this.src());
+      this.renderer.setAttribute(this.img, 'src', this.src());
       return;
     }
-
-    if (!this.supportsIntersectionObserver()) {
-      // Fallback: load image immediately if IntersectionObserver not supported
+    if (!('IntersectionObserver' in window)) {
       this.loadImage();
       return;
     }
 
-    // Set placeholder
-    this.renderer.setAttribute(this.el.nativeElement, 'src', this.placeholder());
-    this.renderer.addClass(this.el.nativeElement, this.loadingClass());
+    this.renderer.setAttribute(this.img, 'src', this.placeholder());
+    this.renderer.addClass(this.img, this.loadingClass());
+    this.renderer.setAttribute(this.img, 'loading', 'lazy');
 
-    // Add loading attribute for native lazy loading support
-    this.renderer.setAttribute(this.el.nativeElement, 'loading', 'lazy');
-
-    // Create intersection observer
     this.observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this.loadImage();
-            this.observer?.unobserve(this.el.nativeElement);
-          }
-        });
+        if (entries.some((entry) => entry.isIntersecting)) {
+          this.loadImage();
+          this.observer?.disconnect();
+        }
       },
-      {
-        // Start loading image 50px before it enters viewport
-        rootMargin: '50px',
-        threshold: 0.01
-      }
+      { rootMargin: '50px', threshold: 0.01 } // Start 50px before it enters the viewport.
     );
-
-    this.observer.observe(this.el.nativeElement);
+    this.observer.observe(this.img);
   }
 
   ngOnDestroy(): void {
-    if (this.observer) {
-      this.observer.disconnect();
-    }
+    this.observer?.disconnect();
   }
 
   private loadImage(): void {
-    const img = this.el.nativeElement;
-
-    // Create a temporary image to preload
-    const tempImg = new Image();
     const src = this.src();
     const srcset = this.srcset();
+    const preload = new Image();
 
-    tempImg.onload = () => {
-      // Set the actual image source
-      this.renderer.setAttribute(img, 'src', src);
-
-      if (srcset) {
-        this.renderer.setAttribute(img, 'srcset', srcset);
-      }
-
-      // Update classes
-      this.renderer.removeClass(img, this.loadingClass());
-      this.renderer.addClass(img, this.loadedClass());
-
-      // Decode the image asynchronously for better performance
-      if ('decode' in img) {
-        img.decode()
-          .catch(() => {
-            // Silently fail - image will still display
-          });
-      }
+    preload.onload = () => {
+      this.renderer.setAttribute(this.img, 'src', src);
+      if (srcset) this.renderer.setAttribute(this.img, 'srcset', srcset);
+      this.renderer.removeClass(this.img, this.loadingClass());
+      this.renderer.addClass(this.img, this.loadedClass());
+      this.img.decode?.().catch(() => {}); // Decode off the main thread; the image displays either way.
+    };
+    preload.onerror = () => {
+      this.renderer.removeClass(this.img, this.loadingClass());
+      this.renderer.addClass(this.img, this.errorClass());
     };
 
-    tempImg.onerror = () => {
-      this.renderer.removeClass(img, this.loadingClass());
-      this.renderer.addClass(img, this.errorClass());
-    };
-
-    // Start loading
-    tempImg.src = src;
-    if (srcset) {
-      tempImg.srcset = srcset;
-    }
-  }
-
-  private supportsIntersectionObserver(): boolean {
-    return 'IntersectionObserver' in window;
+    preload.src = src;
+    if (srcset) preload.srcset = srcset;
   }
 }

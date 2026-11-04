@@ -12,12 +12,12 @@
         <div class="notification-message">
           {{ notification.message }}
         </div>
-        @if (notification.actions && notification.actions.length > 0) {
+        @if (notification.actions?.length) {
           <div class="notification-actions">
             @for (action of notification.actions; track $index) {
               <button
                 class="notification-action-btn"
-                (click)="executeAction(notification, $index)"
+                (click)="executeAction(notification, action)"
               >
                 {{ action.label }}
               </button>

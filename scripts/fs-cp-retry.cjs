@@ -14,7 +14,7 @@
 // The builder treats any error from that copy loop as fatal and aborts *before*
 // flushing the rest of the output, so one unlucky asset leaves dist/ without
 // index.html, the JS bundles and server/angular-app-engine-manifest.mjs - which is
-// why `pnpm serve` then dies with ERR_MODULE_NOT_FOUND on a build that otherwise
+// why `bun run serve` then dies with ERR_MODULE_NOT_FOUND on a build that otherwise
 // reported "Application bundle generation complete".
 //
 // Retrying the whole `cp` does NOT work: re-copying recreates the file and

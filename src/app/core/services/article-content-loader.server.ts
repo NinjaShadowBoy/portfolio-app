@@ -19,15 +19,8 @@ import { ArticleContentLoader } from './article-content-loader';
 export class ServerArticleContentLoader extends ArticleContentLoader {
   load(slug: string, lang: ArticleLang): Observable<ArticlePayload | null> {
     try {
-      const file = join(
-        process.cwd(),
-        'src',
-        'generated',
-        'articles',
-        `${slug}.${lang}.json`,
-      );
-      const payload = JSON.parse(readFileSync(file, 'utf8')) as ArticlePayload;
-      return of(payload);
+      const file = join(process.cwd(), 'src', 'generated', 'articles', `${slug}.${lang}.json`);
+      return of(JSON.parse(readFileSync(file, 'utf8')) as ArticlePayload);
     } catch {
       return of(null);
     }

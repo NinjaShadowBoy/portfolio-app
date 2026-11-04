@@ -1,50 +1,30 @@
-import { Component, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { ProjectDataService } from '../../core/services/project-data.service';
-import { AuthService } from '../../core/services/auth.service';
+import { ProjectFilters } from '../../core/interfaces/project.interface';
 import { ProjectCardComponent } from '../../shared/ui/project-card/project-card.component';
 
+/** Filterable projects list. Filter state lives in {@link ProjectDataService}. */
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, ProjectCardComponent],
+  imports: [ProjectCardComponent],
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css'],
 })
 export class ProjectsComponent {
-  protected readonly Number = Number;
-
-  // Angular function-based injection
   private projectService = inject(ProjectDataService);
-  private auth = inject(AuthService);
 
-  // Computed properties from service
-  public readonly projects = this.projectService.filteredProjects;
-  public readonly totalProjects = this.projectService.projects; // Total unfiltered count
-  public readonly uniqueTechnologies = this.projectService.uniqueTechnologies;
-  public readonly filters = this.projectService.filters;
-  public readonly isLoading = this.projectService.isLoading;
-  public readonly isAdmin = this.auth.isAdmin;
+  readonly projects = this.projectService.filteredProjects;
+  readonly totalProjects = this.projectService.projects;
+  readonly uniqueTechnologies = this.projectService.uniqueTechnologies;
+  readonly filters = this.projectService.filters;
+  readonly isLoading = this.projectService.isLoading;
 
-  // Form controls
-  public searchTerm = signal('');
-  public selectedTechnology = signal('');
-  public showFeaturedOnly = signal(false);
-
-  private readonly filterEffect = effect(() => {
-    this.projectService.updateFilters({
-      searchTerm: this.searchTerm(),
-      technology: this.selectedTechnology(),
-      featured: this.showFeaturedOnly(),
-    });
-  });
-
-  // User interaction methods
+  updateFilters(filters: Partial<ProjectFilters>): void {
+    this.projectService.updateFilters(filters);
+  }
 
   resetFilters(): void {
-    this.searchTerm.set('');
-    this.selectedTechnology.set('');
-    this.showFeaturedOnly.set(false);
     this.projectService.resetFilters();
   }
 }

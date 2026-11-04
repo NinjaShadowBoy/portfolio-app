@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { OAuthProvider } from '../../../core/interfaces/auth.interface';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -13,18 +13,11 @@ import {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterLink,
-    SegmentedToggleComponent,
-  ],
+  imports: [ReactiveFormsModule, RouterLink, SegmentedToggleComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private router = inject(Router);
   private notifier = inject(NotificationService);
@@ -33,17 +26,10 @@ export class LoginComponent {
   submitted = signal(false);
   isRegister = signal(false);
 
-  /** Options for the login/register segmented toggle (ids kept from the old
-   *  inline toggle so the existing fr translations still apply). */
+  /** Ids kept from the old inline toggle so the existing fr translations still apply. */
   readonly modeOptions: readonly SegmentedToggleOption[] = [
-    {
-      value: 'login',
-      label: $localize`:Login mode toggle - login option@@loginToggleLogin:Login`,
-    },
-    {
-      value: 'register',
-      label: $localize`:Login mode toggle - register option@@loginToggleRegister:Register`,
-    },
+    { value: 'login', label: $localize`:Login mode toggle - login option@@loginToggleLogin:Login` },
+    { value: 'register', label: $localize`:Login mode toggle - register option@@loginToggleRegister:Register` },
   ];
 
   submitState = computed(() => {
@@ -51,61 +37,55 @@ export class LoginComponent {
     return this.isRegister() ? 'create' : 'signin';
   });
 
-  form = this.fb.nonNullable.group({
+  form = inject(NonNullableFormBuilder).group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
-    name: [''],
+    name: [''], // required only in register mode, see setMode()
   });
 
   onSubmit() {
     this.submitted.set(true);
     if (this.form.invalid || this.loading()) return;
-    this.loading.set(true);
-    const isRegistering = this.isRegister();
-    const action$ = isRegistering
-      ? this.auth.register({
-          email: this.form.value.email!,
-          password: this.form.value.password!,
-          name: this.form.value.name || '',
-        })
-      : this.auth.login({
-          email: this.form.value.email!,
-          password: this.form.value.password!,
-        });
 
-    action$.subscribe({
+    this.loading.set(true);
+    const registering = this.isRegister();
+    const { email, password, name } = this.form.getRawValue();
+    const action$ = registering
+      ? this.auth.register({ email, password, name })
+      : this.auth.login({ email, password });
+
+    action$.pipe(finalize(() => this.loading.set(false))).subscribe({
       next: (res) => {
         this.auth.setSession(res);
-        this.notifier.success(isRegistering ? $localize`:Toast shown after a successful registration@@loginWelcome:Welcome aboard!` : $localize`:@@loginWelcomeBack:Welcome back!`);
+        this.notifier.success(
+          registering
+            ? $localize`:Toast shown after a successful registration@@loginWelcome:Welcome aboard!`
+            : $localize`:@@loginWelcomeBack:Welcome back!`
+        );
         this.router.navigateByUrl('/home');
       },
       error: (err) => {
-        const fallback = isRegistering ? $localize`:@@registerFailed:Registration failed` : $localize`:@@loginFailed:Login failed`;
+        const fallback = registering
+          ? $localize`:@@registerFailed:Registration failed`
+          : $localize`:@@loginFailed:Login failed`;
         this.notifier.error(err?.error?.message || fallback);
-        this.loading.set(false);
       },
-      complete: () => this.loading.set(false),
     });
   }
 
   loginWithOAuth2(provider: OAuthProvider) {
-    if (this.loading()) return;
-    this.auth.startOAuth2(provider);
+    if (!this.loading()) this.auth.startOAuth2(provider);
   }
 
   setMode(mode: string) {
     const register = mode === 'register';
     if (register === this.isRegister()) return;
+
     this.isRegister.set(register);
-    if (this.isRegister()) {
-      this.form.controls.name.addValidators([Validators.required, Validators.minLength(2)]);
-    } else {
-      this.form.controls.name.clearValidators();
-    }
-    this.form.controls.name.updateValueAndValidity();
-    this.form.reset({ email: '', password: '', name: '' });
+    const nameControl = this.form.controls.name;
+    if (register) nameControl.setValidators([Validators.required, Validators.minLength(2)]);
+    else nameControl.clearValidators();
+    this.form.reset();
     this.submitted.set(false);
   }
 }
-
-

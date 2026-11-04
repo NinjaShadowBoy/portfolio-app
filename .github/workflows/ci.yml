@@ -13,10 +13,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # Matches the Node runtime installed on the VPS (deploy/bootstrap.sh) -
-  # bump both together.
+  # Matches the runtime image in the Dockerfile (node:24) - bump both
+  # together. bun installs and runs scripts; ng itself runs on node.
   NODE_VERSION: "24"
-  PNPM_VERSION: "11"
 
 jobs:
   test:
@@ -25,25 +24,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          version: ${{ env.PNPM_VERSION }}
+          bun-version: latest
 
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
+
+      - name: Test build scripts
+        run: bun run test:content && bun run test:fs-cp-retry
 
       # Karma defaults to a headed browser; ChromeHeadless is the CI equivalent.
       # --watch=false stops the runner hanging on the interactive watcher.
       - name: Test
-        run: pnpm exec ng test --watch=false --browsers=ChromeHeadless
+        run: bunx ng test --watch=false --browsers=ChromeHeadless
 
-      # `pnpm build` runs content:build first, which generates the src/generated
-      # assets angular.json expects - running ng build alone would fail. Same
-      # command the deploy build uses, so a broken build fails here first.
+      # `bun run build` runs content:build first, which generates the
+      # src/generated assets angular.json expects - running ng build alone
+      # would fail. Same command the Docker build uses.
       - name: Build
-        run: pnpm build
+        run: bun run build

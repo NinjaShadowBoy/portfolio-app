@@ -1,81 +1,63 @@
-import { Component, effect, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { Project } from '../../../../core/interfaces/project.interface';
+import { Component, effect, inject, input, output } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Project, ProjectCreateRequest } from '../../../../core/interfaces/project.interface';
 
 @Component({
   selector: 'app-project-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './project-form.component.html',
   styleUrls: ['./project-form.component.css'],
 })
 export class ProjectFormComponent {
+  private fb = inject(NonNullableFormBuilder);
+
   formMode = input<'create' | 'edit'>('create');
+  /** The project to edit; null resets the form for creation. */
   project = input<Project | null>(null);
 
-  save = output<any>();
+  save = output<ProjectCreateRequest>();
   cancel = output<void>();
 
-  projectForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    description: new FormControl('', [
-      Validators.required,
-      Validators.minLength(10),
-    ]),
-    technologies: new FormControl('', Validators.required),
-    githubLink: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^https?:\/\/.+/),
-    ]),
-    challenges: new FormControl('', Validators.required),
-    whatILearned: new FormControl('', Validators.required),
-    featured: new FormControl(false),
+  projectForm = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    description: ['', [Validators.required, Validators.minLength(10)]],
+    technologies: ['', Validators.required], // comma-separated in the UI
+    githubLink: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
+    challenges: ['', Validators.required],
+    whatILearned: ['', Validators.required],
+    featured: [false],
   });
 
   constructor() {
     effect(() => {
-      const proj = this.project();
-      if (proj) {
-        this.projectForm.patchValue({
-          name: proj.name,
-          description: proj.description,
-          technologies: proj.technologies.join(', '),
-          githubLink: proj.githubLink || '',
-          challenges: proj.challenges || '',
-          whatILearned: proj.whatILearned || '',
-          featured: proj.featured || false,
-        });
-      } else {
-        this.projectForm.reset({ featured: false });
+      const project = this.project();
+      if (!project) {
+        this.projectForm.reset();
+        return;
       }
+      this.projectForm.setValue({
+        name: project.name,
+        description: project.description,
+        technologies: project.technologies.join(', '),
+        githubLink: project.githubLink ?? '',
+        challenges: project.challenges ?? '',
+        whatILearned: project.whatILearned ?? '',
+        featured: project.featured ?? false,
+      });
     });
   }
 
   submitForm() {
-    if (this.projectForm.invalid) {
-      return;
-    }
+    if (this.projectForm.invalid) return;
 
-    const formValue = this.projectForm.value;
-    const technologies = formValue.technologies
-      ? formValue.technologies.split(',').map((t) => t.trim())
-      : [];
-
+    const { technologies, ...rest } = this.projectForm.getRawValue();
     this.save.emit({
-      name: formValue.name || '',
-      description: formValue.description || '',
-      technologies,
-      githubLink: formValue.githubLink || '',
-      challenges: formValue.challenges || '',
-      whatILearned: formValue.whatILearned || '',
-      featured: formValue.featured || false,
+      ...rest,
+      technologies: technologies
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean),
     });
   }
 

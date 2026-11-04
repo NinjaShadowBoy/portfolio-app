@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { TocComponent, TocNode } from './toc.component';
+import { TocComponent } from './toc.component';
+import { TocNode } from '../../../core/interfaces/article.interface';
 
 describe('TocComponent', () => {
   let component: TocComponent;
@@ -32,10 +33,6 @@ describe('TocComponent', () => {
     fixture = TestBed.createComponent(TocComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should render nothing when the toc tree is empty', () => {

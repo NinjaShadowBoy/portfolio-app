@@ -167,9 +167,9 @@ describe('content build script', () => {
       assert.ok(hello, 'hello-world should be present in the manifest');
       assert.equal(
         hello.title,
-        'Hello World — Building a Markdown-Powered Writing System',
+        'Hello World: the Markdown pipeline behind this site',
       );
-      assert.match(hello.description, /build-time Markdown pipeline/);
+      assert.match(hello.description, /compiled at build time/);
       assert.equal(hello.date, '2026-07-10');
       assert.deepEqual(hello.tags, [
         'angular',
@@ -226,15 +226,16 @@ describe('content build script', () => {
       const texts = toc.map((n) =>
         String(n.text ?? n.title ?? n.label ?? '').toLowerCase(),
       );
+      // First and last h2 of the fixture, so a TOC that drops either end fails.
       assert.ok(
-        ids.includes('introduction') ||
-          texts.some((t) => t.includes('introduction')),
-        'TOC should contain the "Introduction" heading',
+        ids.includes('why-markdown-in-the-repo') ||
+          texts.some((t) => t.includes('why markdown in the repo')),
+        'TOC should contain the "Why Markdown in the repo" heading',
       );
       assert.ok(
-        ids.includes('conclusion') ||
-          texts.some((t) => t.includes('conclusion')),
-        'TOC should contain the "Conclusion" heading',
+        ids.includes('bilingual-by-design') ||
+          texts.some((t) => t.includes('bilingual by design')),
+        'TOC should contain the "Bilingual by design" heading',
       );
     });
 
@@ -244,7 +245,7 @@ describe('content build script', () => {
       assert.ok(html.length > 0, 'rendered body should not be empty');
       assert.match(
         html,
-        /id="introduction"/,
+        /id="why-markdown-in-the-repo"/,
         'headings should be anchored by markdown-it-anchor',
       );
     });

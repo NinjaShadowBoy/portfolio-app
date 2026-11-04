@@ -24,8 +24,8 @@
         <label for="search" i18n="Projects search label@@projectsSearchLabel">Search Projects:</label>
         <input
           id="search"
-          [value]="searchTerm()"
-          (input)="searchTerm.set($any($event.target).value)"
+          [value]="filters().searchTerm"
+          (input)="updateFilters({ searchTerm: $any($event.target).value })"
           i18n-placeholder placeholder="Search by name or description..."
           class="search-input"
         />
@@ -35,8 +35,8 @@
         <label for="technology" i18n="Projects technology filter label@@projectsTechLabel">Technology:</label>
         <select
           id="technology"
-          [value]="selectedTechnology()"
-          (change)="selectedTechnology.set($any($event.target).value)"
+          [value]="filters().technology"
+          (change)="updateFilters({ technology: $any($event.target).value })"
           class="tech-filter"
         >
           <option value="" i18n="Projects all technologies option@@projectsAllTech">All Technologies</option>
@@ -50,8 +50,8 @@
         <label class="checkbox-label">
           <input
             type="checkbox"
-            [checked]="showFeaturedOnly()"
-            (change)="showFeaturedOnly.set($any($event.target).checked)"
+            [checked]="filters().featured"
+            (change)="updateFilters({ featured: $any($event.target).checked })"
           />
           <span i18n="Projects featured only checkbox label@@projectsFeaturedOnly">Featured Projects Only</span>
         </label>

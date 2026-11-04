@@ -1,43 +1,35 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../../core/services/notification.service';
-import { Notification } from '../../../core/interfaces/notification.interface';
+import { Notification, NotificationAction } from '../../../core/interfaces/notification.interface';
+
+const ICONS: Record<Notification['type'], string> = {
+  success: '✓',
+  error: '✕',
+  warning: '⚠',
+  info: 'ℹ',
+};
 
 @Component({
   selector: 'app-notification-container',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './notification-container.component.html',
   styleUrls: ['./notification-container.component.css'],
 })
 export class NotificationContainerComponent {
   private notificationService = inject(NotificationService);
 
-  notifications = this.notificationService.notifications;
+  readonly notifications = this.notificationService.notifications;
 
   dismiss(id: string): void {
     this.notificationService.dismiss(id);
   }
 
-  executeAction(notification: Notification, actionIndex: number): void {
-    if (notification.actions && notification.actions[actionIndex]) {
-      notification.actions[actionIndex].action();
-      this.dismiss(notification.id);
-    }
+  executeAction(notification: Notification, action: NotificationAction): void {
+    action.action();
+    this.dismiss(notification.id);
   }
 
   getIcon(type: string): string {
-    switch (type) {
-      case 'success':
-        return '✓';
-      case 'error':
-        return '✕';
-      case 'warning':
-        return '⚠';
-      case 'info':
-        return 'ℹ';
-      default:
-        return '';
-    }
+    return ICONS[type as Notification['type']] ?? '';
   }
 }
