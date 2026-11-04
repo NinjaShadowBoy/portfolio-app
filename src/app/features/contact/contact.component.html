@@ -1,6 +1,6 @@
 <div class="contact-container">
   <h1 i18n="Contact page heading@@contactHeading">Contact Me</h1>
-  <p i18n="Contact page subtitle@@contactSubtitle">Message me about a project, a job, or anything you found on this site.</p>
+  <p i18n="Contact page subtitle@@contactSubtitle">Hiring for a January 2027 internship, planning a project, or curious about something on this site? Write to me.</p>
   <form [formGroup]="contactForm" (ngSubmit)="submitForm()" class="contact-form">
     <div class="form-group">
       <label for="name" i18n="Contact form name label@@contactNameLabel">Name</label>
@@ -35,8 +35,8 @@
       }
       }
     </div>
-    <button [disabled]="contactForm.invalid || isSubmitting" type="submit">
-      {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+    <button [disabled]="contactForm.invalid || isSubmitting()" type="submit">
+      {{ isSubmitting() ? 'Sending...' : 'Send Message' }}
     </button>
   </form>
 </div>
