@@ -126,15 +126,6 @@
   font-style: italic;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 /* Responsive design - Tablet */
 @media (max-width: 1024px) {
   .carousel-container {

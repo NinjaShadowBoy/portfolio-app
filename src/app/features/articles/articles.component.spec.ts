@@ -1,5 +1,5 @@
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { signal } from '@angular/core';
 import { ArticlesComponent } from './articles.component';
 import { ArticleDataService } from '../../core/services/article-data.service';
@@ -35,8 +35,9 @@ describe('ArticlesComponent', () => {
   async function setup(articles: ArticleSummary[]): Promise<void> {
     manifest.set(articles);
     await TestBed.configureTestingModule({
-      imports: [ArticlesComponent, RouterTestingModule],
+      imports: [ArticlesComponent],
       providers: [
+        provideRouter([]),
         {
           provide: ArticleDataService,
           useValue: { articles: manifest },

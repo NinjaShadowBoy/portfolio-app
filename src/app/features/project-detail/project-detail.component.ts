@@ -10,10 +10,9 @@ import { TechTagsComponent } from '../../shared/ui/tech-tags/tech-tags.component
 
 @Component({
   selector: 'app-project-detail',
-  standalone: true,
   imports: [DatePipe, CarouselComponent, FeedbackComponent, TechTagsComponent],
   templateUrl: './project-detail.component.html',
-  styleUrls: ['./project-detail.component.css'],
+  styleUrl: './project-detail.component.css',
 })
 export class ProjectDetailComponent {
   private projectService = inject(ProjectDataService);

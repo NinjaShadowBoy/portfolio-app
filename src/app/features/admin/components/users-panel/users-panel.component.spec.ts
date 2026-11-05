@@ -1,3 +1,5 @@
+import { Mocked } from 'vitest';
+import { createSpyObj } from '../../../../../testing/create-spy-obj';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { of } from 'rxjs';
@@ -11,7 +13,7 @@ import { AdminUser } from '../../../../core/interfaces/admin.interface';
 describe('UsersPanelComponent', () => {
   let fixture: ComponentFixture<UsersPanelComponent>;
   let component: UsersPanelComponent;
-  let admin: jasmine.SpyObj<AdminService>;
+  let admin: Mocked<AdminService>;
 
   const user = (id: number, extra: Partial<AdminUser> = {}): AdminUser => ({
     id,
@@ -29,18 +31,18 @@ describe('UsersPanelComponent', () => {
   });
 
   beforeEach(async () => {
-    admin = jasmine.createSpyObj<AdminService>('AdminService', ['listUsers', 'updateUserRole', 'deleteUser']);
-    admin.listUsers.and.returnValue(
+    admin = createSpyObj<AdminService>(['listUsers', 'updateUserRole', 'deleteUser']);
+    admin.listUsers.mockReturnValue(
       of({ items: [user(1, { role: 'ADMIN', provider: 'LOCAL' }), user(8)], total: 2, limit: 25, offset: 0 }),
     );
-    admin.updateUserRole.and.returnValue(of({} as any));
+    admin.updateUserRole.mockReturnValue(of({} as any));
 
     await TestBed.configureTestingModule({
       imports: [UsersPanelComponent],
       providers: [
         { provide: AdminService, useValue: admin },
         { provide: AuthService, useValue: { user: signal({ id: 1, name: 'Me', email: 'me@x.y' }) } },
-        { provide: NotificationService, useValue: jasmine.createSpyObj('NotificationService', ['success', 'error']) },
+        { provide: NotificationService, useValue: createSpyObj(['success', 'error']) },
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(UsersPanelComponent);
@@ -58,7 +60,7 @@ describe('UsersPanelComponent', () => {
   });
 
   it('updates the row in place after a role change', () => {
-    spyOn(window, 'confirm').and.returnValue(true);
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
 
     component.setRole(component.page()!.items[1], 'ADMIN');
 
@@ -73,6 +75,6 @@ describe('UsersPanelComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(admin.listUsers).toHaveBeenCalledWith(jasmine.objectContaining({ search: 'ann', offset: 0 }));
+    expect(admin.listUsers).toHaveBeenCalledWith(expect.objectContaining({ search: 'ann', offset: 0 }));
   });
 });

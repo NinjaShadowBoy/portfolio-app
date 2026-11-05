@@ -1,4 +1,6 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Mocked, Mock } from 'vitest';
+import { createSpyObj } from '../../../../testing/create-spy-obj';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -7,16 +9,20 @@ import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
 
 describe('Oauth2RedirectComponent', () => {
+  afterEach(() => vi.useRealTimers());
+
   let fixture: ComponentFixture<Oauth2RedirectComponent>;
-  let auth: jasmine.SpyObj<AuthService>;
-  let notifier: jasmine.SpyObj<NotificationService>;
-  let navigate: jasmine.Spy;
+  let auth: Mocked<AuthService>;
+  let notifier: Mocked<NotificationService>;
+  let navigate: Mock;
 
   function setup(queryParams: Record<string, string>, { decodeFails = false } = {}): void {
-    auth = jasmine.createSpyObj<AuthService>('AuthService', ['setSessionFromToken']);
-    if (decodeFails) auth.setSessionFromToken.and.throwError('Failed to decode token');
-    notifier = jasmine.createSpyObj<NotificationService>('NotificationService', ['success', 'error']);
-    navigate = jasmine.createSpy('navigateByUrl');
+    auth = createSpyObj<AuthService>(['setSessionFromToken']);
+    if (decodeFails) auth.setSessionFromToken.mockImplementation(() => {
+      throw new Error('Failed to decode token');
+    });
+    notifier = createSpyObj<NotificationService>(['success', 'error']);
+    navigate = vi.fn().mockName('navigateByUrl');
     TestBed.configureTestingModule({
       imports: [Oauth2RedirectComponent],
       providers: [
@@ -30,41 +36,45 @@ describe('Oauth2RedirectComponent', () => {
     fixture.detectChanges();
   }
 
-  it('stores the session from the token and redirects home after a second', fakeAsync(() => {
+  it('stores the session from the token and redirects home after a second', () => {
+    vi.useFakeTimers();
     setup({ token: 'jwt' });
 
     expect(auth.setSessionFromToken).toHaveBeenCalledWith('jwt');
     expect(notifier.success).toHaveBeenCalled();
     expect(navigate).not.toHaveBeenCalled();
-    tick(1000);
+    vi.advanceTimersByTime(1000);
     expect(navigate).toHaveBeenCalledWith('/home');
-  }));
+  });
 
-  it('reports a provider error and sends the user back to login', fakeAsync(() => {
+  it('reports a provider error and sends the user back to login', () => {
+    vi.useFakeTimers();
     setup({ error: 'access_denied' });
 
     expect(notifier.error).toHaveBeenCalledWith('access_denied');
     expect(fixture.nativeElement.textContent).toContain('Authentication failed');
-    tick(2000);
+    vi.advanceTimersByTime(2000);
     expect(navigate).toHaveBeenCalledWith('/login');
-  }));
+  });
 
-  it('treats a callback without a token as a failure', fakeAsync(() => {
+  it('treats a callback without a token as a failure', () => {
+    vi.useFakeTimers();
     setup({ other: 'x' });
 
     expect(notifier.error).toHaveBeenCalledTimes(1);
     expect(auth.setSessionFromToken).not.toHaveBeenCalled();
-    tick(2000);
+    vi.advanceTimersByTime(2000);
     expect(navigate).toHaveBeenCalledWith('/login');
-  }));
+  });
 
-  it('treats an undecodable token as a failure', fakeAsync(() => {
-    spyOn(console, 'error');
+  it('treats an undecodable token as a failure', () => {
+    vi.useFakeTimers();
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
     setup({ token: 'garbage' }, { decodeFails: true });
 
     expect(notifier.error).toHaveBeenCalledTimes(1);
     expect(notifier.success).not.toHaveBeenCalled();
-    tick(2000);
+    vi.advanceTimersByTime(2000);
     expect(navigate).toHaveBeenCalledWith('/login');
-  }));
+  });
 });

@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ArticleDataService } from '../../core/services/article-data.service';
 import { ArticleCardComponent } from '../../shared/ui/article-card/article-card.component';
 
@@ -19,10 +18,9 @@ import { ArticleCardComponent } from '../../shared/ui/article-card/article-card.
  */
 @Component({
   selector: 'app-articles',
-  standalone: true,
-  imports: [CommonModule, ArticleCardComponent],
+  imports: [ArticleCardComponent],
   templateUrl: './articles.component.html',
-  styleUrls: ['./articles.component.css'],
+  styleUrl: './articles.component.css',
 })
 export class ArticlesComponent {
   private articleService = inject(ArticleDataService);

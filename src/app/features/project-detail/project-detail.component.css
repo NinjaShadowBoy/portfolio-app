@@ -64,8 +64,7 @@ h1 {
   font-size: 1.1rem;
 }
 
-.challenges,
-.learnings {
+.challenges {
   margin-bottom: 2rem;
   padding: 1.5rem;
   background: var(--surface-raised);
@@ -75,8 +74,7 @@ h1 {
   transition: all var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.challenges:hover,
-.learnings:hover {
+.challenges:hover {
   box-shadow: var(--elevation-2);
   border-color: var(--border-emphasis);
 }
@@ -98,8 +96,7 @@ h2::before {
   border-radius: 2px;
 }
 
-.challenges p,
-.learnings p {
+.challenges p {
   color: var(--text-secondary);
   line-height: 1.6;
   margin: 0;
@@ -211,7 +208,6 @@ h2::before {
   .description,
   .technologies,
   .challenges,
-  .learnings,
   .gallery {
     padding: 1.35rem;
   }
@@ -243,7 +239,6 @@ h2::before {
   .description,
   .technologies,
   .challenges,
-  .learnings,
   .gallery {
     padding: 1.25rem;
     margin-bottom: 1.5rem;
@@ -269,8 +264,7 @@ h2::before {
     height: 1.35rem;
   }
 
-  .challenges p,
-  .learnings p {
+  .challenges p {
     font-size: 0.95rem;
   }
 
@@ -326,7 +320,6 @@ h2::before {
   .description,
   .technologies,
   .challenges,
-  .learnings,
   .gallery {
     padding: 1rem;
     margin-bottom: 1.25rem;
@@ -353,8 +346,7 @@ h2::before {
     height: 1.25rem;
   }
 
-  .challenges p,
-  .learnings p {
+  .challenges p {
     font-size: 0.9rem;
     line-height: 1.5;
   }
@@ -367,12 +359,6 @@ h2::before {
 
   .github-icon {
     margin-left: 6px;
-  }
-
-  .carousel-button {
-    padding: 0.75rem 0.5rem;
-    font-size: 1.25rem;
-    min-width: 40px;
   }
 
   .no-photos {
@@ -411,7 +397,6 @@ h2::before {
 [data-theme="dark"] .description,
 [data-theme="dark"] .technologies,
 [data-theme="dark"] .challenges,
-[data-theme="dark"] .learnings,
 [data-theme="dark"] .gallery {
   background: var(--surface-raised);
   border-color: var(--border-default);
@@ -437,7 +422,6 @@ h2::before {
   .description,
   .technologies,
   .challenges,
-  .learnings,
   .gallery {
     background: transparent !important;
     border: 1px solid var(--border-default) !important;
@@ -449,7 +433,4 @@ h2::before {
     color: var(--text-primary) !important;
   }
 
-  .carousel-main {
-    page-break-inside: avoid;
-  }
 }

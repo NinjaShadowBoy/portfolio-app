@@ -8,7 +8,6 @@ import { ArticlePayload, ArticleSummary } from '../../core/interfaces/article.in
 import { ArticleDataService } from '../../core/services/article-data.service';
 import { AUTHOR_NAME, SITE_URL, SeoService } from '../../core/services/seo.service';
 import { resolveCoverImage } from '../../core/utils/article-cover';
-import { LazyLoadDirective } from '../../core/directives/lazy-load.directive';
 import { CodeCopyDirective } from '../../core/directives/code-copy.directive';
 import { TocComponent } from '../../shared/ui/toc/toc.component';
 import { ConnectionsComponent } from '../../shared/ui/connections/connections.component';
@@ -23,17 +22,15 @@ import { FeedbackComponent } from '../../shared/ui/feedback/feedback.component';
  */
 @Component({
   selector: 'app-article-detail',
-  standalone: true,
   imports: [
     DatePipe,
-    LazyLoadDirective,
     CodeCopyDirective,
     TocComponent,
     ConnectionsComponent,
     FeedbackComponent,
   ],
   templateUrl: './article-detail.component.html',
-  styleUrls: ['./article-detail.component.css'],
+  styleUrl: './article-detail.component.css',
 })
 export class ArticleDetailComponent {
   private articleData = inject(ArticleDataService);

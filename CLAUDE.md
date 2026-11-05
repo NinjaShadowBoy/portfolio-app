@@ -6,7 +6,7 @@ one rule that is easiest to get wrong.
 
 ## Styling -  keep it DRY
 
-`src/styles.css` (~1600 lines) already defines design tokens and utility classes
+`src/styles.css` (~1800 lines) already defines design tokens and utility classes
 for almost everything. **Reuse them; do not hardcode.** Before adding any CSS
 rule, check `src/styles.css` for an existing token or class.
 
@@ -18,9 +18,9 @@ rule, check `src/styles.css` for an existing token or class.
   `--shadow-*`), motion (`--motion-duration-fast`, `--motion-ease-out`). Never
   paste a raw hex, `rgba()`, box-shadow, or transition duration a token covers.
 - **Reuse utility classes** instead of re-declaring: `.btn-primary/.btn-secondary/
-  .btn-ghost`, `.input-field`, `.surface-*`, `.elevation-*`, `.glass-morphism`,
-  `.liquid-glass*`, `.gradient-*`, `.interactive`, `.focus-ring`,
-  `.text-success/warning/danger/info`.
+  .btn-ghost`, `.input-field`, `.liquid-glass`, `.liquid-glass-subtle`,
+  `.interactive`, `.chip`, `.bg-/.text-/.border-` + `success/danger/info`.
+  Add a new utility to `src/styles.css` only when a template uses it.
 - **Dark mode is automatic** when you use tokens (values are re-mapped under
   `[data-theme="dark"]`); hardcoded colors silently break dark mode.
 - Collapse repeated declarations within a component by grouping selectors

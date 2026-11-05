@@ -86,6 +86,6 @@ describe('SegmentedToggleComponent', () => {
     expect(buttons()[0].tabIndex).toBe(0);
     expect(
       buttons().every((b) => b.getAttribute('aria-checked') === 'false'),
-    ).toBeTrue();
+    ).toBe(true);
   });
 });

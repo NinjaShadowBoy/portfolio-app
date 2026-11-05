@@ -7,10 +7,9 @@ import { CanComponentDeactivate } from '../../core/guards/auth.guard';
 
 @Component({
   selector: 'app-contact',
-  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css'],
+  styleUrl: './contact.component.css',
 })
 export class ContactComponent implements CanComponentDeactivate {
   private notificationService = inject(NotificationService);

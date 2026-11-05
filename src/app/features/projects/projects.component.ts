@@ -6,10 +6,9 @@ import { ProjectCardComponent } from '../../shared/ui/project-card/project-card.
 /** Filterable projects list. Filter state lives in {@link ProjectDataService}. */
 @Component({
   selector: 'app-projects',
-  standalone: true,
   imports: [ProjectCardComponent],
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.css'],
+  styleUrl: './projects.component.css',
 })
 export class ProjectsComponent {
   private projectService = inject(ProjectDataService);

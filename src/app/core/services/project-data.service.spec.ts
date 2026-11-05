@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -8,6 +8,8 @@ import { ProjectDataService } from './project-data.service';
 import { ProjectImport } from '../interfaces/project.interface';
 
 describe('ProjectDataService', () => {
+  afterEach(() => vi.useRealTimers());
+
   let service: ProjectDataService;
   let httpMock: HttpTestingController;
 
@@ -24,38 +26,41 @@ describe('ProjectDataService', () => {
     httpMock.verify();
   });
 
-  it('should fall back to hardcoded projects when the API returns an empty list', fakeAsync(() => {
+  it('should fall back to hardcoded projects when the API returns an empty list', async () => {
+    vi.useFakeTimers();
     const request = httpMock.expectOne((req) => req.url.endsWith('/projects'));
     request.flush([]);
 
-    tick(300);
+    await vi.advanceTimersByTimeAsync(300);
 
     expect(service.projects().length).toBeGreaterThan(0);
     expect(service.projects()[0].name).toBe('Lora');
     expect(service.featuredProjects().length).toBeGreaterThan(0);
-  }));
+  });
 
-  it('should fall back to hardcoded projects when the API fails', fakeAsync(() => {
+  it('should fall back to hardcoded projects when the API fails', async () => {
+    vi.useFakeTimers();
     const request = httpMock.expectOne((req) => req.url.endsWith('/projects'));
     request.flush('Server error', {
       status: 500,
       statusText: 'Server Error',
     });
 
-    tick(300);
+    await vi.advanceTimersByTimeAsync(300);
 
     expect(service.projects().length).toBeGreaterThan(0);
     expect(service.projects()[1].name).toBe('Connect Four');
-  }));
+  });
 
-  it('sends only writable fields when updating an imported project', fakeAsync(() => {
+  it('sends only writable fields when updating an imported project', async () => {
+    vi.useFakeTimers();
     httpMock.expectOne((req) => req.url.endsWith('/projects')).flush([]);
-    tick(300);
+    await vi.advanceTimersByTimeAsync(300);
     const imported = { ...service.projects()[0], id: 42, isExpanded: true };
     service.updateProject(imported.id, imported).subscribe();
 
     const request = httpMock.expectOne((req) => req.method === 'PUT');
-    expect(request.request.url.endsWith('/projects/42')).toBeTrue();
+    expect(request.request.url.endsWith('/projects/42')).toBe(true);
     expect(JSON.parse(request.request.serializeBody() as string)).toEqual({
       name: imported.name,
       description: imported.description,
@@ -65,30 +70,32 @@ describe('ProjectDataService', () => {
       whatILearned: imported.whatILearned,
       featured: imported.featured,
     });
-    const refresh = spyOn(service, 'refreshProjects');
+    const refresh = vi.spyOn(service, 'refreshProjects').mockImplementation(() => undefined);
     request.flush(imported);
     expect(refresh).toHaveBeenCalledTimes(1);
-  }));
+  });
 
-  it('preserves a false flag and omits unspecified fields in partial updates', fakeAsync(() => {
+  it('preserves a false flag and omits unspecified fields in partial updates', async () => {
+    vi.useFakeTimers();
     httpMock.expectOne((req) => req.url.endsWith('/projects')).flush([]);
-    tick(300);
+    await vi.advanceTimersByTimeAsync(300);
     service.updateProject(42, { featured: false }).subscribe();
     const request = httpMock.expectOne((req) => req.method === 'PUT');
     expect(JSON.parse(request.request.serializeBody() as string)).toEqual({ featured: false });
-    spyOn(service, 'refreshProjects');
+    vi.spyOn(service, 'refreshProjects').mockImplementation(() => undefined);
     request.flush({});
-  }));
+  });
 
-  it('omits import IDs on creation and does not refresh on failure', fakeAsync(() => {
+  it('omits import IDs on creation and does not refresh on failure', async () => {
+    vi.useFakeTimers();
     httpMock.expectOne((req) => req.url.endsWith('/projects')).flush([]);
-    tick(300);
+    await vi.advanceTimersByTimeAsync(300);
     const imported: ProjectImport = { ...service.projects()[0], id: 42 };
-    const refresh = spyOn(service, 'refreshProjects');
+    const refresh = vi.spyOn(service, 'refreshProjects').mockImplementation(() => undefined);
     service.createProject(imported).subscribe({ error: () => {} });
     const request = httpMock.expectOne((req) => req.method === 'POST');
     expect(JSON.parse(request.request.serializeBody() as string).id).toBeUndefined();
     request.flush('Server error', { status: 500, statusText: 'Server Error' });
     expect(refresh).not.toHaveBeenCalled();
-  }));
+  });
 });

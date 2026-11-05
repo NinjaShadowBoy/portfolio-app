@@ -1,3 +1,4 @@
+import { Mock } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LOCALE_ID, signal } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -12,12 +13,12 @@ describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let isAuthenticated: ReturnType<typeof signal<boolean>>;
   let isAdmin: ReturnType<typeof signal<boolean>>;
-  let auth: { logout: jasmine.Spy };
+  let auth: { logout: Mock };
 
   async function setup(locale: string): Promise<void> {
     isAuthenticated = signal(false);
     isAdmin = signal(false);
-    auth = { logout: jasmine.createSpy('logout') };
+    auth = { logout: vi.fn().mockName('logout') };
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
       providers: [
@@ -58,7 +59,7 @@ describe('HeaderComponent', () => {
     const host = fixture.nativeElement as HTMLElement;
     for (const menu of ['.desktop-nav', '.mobile-nav']) {
       for (const path of ['/home', '/projects', '/articles', '/tools', '/about', '/contact']) {
-        expect(host.querySelector(`${menu} a[href="${path}"]`)).withContext(`${menu} ${path}`).toBeTruthy();
+        expect(host.querySelector(`${menu} a[href="${path}"]`), `${menu} ${path}`).toBeTruthy();
       }
     }
   });

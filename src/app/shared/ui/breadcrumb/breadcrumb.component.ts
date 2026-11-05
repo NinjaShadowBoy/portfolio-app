@@ -12,10 +12,9 @@ export interface Breadcrumb {
 /** Builds the trail from each activated route's `breadcrumb` data; project ids resolve to names. */
 @Component({
   selector: 'app-breadcrumb',
-  standalone: true,
   imports: [AsyncPipe, RouterLink],
   templateUrl: './breadcrumb.component.html',
-  styleUrls: ['./breadcrumb.component.css'],
+  styleUrl: './breadcrumb.component.css',
 })
 export class BreadcrumbComponent {
   private router = inject(Router);

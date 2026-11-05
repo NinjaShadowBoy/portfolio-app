@@ -22,7 +22,6 @@ import {
  */
 @Directive({
   selector: '[appCodeCopy]',
-  standalone: true,
 })
 export class CodeCopyDirective {
   private host = inject<ElementRef<HTMLElement>>(ElementRef);

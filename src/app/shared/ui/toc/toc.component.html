@@ -5,9 +5,8 @@
       i18n-aria-label="Table of contents landmark label@@tocAriaLabel"
       aria-label="Table of contents"
     >
-      <ng-container
-        *ngTemplateOutlet="tocList; context: { $implicit: nodes() }"
-      ></ng-container>
+      <ng-container *ngTemplateOutlet="tocList; context: { $implicit: nodes() }"
+       />
     </nav>
   </details>
 }
@@ -24,9 +23,8 @@
           >{{ item.text }}</a
         >
         @if (item.children && item.children.length) {
-          <ng-container
-            *ngTemplateOutlet="tocList; context: { $implicit: item.children }"
-          ></ng-container>
+          <ng-container *ngTemplateOutlet="tocList; context: { $implicit: item.children }"
+           />
         }
       </li>
     }

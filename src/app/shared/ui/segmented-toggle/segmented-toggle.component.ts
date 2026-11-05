@@ -41,9 +41,8 @@ export interface SegmentedToggleOption {
  */
 @Component({
   selector: 'app-segmented-toggle',
-  standalone: true,
   templateUrl: './segmented-toggle.component.html',
-  styleUrls: ['./segmented-toggle.component.css'],
+  styleUrl: './segmented-toggle.component.css',
 })
 export class SegmentedToggleComponent {
   private host = inject<ElementRef<HTMLElement>>(ElementRef);

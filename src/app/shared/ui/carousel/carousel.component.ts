@@ -1,13 +1,13 @@
-import { Component, HostListener, PLATFORM_ID, Renderer2, effect, inject, input, signal, ElementRef, viewChild } from '@angular/core';
+import { Component, PLATFORM_ID, Renderer2, effect, inject, input, signal, ElementRef, viewChild } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 const AUTO_PLAY_DELAY = 5000;
 
 @Component({
   selector: 'app-carousel',
-  standalone: true,
+  host: { '(document:keydown.escape)': 'onEscape()' },
   templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.css'],
+  styleUrl: './carousel.component.css',
 })
 export class CarouselComponent {
   photoUrls = input.required<string[]>();
@@ -51,7 +51,6 @@ export class CarouselComponent {
     this.isFullscreen.set(false);
   }
 
-  @HostListener('document:keydown.escape')
   onEscape(): void {
     this.closeFullscreen();
   }

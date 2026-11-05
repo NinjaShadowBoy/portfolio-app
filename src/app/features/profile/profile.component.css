@@ -90,7 +90,6 @@
 }
 
 .profile-container .btn-primary,
-.profile-container .btn-secondary,
 .profile-container .btn-ghost {
   display: inline-flex;
   align-items: center;
@@ -103,8 +102,7 @@
   cursor: pointer;
 }
 
-.profile-card .btn-primary,
-.profile-card .btn-secondary {
+.profile-card .btn-primary {
   align-self: flex-start;
 }
 
@@ -145,16 +143,6 @@
   flex: 1;
   margin: 0;
   color: var(--text-secondary);
-}
-
-.stars-display {
-  flex: 1;
-  color: var(--border-default);
-  font-size: 1.1rem;
-}
-
-.stars-display .star.filled {
-  color: #f59e0b;
 }
 
 .danger-zone {

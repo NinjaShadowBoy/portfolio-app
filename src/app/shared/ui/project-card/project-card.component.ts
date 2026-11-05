@@ -7,10 +7,9 @@ import { TechTagsComponent } from '../tech-tags/tech-tags.component';
 
 @Component({
   selector: 'app-project-card',
-  standalone: true,
   imports: [DatePipe, CtaButtonComponent, CarouselComponent, TechTagsComponent],
   templateUrl: './project-card.component.html',
-  styleUrls: ['./project-card.component.css'],
+  styleUrl: './project-card.component.css',
 })
 export class ProjectCardComponent {
   project = input.required<Project>();

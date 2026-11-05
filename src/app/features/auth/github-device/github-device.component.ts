@@ -9,7 +9,6 @@ type Phase = 'starting' | 'waiting' | 'done' | 'error';
 
 @Component({
   selector: 'app-github-device',
-  standalone: true,
   template: `
     <div class="device-container">
       <div class="device-card">

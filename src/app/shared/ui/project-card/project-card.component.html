@@ -8,6 +8,8 @@
   <div class="project-carousel-wrapper">
     <app-carousel [photoUrls]="project().photoUrls" [projectName]="project().name" />
   </div>
+  } @else {
+  <div class="project-carousel-wrapper project-photo-placeholder" aria-hidden="true"></div>
   }
 
   <header class="project-header">

@@ -9,10 +9,9 @@ import { ContactMessage } from '../../../../core/interfaces/admin.interface';
 /** Contact form inbox. The backend returns every message newest first, unpaged. */
 @Component({
   selector: 'app-messages-panel',
-  standalone: true,
   imports: [DatePipe],
   templateUrl: './messages-panel.component.html',
-  styleUrls: ['../../admin-shared.css'],
+  styleUrl: '../../admin-shared.css',
 })
 export class MessagesPanelComponent {
   private admin = inject(AdminService);

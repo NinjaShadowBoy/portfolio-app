@@ -1,6 +1,6 @@
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CtaButtonComponent } from './cta-button.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CtaButtonComponent', () => {
   let component: CtaButtonComponent;
@@ -8,9 +8,9 @@ describe('CtaButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CtaButtonComponent, RouterTestingModule]
-    })
-    .compileComponents();
+      imports: [CtaButtonComponent],
+      providers: [provideRouter([])],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CtaButtonComponent);
     component = fixture.componentInstance;

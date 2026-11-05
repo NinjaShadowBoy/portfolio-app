@@ -46,20 +46,15 @@
   <section class="tech-stack-section">
     <h2 i18n="About page technologies heading@@aboutTechnologies">Technologies</h2>
     <p class="tech-stack-intro" i18n="About page tech stack intro paragraph@@aboutTechStackIntro">
-      Tools and languages I've worked with. Starred (★) ones are what I reach for without thinking.
+      Tools and languages I've worked with.
     </p>
 
     @for (category of techCategories; track category.title) {
     <div class="category-section">
       <h3>{{ category.title }}</h3>
-      <app-tech-banner [technologies]="category.technologies" [direction]="category.direction" [showStars]="true" />
+      <app-tech-tags [technologies]="category.technologies" />
     </div>
     }
-
-    <p class="tech-legend" i18n="About page tech legend@@aboutTechLegend">
-      <span class="legend-star good" aria-hidden="true">★</span> proficient
-      <span class="legend-star" aria-hidden="true">☆</span> tried it
-    </p>
   </section>
 
   <h2 i18n="About page hobbies heading@@aboutHobbies">Hobbies & Interests</h2>

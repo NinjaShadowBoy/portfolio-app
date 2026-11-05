@@ -68,18 +68,18 @@ describe('ProjectFormComponent', () => {
     fixture.detectChanges();
 
     expect(component.projectForm.getRawValue()).toEqual(
-      jasmine.objectContaining({ name: 'Hive Check', technologies: 'Kotlin, Jetpack Compose', featured: true })
+      expect.objectContaining({ name: 'Hive Check', technologies: 'Kotlin, Jetpack Compose', featured: true })
     );
 
     fixture.componentRef.setInput('project', null);
     fixture.detectChanges();
 
     expect(component.projectForm.getRawValue().name).toBe('');
-    expect(component.projectForm.getRawValue().featured).toBeFalse();
+    expect(component.projectForm.getRawValue().featured).toBe(false);
   });
 
   it('rejects a GitHub link that is not an http(s) URL', () => {
     component.projectForm.controls.githubLink.setValue('github.com/x/y');
-    expect(component.projectForm.controls.githubLink.invalid).toBeTrue();
+    expect(component.projectForm.controls.githubLink.invalid).toBe(true);
   });
 });

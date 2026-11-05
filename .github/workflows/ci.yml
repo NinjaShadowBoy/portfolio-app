@@ -38,10 +38,9 @@ jobs:
       - name: Test build scripts
         run: bun run test:content && bun run test:fs-cp-retry
 
-      # Karma defaults to a headed browser; ChromeHeadless is the CI equivalent.
-      # --watch=false stops the runner hanging on the interactive watcher.
+      # Vitest on jsdom; --watch=false (inside test:ci) exits after one run.
       - name: Test
-        run: bunx ng test --watch=false --browsers=ChromeHeadless
+        run: bun run test:ci
 
       # `bun run build` runs content:build first, which generates the
       # src/generated assets angular.json expects - running ng build alone

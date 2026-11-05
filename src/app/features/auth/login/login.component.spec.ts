@@ -1,3 +1,5 @@
+import { Mocked, Mock } from 'vitest';
+import { createSpyObj } from '../../../../testing/create-spy-obj';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -10,15 +12,15 @@ import { LoginResponse } from '../../../core/interfaces/auth.interface';
 describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
   let component: LoginComponent;
-  let auth: jasmine.SpyObj<AuthService>;
-  let notifier: jasmine.SpyObj<NotificationService>;
-  let navigate: jasmine.Spy;
+  let auth: Mocked<AuthService>;
+  let notifier: Mocked<NotificationService>;
+  let navigate: Mock;
 
   const response = { token: 't', user: { id: 1, name: 'Ann' }, expiresIn: 1 } as LoginResponse;
 
   beforeEach(async () => {
-    auth = jasmine.createSpyObj<AuthService>('AuthService', ['login', 'register', 'setSession', 'startOAuth2']);
-    notifier = jasmine.createSpyObj<NotificationService>('NotificationService', ['success', 'error']);
+    auth = createSpyObj<AuthService>(['login', 'register', 'setSession', 'startOAuth2']);
+    notifier = createSpyObj<NotificationService>(['success', 'error']);
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
       providers: [
@@ -27,14 +29,14 @@ describe('LoginComponent', () => {
         { provide: NotificationService, useValue: notifier },
       ],
     }).compileComponents();
-    navigate = spyOn(TestBed.inject(Router), 'navigateByUrl').and.resolveTo(true);
+    navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('signs in with email and password, stores the session and goes home', () => {
-    auth.login.and.returnValue(of(response));
+    auth.login.mockReturnValue(of(response));
     component.form.setValue({ email: 'ann@example.com', password: 'secret', name: '' });
 
     component.onSubmit();
@@ -42,19 +44,19 @@ describe('LoginComponent', () => {
     expect(auth.login).toHaveBeenCalledWith({ email: 'ann@example.com', password: 'secret' });
     expect(auth.setSession).toHaveBeenCalledWith(response);
     expect(navigate).toHaveBeenCalledWith('/home');
-    expect(component.loading()).toBeFalse();
+    expect(component.loading()).toBe(false);
   });
 
   it('does not call the API with an invalid form', () => {
     component.form.setValue({ email: 'nope', password: '', name: '' });
     component.onSubmit();
 
-    expect(component.submitted()).toBeTrue();
+    expect(component.submitted()).toBe(true);
     expect(auth.login).not.toHaveBeenCalled();
   });
 
   it('requires a name in register mode and registers with it', () => {
-    auth.register.and.returnValue(of(response));
+    auth.register.mockReturnValue(of(response));
     component.setMode('register');
     component.form.setValue({ email: 'ann@example.com', password: 'secret', name: '' });
     component.onSubmit();
@@ -66,25 +68,25 @@ describe('LoginComponent', () => {
   });
 
   it('shows the server message on failure and re-enables the form', () => {
-    auth.login.and.returnValue(throwError(() => ({ error: { message: 'Bad credentials' } })));
+    auth.login.mockReturnValue(throwError(() => ({ error: { message: 'Bad credentials' } })));
     component.form.setValue({ email: 'ann@example.com', password: 'wrong', name: '' });
 
     component.onSubmit();
 
     expect(notifier.error).toHaveBeenCalledWith('Bad credentials');
-    expect(component.loading()).toBeFalse();
+    expect(component.loading()).toBe(false);
     expect(navigate).not.toHaveBeenCalled();
   });
 
   it('switching mode clears the form and the submitted flag', () => {
     component.form.setValue({ email: 'x', password: 'y', name: '' });
     component.onSubmit();
-    expect(component.submitted()).toBeTrue();
+    expect(component.submitted()).toBe(true);
 
     component.setMode('register');
 
-    expect(component.isRegister()).toBeTrue();
-    expect(component.submitted()).toBeFalse();
+    expect(component.isRegister()).toBe(true);
+    expect(component.submitted()).toBe(false);
     expect(component.form.getRawValue()).toEqual({ email: '', password: '', name: '' });
   });
 });

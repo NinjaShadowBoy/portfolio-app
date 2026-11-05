@@ -4,7 +4,6 @@ import { HeaderComponent } from './shared/ui/header/header.component';
 import { BreadcrumbComponent } from './shared/ui/breadcrumb/breadcrumb.component';
 import { FooterComponent } from './shared/ui/footer/footer.component';
 import { NotificationContainerComponent } from './shared/ui/notification-container/notification-container.component';
-import { PerformanceMonitorService } from './core/services/performance-monitor.service';
 import { IdentityService } from './core/services/identity.service';
 
 @Component({
@@ -17,12 +16,11 @@ import { IdentityService } from './core/services/identity.service';
     NotificationContainerComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   constructor() {
     // Resolve the current identity (real or anonymous) on startup.
     inject(IdentityService);
-    inject(PerformanceMonitorService).initializePerformanceMonitoring();
   }
 }

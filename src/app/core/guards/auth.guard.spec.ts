@@ -1,3 +1,5 @@
+import { Mocked } from 'vitest';
+import { createSpyObj } from '../../../testing/create-spy-obj';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree, provideRouter } from '@angular/router';
 import { signal } from '@angular/core';
@@ -10,11 +12,11 @@ describe('authGuard', () => {
   const route = {} as ActivatedRouteSnapshot;
   const state = {} as RouterStateSnapshot;
   let isAuthenticated: ReturnType<typeof signal<boolean>>;
-  let notification: jasmine.SpyObj<NotificationService>;
+  let notification: Mocked<NotificationService>;
 
   beforeEach(() => {
     isAuthenticated = signal(false);
-    notification = jasmine.createSpyObj<NotificationService>('NotificationService', ['error']);
+    notification = createSpyObj<NotificationService>(['error']);
     TestBed.configureTestingModule({
       providers: [
         provideRouter([]),
@@ -28,7 +30,7 @@ describe('authGuard', () => {
 
   it('allows navigation when authenticated', () => {
     isAuthenticated.set(true);
-    expect(run()).toBeTrue();
+    expect(run()).toBe(true);
     expect(notification.error).not.toHaveBeenCalled();
   });
 
@@ -47,6 +49,6 @@ describe('contactGuard', () => {
       {} as RouterStateSnapshot,
       {} as RouterStateSnapshot
     );
-    expect(result).toBeFalse();
+    expect(result).toBe(false);
   });
 });

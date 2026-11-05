@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { LOCALE_ID, signal } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Meta, Title } from '@angular/platform-browser';
@@ -71,8 +70,9 @@ describe('ArticleDetailComponent', () => {
 
   async function setup(slug = 'hello-world'): Promise<void> {
     await TestBed.configureTestingModule({
-      imports: [ArticleDetailComponent, RouterTestingModule],
+      imports: [ArticleDetailComponent],
       providers: [
+        provideRouter([]),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: LOCALE_ID, useValue: 'en' },

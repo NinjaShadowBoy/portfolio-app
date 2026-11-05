@@ -1,9 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NgTemplateOutlet } from '@angular/common';
 import { ProjectDataService } from '../../core/services/project-data.service';
 import { ProjectCardComponent } from '../../shared/ui/project-card/project-card.component';
-import { LazyLoadDirective } from '../../core/directives/lazy-load.directive';
 import { TechnologiesService, Technology } from '../../core/services/technologies.service';
 
 interface Pillar {
@@ -13,10 +11,9 @@ interface Pillar {
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, RouterModule, ProjectCardComponent, LazyLoadDirective],
+  imports: [NgTemplateOutlet, ProjectCardComponent],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  styleUrl: './home.component.css',
 })
 export class HomeComponent {
   private projectService = inject(ProjectDataService);

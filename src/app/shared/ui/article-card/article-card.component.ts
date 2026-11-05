@@ -3,7 +3,6 @@ import { DatePipe } from '@angular/common';
 import { ArticleSummary } from '../../../core/interfaces/article.interface';
 import { resolveCoverImage } from '../../../core/utils/article-cover';
 import { CtaButtonComponent } from '../cta-button/cta-button.component';
-import { LazyLoadDirective } from '../../../core/directives/lazy-load.directive';
 
 /**
  * Article index card: cover image, title, meta chips (date, reading time),
@@ -11,10 +10,9 @@ import { LazyLoadDirective } from '../../../core/directives/lazy-load.directive'
  */
 @Component({
   selector: 'app-article-card',
-  standalone: true,
-  imports: [DatePipe, CtaButtonComponent, LazyLoadDirective],
+  imports: [DatePipe, CtaButtonComponent],
   templateUrl: './article-card.component.html',
-  styleUrls: ['./article-card.component.css'],
+  styleUrl: './article-card.component.css',
 })
 export class ArticleCardComponent {
   article = input.required<ArticleSummary>();

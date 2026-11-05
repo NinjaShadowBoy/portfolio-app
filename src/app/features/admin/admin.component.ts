@@ -34,7 +34,6 @@ function parseTab(value: string | null): AdminTab {
 
 @Component({
   selector: 'app-admin',
-  standalone: true,
   imports: [
     ProjectFormComponent,
     JsonImportComponent,

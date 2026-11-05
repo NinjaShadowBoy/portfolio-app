@@ -189,8 +189,7 @@
     "aboutHobbyTeaching": "Teaching",
     "aboutHobbyTeachingDetail": "Maths, physics and chemistry tutor",
     "aboutTechnologies": "Technologies",
-    "aboutTechStackIntro": " Tools and languages I've worked with. Starred (★) ones are what I reach for without thinking. ",
-    "aboutTechLegend": "{$START_TAG_SPAN}★{$CLOSE_TAG_SPAN} proficient {$START_TAG_SPAN_1}☆{$CLOSE_TAG_SPAN} tried it ",
+    "aboutTechStackIntro": " Tools and languages I've worked with. ",
     "aboutHobbies": "Hobbies & Interests",
 
     "projectsHeading": "My Projects",

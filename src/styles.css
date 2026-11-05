@@ -1,33 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* ============================================
-   LAZY LOADING OPTIMIZATION STYLES
-   ============================================ */
-
-/* Lazy loading states for images */
-img[appLazyLoad] {
-  will-change: opacity, filter;
-  transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out;
-}
-
-img.lazy-loading {
-  opacity: 0;
-  filter: blur(10px);
-  background: var(--surface-hover);
-}
-
-img.lazy-loaded {
-  opacity: 1;
-  filter: blur(0);
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-img.lazy-error {
-  opacity: 0.3;
-  filter: grayscale(1);
-  background: var(--surface-disabled);
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -90,11 +62,6 @@ img {
 }
 
 /* ============================================
-   DIVINE UI COLOR PALETTE v2.0
-   Next-Gen Design System with Advanced Theming
-   ============================================ */
-
-/* ============================================
    LIGHT MODE - Foundation Variables
    ============================================ */
 :root {
@@ -142,9 +109,6 @@ img {
       #3572ef 360deg);
   --gradient-aurora: linear-gradient(45deg, #3572ef, #8b5cf6, #06b6d4, #3572ef);
 
-  /* ==========================================
-       SEMANTIC COLORS - Enhanced System
-     ========================================== */
   /* Success Palette */
   --color-success: #10b981;
   --color-success-50: #ecfdf5;
@@ -265,9 +229,6 @@ img {
   --shadow-warning: 0 4px 14px 0 rgba(245, 158, 11, 0.15);
   --shadow-danger: 0 4px 14px 0 rgba(239, 68, 68, 0.15);
 
-  /* ==========================================
-       COMPONENT STATES - Systematic Approach
-     ========================================== */
   /* Button System */
   --btn-primary-bg: var(--color-primary-500);
   --btn-primary-bg-hover: var(--color-primary-600);
@@ -300,9 +261,6 @@ img {
   --input-disabled-bg: var(--surface-disabled);
   --input-disabled-text: var(--text-disabled);
 
-  /* ==========================================
-       ADVANCED EFFECTS - Next-Gen Aesthetics
-     ========================================== */
   /* Glassmorphism 2.0 */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.2);
@@ -587,149 +545,6 @@ img {
   --selection-text: var(--text-primary);
 }
 
-/* ============================================
-     ADVANCED UTILITY CLASSES - Pro Edition
-     ============================================ */
-
-/* Theme Management */
-.theme-system {
-  transition: background-color var(--motion-duration-normal) var(--motion-ease-out),
-    color var(--motion-duration-normal) var(--motion-ease-out),
-    border-color var(--motion-duration-normal) var(--motion-ease-out);
-}
-
-/* Surface Variants */
-.surface-base {
-  background: var(--surface-base);
-}
-
-.surface-raised {
-  background: var(--surface-raised);
-  box-shadow: var(--elevation-1);
-}
-
-.surface-overlay {
-  background: var(--surface-overlay);
-  box-shadow: var(--elevation-2);
-}
-
-.surface-floating {
-  background: var(--surface-raised);
-  box-shadow: var(--elevation-3);
-}
-
-.surface-modal {
-  background: var(--surface-overlay);
-  box-shadow: var(--elevation-4);
-}
-
-/* Advanced Glass Effects */
-.glass-morphism {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  position: relative;
-  overflow: hidden;
-}
-
-.glass-morphism::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--glass-noise);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* Neumorphism System */
-.neu-raised {
-  background: var(--neu-bg);
-  box-shadow: var(--neu-light), var(--neu-dark);
-  border: none;
-}
-
-.neu-inset {
-  background: var(--neu-bg);
-  box-shadow: var(--neu-inset-light), var(--neu-inset-dark);
-  border: none;
-}
-
-.neu-subtle {
-  background: var(--neu-bg);
-  box-shadow: var(--neu-subtle);
-  border: none;
-}
-
-/* Holographic Effects */
-.holographic {
-  position: relative;
-  background: var(--surface-base);
-  border: 1px solid var(--border-default);
-  overflow: hidden;
-}
-
-.holographic::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--hologram-bg);
-  transform: translateX(-100%);
-  transition: transform var(--motion-duration-slow) var(--motion-ease-out);
-  z-index: -1;
-}
-
-.holographic:hover::before {
-  transform: translateX(100%);
-  z-index: -1;
-}
-
-.holographic::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 1px solid transparent;
-  background: var(--hologram-border);
-  background-clip: border-box;
-  mask: linear-gradient(white, white) padding-box, linear-gradient(white, white);
-  mask-composite: exclude;
-  z-index: -1;
-}
-
-/* Gradient Utilities */
-.gradient-primary {
-  background: var(--gradient-primary);
-  color: var(--text-inverse);
-}
-
-.gradient-primary-radial {
-  background: var(--gradient-primary-radial);
-  color: var(--text-inverse);
-}
-
-.gradient-accent {
-  background: var(--gradient-accent);
-  color: var(--text-inverse);
-}
-
-.gradient-secondary {
-  background: var(--gradient-secondary);
-  color: var(--text-inverse);
-}
-
-.gradient-mesh {
-  background: var(--gradient-mesh);
-  color: var(--text-inverse);
-  animation: meshRotate 20s linear infinite;
-}
-
-.gradient-aurora {
-  background: var(--gradient-aurora);
-  background-size: 300% 300%;
-  color: var(--text-inverse);
-  animation: auroraMove 10s ease infinite;
-}
-
 /* Advanced Button System */
 .btn-primary {
   background: var(--btn-primary-bg);
@@ -811,39 +626,9 @@ img {
   cursor: not-allowed;
 }
 
-/* Floating Label System */
-.floating-label {
-  position: relative;
-}
-
-.floating-label input {
-  padding-top: 1.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.floating-label label {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  color: var(--text-placeholder);
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-  pointer-events: none;
-  transform-origin: left center;
-}
-
-.floating-label input:focus+label,
-.floating-label input:not(:placeholder-shown)+label {
-  transform: translateY(-0.5rem) scale(0.875);
-  color: var(--text-accent);
-}
-
 /* Semantic Color Classes */
 .text-success {
   color: var(--color-success-text);
-}
-
-.text-warning {
-  color: var(--color-warning-text);
 }
 
 .text-danger {
@@ -858,10 +643,6 @@ img {
   background: var(--color-success-bg);
 }
 
-.bg-warning {
-  background: var(--color-warning-bg);
-}
-
 .bg-danger {
   background: var(--color-danger-bg);
 }
@@ -874,41 +655,12 @@ img {
   border-color: var(--color-success-border);
 }
 
-.border-warning {
-  border-color: var(--color-warning-border);
-}
-
 .border-danger {
   border-color: var(--color-danger-border);
 }
 
 .border-info {
   border-color: var(--color-info-border);
-}
-
-/* Elevation Classes */
-.elevation-0 {
-  box-shadow: var(--elevation-0);
-}
-
-.elevation-1 {
-  box-shadow: var(--elevation-1);
-}
-
-.elevation-2 {
-  box-shadow: var(--elevation-2);
-}
-
-.elevation-3 {
-  box-shadow: var(--elevation-3);
-}
-
-.elevation-4 {
-  box-shadow: var(--elevation-4);
-}
-
-.elevation-5 {
-  box-shadow: var(--elevation-5);
 }
 
 /* Interactive States */
@@ -925,17 +677,6 @@ img {
 .interactive:active {
   transform: translateY(0);
   transition-duration: var(--motion-duration-instant);
-}
-
-/* Focus Management */
-.focus-ring:focus {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-.focus-ring-offset:focus {
-  outline: none;
-  box-shadow: var(--focus-ring-offset);
 }
 
 /* Selection Styling */
@@ -964,40 +705,8 @@ img {
 }
 
 /* Animation Keyframes */
-@keyframes meshRotate {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes auroraMove {
-
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(100%);
-  }
-}
 
 @keyframes pulse {
-
   0%,
   100% {
     opacity: 1;
@@ -1009,7 +718,6 @@ img {
 }
 
 @keyframes bounce {
-
   0%,
   20%,
   53%,
@@ -1030,24 +738,6 @@ img {
   90% {
     transform: translateY(-2px);
   }
-}
-
-/* Loading States */
-.loading-shimmer {
-  background: linear-gradient(90deg,
-      var(--surface-base) 0%,
-      var(--surface-hover) 50%,
-      var(--surface-base) 100%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-.loading-pulse {
-  animation: pulse 2s infinite;
-}
-
-.loading-bounce {
-  animation: bounce 2s infinite;
 }
 
 /* Reduced motion support */
@@ -1314,13 +1004,6 @@ img {
     text-shadow: none !important;
   }
 
-  .glass-morphism,
-  .neu-raised,
-  .neu-inset,
-  .holographic {
-    background: var(--surface-base) !important;
-    border: 1px solid var(--border-default) !important;
-  }
 }
 
 body {
@@ -1352,10 +1035,6 @@ body * {
   box-sizing: border-box;
 }
 
-/* ============================================
-   MOBILE-FIRST RESPONSIVE DESIGN
-   ============================================ */
-
 /* Mobile UX Best Practices */
 @media (max-width: 768px) {
   :root {
@@ -1373,7 +1052,6 @@ body * {
   /* Increase base font size for better readability on mobile */
   body {
     font-size: 16px;
-    /* Prevents zoom on input focus on iOS */
   }
 
   /* Speed up interaction transitions for snappy UI feel */
@@ -1381,7 +1059,6 @@ body * {
   .btn-primary,
   .btn-secondary,
   .btn-ghost,
-  a:not(.tools-banner a),
   input,
   textarea,
   select {
@@ -1435,7 +1112,6 @@ body * {
 }
 
 @media (max-width: 480px) {
-
   /* Extra small screens - phone in portrait */
   h1 {
     font-size: 1.5rem !important;
@@ -1450,11 +1126,6 @@ body * {
   }
 }
 
-/* ============================================
-   LIQUID GLASS EFFECT SYSTEM
-   State-of-the-art reusable glass morphism
-   ============================================ */
-
 /* Base Liquid Glass Style */
 .liquid-glass {
   position: relative;
@@ -1462,7 +1133,6 @@ body * {
   border-radius: 12px;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   isolation: isolate;
-  /* Creates new stacking context */
 
   /* Liquid Glass Base */
   background: linear-gradient(135deg,
@@ -1596,8 +1266,6 @@ body * {
   transform: translateY(-2px);
 }
 
-/* Variants */
-
 /* Subtle variant - less prominent */
 .liquid-glass-subtle {
   background: linear-gradient(135deg,
@@ -1606,54 +1274,6 @@ body * {
       rgba(255, 255, 255, 0.03) 100%);
   backdrop-filter: blur(15px) saturate(150%);
   -webkit-backdrop-filter: blur(15px) saturate(150%);
-}
-
-/* Strong variant - more prominent */
-.liquid-glass-strong {
-  background: linear-gradient(135deg,
-      rgba(255, 255, 255, 0.18) 0%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.08) 100%);
-  backdrop-filter: blur(25px) saturate(200%);
-  -webkit-backdrop-filter: blur(25px) saturate(200%);
-}
-
-/* No hover variant - for static elements */
-.liquid-glass-static {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-
-  background: linear-gradient(135deg,
-      rgba(255, 255, 255, 0.12) 0%,
-      rgba(255, 255, 255, 0.08) 50%,
-      rgba(255, 255, 255, 0.05) 100%);
-
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.25),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.1),
-    0 4px 16px rgba(0, 0, 0, 0.05);
-
-  background-image:
-    linear-gradient(var(--gradient-primary), var(--gradient-primary)),
-    linear-gradient(135deg,
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 255, 255, 0.2),
-      rgba(255, 255, 255, 0.1),
-      rgba(255, 255, 255, 0.3));
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-}
-
-.liquid-glass-static:hover {
-  transform: none;
 }
 
 /* Dark theme optimizations */
@@ -1696,19 +1316,10 @@ body * {
       rgba(255, 255, 255, 0.45));
 }
 
-/* ============================================
-   TECHNICAL WRITING SYSTEM — SHARED PRIMITIVES
-   Promoted globals (DS1): long-form prose, code
-   blocks, canonical tag/chip, sticky TOC, and the
-   feedback segmented control. Token-only — dark
-   mode is automatic through the design tokens.
-   ============================================ */
-
 /* --------------------------------------------
    1. Long-form prose / article body
    -------------------------------------------- */
-.article-body,
-.prose {
+.article-body {
   max-width: 48rem;
   /* ~768px reading measure */
   margin-inline: auto;
@@ -1720,8 +1331,7 @@ body * {
 }
 
 /* Headings — reuse the h2 gradient accent-bar language */
-.article-body h2,
-.prose h2 {
+.article-body h2 {
   color: var(--text-accent);
   font-size: 1.6rem;
   font-weight: 600;
@@ -1733,8 +1343,7 @@ body * {
   scroll-margin-top: 6rem;
 }
 
-.article-body h2::before,
-.prose h2::before {
+.article-body h2::before {
   content: "";
   flex: 0 0 auto;
   width: 4px;
@@ -1743,8 +1352,7 @@ body * {
   border-radius: 2px;
 }
 
-.article-body h3,
-.prose h3 {
+.article-body h3 {
   color: var(--text-primary);
   font-size: 1.3rem;
   font-weight: 600;
@@ -1753,8 +1361,7 @@ body * {
   scroll-margin-top: 6rem;
 }
 
-.article-body h4,
-.prose h4 {
+.article-body h4 {
   color: var(--text-primary);
   font-size: 1.1rem;
   font-weight: 600;
@@ -1763,21 +1370,18 @@ body * {
 }
 
 /* Anchored headings — subtle link affordance on hover */
-.article-body :is(h2, h3, h4) a,
-.prose :is(h2, h3, h4) a {
+.article-body :is(h2, h3, h4) a {
   color: inherit;
   text-decoration: none;
 }
 
-.article-body p,
-.prose p {
+.article-body p {
   color: var(--text-secondary);
   line-height: 1.7;
   margin: 0 0 1.25rem;
 }
 
-.article-body a,
-.prose a {
+.article-body a {
   color: var(--text-link);
   text-decoration: none;
   border-bottom: 1px solid transparent;
@@ -1785,32 +1389,27 @@ body * {
     border-color var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.article-body a:hover,
-.prose a:hover {
+.article-body a:hover {
   color: var(--text-link-hover);
   border-bottom-color: currentColor;
 }
 
-.article-body :is(ul, ol),
-.prose :is(ul, ol) {
+.article-body :is(ul, ol) {
   margin: 0 0 1.25rem;
   padding-left: 1.5rem;
   color: var(--text-secondary);
 }
 
-.article-body li,
-.prose li {
+.article-body li {
   margin: 0.4rem 0;
   line-height: 1.7;
 }
 
-.article-body li::marker,
-.prose li::marker {
+.article-body li::marker {
   color: var(--text-tertiary);
 }
 
-.article-body blockquote,
-.prose blockquote {
+.article-body blockquote {
   margin: 1.5rem 0;
   padding: 0.75rem 1.25rem;
   background: var(--surface-sunken);
@@ -1820,20 +1419,17 @@ body * {
   font-style: italic;
 }
 
-.article-body blockquote p,
-.prose blockquote p {
+.article-body blockquote p {
   margin: 0.5rem 0;
 }
 
-.article-body hr,
-.prose hr {
+.article-body hr {
   border: none;
   border-top: 1px solid var(--border-subtle);
   margin: 2.5rem 0;
 }
 
-.article-body img,
-.prose img {
+.article-body img {
   max-width: 100%;
   height: auto;
   border-radius: 12px;
@@ -1842,8 +1438,7 @@ body * {
 }
 
 /* Tables */
-.article-body table,
-.prose table {
+.article-body table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
@@ -1852,29 +1447,25 @@ body * {
   display: block;
 }
 
-.article-body :is(th, td),
-.prose :is(th, td) {
+.article-body :is(th, td) {
   padding: 0.6rem 0.9rem;
   border: 1px solid var(--border-default);
   text-align: left;
 }
 
-.article-body th,
-.prose th {
+.article-body th {
   background: var(--surface-sunken);
   color: var(--text-primary);
   font-weight: 600;
 }
 
 /* Inline code — exclude code inside <pre> code blocks */
-.article-body code,
-.prose code {
+.article-body code {
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
     "Liberation Mono", monospace;
 }
 
-.article-body :not(pre) > code,
-.prose :not(pre) > code {
+.article-body :not(pre) > code {
   background: var(--surface-sunken);
   border: 1px solid var(--border-default);
   border-radius: 4px;
@@ -1892,8 +1483,7 @@ body * {
 }
 
 .code-block pre,
-.article-body pre,
-.prose pre {
+.article-body pre {
   margin: 1.5rem 0;
   padding: 1.25rem 1.5rem;
   background: var(--surface-sunken);
@@ -1912,8 +1502,7 @@ body * {
 }
 
 .code-block pre code,
-.article-body pre code,
-.prose pre code {
+.article-body pre code {
   background: none;
   border: none;
   padding: 0;
@@ -2024,7 +1613,6 @@ body * {
 }
 
 @media (prefers-color-scheme: dark) {
-
   :root:not([data-theme]) .shiki,
   :root:not([data-theme]) .shiki span {
     color: var(--shiki-dark);
@@ -2081,7 +1669,6 @@ button.chip:hover,
 }
 
 @media (prefers-color-scheme: dark) {
-
   :root:not([data-theme]) .tag,
   :root:not([data-theme]) .chip {
     background: var(--color-primary-900);
@@ -2111,9 +1698,6 @@ button.chip:hover,
   color: var(--text-tertiary);
 }
 
-/* --------------------------------------------
-   4. Sticky / collapsible Table of Contents
-   -------------------------------------------- */
 /* Visual card only. Stickiness is a layout concern and lives on the grid item
    in article-detail (the aside), where sticky can actually travel the full
    row height — on a content-height child it silently never sticks. No
@@ -2125,15 +1709,6 @@ button.chip:hover,
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
   box-shadow: var(--elevation-1);
-}
-
-.toc-title {
-  margin: 0 0 0.75rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-tertiary);
 }
 
 .toc ul {
@@ -2218,20 +1793,15 @@ details.toc[open] summary::after {
   transform: rotate(-135deg);
 }
 
-/* (The old global .segmented-control was promoted into the shared
-   app-segmented-toggle component — see shared/ui/segmented-toggle.) */
-
 /* --------------------------------------------
    Responsive tuning
    -------------------------------------------- */
 @media (max-width: 768px) {
-  .article-body,
-  .prose {
+  .article-body {
     font-size: 1rem;
   }
 
   .article-body pre,
-  .prose pre,
   .code-block pre {
     padding: 1rem;
     border-radius: 8px;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 /**
  * Inline SVG country flag for the two site languages (en → Union Jack,
@@ -10,8 +10,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
  */
 @Component({
   selector: 'app-flag',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (lang() === 'fr') {
       <svg viewBox="0 0 640 480" aria-hidden="true" focusable="false">

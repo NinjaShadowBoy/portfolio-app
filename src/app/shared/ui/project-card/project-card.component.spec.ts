@@ -1,5 +1,5 @@
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { ProjectCardComponent } from './project-card.component';
 import { Project } from '../../../core/interfaces/project.interface';
 
@@ -10,9 +10,9 @@ describe('ProjectCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProjectCardComponent, RouterTestingModule]
-    })
-    .compileComponents();
+      imports: [ProjectCardComponent],
+      providers: [provideRouter([])],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ProjectCardComponent);
     component = fixture.componentInstance;

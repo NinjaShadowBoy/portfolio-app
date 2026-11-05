@@ -8,9 +8,8 @@ import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-photo-manager',
-  standalone: true,
   templateUrl: './photo-manager.component.html',
-  styleUrls: ['./photo-manager.component.css'],
+  styleUrl: './photo-manager.component.css',
 })
 export class PhotoManagerComponent {
   private photoService = inject(PhotoService);

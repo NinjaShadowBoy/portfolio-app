@@ -16,23 +16,23 @@ describe('JsonImportComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: NotificationService, useValue: { error: jasmine.createSpy('error') } }],
+      providers: [{ provide: NotificationService, useValue: { error: vi.fn().mockName('error') } }],
     });
     component = TestBed.runInInjectionContext(() => new JsonImportComponent());
   });
 
   it('imports valid create and update records together', () => {
     const records = [project, { ...project, id: 42 }];
-    const emit = spyOn(component.importSuccess, 'emit');
+    const emit = vi.spyOn(component.importSuccess, 'emit').mockImplementation(() => undefined);
     component.importData.set(JSON.stringify(records));
     component.processJson();
-    expect(emit).toHaveBeenCalledOnceWith(records);
+    expect(emit).toHaveBeenCalledExactlyOnceWith(records);
     expect(component.jsonError()).toBe('');
     expect(component.importData()).toBe('');
   });
 
   it('rejects invalid field types and IDs before emitting a request', () => {
-    const emit = spyOn(component.importSuccess, 'emit');
+    const emit = vi.spyOn(component.importSuccess, 'emit').mockImplementation(() => undefined);
     for (const invalid of [
       null,
       { ...project, name: 123 },
@@ -51,7 +51,7 @@ describe('JsonImportComponent', () => {
   });
 
   it('rejects empty batches and batches containing invalid projects', () => {
-    const emit = spyOn(component.importSuccess, 'emit');
+    const emit = vi.spyOn(component.importSuccess, 'emit').mockImplementation(() => undefined);
     for (const batch of [[], [project, { name: 'Incomplete' }]]) {
       component.importData.set(JSON.stringify(batch));
       component.processJson();

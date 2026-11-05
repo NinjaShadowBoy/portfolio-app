@@ -34,15 +34,14 @@ describe('AiCostCalculatorComponent', () => {
         {
           provide: Router,
           useValue: {
-            createUrlTree: jasmine.createSpy('createUrlTree').and.returnValue({}),
-            serializeUrl: jasmine
-              .createSpy('serializeUrl')
-              .and.returnValue('/tools/ai-cost-calculator'),
+            createUrlTree: vi.fn().mockName('createUrlTree').mockReturnValue({}),
+            serializeUrl: vi.fn().mockName('serializeUrl')
+              .mockReturnValue('/tools/ai-cost-calculator'),
           },
         },
         {
           provide: Location,
-          useValue: { replaceState: jasmine.createSpy('replaceState') },
+          useValue: { replaceState: vi.fn().mockName('replaceState') },
         },
       ],
     });
@@ -101,9 +100,9 @@ describe('AiCostCalculatorComponent', () => {
     setup();
     const rows: NodeListOf<HTMLTableRowElement> =
       fixture.nativeElement.querySelectorAll('tbody tr');
-    expect(rows[0].classList.contains('cheapest')).toBeTrue();
+    expect(rows[0].classList.contains('cheapest')).toBe(true);
     for (let i = 1; i < rows.length; i++) {
-      expect(rows[i].classList.contains('cheapest')).toBeFalse();
+      expect(rows[i].classList.contains('cheapest')).toBe(false);
     }
     // The highlighted row is the engine's cheapest estimate.
     const cheapestName = component.estimates()[0].model.name;

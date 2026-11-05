@@ -25,7 +25,7 @@
   </div> -->
   <div class="hero">
     <div class="content">
-      <img class="my-face" appLazyLoad src="assets/images/2223i141.jpg" alt="Alex Nelson ABENA - Profile Picture" width="200" height="200" fetchpriority="high">
+      <img class="my-face" src="assets/images/2223i141.jpg" alt="Alex Nelson ABENA - Profile Picture" width="200" height="200" fetchpriority="high">
       <p class="headline" i18n="Home page hero headline@@homeHeadline">
         Final-year engineering student at Ensimag. I build backends and AI features, and I'm looking for a 6-month internship from January 2027.
       </p>
@@ -72,7 +72,7 @@
         rel="noopener noreferrer" [attr.aria-label]="tech.name + ' documentation'">
         <span class="node-billboard">
           <span class="node-face">
-            <img appLazyLoad [src]="tech.logo" [alt]="tech.name" width="52" height="52" loading="lazy" />
+            <img [src]="tech.logo" [alt]="tech.name" width="52" height="52" loading="lazy" decoding="async" />
             <span class="node-name">{{ tech.name }}</span>
           </span>
         </span>

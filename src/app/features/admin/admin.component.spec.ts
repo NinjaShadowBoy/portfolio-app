@@ -1,3 +1,5 @@
+import { Mocked } from 'vitest';
+import { createSpyObj } from '../../../testing/create-spy-obj';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { signal } from '@angular/core';
@@ -14,9 +16,9 @@ import { AdminStats } from '../../core/interfaces/admin.interface';
 describe('AdminComponent', () => {
   let fixture: ComponentFixture<AdminComponent>;
   let component: AdminComponent;
-  let projects: jasmine.SpyObj<ProjectDataService>;
-  let notification: jasmine.SpyObj<NotificationService>;
-  let admin: jasmine.SpyObj<AdminService>;
+  let projects: Mocked<ProjectDataService>;
+  let notification: Mocked<NotificationService>;
+  let admin: Mocked<AdminService>;
   const stats: AdminStats = {
     users: 3, anonymousUsers: 4, admins: 1, projects: 2, comments: 5, ratings: 6, unreadMessages: 1,
   };
@@ -47,18 +49,18 @@ describe('AdminComponent', () => {
   };
 
   beforeEach(async () => {
-    projects = jasmine.createSpyObj<ProjectDataService>('ProjectDataService', [
+    projects = createSpyObj<ProjectDataService>([
       'createProject',
       'updateProject',
       'deleteProject',
     ]);
     (projects as any).projects = signal([existing]);
-    projects.createProject.and.returnValue(of({ ...existing, ...draft, id: 10 }));
-    projects.updateProject.and.returnValue(of({ ...existing, ...draft }));
-    projects.deleteProject.and.returnValue(of(undefined));
-    notification = jasmine.createSpyObj<NotificationService>('NotificationService', ['success', 'error']);
-    admin = jasmine.createSpyObj<AdminService>('AdminService', ['getStats']);
-    admin.getStats.and.returnValue(of(stats));
+    projects.createProject.mockReturnValue(of({ ...existing, ...draft, id: 10 }));
+    projects.updateProject.mockReturnValue(of({ ...existing, ...draft }));
+    projects.deleteProject.mockReturnValue(of(undefined));
+    notification = createSpyObj<NotificationService>(['success', 'error']);
+    admin = createSpyObj<AdminService>(['getStats']);
+    admin.getStats.mockReturnValue(of(stats));
 
     await TestBed.configureTestingModule({
       imports: [AdminComponent],
@@ -99,7 +101,7 @@ describe('AdminComponent', () => {
   it('creates a project when nothing is being edited', () => {
     component.onSaveProject(draft);
 
-    expect(projects.createProject).toHaveBeenCalledWith(jasmine.objectContaining(draft));
+    expect(projects.createProject).toHaveBeenCalledWith(expect.objectContaining(draft));
     expect(projects.updateProject).not.toHaveBeenCalled();
     expect(notification.success).toHaveBeenCalled();
   });
@@ -110,14 +112,14 @@ describe('AdminComponent', () => {
 
     component.onSaveProject(draft);
 
-    expect(projects.updateProject).toHaveBeenCalledWith(9, jasmine.objectContaining(draft));
+    expect(projects.updateProject).toHaveBeenCalledWith(9, expect.objectContaining(draft));
     expect(component.formMode()).toBe('create');
     expect(component.editingProject()).toBeNull();
   });
 
   it('keeps the form open and reports the failure when saving fails', () => {
-    spyOn(console, 'error');
-    projects.createProject.and.returnValue(throwError(() => new Error('500')));
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    projects.createProject.mockReturnValue(throwError(() => new Error('500')));
 
     component.onSaveProject(draft);
 
@@ -128,17 +130,17 @@ describe('AdminComponent', () => {
   it('routes JSON imports by id: records with an id update, the rest create', () => {
     component.onJsonImport([{ ...draft, id: 9 }, draft]);
 
-    expect(projects.updateProject).toHaveBeenCalledWith(9, jasmine.objectContaining({ id: 9 }));
+    expect(projects.updateProject).toHaveBeenCalledWith(9, expect.objectContaining({ id: 9 }));
     expect(projects.createProject).toHaveBeenCalledWith(draft);
     expect(notification.success).toHaveBeenCalledTimes(1);
   });
 
   it('deletes only after confirmation and clears the form if that project was being edited', () => {
-    const confirmSpy = spyOn(window, 'confirm').and.returnValue(false);
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false);
     component.deleteProject(existing);
     expect(projects.deleteProject).not.toHaveBeenCalled();
 
-    confirmSpy.and.returnValue(true);
+    confirmSpy.mockReturnValue(true);
     component.editProject(existing);
     component.deleteProject(existing);
 

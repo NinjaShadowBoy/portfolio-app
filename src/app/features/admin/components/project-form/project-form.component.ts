@@ -4,10 +4,9 @@ import { Project, ProjectCreateRequest } from '../../../../core/interfaces/proje
 
 @Component({
   selector: 'app-project-form',
-  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './project-form.component.html',
-  styleUrls: ['./project-form.component.css'],
+  styleUrl: './project-form.component.css',
 })
 export class ProjectFormComponent {
   private fb = inject(NonNullableFormBuilder);

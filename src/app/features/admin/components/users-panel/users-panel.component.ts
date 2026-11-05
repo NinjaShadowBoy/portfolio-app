@@ -11,10 +11,9 @@ const PAGE_SIZE = 25;
 
 @Component({
   selector: 'app-users-panel',
-  standalone: true,
   imports: [DatePipe],
   templateUrl: './users-panel.component.html',
-  styleUrls: ['../../admin-shared.css'],
+  styleUrl: '../../admin-shared.css',
 })
 export class UsersPanelComponent {
   private admin = inject(AdminService);

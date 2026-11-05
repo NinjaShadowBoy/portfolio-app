@@ -30,7 +30,6 @@
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
-              "zone.js",
               "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
@@ -163,29 +162,6 @@
               "localize": [
                 "fr"
               ]
-            },
-            "gh-pages": {
-              "localize": true,
-              "outputHashing": "all",
-              "baseHref": "/",
-              "deployUrl": "/",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": true
-                },
-                "fonts": true
-              },
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true
             }
           },
           "defaultConfiguration": "production"
@@ -213,24 +189,9 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing",
-              "@angular/localize/init"
-            ],
-            "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": []
+            "setupFiles": ["src/testing/setup.ts"]
           }
         }
       }

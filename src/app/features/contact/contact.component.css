@@ -156,37 +156,6 @@ p {
   transform: none;
 }
 
-/* Floating label effect for better UX */
-.form-group.floating-label {
-  position: relative;
-}
-
-.form-group.floating-label input,
-.form-group.floating-label textarea {
-  padding-top: 1.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.form-group.floating-label label {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  color: var(--text-placeholder);
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-  pointer-events: none;
-  transform-origin: left center;
-  background: var(--input-bg);
-  padding: 0 0.25rem;
-}
-
-.form-group.floating-label input:focus + label,
-.form-group.floating-label input:not(:placeholder-shown) + label,
-.form-group.floating-label textarea:focus + label,
-.form-group.floating-label textarea:not(:placeholder-shown) + label {
-  transform: translateY(-0.5rem) scale(0.875);
-  color: var(--text-accent);
-}
-
 /* Success state */
 .form-group.success input,
 .form-group.success textarea {
@@ -318,10 +287,6 @@ p {
 [data-theme="dark"] .form-group textarea {
   background: var(--input-bg);
   border-color: var(--border-default);
-}
-
-[data-theme="dark"] .form-group.floating-label label {
-  background: var(--input-bg);
 }
 
 /* Focus management for accessibility */

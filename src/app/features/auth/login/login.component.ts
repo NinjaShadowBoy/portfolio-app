@@ -12,10 +12,9 @@ import {
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [ReactiveFormsModule, RouterLink, SegmentedToggleComponent],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   private auth = inject(AuthService);

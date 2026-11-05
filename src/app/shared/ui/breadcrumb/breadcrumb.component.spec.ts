@@ -5,7 +5,7 @@ import { Router, provideRouter } from '@angular/router';
 import { BreadcrumbComponent } from './breadcrumb.component';
 import { ProjectDataService } from '../../../core/services/project-data.service';
 
-@Component({ standalone: true, template: '' })
+@Component({ template: '' })
 class BlankComponent {}
 
 describe('BreadcrumbComponent', () => {

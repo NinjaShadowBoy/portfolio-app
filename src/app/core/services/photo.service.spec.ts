@@ -1,3 +1,5 @@
+import { Mocked } from 'vitest';
+import { createSpyObj } from '../../../testing/create-spy-obj';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
@@ -10,17 +12,17 @@ import { environment } from '../../../environments/environment';
 describe('PhotoService', () => {
   let service: PhotoService;
   let http: HttpTestingController;
-  let cloudinary: jasmine.SpyObj<CloudinaryService>;
+  let cloudinary: Mocked<CloudinaryService>;
   const file = new File(['x'], 'shot.png', { type: 'image/png' });
   const upload = { secure_url: 'https://res.cloudinary.com/demo/shot.png' } as CloudinaryUploadResponse;
 
   beforeEach(() => {
-    cloudinary = jasmine.createSpyObj<CloudinaryService>('CloudinaryService', [
+    cloudinary = createSpyObj<CloudinaryService>([
       'uploadProjectPhoto',
       'uploadProfilePhoto',
     ]);
-    cloudinary.uploadProjectPhoto.and.returnValue(of(upload));
-    cloudinary.uploadProfilePhoto.and.returnValue(of(upload));
+    cloudinary.uploadProjectPhoto.mockReturnValue(of(upload));
+    cloudinary.uploadProfilePhoto.mockReturnValue(of(upload));
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),

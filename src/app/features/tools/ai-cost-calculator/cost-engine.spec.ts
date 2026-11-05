@@ -122,7 +122,7 @@ describe('estimateCost', () => {
     expect(result.costPerRequest).toBeCloseTo(0.006, 12);
     expect(result.costPerDay).toBe(0); // users clamp to 0
     expect(result.costPerMonth).toBe(0);
-    expect(Number.isNaN(result.costPerUserPerMonth)).toBeFalse();
+    expect(Number.isNaN(result.costPerUserPerMonth)).toBe(false);
   });
 
   it('clamps cachedInputShare above 1 down to 1', () => {

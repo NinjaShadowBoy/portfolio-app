@@ -1,3 +1,4 @@
+import { Mock } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
@@ -7,7 +8,7 @@ import { ArticleLang, ArticlePayload } from '../interfaces/article.interface';
 
 describe('ArticleDataService', () => {
   let service: ArticleDataService;
-  let load: jasmine.Spy;
+  let load: Mock;
 
   const payload = (slug: string, lang: ArticleLang): ArticlePayload => ({
     slug,
@@ -20,7 +21,7 @@ describe('ArticleDataService', () => {
   });
 
   beforeEach(() => {
-    load = jasmine.createSpy('load').and.callFake((slug: string, lang: ArticleLang) => of(payload(slug, lang)));
+    load = vi.fn().mockName('load').mockImplementation((slug: string, lang: ArticleLang) => of(payload(slug, lang)));
     TestBed.configureTestingModule({
       providers: [{ provide: ArticleContentLoader, useValue: { load } }],
     });
@@ -32,18 +33,18 @@ describe('ArticleDataService', () => {
     service.getArticle('unknown-slug', 'fr').subscribe((r) => (result = r));
 
     expect(load).toHaveBeenCalledWith('unknown-slug', 'en');
-    expect(result).toEqual(jasmine.objectContaining({ lang: 'en', notTranslated: true }));
+    expect(result).toEqual(expect.objectContaining({ lang: 'en', notTranslated: true }));
   });
 
   it('serves English without the fallback flag', () => {
     let result: ArticlePayload | null = null;
     service.getArticle('unknown-slug', 'en').subscribe((r) => (result = r));
 
-    expect(result).toEqual(jasmine.objectContaining({ lang: 'en', notTranslated: false }));
+    expect(result).toEqual(expect.objectContaining({ lang: 'en', notTranslated: false }));
   });
 
   it('passes a missing payload through as null', () => {
-    load.and.returnValue(of(null));
+    load.mockReturnValue(of(null));
     let result: ArticlePayload | null | undefined;
     service.getArticle('gone', 'en').subscribe((r) => (result = r));
 

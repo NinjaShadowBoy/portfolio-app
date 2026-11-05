@@ -22,9 +22,8 @@ export const serverRoutes: ServerRoute[] = [
     path: 'oauth2/redirect',
     renderMode: RenderMode.Client
   },
-  // Articles are statically prerendered (SSG) so GitHub Pages — which cannot run
-  // Express SSR — serves real, SEO-complete HTML for every published article.
-  // This is the repo's first-ever Prerender route.
+  // Articles are prerendered (SSG): the content is static, so every article
+  // ships as complete HTML without a render per request.
   {
     path: 'articles',
     renderMode: RenderMode.Prerender

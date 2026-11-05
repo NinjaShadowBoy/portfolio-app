@@ -1,5 +1,5 @@
+import { provideRouter } from '@angular/router';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { TocComponent } from './toc.component';
 import { TocNode } from '../../../core/interfaces/article.interface';
@@ -27,7 +27,8 @@ describe('TocComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TocComponent, RouterTestingModule],
+      imports: [TocComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TocComponent);
@@ -36,7 +37,7 @@ describe('TocComponent', () => {
   });
 
   it('should render nothing when the toc tree is empty', () => {
-    expect(component.hasNodes()).toBeFalse();
+    expect(component.hasNodes()).toBe(false);
     const element: HTMLElement = fixture.nativeElement;
     expect(element.querySelector('.toc')).toBeNull();
   });
@@ -91,6 +92,6 @@ describe('TocComponent', () => {
     const element: HTMLElement = fixture.nativeElement;
     const active = element.querySelector('.toc a[aria-current="true"]');
     expect(active?.textContent?.trim()).toBe('Goals');
-    expect(active?.classList.contains('active')).toBeTrue();
+    expect(active?.classList.contains('active')).toBe(true);
   });
 });

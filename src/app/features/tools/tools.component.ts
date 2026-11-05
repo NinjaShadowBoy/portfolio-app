@@ -10,10 +10,9 @@ import { PRICING_AS_OF } from './ai-cost-calculator/llm-pricing.data';
  */
 @Component({
   selector: 'app-tools',
-  standalone: true,
   imports: [RouterLink],
   templateUrl: './tools.component.html',
-  styleUrls: ['./tools.component.css'],
+  styleUrl: './tools.component.css',
 })
 export class ToolsComponent {
   /** Date the pricing table was last verified; shown so stale data is self-disclosing. */

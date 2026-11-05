@@ -10,10 +10,9 @@ import { TechnologiesService } from '../../../core/services/technologies.service
  */
 @Component({
   selector: 'app-tech-tags',
-  standalone: true,
   imports: [NgTemplateOutlet],
   templateUrl: './tech-tags.component.html',
-  styleUrls: ['./tech-tags.component.css'],
+  styleUrl: './tech-tags.component.css',
   host: { '[class.pill]': 'variant() === "pill"' },
 })
 export class TechTagsComponent {

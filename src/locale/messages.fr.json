@@ -189,8 +189,7 @@
     "aboutHobbyTeaching": "Enseignement",
     "aboutHobbyTeachingDetail": "Professeur particulier en maths, physique et chimie",
     "aboutTechnologies": "Technologies",
-    "aboutTechStackIntro": " Outils et langages que j'ai utilisés. Les éléments étoilés (★) sont ceux vers lesquels je vais sans réfléchir. ",
-    "aboutTechLegend": "{$START_TAG_SPAN}★{$CLOSE_TAG_SPAN} compétent {$START_TAG_SPAN_1}☆{$CLOSE_TAG_SPAN} déjà essayé ",
+    "aboutTechStackIntro": " Outils et langages que j'ai utilisés. ",
     "aboutHobbies": "Centres d'intérêt",
 
     "projectsHeading": "Mes Projets",

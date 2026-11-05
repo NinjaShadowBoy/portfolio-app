@@ -7,7 +7,6 @@ import { NotificationService } from '../../../core/services/notification.service
 /** Landing page for the OAuth2 callback: reads `token` (or `error`) from the query string. */
 @Component({
   selector: 'app-oauth2-redirect',
-  standalone: true,
   template: `
     <div class="oauth2-redirect-container">
       <div class="loading-spinner">

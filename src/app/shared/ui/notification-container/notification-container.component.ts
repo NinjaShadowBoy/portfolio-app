@@ -11,9 +11,8 @@ const ICONS: Record<Notification['type'], string> = {
 
 @Component({
   selector: 'app-notification-container',
-  standalone: true,
   templateUrl: './notification-container.component.html',
-  styleUrls: ['./notification-container.component.css'],
+  styleUrl: './notification-container.component.css',
 })
 export class NotificationContainerComponent {
   private notificationService = inject(NotificationService);

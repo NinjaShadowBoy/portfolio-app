@@ -121,26 +121,6 @@
   transform: translateX(4px);
 }
 
-/* Icon animations for explore icon */
-.icon-explore svg,
-.icon-explore img {
-  animation: rotate 20s linear infinite;
-}
-
-.cta-button:hover .icon-explore svg,
-.cta-button:hover .icon-explore img {
-  animation: rotate 2s linear infinite;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
   .cta-button {

@@ -1,3 +1,5 @@
+import { Mocked } from 'vitest';
+import { createSpyObj } from '../../../testing/create-spy-obj';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
@@ -13,10 +15,10 @@ function fakeJwt(claims: Record<string, unknown>): string {
 }
 
 describe('AuthService', () => {
-  let notification: jasmine.SpyObj<NotificationService>;
+  let notification: Mocked<NotificationService>;
 
   function setup(): AuthService {
-    notification = jasmine.createSpyObj<NotificationService>('NotificationService', ['success']);
+    notification = createSpyObj<NotificationService>(['success']);
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
@@ -36,8 +38,8 @@ describe('AuthService', () => {
 
     const service = setup();
 
-    expect(service.isAuthenticated()).toBeTrue();
-    expect(service.isAdmin()).toBeTrue();
+    expect(service.isAuthenticated()).toBe(true);
+    expect(service.isAdmin()).toBe(true);
     expect(service.user()?.name).toBe('Ann');
   });
 
@@ -54,10 +56,10 @@ describe('AuthService', () => {
     TestBed.tick(); // flush the persistence effects
 
     expect(response.user).toEqual(
-      jasmine.objectContaining({ id: 7, email: 'ann@example.com', name: 'ann', role: 'ADMIN' })
+      expect.objectContaining({ id: 7, email: 'ann@example.com', name: 'ann', role: 'ADMIN' })
     );
     expect(response.user.createdAt).toBe(new Date(1_700_000_000 * 1000).toISOString());
-    expect(service.isAdmin()).toBeTrue();
+    expect(service.isAdmin()).toBe(true);
     expect(localStorage.getItem(TOKEN_STORAGE_KEY)).toBe(token);
     expect(JSON.parse(localStorage.getItem(USER_STORAGE_KEY)!).email).toBe('ann@example.com');
   });
@@ -77,7 +79,7 @@ describe('AuthService', () => {
     service.logout();
     TestBed.tick();
 
-    expect(service.isAuthenticated()).toBeFalse();
+    expect(service.isAuthenticated()).toBe(false);
     expect(service.user()).toBeNull();
     expect(localStorage.getItem(TOKEN_STORAGE_KEY)).toBeNull();
     expect(localStorage.getItem(USER_STORAGE_KEY)).toBeNull();
@@ -91,7 +93,7 @@ describe('AuthService', () => {
 
     service.setSessionFromToken(fakeJwt({ sub: 'a@b.c', name: 'Ann' }));
     service.updateUser({ name: 'Annie' });
-    expect(service.user()).toEqual(jasmine.objectContaining({ email: 'a@b.c', name: 'Annie' }));
+    expect(service.user()).toEqual(expect.objectContaining({ email: 'a@b.c', name: 'Annie' }));
   });
 
   it('maps a 202 device poll to a pending result and a 200 to the login response', () => {

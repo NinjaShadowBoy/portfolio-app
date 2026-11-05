@@ -10,10 +10,9 @@ import { ArticleDataService } from '../../../../core/services/article-data.servi
  */
 @Component({
   selector: 'app-articles-panel',
-  standalone: true,
   imports: [DatePipe, RouterLink],
   templateUrl: './articles-panel.component.html',
-  styleUrls: ['../../admin-shared.css'],
+  styleUrl: '../../admin-shared.css',
 })
 export class ArticlesPanelComponent {
   readonly articles = inject(ArticleDataService).articles;

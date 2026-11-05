@@ -48,10 +48,9 @@ const PAGE_PATH = '/tools/ai-cost-calculator';
  */
 @Component({
   selector: 'app-ai-cost-calculator',
-  standalone: true,
   imports: [DecimalPipe, SegmentedToggleComponent],
   templateUrl: './ai-cost-calculator.component.html',
-  styleUrls: ['./ai-cost-calculator.component.css'],
+  styleUrl: './ai-cost-calculator.component.css',
 })
 export class AiCostCalculatorComponent {
   private route = inject(ActivatedRoute);

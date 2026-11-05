@@ -11,10 +11,9 @@ import { FlagComponent } from '../flag/flag.component';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [NgTemplateOutlet, RouterLink, RouterLinkActive, UserAvatarComponent, FlagComponent],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent {
   private auth = inject(AuthService);

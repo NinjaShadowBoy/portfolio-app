@@ -13,10 +13,9 @@ import { UserAvatarComponent } from '../../shared/ui/user-avatar/user-avatar.com
 
 @Component({
   selector: 'app-profile',
-  standalone: true,
   imports: [RouterLink, UserAvatarComponent],
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css'],
+  styleUrl: './profile.component.css',
 })
 export class ProfileComponent {
   private authService = inject(AuthService);

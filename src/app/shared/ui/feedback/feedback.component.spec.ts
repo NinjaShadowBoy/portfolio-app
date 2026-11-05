@@ -22,7 +22,7 @@ function makeIdentityStub(initial: Identity | null = null) {
     identitySignal,
     stub: {
       identity: identitySignal.asReadonly(),
-      refresh: jasmine.createSpy('refresh'),
+      refresh: vi.fn().mockName('refresh'),
     },
   };
 }
@@ -92,35 +92,33 @@ describe('FeedbackComponent', () => {
   describe('dev-time exactly-one-target guard', () => {
     it('logs an error when neither projectId nor articleSlug is set', () => {
       configure();
-      const errorSpy = spyOn(console, 'error');
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
       // Both inputs default to null -> no target, no HTTP load.
       fixture.detectChanges();
 
       expect(errorSpy).toHaveBeenCalled();
-      expect(errorSpy.calls.mostRecent().args[0]).toContain('exactly one');
+      expect(errorSpy.mock.lastCall![0]).toContain('exactly one');
     });
 
     it('logs an error when BOTH projectId and articleSlug are set', () => {
       configure();
-      const errorSpy = spyOn(console, 'error');
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
       mount({ projectId: 5, articleSlug: 'hello-world' });
       // projectId wins the derived target, so the load effect hits the project URL.
       flushProjectLoad(5);
 
-      const guardCall = errorSpy.calls
-        .allArgs()
+      const guardCall = errorSpy.mock.calls
         .find((args) => typeof args[0] === 'string' && args[0].includes('exactly one'));
       expect(guardCall).toBeTruthy();
     });
 
     it('does NOT log the guard error when exactly one target is set', () => {
       configure();
-      const errorSpy = spyOn(console, 'error');
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
       mount({ articleSlug: 'hello-world' });
       flushArticleLoad('hello-world');
 
-      const guardCall = errorSpy.calls
-        .allArgs()
+      const guardCall = errorSpy.mock.calls
         .find((args) => typeof args[0] === 'string' && args[0].includes('exactly one'));
       expect(guardCall).toBeFalsy();
     });
@@ -213,8 +211,8 @@ describe('FeedbackComponent', () => {
 
     it('surfaces an error notification when the submit fails', () => {
       configure();
-      const errorSpy = spyOn(notification, 'error');
-      spyOn(console, 'error');
+      const errorSpy = vi.spyOn(notification, 'error').mockReturnValue('');
+      vi.spyOn(console, 'error').mockImplementation(() => undefined);
       mount({ projectId: 1 });
       flushProjectLoad(1);
 
@@ -311,7 +309,7 @@ describe('FeedbackComponent', () => {
 
     it('deleteComment DELETEs after confirmation and reloads the thread', () => {
       configure(me);
-      spyOn(window, 'confirm').and.returnValue(true);
+      vi.spyOn(window, 'confirm').mockReturnValue(true);
       mount({ projectId: 1 });
       flushProjectLoad(1, [makeComment({ id: 1, userId: 2 })]);
 
@@ -325,7 +323,7 @@ describe('FeedbackComponent', () => {
 
     it('does not DELETE when the confirmation is dismissed', () => {
       configure(me);
-      spyOn(window, 'confirm').and.returnValue(false);
+      vi.spyOn(window, 'confirm').mockReturnValue(false);
       mount({ projectId: 1 });
       flushProjectLoad(1, [makeComment({ id: 1, userId: 2 })]);
 

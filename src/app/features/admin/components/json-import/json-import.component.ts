@@ -42,9 +42,8 @@ const isNonEmptyString = (value: unknown): value is string =>
 /** Parses pasted JSON into one project or a batch, validating every record first. */
 @Component({
   selector: 'app-json-import',
-  standalone: true,
   templateUrl: './json-import.component.html',
-  styleUrls: ['./json-import.component.css'],
+  styleUrl: './json-import.component.css',
 })
 export class JsonImportComponent {
   private notificationService = inject(NotificationService);

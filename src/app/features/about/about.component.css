@@ -90,7 +90,6 @@ p {
 }
 
 @keyframes bounce {
-
   0%,
   100% {
     transform: translateY(-2px);
@@ -154,53 +153,6 @@ h2 {
   opacity: 1;
 }
 
-/* Skill categories with different colors */
-.skills-list li.frontend {
-  border-color: var(--color-primary-500);
-  background: var(--surface-brand);
-}
-
-.skills-list li.backend {
-  border-color: var(--color-secondary-500);
-  background: var(--surface-accent);
-}
-
-.skills-list li.database {
-  border-color: var(--color-success-500);
-  background: var(--surface-success);
-}
-
-.skills-list li.tools {
-  border-color: var(--color-warning-500);
-  background: var(--surface-warning);
-}
-
-.skills-list li.other {
-  border-color: var(--color-info-500);
-  background: var(--surface-info);
-}
-
-/* Holographic effect for special skills */
-.skills-list li.featured {
-  background: var(--surface-raised);
-  border: 1px solid var(--border-brand);
-  position: relative;
-  overflow: hidden;
-}
-
-.skills-list li.featured::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--hologram-bg);
-  transform: translateX(-100%);
-  transition: transform var(--motion-duration-slow) var(--motion-ease-out);
-}
-
-.skills-list li.featured:hover::after {
-  transform: translateX(100%);
-}
-
 /* Hobbies list - reuses skills-list styles */
 .hobbies-list li {
   display: flex;
@@ -226,7 +178,7 @@ h2 {
   opacity: 1;
 }
 
-/* Technologies carousel section */
+/* Technologies section */
 .tech-stack-section {
   margin: 3rem 0 2rem;
   padding: 2.5rem 0;
@@ -252,6 +204,10 @@ h2 {
   margin-bottom: 2.5rem;
 }
 
+.category-section app-tech-tags {
+  justify-content: center;
+}
+
 .category-section:last-child {
   margin-bottom: 0;
 }
@@ -266,67 +222,10 @@ h2 {
   letter-spacing: 2px;
 }
 
-.tech-legend {
-  text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-  color: var(--text-tertiary);
-}
-
-.legend-star {
-  margin: 0 0.25rem 0 0.75rem;
-  font-size: 0.9rem;
-  color: var(--text-tertiary);
-}
-
-.legend-star.good {
-  color: #ffc107;
-}
-
-/* Skills grid layout for better organization */
-.skills-section {
-  margin-top: 2rem;
-  padding: 2rem;
-  background: var(--surface-raised);
-  border-radius: 16px;
-  box-shadow: var(--elevation-2);
-  border: 1px solid var(--border-subtle);
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.4s both;
-}
-
-.skills-category {
-  margin-bottom: 2rem;
-}
-
-.skills-category:last-child {
-  margin-bottom: 0;
-}
-
-.skills-category h3 {
-  color: var(--text-accent);
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.skills-category h3::before {
-  content: "";
-  width: 4px;
-  height: 1.5rem;
-  background: var(--gradient-primary);
-  border-radius: 2px;
-}
-
 /* Responsive design - Tablet */
 @media (max-width: 1024px) {
   .about-container {
     padding: 1.5rem;
-  }
-
-  .skills-section {
-    padding: 1.75rem;
   }
 
   .skills-list {
@@ -372,21 +271,6 @@ h2 {
   .cv-download-btn .download-icon {
     min-width: 18px;
     min-height: 18px;
-  }
-
-  .skills-section {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    border-radius: 12px;
-  }
-
-  .skills-category {
-    margin-bottom: 1.5rem;
-  }
-
-  .skills-category h3 {
-    font-size: 1.15rem;
-    margin-bottom: 0.875rem;
   }
 
   .skills-list {
@@ -461,26 +345,6 @@ h2 {
     min-height: 16px;
   }
 
-  .skills-section {
-    margin-top: 1.25rem;
-    padding: 1.25rem;
-    border-radius: 8px;
-  }
-
-  .skills-category {
-    margin-bottom: 1.25rem;
-  }
-
-  .skills-category h3 {
-    font-size: 1.05rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .skills-category h3::before {
-    width: 3px;
-    height: 1.25rem;
-  }
-
   .skills-list {
     gap: 0.65rem;
   }
@@ -534,11 +398,6 @@ h2 {
 [data-theme="dark"] .skills-list li:hover {
   border-color: var(--border-brand);
   box-shadow: var(--elevation-3), var(--shadow-primary);
-}
-
-[data-theme="dark"] .skills-section {
-  background: var(--surface-raised);
-  border-color: var(--border-default);
 }
 
 /* Print optimizations */

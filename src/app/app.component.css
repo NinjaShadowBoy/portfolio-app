@@ -23,13 +23,6 @@
   padding-inline: 2rem;
 }
 
-/* Theme-aware container */
-.theme-system {
-  background: var(--surface-base);
-  color: var(--text-primary);
-  transition: all var(--motion-duration-normal) var(--motion-ease-out);
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .main-content > * {

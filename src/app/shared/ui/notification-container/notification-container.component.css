@@ -189,22 +189,6 @@
   }
 }
 
-/* Exit animation */
-.notification.ng-leave {
-  animation: slideOut 0.2s var(--motion-ease-in) forwards;
-}
-
-@keyframes slideOut {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-}
-
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .notification {

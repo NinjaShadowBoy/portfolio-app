@@ -5,10 +5,9 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from '../../../core/constants/contact';
 
 @Component({
   selector: 'app-footer',
-  standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css'],
+  styleUrl: './footer.component.css',
 })
 export class FooterComponent {
   readonly currentYear = new Date().getFullYear();

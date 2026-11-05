@@ -5,10 +5,9 @@ import { TocNode } from '../../../core/interfaces/article.interface';
 
 @Component({
   selector: 'app-toc',
-  standalone: true,
   imports: [NgTemplateOutlet, RouterLink],
   templateUrl: './toc.component.html',
-  styleUrls: ['./toc.component.css'],
+  styleUrl: './toc.component.css',
 })
 export class TocComponent {
   private destroyRef = inject(DestroyRef);

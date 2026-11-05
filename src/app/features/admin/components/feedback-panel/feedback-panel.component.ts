@@ -19,10 +19,9 @@ export const COMMENT_TYPE_LABELS: Record<CommentType, string> = {
 /** Moderation feed of every feedback comment, on projects and articles. */
 @Component({
   selector: 'app-feedback-panel',
-  standalone: true,
   imports: [DatePipe, RouterLink],
   templateUrl: './feedback-panel.component.html',
-  styleUrls: ['../../admin-shared.css'],
+  styleUrl: '../../admin-shared.css',
 })
 export class FeedbackPanelComponent {
   private admin = inject(AdminService);

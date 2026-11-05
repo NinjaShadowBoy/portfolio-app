@@ -175,29 +175,6 @@
   transform: translateY(0);
 }
 
-/* Facebook Button */
-.oauth-facebook {
-  background: #1877f2;
-  color: #ffffff;
-  border-color: #1877f2;
-  box-shadow: 0 2px 8px 0 rgba(24, 119, 242, 0.2);
-}
-
-.oauth-facebook::before {
-  background: linear-gradient(135deg, #2d88ff 0%, #0c63d4 100%);
-}
-
-.oauth-facebook:hover:not(:disabled) {
-  border-color: #0c63d4;
-  box-shadow: 0 4px 12px 0 rgba(24, 119, 242, 0.3);
-  transform: translateY(-2px);
-}
-
-.oauth-facebook:active:not(:disabled) {
-  background: #0c63d4;
-  transform: translateY(0);
-}
-
 /* Section Divider */
 .section-divider {
   display: flex;
@@ -559,8 +536,7 @@
 
   /* Specific button adjustments for very small screens */
   .oauth-google,
-  .oauth-github,
-  .oauth-facebook {
+  .oauth-github {
     flex-direction: row;
     text-align: center;
   }
@@ -587,5 +563,3 @@
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
-
-

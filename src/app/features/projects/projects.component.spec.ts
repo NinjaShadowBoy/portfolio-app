@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
@@ -27,6 +27,8 @@ function makeProject(overrides: Partial<Project>): Project {
 
 /** Drives the real ProjectDataService with a stubbed API to prove filtering end to end. */
 describe('ProjectsComponent', () => {
+  afterEach(() => vi.useRealTimers());
+
   let fixture: ComponentFixture<ProjectsComponent>;
   let component: ProjectsComponent;
   let http: HttpTestingController;
@@ -44,38 +46,41 @@ describe('ProjectsComponent', () => {
     http = TestBed.inject(HttpTestingController);
   });
 
-  function loadProjects(): void {
+  async function loadProjects(): Promise<void> {
     fixture.detectChanges();
     http.expectOne((req) => req.url.endsWith('/projects')).flush([
       makeProject({ id: 1, name: 'Alpha Shop', technologies: ['Angular'], featured: true }),
       makeProject({ id: 2, name: 'Beta Board', description: 'a kanban board', technologies: ['React'] }),
     ]);
-    tick(300);
+    await vi.advanceTimersByTimeAsync(300);
     fixture.detectChanges();
   }
 
-  it('shows the loading state until the API responds, then one card per project', fakeAsync(() => {
+  it('shows the loading state until the API responds, then one card per project', async () => {
+    vi.useFakeTimers();
     fixture.detectChanges();
     expect(el().querySelector('.loading-spinner')).toBeTruthy();
 
     http.expectOne((req) => req.url.endsWith('/projects')).flush([makeProject({ id: 1, name: 'Only' })]);
-    tick(300);
+    await vi.advanceTimersByTimeAsync(300);
     fixture.detectChanges();
 
     expect(el().querySelector('.loading-spinner')).toBeNull();
     expect(cardNames()).toEqual(['Only']);
-  }));
+  });
 
-  it('filters by search term across name and description', fakeAsync(() => {
-    loadProjects();
+  it('filters by search term across name and description', async () => {
+    vi.useFakeTimers();
+    await loadProjects();
     component.updateFilters({ searchTerm: 'kanban' });
     fixture.detectChanges();
 
     expect(cardNames()).toEqual(['Beta Board']);
-  }));
+  });
 
-  it('filters by technology and featured flag, and offers the technologies as options', fakeAsync(() => {
-    loadProjects();
+  it('filters by technology and featured flag, and offers the technologies as options', async () => {
+    vi.useFakeTimers();
+    await loadProjects();
     const options = Array.from(el().querySelectorAll('#technology option')).map((o) => o.textContent?.trim());
     expect(options).toEqual(['All Technologies', 'Angular', 'React']);
 
@@ -86,10 +91,11 @@ describe('ProjectsComponent', () => {
     component.updateFilters({ technology: '', featured: true });
     fixture.detectChanges();
     expect(cardNames()).toEqual(['Alpha Shop']);
-  }));
+  });
 
-  it('shows the empty state and restores everything on reset', fakeAsync(() => {
-    loadProjects();
+  it('shows the empty state and restores everything on reset', async () => {
+    vi.useFakeTimers();
+    await loadProjects();
     component.updateFilters({ searchTerm: 'zzz' });
     fixture.detectChanges();
     expect(el().querySelector('.no-results')).toBeTruthy();
@@ -99,5 +105,5 @@ describe('ProjectsComponent', () => {
 
     expect(component.filters()).toEqual({ searchTerm: '', technology: '', featured: false });
     expect(cardNames()).toEqual(['Alpha Shop', 'Beta Board']);
-  }));
+  });
 });

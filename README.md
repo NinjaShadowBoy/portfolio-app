@@ -59,13 +59,12 @@ bun run docker:run          # serve that image on localhost:4000
 Test:
 
 ```bash
-bun run test                # Karma/Jasmine watcher
+bun run test                # Vitest watcher
 bun run test:ci             # one headless run, as in CI
 bun run test:content        # article pipeline tests, against scripts/__fixtures__/
 ```
 
-`bun run deploy` publishes the GitHub Pages build. The VPS deploy is the
-Docker image, pushed by `.github/workflows/deploy.yml` (see `deploy/DEPLOY.md`).
+Deployment is the Docker image, pushed by `.github/workflows/deploy.yml` (see `deploy/DEPLOY.md`).
 
 There is no lint or typecheck script. `bun run build` is the type check. There
 is no e2e framework either.

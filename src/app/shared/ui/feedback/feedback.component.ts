@@ -45,10 +45,9 @@ type FeedbackTarget = { projectId: number } | { articleSlug: string };
  */
 @Component({
   selector: 'app-feedback',
-  standalone: true,
   imports: [DatePipe, UserAvatarComponent, SegmentedToggleComponent],
   templateUrl: './feedback.component.html',
-  styleUrls: ['./feedback.component.css'],
+  styleUrl: './feedback.component.css',
 })
 export class FeedbackComponent {
   private commentService = inject(CommentService);

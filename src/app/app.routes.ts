@@ -1,21 +1,9 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
-import { ProjectsComponent } from './features/projects/projects.component';
-import { AboutComponent } from './features/about/about.component';
-import { ContactComponent } from './features/contact/contact.component';
-import { ProjectDetailComponent } from './features/project-detail/project-detail.component';
-import { ArticlesComponent } from './features/articles/articles.component';
-import { ArticleDetailComponent } from './features/article-detail/article-detail.component';
-import { NotFoundComponent } from './features/not-found/not-found.component';
 import { authGuard, contactGuard } from './core/guards/auth.guard';
-import { LoginComponent } from './features/auth/login/login.component';
-import { Oauth2RedirectComponent } from './features/auth/oauth2-redirect/oauth2-redirect.component';
-import { GithubDeviceComponent } from './features/auth/github-device/github-device.component';
-import { PrivacyComponent } from './features/privacy/privacy.component';
-import { ProfileComponent } from './features/profile/profile.component';
-import { ToolsComponent } from './features/tools/tools.component';
-import { AiCostCalculatorComponent } from './features/tools/ai-cost-calculator/ai-cost-calculator.component';
 
+// Only the landing page is eager. Every other page loads its own chunk, so the
+// initial bundle carries the shell and home and nothing else.
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, data: { breadcrumb: 'Home' } },
@@ -25,11 +13,15 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: ProjectsComponent,
+        loadComponent: () =>
+          import('./features/projects/projects.component').then((m) => m.ProjectsComponent),
       },
       {
         path: ':id',
-        component: ProjectDetailComponent,
+        loadComponent: () =>
+          import('./features/project-detail/project-detail.component').then(
+            (m) => m.ProjectDetailComponent,
+          ),
         data: { breadcrumb: 'Project Details' },
       },
     ],
@@ -40,11 +32,15 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: ArticlesComponent,
+        loadComponent: () =>
+          import('./features/articles/articles.component').then((m) => m.ArticlesComponent),
       },
       {
         path: ':slug',
-        component: ArticleDetailComponent,
+        loadComponent: () =>
+          import('./features/article-detail/article-detail.component').then(
+            (m) => m.ArticleDetailComponent,
+          ),
         data: { breadcrumb: 'Article' },
       },
     ],
@@ -55,46 +51,74 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: ToolsComponent,
+        loadComponent: () => import('./features/tools/tools.component').then((m) => m.ToolsComponent),
       },
       {
         path: 'ai-cost-calculator',
-        component: AiCostCalculatorComponent,
+        loadComponent: () =>
+          import('./features/tools/ai-cost-calculator/ai-cost-calculator.component').then(
+            (m) => m.AiCostCalculatorComponent,
+          ),
         data: { breadcrumb: 'AI Cost Calculator' },
       },
     ],
   },
-  { path: 'about', component: AboutComponent, data: { breadcrumb: 'About' } },
-  { path: 'privacy', component: PrivacyComponent, data: { breadcrumb: 'Privacy Policy' } },
+  {
+    path: 'about',
+    loadComponent: () => import('./features/about/about.component').then((m) => m.AboutComponent),
+    data: { breadcrumb: 'About' },
+  },
+  {
+    path: 'privacy',
+    loadComponent: () =>
+      import('./features/privacy/privacy.component').then((m) => m.PrivacyComponent),
+    data: { breadcrumb: 'Privacy Policy' },
+  },
   {
     path: 'profile',
-    component: ProfileComponent,
+    loadComponent: () =>
+      import('./features/profile/profile.component').then((m) => m.ProfileComponent),
     data: { breadcrumb: 'My Profile' },
     canActivate: [authGuard],
   },
-  { path: 'login', component: LoginComponent, data: { breadcrumb: 'Login' } },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/login/login.component').then((m) => m.LoginComponent),
+    data: { breadcrumb: 'Login' },
+  },
   {
     path: 'oauth2/redirect',
-    component: Oauth2RedirectComponent,
+    loadComponent: () =>
+      import('./features/auth/oauth2-redirect/oauth2-redirect.component').then(
+        (m) => m.Oauth2RedirectComponent,
+      ),
     data: { breadcrumb: 'Authenticating' },
   },
   {
     path: 'login/device',
-    component: GithubDeviceComponent,
+    loadComponent: () =>
+      import('./features/auth/github-device/github-device.component').then(
+        (m) => m.GithubDeviceComponent,
+      ),
     data: { breadcrumb: 'GitHub Device Login' },
   },
   {
     path: 'admin',
-    // Lazy: only admins open it, so its panels stay out of the initial bundle.
     loadComponent: () => import('./features/admin/admin.component').then((m) => m.AdminComponent),
     data: { breadcrumb: 'Admin' },
     canActivate: [authGuard],
   },
   {
     path: 'contact',
-    component: ContactComponent,
+    loadComponent: () =>
+      import('./features/contact/contact.component').then((m) => m.ContactComponent),
     data: { breadcrumb: 'Contact' },
     canDeactivate: [contactGuard],
   },
-  { path: '**', component: NotFoundComponent },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./features/not-found/not-found.component').then((m) => m.NotFoundComponent),
+  },
 ];

@@ -37,9 +37,9 @@ describe('TechTagsComponent', () => {
 
   it('applies the pill host class only for the pill variant', () => {
     render(['Go']);
-    expect(fixture.nativeElement.classList.contains('pill')).toBeFalse();
+    expect(fixture.nativeElement.classList.contains('pill')).toBe(false);
 
     render(['Go'], 'pill');
-    expect(fixture.nativeElement.classList.contains('pill')).toBeTrue();
+    expect(fixture.nativeElement.classList.contains('pill')).toBe(true);
   });
 });

@@ -19,10 +19,9 @@ import { CtaButtonComponent } from '../cta-button/cta-button.component';
  */
 @Component({
   selector: 'app-connections',
-  standalone: true,
   imports: [ArticleCardComponent, ProjectCardComponent, CtaButtonComponent],
   templateUrl: './connections.component.html',
-  styleUrls: ['./connections.component.css'],
+  styleUrl: './connections.component.css',
 })
 export class ConnectionsComponent {
   private articleData = inject(ArticleDataService);

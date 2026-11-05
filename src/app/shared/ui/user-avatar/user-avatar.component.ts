@@ -2,9 +2,8 @@ import { Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-user-avatar',
-  standalone: true,
   templateUrl: './user-avatar.component.html',
-  styleUrls: ['./user-avatar.component.css'],
+  styleUrl: './user-avatar.component.css',
 })
 export class UserAvatarComponent {
   userName = input('');

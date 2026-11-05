@@ -28,7 +28,7 @@ describe('authInterceptor', () => {
     http.get(`${environment.apiBaseUrl}/projects`).subscribe();
 
     const req = controller.expectOne(`${environment.apiBaseUrl}/projects`);
-    expect(req.request.withCredentials).toBeTrue();
+    expect(req.request.withCredentials).toBe(true);
     expect(req.request.headers.get('Authorization')).toBe('Bearer jwt-123');
     req.flush([]);
   });
@@ -37,8 +37,8 @@ describe('authInterceptor', () => {
     http.get(`${environment.apiBaseUrl}/projects`).subscribe();
 
     const req = controller.expectOne(`${environment.apiBaseUrl}/projects`);
-    expect(req.request.withCredentials).toBeTrue();
-    expect(req.request.headers.has('Authorization')).toBeFalse();
+    expect(req.request.withCredentials).toBe(true);
+    expect(req.request.headers.has('Authorization')).toBe(false);
     req.flush([]);
   });
 
@@ -47,8 +47,8 @@ describe('authInterceptor', () => {
     http.get('/assets/articles/hello.en.json').subscribe();
 
     const req = controller.expectOne('/assets/articles/hello.en.json');
-    expect(req.request.withCredentials).toBeFalse();
-    expect(req.request.headers.has('Authorization')).toBeFalse();
+    expect(req.request.withCredentials).toBe(false);
+    expect(req.request.headers.has('Authorization')).toBe(false);
     req.flush({});
   });
 });

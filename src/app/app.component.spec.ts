@@ -4,7 +4,6 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { IdentityService } from './core/services/identity.service';
-import { PerformanceMonitorService } from './core/services/performance-monitor.service';
 import { ProjectDataService } from './core/services/project-data.service';
 import { signal } from '@angular/core';
 
@@ -16,7 +15,6 @@ describe('AppComponent', () => {
         provideRouter([]), provideHttpClient(), provideHttpClientTesting(),
         { provide: IdentityService, useValue: { identity: signal(null) } },
         { provide: ProjectDataService, useValue: { getProject: () => undefined } },
-        { provide: PerformanceMonitorService, useValue: { initializePerformanceMonitoring: () => {} } },
       ],
     }).compileComponents();
   });
