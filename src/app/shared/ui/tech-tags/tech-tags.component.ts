@@ -6,21 +6,25 @@ import { TechnologiesService } from '../../../core/services/technologies.service
  * A wrapping row of technology chips. Names known to {@link TechnologiesService}
  * render as documentation links with a logo; unknown names render as plain
  * chips. `variant="pill"` is the larger gradient-hover style used on the
- * project detail page.
+ * project detail page; `variant="outline"` is the quiet round outline used on
+ * project cards.
  */
 @Component({
   selector: 'app-tech-tags',
   imports: [NgTemplateOutlet],
   templateUrl: './tech-tags.component.html',
   styleUrl: './tech-tags.component.css',
-  host: { '[class.pill]': 'variant() === "pill"' },
+  host: {
+    '[class.pill]': 'variant() === "pill"',
+    '[class.outline]': 'variant() === "outline"',
+  },
 })
 export class TechTagsComponent {
   private techService = inject(TechnologiesService);
 
   /** Technology names exactly as stored on the project. */
   technologies = input.required<string[]>();
-  variant = input<'chip' | 'pill'>('chip');
+  variant = input<'chip' | 'pill' | 'outline'>('chip');
 
   readonly tags = computed(() =>
     this.technologies().map((name) => {

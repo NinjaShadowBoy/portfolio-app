@@ -20,7 +20,7 @@
     <p class="card-description">{{ project().description }}</p>
     }
     @if (project().technologies.length) {
-    <app-tech-tags class="card-tags" [technologies]="project().technologies" />
+    <app-tech-tags class="card-tags" variant="outline" [technologies]="project().technologies" />
     }
   </div>
 

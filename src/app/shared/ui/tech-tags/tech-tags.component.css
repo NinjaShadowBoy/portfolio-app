@@ -85,9 +85,31 @@
   border-color: var(--border-brand);
 }
 
+/* Outline variant: project cards. Round, no fill, a faint border; the hover
+   lifts only the border and text colour. */
+:host(.outline) {
+  justify-content: flex-start;
+}
+
+:host(.outline) .tech-tag,
+[data-theme="dark"] :host(.outline) .tech-tag {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+}
+
+:host(.outline) .tech-tag:hover,
+[data-theme="dark"] :host(.outline) .tech-tag:hover {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--border-brand);
+}
+
 @media (max-width: 768px) {
   :host { gap: 0.4rem; }
   .tech-tag { padding: 0.2rem 0.65rem; font-size: 0.75rem; border-radius: 16px; }
+  :host(.outline) .tech-tag { border-radius: 999px; }
   :host(.pill) { gap: 0.5rem; }
   :host(.pill) .tech-tag { padding: 0.4rem 0.875rem; font-size: 0.85rem; border-radius: 20px; }
 }
@@ -95,6 +117,7 @@
 @media (max-width: 480px) {
   :host { gap: 0.35rem; }
   .tech-tag { padding: 0.15rem 0.5rem; font-size: 0.7rem; }
+  :host(.outline) .tech-tag { border-radius: 999px; }
   :host(.pill) { gap: 0.4rem; }
   :host(.pill) .tech-tag { padding: 0.35rem 0.75rem; font-size: 0.8rem; border-radius: 16px; }
 }

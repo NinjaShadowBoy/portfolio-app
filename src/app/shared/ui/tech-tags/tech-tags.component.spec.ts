@@ -10,7 +10,7 @@ describe('TechTagsComponent', () => {
     fixture = TestBed.createComponent(TechTagsComponent);
   });
 
-  function render(technologies: string[], variant?: 'chip' | 'pill'): HTMLElement {
+  function render(technologies: string[], variant?: 'chip' | 'pill' | 'outline'): HTMLElement {
     fixture.componentRef.setInput('technologies', technologies);
     if (variant) fixture.componentRef.setInput('variant', variant);
     fixture.detectChanges();
@@ -41,5 +41,14 @@ describe('TechTagsComponent', () => {
 
     render(['Go'], 'pill');
     expect(fixture.nativeElement.classList.contains('pill')).toBe(true);
+  });
+
+  it('applies the outline host class only for the outline variant', () => {
+    render(['Go']);
+    expect(fixture.nativeElement.classList.contains('outline')).toBe(false);
+
+    render(['Go'], 'outline');
+    expect(fixture.nativeElement.classList.contains('outline')).toBe(true);
+    expect(fixture.nativeElement.classList.contains('pill')).toBe(false);
   });
 });

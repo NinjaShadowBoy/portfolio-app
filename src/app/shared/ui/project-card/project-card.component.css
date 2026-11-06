@@ -42,7 +42,26 @@
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--surface-sunken);
-  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* The photo dissolves into the card body: a fade to the card surface over the
+   bottom of the media, with no border at the seam. It sits above the image
+   (no z-index) and below the carousel controls (z-index 2), and ignores
+   pointer events so the image stays clickable. */
+.card-media::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  height: 45%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--surface-raised) 35%, transparent) 45%,
+    color-mix(in srgb, var(--surface-raised) 80%, transparent) 75%,
+    var(--surface-raised) 100%
+  );
+  pointer-events: none;
 }
 
 .card-media app-carousel {
