@@ -32,8 +32,12 @@ h1 {
   flex-wrap: wrap;
   gap: 0.25rem 1rem;
   margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.meta-label {
   color: var(--text-tertiary);
-  font-size: 0.9rem;
 }
 
 .description {

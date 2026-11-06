@@ -20,6 +20,8 @@ export interface Publication {
   pdfBytes: number;
   group: VenueId;
   tags: string[];
+  /** Exact name of the project this paper describes, so the project page can link to it. */
+  project?: string;
 }
 
 export type VenueId = 'cerc2026' | 'iusjc2026';
@@ -145,5 +147,11 @@ export const PUBLICATIONS: Publication[] = [
     note: { en: 'Supervised by Dr. Philippe Tamla', fr: 'Supervisé par le Dr Philippe Tamla' },
     link: 'https://sites.google.com/view/ds4dhresearchlab/workshops/upcoming-workshop',
     tags: ['RAG', 'LLM', 'FastAPI', 'AWS'],
+    project: 'AcadAi',
   },
 ];
+
+/** PDF path of the paper about a project, or null when no paper describes it. */
+export function paperForProject(projectName: string): string | null {
+  return PUBLICATIONS.find((p) => p.project === projectName.trim())?.pdf ?? null;
+}

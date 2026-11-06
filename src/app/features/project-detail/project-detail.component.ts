@@ -1,5 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, computed, effect, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -8,6 +8,9 @@ import { CarouselComponent } from '../../shared/ui/carousel/carousel.component';
 import { FeedbackComponent } from '../../shared/ui/feedback/feedback.component';
 import { TechTagsComponent } from '../../shared/ui/tech-tags/tech-tags.component';
 import { ProjectLinksComponent, presentLink } from '../../shared/ui/project-links/project-links.component';
+import { splitPeriod } from '../../core/utils/project-period';
+import { pageTitle } from '../../core/services/app-title-strategy';
+import { paperForProject } from '../articles/publications';
 
 /** Trimmed text, or empty when the value is missing or blank. */
 function text(value: string | null | undefined): string {
@@ -16,7 +19,7 @@ function text(value: string | null | undefined): string {
 
 @Component({
   selector: 'app-project-detail',
-  imports: [DatePipe, CarouselComponent, FeedbackComponent, TechTagsComponent, ProjectLinksComponent],
+  imports: [CarouselComponent, FeedbackComponent, TechTagsComponent, ProjectLinksComponent],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.css',
 })
@@ -38,14 +41,26 @@ export class ProjectDetailComponent {
   readonly content = computed(() => {
     const project = this.project();
     if (!project) return null;
+    const { period, body } = splitPeriod(project.description);
+    const paper = paperForProject(project.name);
     return {
-      description: text(project.description),
+      period,
+      description: body,
       challenges: text(project.challenges),
       whatILearned: text(project.whatILearned),
       technologies: (project.technologies ?? []).map((t) => t.trim()).filter(Boolean),
       photoUrls: (project.photoUrls ?? []).filter((url) => url?.trim()),
-      hasLinks: presentLink(project.githubLink) !== null || presentLink(project.demoLink) !== null,
-      updated: project.updatedAt && project.updatedAt !== project.createdAt ? project.updatedAt : null,
+      paper,
+      hasLinks: presentLink(project.githubLink) !== null || presentLink(project.demoLink) !== null || paper !== null,
     };
   });
+
+  constructor() {
+    // Runs after the router's title strategy, so the project's name wins.
+    const title = inject(Title);
+    effect(() => {
+      const name = this.project()?.name;
+      if (name) title.setTitle(pageTitle(name));
+    });
+  }
 }

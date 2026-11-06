@@ -7,7 +7,7 @@
       <span class="card-monogram">{{ monogram() }}</span>
     </div>
     }
-    @if (project().featured) {
+    @if (project().featured && showFeaturedBadge()) {
     <span class="featured-badge" i18n="Project card featured badge@@projectCardFeatured">Featured</span>
     }
   </div>
@@ -16,8 +16,8 @@
     <h3 class="card-title">
       <a class="card-link" [routerLink]="['/projects', project().id]">{{ project().name }}</a>
     </h3>
-    @if (project().description.trim()) {
-    <p class="card-description">{{ project().description }}</p>
+    @if (description()) {
+    <p class="card-description">{{ description() }}</p>
     }
     @if (project().technologies.length) {
     <app-tech-tags class="card-tags" variant="outline" [technologies]="project().technologies" />
@@ -27,7 +27,7 @@
   @if (hasLinks()) {
   <footer class="card-footer">
     <app-project-links [githubLink]="project().githubLink" [demoLink]="project().demoLink"
-      [projectName]="project().name" />
+      [paperLink]="paper()" [projectName]="project().name" />
   </footer>
   }
 </article>
