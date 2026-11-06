@@ -44,6 +44,15 @@ export const VENUES: Record<VenueId, { name: string; detail: { en: string; fr: s
 
 export const MY_NAME = 'Alex Nelson Ryan Abena';
 
+/**
+ * Public profile pages for co-authors, by exact name. Only verified pages go here;
+ * names without an entry render as plain text.
+ */
+export const AUTHOR_LINKS: Record<string, string> = {
+  'Philippe Tamla': 'https://dblp.org/pid/205/3852.html',
+  'Haithem Afli': 'https://www.adaptcentre.ie/experts/haithem-afli/',
+};
+
 const CERC = {
   en: 'Collaborative European Research Conference (CERC 2026), ATU Galway, Ireland',
   fr: 'Collaborative European Research Conference (CERC 2026), ATU Galway, Irlande',

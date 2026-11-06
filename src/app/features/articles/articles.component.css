@@ -140,6 +140,19 @@
   font-weight: 600;
 }
 
+/* Co-authors with a public profile */
+.author-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--border-default);
+  text-underline-offset: 2px;
+}
+
+.author-link:hover {
+  color: var(--text-link-hover);
+  text-decoration-color: currentColor;
+}
+
 .paper-summary {
   max-width: 68ch;
   margin-bottom: 1.1rem !important;

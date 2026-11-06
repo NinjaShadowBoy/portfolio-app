@@ -1,7 +1,7 @@
 import { Component, LOCALE_ID, inject } from '@angular/core';
 import { ArticleDataService } from '../../core/services/article-data.service';
 import { ArticleCardComponent } from '../../shared/ui/article-card/article-card.component';
-import { MY_NAME, PUBLICATIONS, VENUES, VenueId } from './publications';
+import { AUTHOR_LINKS, MY_NAME, PUBLICATIONS, VENUES, VenueId } from './publications';
 
 const ROLE: Record<number, string> = {
   1: $localize`:@@articlesRoleFirst:First author`,
@@ -27,6 +27,7 @@ export class ArticlesComponent {
   public readonly articles = this.articleService.articles;
 
   readonly myName = MY_NAME;
+  readonly authorLinks = AUTHOR_LINKS;
   readonly downloadLabel = $localize`:@@articlesDownloadPdfLabel:Download PDF`;
 
   private readonly month = new Intl.DateTimeFormat(this.lang, { month: 'long', year: 'numeric' });

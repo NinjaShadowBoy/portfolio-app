@@ -31,7 +31,7 @@
             <a [href]="paper.pdf" target="_blank" rel="noopener">{{ paper.title }}</a>
           </h3>
           <p class="paper-authors">
-            @for (author of paper.authors; track author; let last = $last) {<span class="author" [class.me]="author === myName">{{ author }}</span>@if (!last) {<span>, </span>}}
+            @for (author of paper.authors; track author; let last = $last) {@if (authorLinks[author]; as url) {<a class="author author-link" [href]="url" target="_blank" rel="noopener noreferrer">{{ author }}</a>} @else {<span class="author" [class.me]="author === myName">{{ author }}</span>}@if (!last) {<span>, </span>}}
           </p>
           <p class="paper-summary">{{ paper.summaryText }}</p>
 
