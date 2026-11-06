@@ -326,6 +326,20 @@ p {
 }
 
 /* Direct channels come first; the form is the fallback */
+.contact-email {
+  margin: 0 0 1rem;
+  color: var(--text-secondary);
+}
+
+.contact-email a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text-link);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
 .contact-socials {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

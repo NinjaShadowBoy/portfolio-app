@@ -9,22 +9,20 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { RouterLink, Router, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { IdentityService } from '../../../core/services/identity.service';
-import { SocialLinksService } from '../../../core/services/social-links.service';
 import { ThemeService } from '../../../core/services/theme.service';
-import { CV_PATHS, downloadCV } from '../../../core/constants/cv';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
-import { FlagComponent } from '../flag/flag.component';
+import { CvMenuComponent } from '../cv-menu/cv-menu.component';
 
 @Component({
   selector: 'app-header',
-  imports: [NgTemplateOutlet, RouterLink, RouterLinkActive, UserAvatarComponent, FlagComponent],
+  imports: [RouterLink, RouterLinkActive, UserAvatarComponent, CvMenuComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
-  host: { '(document:keydown.escape)': 'onEscape()', '(window:scroll)': 'closeCvMenu()' },
+  host: { '(document:keydown.escape)': 'onEscape()' },
 })
 export class HeaderComponent {
   private readonly document = inject(DOCUMENT);
@@ -47,11 +45,7 @@ export class HeaderComponent {
   readonly isAdmin = this.auth.isAdmin;
   readonly user = this.auth.user;
   readonly identity = inject(IdentityService).identity;
-  readonly socialLinks = inject(SocialLinksService).getSocialLinks();
   readonly currentTheme = this.themeService.currentTheme;
-  readonly downloadCV = downloadCV;
-  readonly cvPaths = CV_PATHS;
-  private readonly cvMenu = viewChild<ElementRef<HTMLElement>>('cvMenu');
 
   readonly isMenuOpen = signal(false);
   readonly isAnimating = signal(false);
@@ -121,26 +115,6 @@ export class HeaderComponent {
     }
   }
 
-  /**
-   * The CV menu is a popover so it renders in the top layer: the header clips
-   * its overflow, so an absolutely positioned dropdown would be cut off.
-   * Anchor positioning is not available everywhere, so the menu is placed
-   * under its button when it opens.
-   */
-  onCvMenuToggle(event: Event) {
-    if ((event as ToggleEvent).newState !== 'open') return;
-    const menu = event.target as HTMLElement;
-    const button = this.document.querySelector<HTMLElement>('[popovertarget="cv-menu"]');
-    if (!button) return;
-    const rect = button.getBoundingClientRect();
-    menu.style.top = `${rect.bottom + 6}px`;
-    menu.style.left = `${rect.left}px`;
-  }
-
-  closeCvMenu() {
-    const menu = this.cvMenu()?.nativeElement;
-    if (menu?.matches?.(':popover-open')) menu.hidePopover();
-  }
 
   toggleTheme() {
     this.themeService.toggleTheme();

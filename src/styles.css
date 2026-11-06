@@ -164,7 +164,7 @@ img {
   --text-secondary: #334155;
   --text-tertiary: #64748b;
   --text-quaternary: #94a3b8;
-  --text-placeholder: #cbd5e1;
+  --text-placeholder: #8492a6; /* about 3:1 on white: faint, still readable */
   --text-disabled: #e2e8f0;
   --text-inverse: #ffffff;
   --text-accent: var(--color-primary-600);
@@ -416,7 +416,7 @@ img {
   --text-secondary: #cbd5e1;
   --text-tertiary: #94a3b8;
   --text-quaternary: #64748b;
-  --text-placeholder: #475569;
+  --text-placeholder: #7c8aa0; /* about 3:1 on the dark input surface */
   --text-disabled: #334155;
   --text-inverse: #0f172a;
   --text-accent: var(--color-primary-500);
@@ -856,7 +856,7 @@ img {
     --text-secondary: #cbd5e1;
     --text-tertiary: #94a3b8;
     --text-quaternary: #64748b;
-    --text-placeholder: #475569;
+    --text-placeholder: #7c8aa0; /* about 3:1 on the dark input surface */
     --text-disabled: #334155;
     --text-inverse: #0f172a;
     --text-accent: var(--color-primary-500);

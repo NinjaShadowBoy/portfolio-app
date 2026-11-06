@@ -21,39 +21,11 @@
 
   <div class="cv-download-section">
     <div class="cv-download-group">
-      <button class="cv-download-btn" (click)="downloadCV('en')" aria-label="Download CV (English)"
-        i18n-title title="Download CV (English)">
-        <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        <span>CV</span>
-        <app-flag lang="en" class="lang-flag" />
-      </button>
-      <button class="cv-download-btn" (click)="downloadCV('fr')" aria-label="Download CV (French)"
-        i18n-title title="Download CV (French)">
-        <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-          <polyline points="7 10 12 15 17 10" />
-          <line x1="12" y1="15" x2="12" y2="3" />
-        </svg>
-        <span>CV</span>
-        <app-flag lang="fr" class="lang-flag" />
-      </button>
+      <app-cv-menu />
       <a class="btn-secondary articles-link" routerLink="/publications"
         i18n="About page link to articles@@aboutArticlesLink">Read my papers</a>
     </div>
   </div>
-
-  <h2 i18n="About page skills heading@@aboutSkills">Skills</h2>
-  <ul class="skills-list">
-    @for (skill of skills; track skill) {
-    <li>{{ skill }}</li>
-    }
-  </ul>
 
   <section class="tech-stack-section">
     <h2 i18n="About page technologies heading@@aboutTechnologies">Technologies</h2>
@@ -66,6 +38,8 @@
       <div class="tech-group">
         <h3>{{ category.title }}</h3>
         <app-icon-cloud [entries]="category.technologies" [label]="category.title" />
+        <!-- The logos alone are hard to recognise; the names, most used first, are also plain text. -->
+        <p class="tech-names">{{ names(category.technologies) }}</p>
       </div>
       }
     </div>

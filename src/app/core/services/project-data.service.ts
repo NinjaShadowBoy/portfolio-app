@@ -155,7 +155,11 @@ export class ProjectDataService {
   /** Imports may carry ids, ratings, photos or UI state; the API accepts only writable fields. */
   private projectPayload(data: ProjectUpdateRequest): ProjectUpdateRequest {
     const { name, description, technologies, githubLink, demoLink, challenges, whatILearned, featured } = data;
-    return { name, description, technologies, githubLink, demoLink, challenges, whatILearned, featured };
+    const { descriptionFr, challengesFr, whatILearnedFr } = data;
+    return {
+      name, description, technologies, githubLink, demoLink, challenges, whatILearned, featured,
+      descriptionFr, challengesFr, whatILearnedFr,
+    };
   }
 
   private applyFilters(): Project[] {

@@ -5,6 +5,7 @@ import { NotificationService } from '../../core/services/notification.service';
 import { ContactService } from '../../core/services/contact.service';
 import { SocialLinksService } from '../../core/services/social-links.service';
 import { CanComponentDeactivate } from '../../core/guards/auth.guard';
+import { CONTACT_EMAIL } from '../../core/constants/contact';
 
 @Component({
   selector: 'app-contact',
@@ -18,6 +19,7 @@ export class ContactComponent implements CanComponentDeactivate {
 
   readonly socialLinks = inject(SocialLinksService).getSocialLinks();
 
+  readonly email = CONTACT_EMAIL;
   readonly isSubmitting = signal(false);
 
   contactForm = inject(NonNullableFormBuilder).group({
@@ -28,6 +30,8 @@ export class ContactComponent implements CanComponentDeactivate {
 
   submitForm(): void {
     if (this.contactForm.invalid) {
+      // Show each field's own error message next to it.
+      this.contactForm.markAllAsTouched();
       this.notificationService.error($localize`:@@contactFillFields:Please fill out all fields correctly.`);
       return;
     }

@@ -22,10 +22,14 @@ export class ProjectFormComponent {
     name: ['', [Validators.required, Validators.minLength(3)]],
     description: ['', [Validators.required, Validators.minLength(10)]],
     technologies: ['', Validators.required], // comma-separated in the UI
-    githubLink: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
+    githubLink: ['', Validators.pattern(/^https?:\/\/.+/)], // optional: GitHub or GitLab
     demoLink: ['', Validators.pattern(/^https?:\/\/.+/)], // optional
     challenges: ['', Validators.required],
     whatILearned: ['', Validators.required],
+    // French versions, optional; empty means the French site shows the English text.
+    descriptionFr: [''],
+    challengesFr: [''],
+    whatILearnedFr: [''],
     featured: [false],
   });
 
@@ -44,6 +48,9 @@ export class ProjectFormComponent {
         demoLink: project.demoLink ?? '',
         challenges: project.challenges ?? '',
         whatILearned: project.whatILearned ?? '',
+        descriptionFr: project.descriptionFr ?? '',
+        challengesFr: project.challengesFr ?? '',
+        whatILearnedFr: project.whatILearnedFr ?? '',
         featured: project.featured ?? false,
       });
     });
@@ -52,9 +59,10 @@ export class ProjectFormComponent {
   submitForm() {
     if (this.projectForm.invalid) return;
 
-    const { technologies, demoLink, ...rest } = this.projectForm.getRawValue();
+    const { technologies, demoLink, githubLink, ...rest } = this.projectForm.getRawValue();
     this.save.emit({
       ...rest,
+      githubLink: githubLink.trim() || null,
       demoLink: demoLink.trim() || null,
       technologies: technologies
         .split(',')

@@ -49,26 +49,7 @@
 
         <li class="cv-download-n-theme-group">
           <div class="cv-download-group">
-            <button class="header-cv-btn liquid-glass" type="button" popovertarget="cv-menu"
-              aria-haspopup="menu">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              <span>CV</span>
-            </button>
-            <div #cvMenu id="cv-menu" class="cv-menu" popover role="menu" (toggle)="onCvMenuToggle($event)">
-              <a class="cv-menu-item" role="menuitem" [href]="cvPaths.en" download (click)="closeCvMenu()">
-                <app-flag lang="en" class="lang-flag" />
-                <span i18n="Header CV menu English@@headerCvEnglish">English</span>
-              </a>
-              <a class="cv-menu-item" role="menuitem" [href]="cvPaths.fr" download (click)="closeCvMenu()">
-                <app-flag lang="fr" class="lang-flag" />
-                <span i18n="Header CV menu French@@headerCvFrench">French</span>
-              </a>
-            </div>
+            <app-cv-menu variant="onBrand" />
             <div class="theme-toggle-item">
               <button class="theme-toggle" type="button" (click)="toggleTheme()"
                 [class.dark]="currentTheme() === 'dark'"
@@ -94,23 +75,12 @@
             </div>
           </div>
         </li>
-        <ul class="socials">
-          @for(social of socialLinks; track social.name) {
-          <li>
-            <a class="social liquid-glass" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
-              rel="noopener noreferrer">
-              <img [src]="social.icon" [alt]="social.name" width="40" />
-            </a>
-          </li>
-          }
-        </ul>
       </ul>
     </nav>
 
     <!-- String interpolation for dynmic data -->
     <div class="header-content">
       <div class="site-name" i18n="Header title@@headerTitle">Alex Abena aka <em class="nickname">NinjaShadowBoy</em></div>
-      <p i18n="Header subtitle@@headerSubtitle">Software engineering student at Ensimag (Grenoble INP)</p>
     </div>
 
     <!-- Mobile sidebar modal -->
@@ -135,7 +105,7 @@
       <ul class="mobile-nav">
         <li class="cv-download-n-theme-group mobile-theme">
           <div class="cv-download-group">
-            <ng-container *ngTemplateOutlet="cvButtons" />
+            <app-cv-menu variant="onBrand" />
           </div>
         </li>
         <li class="theme-toggle-item mobile-theme">
@@ -179,40 +149,7 @@
             {{ langLabel }}
           </button>
         </li>
-        <li class="socials">
-          @for(social of socialLinks; track social.name) {
-          <a class="social liquid-glass" [href]="social.url" [attr.aria-label]="social.ariaLabel" target="_blank"
-            rel="noopener noreferrer">
-            <img [src]="social.icon" [alt]="social.name" width="40" />
-          </a>
-          }
-        </li>
       </ul>
     </div>
   </header>
 </div>
-
-<ng-template #cvButtons>
-  <button class="header-cv-btn liquid-glass" (click)="downloadCV('en')" aria-label="Download CV (English)"
-    i18n-title title="Download CV (English)">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-      <polyline points="7 10 12 15 17 10"></polyline>
-      <line x1="12" y1="15" x2="12" y2="3"></line>
-    </svg>
-    <span>CV</span>
-    <app-flag lang="en" class="lang-flag" />
-  </button>
-  <button class="header-cv-btn liquid-glass" (click)="downloadCV('fr')" aria-label="Download CV (French)"
-    i18n-title title="Download CV (French)">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-      <polyline points="7 10 12 15 17 10"></polyline>
-      <line x1="12" y1="15" x2="12" y2="3"></line>
-    </svg>
-    <span>CV</span>
-    <app-flag lang="fr" class="lang-flag" />
-  </button>
-</ng-template>

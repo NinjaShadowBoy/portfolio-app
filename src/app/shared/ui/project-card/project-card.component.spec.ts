@@ -84,10 +84,12 @@ describe('ProjectCardComponent', () => {
     expect(el.querySelector('.card-footer a.demo')?.getAttribute('href')).toBe('https://demo.example');
   });
 
-  it('omits the footer when the project has no links', () => {
+  it('says the code is not public when the project has no links', () => {
     fixture.componentRef.setInput('project', { ...mockProject, githubLink: '  ', demoLink: null });
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.card-footer')).toBeNull();
+    const footer = fixture.nativeElement.querySelector('.card-footer') as HTMLElement;
+    expect(footer.querySelector('a')).toBeNull();
+    expect(footer.querySelector('.no-links')?.textContent).toContain('walk-through on request');
   });
 
   it('keeps the media box with a placeholder when there are no photos', () => {

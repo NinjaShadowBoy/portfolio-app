@@ -73,6 +73,9 @@ export class FeedbackComponent {
 
   selectedType = signal<CommentType>('critique');
   comments = signal<CommentDto[]>([]);
+  /** The form starts folded when there is no feedback yet; the visitor opens it. */
+  formOpen = signal(false);
+  readonly showForm = computed(() => this.formOpen() || this.comments().length > 0);
   newCommentText = signal('');
   isSubmitting = signal(false);
   editingCommentId = signal<number | null>(null);

@@ -1,7 +1,13 @@
 <section class="feedback">
-  <h3 class="feedback-heading" i18n="Feedback section heading@@feedbackHeading">Feedback</h3>
+  <div class="feedback-top">
+    <h3 class="feedback-heading" i18n="Feedback section heading@@feedbackHeading">Feedback</h3>
+    @if (!showForm()) {
+    <button type="button" class="open-btn" (click)="formOpen.set(true)" i18n="Feedback open form button@@feedbackOpen">Leave feedback</button>
+    }
+  </div>
 
-  <!-- New feedback form -->
+  <!-- New feedback form: folded away while there is no feedback, so an empty box does not take the page -->
+  @if (showForm()) {
   <div class="feedback-form">
     <app-segmented-toggle
       [options]="typeOptions"
@@ -34,6 +40,7 @@
       </p>
     }
   </div>
+  }
 
   <!-- Existing feedback grouped by type -->
   @if (groupedComments().length > 0) {
@@ -83,9 +90,5 @@
         </div>
       }
     </div>
-  } @else {
-    <p class="feedback-empty" i18n="Feedback empty-state message@@feedbackNoComments">
-      No feedback yet. Be the first to share your thoughts!
-    </p>
   }
 </section>

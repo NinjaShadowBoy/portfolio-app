@@ -12,6 +12,8 @@
     @if (c.hasLinks) {
     <app-project-links class="detail-links" variant="prominent" [githubLink]="project.githubLink"
       [demoLink]="project.demoLink" [paperLink]="c.paper" [projectName]="project.name" />
+    } @else {
+    <p class="no-links" i18n="Project without public links@@projectNoLinks">Code not public; walk-through on request</p>
     }
   </header>
 

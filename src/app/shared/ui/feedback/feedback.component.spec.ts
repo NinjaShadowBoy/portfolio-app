@@ -252,13 +252,19 @@ describe('FeedbackComponent', () => {
       expect(badges.length).toBe(2);
     });
 
-    it('renders the empty state when there is no feedback', () => {
+    it('folds the form behind a button when there is no feedback, and opens it on click', () => {
       configure();
       mount({ projectId: 1 });
       flushProjectLoad(1, []);
 
-      expect(fixture.nativeElement.querySelector('.feedback-empty')).toBeTruthy();
-      expect(fixture.nativeElement.querySelector('.feedback-groups')).toBeFalsy();
+      const el = fixture.nativeElement as HTMLElement;
+      expect(el.querySelector('.feedback-form')).toBeNull();
+      expect(el.querySelector('.feedback-groups')).toBeFalsy();
+
+      el.querySelector<HTMLButtonElement>('.open-btn')!.click();
+      fixture.detectChanges();
+      expect(el.querySelector('.feedback-form textarea')).toBeTruthy();
+      expect(el.querySelector('.open-btn')).toBeNull();
     });
   });
 

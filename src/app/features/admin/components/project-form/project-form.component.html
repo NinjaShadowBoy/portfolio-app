@@ -42,15 +42,15 @@
 
   <div class="form-row">
   <div class="form-group">
-    <label for="githubLink" i18n="Project form GitHub link label@@projectFormGithubLabel">GitHub Link *</label>
+    <label for="githubLink">Repository URL</label>
     <input
       formControlName="githubLink"
       id="githubLink"
-      i18n-placeholder placeholder="https://github.com/username/repo"
-      required
+      type="url"
+      placeholder="https://github.com/username/repo"
     />
     @if(projectForm.get('githubLink')?.invalid && projectForm.get('githubLink')?.touched) {
-    <div class="error" i18n="Project form GitHub URL required error@@projectFormGithubError">Valid GitHub URL is required.</div>
+    <div class="error">Enter a full URL starting with http:// or https://, or leave it empty.</div>
     }
   </div>
 
@@ -93,6 +93,18 @@
     <div class="error" i18n="Project form what I learned required error@@projectFormLearnedError">Learning description is required.</div>
     }
   </div>
+
+  <fieldset class="form-group french-fields">
+    <legend>French text (optional)</legend>
+    <p class="field-hint">Shown on the French site. Leave a field empty to show the English text there. Keep the
+      period in the English description only.</p>
+    <label for="descriptionFr">Description (French)</label>
+    <textarea formControlName="descriptionFr" id="descriptionFr" rows="5"></textarea>
+    <label for="challengesFr">Challenges (French)</label>
+    <textarea formControlName="challengesFr" id="challengesFr"></textarea>
+    <label for="whatILearnedFr">What I learned (French)</label>
+    <textarea formControlName="whatILearnedFr" id="whatILearnedFr"></textarea>
+  </fieldset>
 
   <div class="form-group checkbox-group">
     <label>

@@ -1,6 +1,10 @@
 <div class="contact-container">
   <h1 i18n="Contact page heading@@contactHeading">Contact Me</h1>
   <p i18n="Contact page subtitle@@contactSubtitle">Hiring for a January 2027 internship, planning a project, or curious about something on this site? Write to me.</p>
+  <p class="contact-email">
+    <span i18n="Contact page email label@@contactEmailLine">Email:</span>
+    <a [href]="'mailto:' + email">{{ email }}</a>
+  </p>
   <ul class="contact-socials">
     @for (social of socialLinks; track social.name) {
     <li>
@@ -46,8 +50,13 @@
       }
       }
     </div>
-    <button [disabled]="contactForm.invalid || isSubmitting()" type="submit">
-      {{ isSubmitting() ? 'Sending...' : 'Send Message' }}
+    <!-- Enabled until sending, so the call to action is always visible; submitForm() validates. -->
+    <button [disabled]="isSubmitting()" type="submit">
+      @if (isSubmitting()) {
+      <span i18n="Contact form sending state@@contactSending">Sending...</span>
+      } @else {
+      <span i18n="Contact form submit button@@contactSend">Send message</span>
+      }
     </button>
   </form>
 </div>

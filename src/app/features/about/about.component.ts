@@ -1,24 +1,16 @@
 import { RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
-import { downloadCV } from '../../core/constants/cv';
 import { IconCloudComponent } from '../../shared/ui/icon-cloud/icon-cloud.component';
 import { CloudEntry } from '../../shared/ui/icon-cloud/icon-cloud.layout';
-import { FlagComponent } from '../../shared/ui/flag/flag.component';
+import { CvMenuComponent } from '../../shared/ui/cv-menu/cv-menu.component';
 
 @Component({
   selector: 'app-about',
-  imports: [IconCloudComponent, FlagComponent, RouterLink],
+  imports: [IconCloudComponent, CvMenuComponent, RouterLink],
   templateUrl: './about.component.html',
   styleUrl: './about.component.css',
 })
 export class AboutComponent {
-  readonly skills = [
-    $localize`:@@aboutSkillBackend:Backend & APIs`,
-    $localize`:@@aboutSkillAi:AI & LLM integration`,
-    $localize`:@@aboutSkillWeb:Full-stack web`,
-    $localize`:@@aboutSkillMobile:Mobile`,
-  ];
-
   // Usage level per technology: 3 daily, 2 regularly, 1 occasionally. Drives logo size in the cloud.
   // The first four groups sit on one row on desktop and describe the AI engineering profile.
   readonly techCategories: { title: string; technologies: CloudEntry[] }[] = [
@@ -134,5 +126,8 @@ export class AboutComponent {
     },
   ];
 
-  readonly downloadCV = downloadCV;
+  /** Names in usage order (daily first), for the caption under each cloud. */
+  names(entries: CloudEntry[]): string {
+    return [...entries].sort((a, b) => b.level - a.level).map((e) => e.name).join(', ');
+  }
 }

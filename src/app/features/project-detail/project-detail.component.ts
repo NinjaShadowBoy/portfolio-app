@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, LOCALE_ID, computed, effect, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -8,14 +8,9 @@ import { CarouselComponent } from '../../shared/ui/carousel/carousel.component';
 import { FeedbackComponent } from '../../shared/ui/feedback/feedback.component';
 import { TechTagsComponent } from '../../shared/ui/tech-tags/tech-tags.component';
 import { ProjectLinksComponent, presentLink } from '../../shared/ui/project-links/project-links.component';
-import { splitPeriod } from '../../core/utils/project-period';
+import { projectText } from '../../core/utils/project-locale';
 import { pageTitle } from '../../core/services/app-title-strategy';
 import { paperForProject } from '../articles/publications';
-
-/** Trimmed text, or empty when the value is missing or blank. */
-function text(value: string | null | undefined): string {
-  return value?.trim() ?? '';
-}
 
 @Component({
   selector: 'app-project-detail',
@@ -25,6 +20,7 @@ function text(value: string | null | undefined): string {
 })
 export class ProjectDetailComponent {
   private projectService = inject(ProjectDataService);
+  private locale = inject(LOCALE_ID);
 
   private projectId = toSignal(
     inject(ActivatedRoute).paramMap.pipe(map((params) => Number(params.get('id')))),
@@ -41,13 +37,9 @@ export class ProjectDetailComponent {
   readonly content = computed(() => {
     const project = this.project();
     if (!project) return null;
-    const { period, body } = splitPeriod(project.description);
     const paper = paperForProject(project.name);
     return {
-      period,
-      description: body,
-      challenges: text(project.challenges),
-      whatILearned: text(project.whatILearned),
+      ...projectText(project, this.locale),
       technologies: (project.technologies ?? []).map((t) => t.trim()).filter(Boolean),
       photoUrls: (project.photoUrls ?? []).filter((url) => url?.trim()),
       paper,

@@ -1,0 +1,82 @@
+:host {
+  display: inline-block;
+}
+
+.cv-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-duration-fast) var(--motion-ease-out),
+    border-color var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.cv-button:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-emphasis);
+}
+
+.cv-button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* On the blue header: white outline, like the other header controls. */
+:host(.on-brand) .cv-button {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: var(--text-inverse);
+}
+
+:host(.on-brand) .cv-button:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Top-layer popover; top/left are set from the button when it opens. */
+.cv-menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  padding: 0.35rem;
+  min-width: 10rem;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  background: var(--surface-overlay);
+  box-shadow: var(--elevation-3);
+}
+
+.cv-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0 0.85rem;
+  border-radius: 8px;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.cv-menu-item:hover,
+.cv-menu-item:focus-visible {
+  outline: none;
+  background: var(--surface-hover);
+}
+
+.flag {
+  width: 20px;
+  height: 14px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--border-default);
+}

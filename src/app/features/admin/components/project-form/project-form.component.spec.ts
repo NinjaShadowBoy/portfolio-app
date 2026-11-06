@@ -49,6 +49,9 @@ describe('ProjectFormComponent', () => {
       demoLink: '',
       challenges: 'c',
       whatILearned: 'w',
+      descriptionFr: 'Une description',
+      challengesFr: '',
+      whatILearnedFr: '',
       featured: false,
     });
     component.submitForm();
@@ -62,6 +65,9 @@ describe('ProjectFormComponent', () => {
         demoLink: null,
         challenges: 'c',
         whatILearned: 'w',
+        descriptionFr: 'Une description',
+        challengesFr: '',
+        whatILearnedFr: '',
         featured: false,
       },
     ]);

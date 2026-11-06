@@ -16,6 +16,26 @@
   font-size: 0.9rem;
 }
 
+/* The optional French text, grouped so it reads as one block. */
+.french-fields {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+
+.french-fields legend {
+  padding: 0 0.35rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.field-hint {
+  margin: 0 0 0.25rem;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+}
+
 /* Two related short fields side by side; stacks on narrow screens. */
 .form-row {
   display: grid;

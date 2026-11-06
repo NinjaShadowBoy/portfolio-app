@@ -260,7 +260,8 @@
 
 /* MY ARSENAL: three homes for the code, each an orbiting 3D ring of logos */
 .my-tools-section {
-  --bleed: linear-gradient(to bottom, var(--color-primary-50), var(--surface-base) 55%);
+  /* Sits after the project cards now, so it fades in from the page surface. */
+  --bleed: linear-gradient(to bottom, var(--surface-base), var(--color-primary-50) 45%, var(--surface-base));
   padding: 4rem 0;
   overflow: clip;
   /* Keep ring work from leaking into the rest of the page, and skip it entirely while off-screen */
@@ -528,7 +529,7 @@ p {
   }
 
   .featured-projects {
-    padding-inline: 0.5rem;
+    padding-inline: 1rem;
   }
 
   .featured-projects h2 {
@@ -593,7 +594,7 @@ p {
   }
 
   .featured-projects {
-    padding-inline: 0.25rem;
+    padding-inline: 0.75rem;
   }
 
   p {

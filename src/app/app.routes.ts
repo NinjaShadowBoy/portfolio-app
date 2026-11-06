@@ -58,10 +58,13 @@ export const routes: Routes = [
     children: [
       {
         path: '',
+        // Route titles win over a title a component sets while it is created.
+        title: $localize`:Tools page title@@titleTools:Developer Tools`,
         loadComponent: () => import('./features/tools/tools.component').then((m) => m.ToolsComponent),
       },
       {
         path: 'ai-cost-calculator',
+        title: $localize`:AI cost calculator page title@@titleAiCalculator:AI API Cost Calculator`,
         loadComponent: () =>
           import('./features/tools/ai-cost-calculator/ai-cost-calculator.component').then(
             (m) => m.AiCostCalculatorComponent,

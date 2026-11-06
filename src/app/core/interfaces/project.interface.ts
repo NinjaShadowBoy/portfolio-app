@@ -7,6 +7,10 @@ export interface Project {
   demoLink: string | null; // Deployed site, when there is one
   challenges: string | null;
   whatILearned: string | null;
+  /** French versions; null or absent when not translated. */
+  descriptionFr?: string | null;
+  challengesFr?: string | null;
+  whatILearnedFr?: string | null;
   isExpanded?: boolean; // UI-only property, not from backend
   averageRating: number;
   totalRatings: number; // Backend returns this instead of ratings array
@@ -27,7 +31,11 @@ export interface Photo {
 export type ProjectCreateRequest = Pick<
   Project,
   'name' | 'description' | 'technologies' | 'githubLink' | 'challenges' | 'whatILearned'
-> & { featured?: boolean; demoLink?: string | null };
+> &
+  Partial<Pick<Project, 'descriptionFr' | 'challengesFr' | 'whatILearnedFr'>> & {
+    featured?: boolean;
+    demoLink?: string | null;
+  };
 
 export type ProjectUpdateRequest = Partial<ProjectCreateRequest>;
 

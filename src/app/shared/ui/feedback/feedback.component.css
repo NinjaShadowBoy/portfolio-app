@@ -9,6 +9,38 @@
   transition: all var(--motion-duration-fast) var(--motion-ease-out);
 }
 
+.feedback-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.feedback-top .feedback-heading {
+  margin: 0;
+}
+
+.open-btn {
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.open-btn:hover {
+  background: var(--surface-hover);
+}
+
+.feedback-form {
+  margin-top: 1rem;
+}
+
 .feedback:hover {
   box-shadow: var(--elevation-2);
   border-color: var(--border-emphasis);

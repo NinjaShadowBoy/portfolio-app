@@ -493,6 +493,13 @@
     "navPublications": "Publications",
     "projectLinksPaper": "Article (PDF)",
     "projectLinksPaperAria": "{$INTERPOLATION}, article (PDF, s'ouvre dans un nouvel onglet)",
-    "projectLinksRepoAria": "{$INTERPOLATION} sur {$HOST} (s'ouvre dans un nouvel onglet)"
+    "projectLinksRepoAria": "{$INTERPOLATION} sur {$HOST} (s'ouvre dans un nouvel onglet)",
+    "titleTools": "Outils pour développeurs",
+    "titleAiCalculator": "Calculateur de coût des API d'IA",
+    "contactEmailLine": "E-mail :",
+    "contactSending": "Envoi...",
+    "contactSend": "Envoyer le message",
+    "projectNoLinks": "Code non public ; présentation du code sur demande",
+    "feedbackOpen": "Laisser un avis"
   }
 }

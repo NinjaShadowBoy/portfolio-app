@@ -7,6 +7,9 @@
 
 .main-content {
   box-sizing: border-box;
+  /* Lazy-loaded pages arrive after the shell; without this the footer renders
+     in the viewport first and then jumps down (layout shift). */
+  min-height: 100vh;
   width: 100%;
   background: var(--glass-noise);
   color: var(--text-primary);

@@ -34,6 +34,22 @@
   </ul>
 </section>
 
+<section class="featured-projects">
+  <div class="featured-header">
+    <h2 i18n="Home page featured projects heading@@homeFeaturedProjects">Featured Projects</h2>
+    <a class="all-projects-link" routerLink="/projects" i18n="Home all projects link@@homeAllProjects">All projects</a>
+  </div>
+  @if (featuredProjects().length > 0) {
+  <div class="projects-grid">
+    @for (project of featuredProjects(); track project.id) {
+    <app-project-card [project]="project" [showFeaturedBadge]="false" />
+    }
+  </div>
+  } @else {
+  <p i18n="Home page no featured projects message@@homeNoFeaturedProjects">No featured projects available.</p>
+  }
+</section>
+
 <!-- My Arsenal Section - three homes for the code, each an orbiting 3D ring -->
 <section #arsenal class="my-tools-section" [class.rings-paused]="!arsenalVisible()">
   <h2 i18n="Home page tools section heading@@homeMyArsenal">My Arsenal</h2>
@@ -77,19 +93,3 @@
     </div>
   </div>
 </ng-template>
-
-<section class="featured-projects">
-  <div class="featured-header">
-    <h2 i18n="Home page featured projects heading@@homeFeaturedProjects">Featured Projects</h2>
-    <a class="all-projects-link" routerLink="/projects" i18n="Home all projects link@@homeAllProjects">All projects</a>
-  </div>
-  @if (featuredProjects().length > 0) {
-  <div class="projects-grid">
-    @for (project of featuredProjects(); track project.id) {
-    <app-project-card [project]="project" [showFeaturedBadge]="false" />
-    }
-  </div>
-  } @else {
-  <p i18n="Home page no featured projects message@@homeNoFeaturedProjects">No featured projects available.</p>
-  }
-</section>

@@ -24,10 +24,12 @@
     }
   </div>
 
-  @if (hasLinks()) {
   <footer class="card-footer">
+    @if (hasLinks()) {
     <app-project-links [githubLink]="project().githubLink" [demoLink]="project().demoLink"
       [paperLink]="paper()" [projectName]="project().name" />
+    } @else {
+    <p class="no-links" i18n="Project without public links@@projectNoLinks">Code not public; walk-through on request</p>
+    }
   </footer>
-  }
 </article>
