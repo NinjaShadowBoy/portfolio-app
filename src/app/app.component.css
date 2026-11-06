@@ -16,6 +16,29 @@
     color var(--motion-duration-normal) var(--motion-ease-out);
 }
 
+/* Focus lands here from the skip link; the outline would frame the whole page. */
+.main-content:focus {
+  outline: none;
+}
+
+/* Hidden until it takes keyboard focus. */
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  box-shadow: var(--elevation-3);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
 /* Content wrapper for constraining width */
 .main-content > * {
   max-width: 1400px;

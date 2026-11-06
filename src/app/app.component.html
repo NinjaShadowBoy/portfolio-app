@@ -1,6 +1,7 @@
+<a class="skip-link" href="#main-content" (click)="skipToMain($event)" i18n="Skip link@@skipToContent">Skip to content</a>
 <app-header />
 <app-breadcrumb />
-<main class="main-content">
+<main #main id="main-content" class="main-content" tabindex="-1">
   <router-outlet />
 </main>
 <app-footer />
