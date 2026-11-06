@@ -25,11 +25,11 @@ export const serverRoutes: ServerRoute[] = [
   // Articles are prerendered (SSG): the content is static, so every article
   // ships as complete HTML without a render per request.
   {
-    path: 'articles',
+    path: 'publications',
     renderMode: RenderMode.Prerender
   },
   {
-    path: 'articles/:slug',
+    path: 'publications/:slug',
     renderMode: RenderMode.Prerender,
     // Enumerate SLUGS ONLY — never cross-product slug × lang here. Locales are
     // per-locale BUILDS (en at `/`, fr at `/fr`): `ng build --localize` runs the

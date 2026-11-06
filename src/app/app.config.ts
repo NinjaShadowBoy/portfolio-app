@@ -1,5 +1,6 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter, withInMemoryScrolling, withViewTransitions } from '@angular/router';
+import { TitleStrategy, provideRouter, withInMemoryScrolling, withViewTransitions } from '@angular/router';
+import { AppTitleStrategy } from './core/services/app-title-strategy';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling: 'enabled'
       })
     ),
+    { provide: TitleStrategy, useClass: AppTitleStrategy },
     provideHttpClient(withInterceptors([authInterceptor, serverApiTimeoutInterceptor])),
     provideClientHydration(),
     // Browser: load article payloads over HTTP. The server overrides this with a

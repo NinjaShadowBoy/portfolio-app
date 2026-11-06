@@ -129,7 +129,7 @@ describe('ArticleDetailComponent', () => {
     expect(meta.getTag('property="og:type"')?.content).toBe('article');
     expect(meta.getTag('property="og:title"')?.content).toBe('Hello World');
     expect(meta.getTag('property="og:url"')?.content).toContain(
-      '/articles/hello-world',
+      '/publications/hello-world',
     );
     expect(meta.getTag('property="og:image"')?.content).toContain('cover.png');
     expect(meta.getTag('name="twitter:card"')?.content).toBe(
@@ -144,7 +144,7 @@ describe('ArticleDetailComponent', () => {
     const canonical = head.querySelector<HTMLLinkElement>(
       'link[data-seo="canonical"]',
     );
-    expect(canonical?.getAttribute('href')).toContain('/articles/hello-world');
+    expect(canonical?.getAttribute('href')).toContain('/publications/hello-world');
 
     const jsonLd = head.querySelector('script[data-seo="jsonld"]');
     expect(jsonLd).toBeTruthy();
@@ -167,7 +167,7 @@ describe('ArticleDetailComponent', () => {
     expect(hreflangs).toContain('x-default');
 
     const fr = head.querySelector('link[data-seo="hreflang-fr"]');
-    expect(fr?.getAttribute('href')).toContain('/fr/articles/hello-world');
+    expect(fr?.getAttribute('href')).toContain('/fr/publications/hello-world');
   });
 
   it('mounts the feedback component with the article slug', async () => {

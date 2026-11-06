@@ -66,7 +66,7 @@ describe('ArticleCardComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const link = compiled.querySelector('a.cta-button') as HTMLAnchorElement | null;
     expect(link).toBeTruthy();
-    expect(link?.getAttribute('href')).toBe('/articles/hello-world');
+    expect(link?.getAttribute('href')).toBe('/publications/hello-world');
   });
 
   it('should not render a cover image when none is provided', () => {

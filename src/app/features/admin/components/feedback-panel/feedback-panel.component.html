@@ -34,7 +34,7 @@
         @if (comment.projectId !== null) {
           <a [routerLink]="['/projects', comment.projectId]">{{ comment.projectName ?? 'Project #' + comment.projectId }}</a>
         } @else if (comment.articleSlug) {
-          <a [routerLink]="['/articles', comment.articleSlug]">{{ articleTitle(comment.articleSlug) }}</a>
+          <a [routerLink]="['/publications', comment.articleSlug]">{{ articleTitle(comment.articleSlug) }}</a>
         }
       </ng-template>
       <ng-template appDataTableCell="body" let-comment>

@@ -70,7 +70,7 @@ describe('ArticlesComponent', () => {
     await setup([makeArticle('hello-world', 'Hello World')]);
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.articles-header h1')?.textContent).toContain(
-      'Articles'
+      'Publications'
     );
   });
 

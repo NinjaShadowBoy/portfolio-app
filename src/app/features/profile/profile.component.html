@@ -81,7 +81,7 @@
       @for (comment of myComments(); track comment.id) {
         <div class="activity-item comment">
           @if (comment.articleSlug) {
-            <a [routerLink]="['/articles', comment.articleSlug]" class="activity-project">{{ comment.articleSlug }}</a>
+            <a [routerLink]="['/publications', comment.articleSlug]" class="activity-project">{{ comment.articleSlug }}</a>
           } @else if (comment.projectId != null) {
             <a [routerLink]="['/projects', comment.projectId]" class="activity-project">{{ projectName(comment.projectId) }}</a>
           }
