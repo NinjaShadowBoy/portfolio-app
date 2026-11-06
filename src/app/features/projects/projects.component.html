@@ -2,7 +2,7 @@
   <header class="projects-header">
     <h1 i18n="Projects page heading@@projectsHeading">Projects</h1>
     <p class="projects-intro" i18n="Projects page intro@@projectsIntro">
-      Things I've built, from C games to multi-service platforms. Search, or pick a technology to narrow the list.
+      Things I've built, from C games to multi-service platforms. Search, or pick technologies to narrow the list.
     </p>
   </header>
 
@@ -42,7 +42,11 @@
       i18n-aria-label="Projects technology filter@@projectsTechLabel">
       @for (tech of techOptions(); track tech.name) {
       <button type="button" class="tech-chip" [class.extra]="tech.extra"
-        [attr.aria-pressed]="filters().technology === tech.name" (click)="toggleTech(tech.name)">
+        [attr.aria-pressed]="tech.selected" (click)="toggleTech(tech.name)">
+        @if (tech.logo && !failedLogos().has(tech.name)) {
+        <img class="tech-logo" [src]="tech.logo" alt="" width="16" height="16" loading="lazy" decoding="async"
+          (error)="markLogoFailed(tech.name)" />
+        }
         {{ tech.name }}<span class="tech-count" aria-hidden="true">{{ tech.count }}</span>
       </button>
       }

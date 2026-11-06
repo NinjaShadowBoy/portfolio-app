@@ -83,20 +83,28 @@ describe('ProjectsComponent', () => {
     expect(cardNames()).toEqual(['Alpha Shop']);
   });
 
-  it('offers each technology as a chip that toggles the filter', async () => {
+  it('lets several technology chips be on at once and matches any of them', async () => {
     vi.useFakeTimers();
     await loadProjects();
     const chips = () => Array.from(el().querySelectorAll<HTMLButtonElement>('.tech-chip'));
-    expect(chips().map((c) => c.firstChild?.textContent?.trim())).toEqual(['Angular', 'React']);
+    const chipName = (c: HTMLButtonElement) => c.childNodes[c.childNodes.length - 2]?.textContent?.trim();
+    expect(chips().map(chipName)).toEqual(['Angular', 'React']);
+    expect(chips()[0].querySelector('img.tech-logo')).toBeTruthy();
 
     chips()[1].click();
     fixture.detectChanges();
     expect(cardNames()).toEqual(['Beta Board']);
-    expect(chips()[1].getAttribute('aria-pressed')).toBe('true');
+
+    chips()[0].click();
+    fixture.detectChanges();
+    expect(cardNames()).toEqual(['Alpha Shop', 'Beta Board']);
+    expect(chips().map((c) => c.getAttribute('aria-pressed'))).toEqual(['true', 'true']);
+    expect(component.filters().technologies).toEqual(['React', 'Angular']);
 
     chips()[1].click();
     fixture.detectChanges();
-    expect(cardNames()).toEqual(['Alpha Shop', 'Beta Board']);
+    expect(cardNames()).toEqual(['Alpha Shop']);
+    expect(component.filters().technologies).toEqual(['Angular']);
   });
 
   it('switches between all and featured projects and reports the count', async () => {
@@ -125,7 +133,7 @@ describe('ProjectsComponent', () => {
     (el().querySelector('.no-results .reset-button') as HTMLButtonElement).click();
     fixture.detectChanges();
 
-    expect(component.filters()).toEqual({ searchTerm: '', technology: '', featured: false });
+    expect(component.filters()).toEqual({ searchTerm: '', technologies: [], featured: false });
     expect(cardNames()).toEqual(['Alpha Shop', 'Beta Board']);
     expect(el().querySelector('.clear-filters')).toBeNull();
   });

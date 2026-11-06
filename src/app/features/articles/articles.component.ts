@@ -1,20 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, LOCALE_ID, inject } from '@angular/core';
 import { ArticleDataService } from '../../core/services/article-data.service';
 import { ArticleCardComponent } from '../../shared/ui/article-card/article-card.component';
+import { MY_NAME, PUBLICATIONS } from './publications';
 
 /**
- * Articles index page — the writing-system counterpart to {@link ProjectsComponent}.
- *
- * Mirrors the projects list layout (`.articles-container` + `.articles-grid`,
- * swapping `app-project-card` for `app-article-card`). The list is read straight
- * from {@link ArticleDataService.articles}, which surfaces the build-generated
- * manifest with drafts already excluded — so there is no runtime loading state,
- * fetch, or draft filtering to do here.
- *
- * Tags are shown on each card but are intentionally NOT filterable: search/filter
- * is deferred per the design spec. i18n: locales are per-locale builds (en at `/`,
- * fr at `/fr`), so every string carries an explicit `@@id` and there is no `:lang`
- * route segment.
+ * Articles index: my research papers first (hard-coded in {@link PUBLICATIONS}),
+ * then any notes from the build-generated manifest.
  */
 @Component({
   selector: 'app-articles',
@@ -24,7 +15,23 @@ import { ArticleCardComponent } from '../../shared/ui/article-card/article-card.
 })
 export class ArticlesComponent {
   private articleService = inject(ArticleDataService);
+  private readonly lang = inject(LOCALE_ID).startsWith('fr') ? 'fr' : 'en';
 
   /** Published article summaries, newest-first as emitted (drafts excluded at build). */
   public readonly articles = this.articleService.articles;
+
+  readonly myName = MY_NAME;
+  readonly downloadLabel = $localize`:@@articlesDownloadPdfLabel:Download PDF`;
+
+  readonly publications = [...PUBLICATIONS]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .map((p) => ({
+      ...p,
+      venueText: p.venue[this.lang],
+      summaryText: p.summary[this.lang],
+      noteText: p.note?.[this.lang],
+      dateText: new Intl.DateTimeFormat(this.lang, { month: 'short', year: 'numeric' }).format(
+        new Date(`${p.date}-01T00:00:00Z`),
+      ),
+    }));
 }

@@ -64,6 +64,7 @@ export class AboutComponent {
         { name: 'Docker', level: 3 },
         { name: 'Git', level: 3 },
         { name: 'AWS', level: 2 },
+        { name: 'OVH', level: 1 },
         { name: 'Kubernetes', level: 2 },
         { name: 'Linux', level: 1 },
       ],
@@ -72,8 +73,8 @@ export class AboutComponent {
       title: $localize`:@@aboutTechFrontend:Frontend`,
       technologies: [
         { name: 'Angular', level: 3 },
-        { name: 'Nuxt', level: 3 },
-        { name: 'React', level: 2 },
+        { name: 'Nuxt', level: 2 },
+        { name: 'React', level: 3 },
         { name: 'TailwindCSS', level: 2 },
         { name: 'Next.js', level: 1 },
         { name: 'Bootstrap', level: 1 },

@@ -1,24 +1,71 @@
-<!-- src/app/features/articles/articles.component.html -->
 <div class="articles-container">
-  <!-- Articles Header -->
-  <div class="articles-header">
+  <header class="articles-header">
     <h1 i18n="Articles page heading@@articlesHeading">Articles</h1>
     <p class="articles-subtitle" i18n="Articles page subtitle@@articlesSubtitle">
-      Notes on what I'm building and what I learn doing it.
+      Research I've co-authored on speech translation for low-resource African languages, and on a RAG assistant for universities.
     </p>
-  </div>
+  </header>
 
-  <!-- Articles Grid -->
-  <div class="articles-grid">
-    @for (article of articles(); track article.slug) {
-    <app-article-card [article]="article" />
-    } @empty {
-    <div class="no-results">
-      <h3 i18n="Articles empty state heading@@articlesEmptyHeading">No articles yet</h3>
-      <p i18n="Articles empty state message@@articlesEmptyMessage">
-        Check back soon. New writing is on the way.
-      </p>
+  <section class="publications" aria-labelledby="publications-heading">
+    <h2 id="publications-heading" class="section-title" i18n="Articles publications heading@@articlesPublications">Research papers</h2>
+    <ol class="publication-list">
+      @for (paper of publications; track paper.id) {
+      <li class="publication">
+        <p class="publication-meta">
+          <time [attr.datetime]="paper.date">{{ paper.dateText }}</time>
+          <span class="venue">{{ paper.venueText }}</span>
+        </p>
+        <h3 class="publication-title">
+          @if (paper.link) {
+          <a [href]="paper.link" target="_blank" rel="noopener noreferrer">{{ paper.title }}</a>
+          } @else {
+          {{ paper.title }}
+          }
+        </h3>
+        <p class="publication-authors">
+          @for (author of paper.authors; track author; let last = $last) {<span class="author" [class.me]="author === myName">{{ author }}</span>@if (!last) {<span>, </span>}}
+        </p>
+        @if (paper.presented || paper.noteText) {
+        <p class="publication-badges">
+          @if (paper.presented) {
+          <span class="badge badge--presented" i18n="Publication presented badge@@articlesPresented">Presented at the conference</span>
+          }
+          @if (paper.noteText) {
+          <span class="badge">{{ paper.noteText }}</span>
+          }
+        </p>
+        }
+        <p class="publication-summary">{{ paper.summaryText }}</p>
+        <div class="publication-footer">
+          <a class="btn-secondary download-paper" [href]="paper.pdf" [attr.download]="paper.pdf.split('/').pop()"
+            [attr.aria-label]="downloadLabel + ': ' + paper.title">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span i18n="Download paper PDF@@articlesDownloadPdf">Download PDF</span>
+          </a>
+        <ul class="publication-tags" aria-label="Topics" i18n-aria-label="Publication topics@@articlesTopics">
+          @for (tag of paper.tags; track tag) {
+          <li>{{ tag }}</li>
+          }
+        </ul>
+        </div>
+      </li>
+      }
+    </ol>
+  </section>
+
+  @if (articles().length > 0) {
+  <section class="notes" aria-labelledby="notes-heading">
+    <h2 id="notes-heading" class="section-title" i18n="Articles notes heading@@articlesNotes">Notes</h2>
+    <div class="articles-grid">
+      @for (article of articles(); track article.slug) {
+      <app-article-card [article]="article" />
+      }
     </div>
-    }
-  </div>
+  </section>
+  }
 </div>

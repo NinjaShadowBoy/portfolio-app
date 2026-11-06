@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { ProjectDataService } from '../../core/services/project-data.service';
 import { ProjectFilters } from '../../core/interfaces/project.interface';
 import { ProjectCardComponent } from '../../shared/ui/project-card/project-card.component';
+import { TechnologiesService } from '../../core/services/technologies.service';
 
 /** Technologies shown before "More" on wide screens; phones scroll the full row. */
 const VISIBLE_TECH = 10;
@@ -15,6 +16,7 @@ const VISIBLE_TECH = 10;
 })
 export class ProjectsComponent {
   private projectService = inject(ProjectDataService);
+  private techService = inject(TechnologiesService);
 
   readonly projects = this.projectService.filteredProjects;
   readonly totalProjects = this.projectService.projects;
@@ -29,17 +31,23 @@ export class ProjectsComponent {
     for (const project of this.totalProjects()) {
       for (const tech of project.technologies) counts.set(tech, (counts.get(tech) ?? 0) + 1);
     }
-    const selected = this.filters().technology;
+    const selected = new Set(this.filters().technologies);
     return [...counts]
       .sort(([a, ca], [b, cb]) => cb - ca || a.localeCompare(b))
-      .map(([name, count], index) => ({ name, count, extra: index >= VISIBLE_TECH && name !== selected }));
+      .map(([name, count], index) => ({
+        name,
+        count,
+        logo: this.techService.getTechnology(name)?.logo,
+        selected: selected.has(name),
+        extra: index >= VISIBLE_TECH && !selected.has(name),
+      }));
   });
 
   readonly hiddenTechCount = computed(() => this.techOptions().filter((t) => t.extra).length);
 
   readonly hasActiveFilters = computed(() => {
-    const { searchTerm, technology, featured } = this.filters();
-    return searchTerm.trim() !== '' || technology !== '' || featured;
+    const { searchTerm, technologies, featured } = this.filters();
+    return searchTerm.trim() !== '' || technologies.length > 0 || featured;
   });
 
   readonly resultLabel = computed(() => {
@@ -57,8 +65,19 @@ export class ProjectsComponent {
     this.projectService.updateFilters(filters);
   }
 
+  /** Chips are independent toggles: any number can be on at once. */
   toggleTech(name: string): void {
-    this.updateFilters({ technology: this.filters().technology === name ? '' : name });
+    const current = this.filters().technologies;
+    this.updateFilters({
+      technologies: current.includes(name) ? current.filter((t) => t !== name) : [...current, name],
+    });
+  }
+
+  /** Logos that fail to load fall back to the plain chip. */
+  readonly failedLogos = signal<ReadonlySet<string>>(new Set());
+
+  markLogoFailed(name: string): void {
+    this.failedLogos.update((set) => new Set(set).add(name));
   }
 
   resetFilters(): void {

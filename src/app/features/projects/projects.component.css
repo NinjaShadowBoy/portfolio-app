@@ -158,6 +158,21 @@
   color: var(--text-primary);
 }
 
+.tech-logo {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+/* Selected chips sit on the brand colour; a white plate keeps dark logos legible */
+.tech-chip[aria-pressed='true'] .tech-logo {
+  padding: 1px;
+  border-radius: 4px;
+  background: #fff;
+  box-sizing: content-box;
+}
+
 .tech-count {
   font-size: 0.75rem;
   color: var(--text-tertiary);

@@ -178,6 +178,11 @@ export class TechnologiesService {
       logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/amazonwebservices/amazonwebservices-original-wordmark.svg',
       docUrl: 'https://docs.aws.amazon.com/',
     },
+    'ovh': {
+      name: 'OVHcloud',
+      logo: 'https://cdn.simpleicons.org/ovh',
+      docUrl: 'https://help.ovhcloud.com/',
+    },
     'chatgpt': {
       name: 'ChatGPT',
       logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/openai.svg',

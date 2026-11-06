@@ -7,7 +7,7 @@ import { CloudEntry, LEVEL_SIZE, UsageLevel, layoutCloud } from './icon-cloud.la
  * Logos that are black or near-black and vanish on a dark surface. In dark
  * mode they are inverted, with a hue rotation that keeps any brand colour.
  */
-const DARK_LOGOS = new Set(['next.js', 'expo react native', 'chatgpt', 'openai', 'gradle', 'sdl', 'maven', 'mysql', 'aws']);
+const DARK_LOGOS = new Set(['next.js', 'expo react native', 'chatgpt', 'openai', 'gradle', 'sdl', 'maven', 'mysql', 'aws', 'ovh']);
 
 const LEVEL_LABEL: Record<UsageLevel, string> = {
   3: $localize`:@@iconCloudLevelDaily:used daily`,

@@ -10,7 +10,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
-const DEFAULT_FILTERS: ProjectFilters = { searchTerm: '', technology: '', featured: false };
+const DEFAULT_FILTERS: ProjectFilters = { searchTerm: '', technologies: [], featured: false };
 
 /** Shown when the API is unreachable or returns no projects. */
 const FALLBACK_PROJECTS: Project[] = [
@@ -159,7 +159,7 @@ export class ProjectDataService {
   }
 
   private applyFilters(): Project[] {
-    const { searchTerm, technology, featured } = this.filters();
+    const { searchTerm, technologies, featured } = this.filters();
     const term = searchTerm.trim().toLowerCase();
 
     return this.projects().filter(
@@ -167,7 +167,7 @@ export class ProjectDataService {
         (project.name.toLowerCase().includes(term) ||
           project.description.toLowerCase().includes(term) ||
           project.technologies.some((tech) => tech.toLowerCase().includes(term))) &&
-        (!technology || project.technologies.includes(technology)) &&
+        (technologies.length === 0 || technologies.some((tech) => project.technologies.includes(tech))) &&
         (!featured || project.featured)
     );
   }

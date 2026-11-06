@@ -4,6 +4,7 @@ import { signal } from '@angular/core';
 import { ArticlesComponent } from './articles.component';
 import { ArticleDataService } from '../../core/services/article-data.service';
 import { ArticleSummary } from '../../core/interfaces/article.interface';
+import { MY_NAME, PUBLICATIONS } from './publications';
 
 /**
  * The index page reads its list straight from {@link ArticleDataService.articles},
@@ -73,13 +74,20 @@ describe('ArticlesComponent', () => {
     );
   });
 
-  it('should show the empty state and no cards when there are no articles', async () => {
+  it('lists the hard-coded research papers newest first, with my name in bold', async () => {
+    await setup([]);
+    const compiled = fixture.nativeElement as HTMLElement;
+    const papers = compiled.querySelectorAll('.publication');
+    expect(papers.length).toBe(PUBLICATIONS.length);
+    expect(compiled.querySelector('.publication-title')?.textContent).toContain('Tonal African Languages');
+    papers.forEach((paper) => expect(paper.querySelector('.publication-authors .me')?.textContent).toBe(MY_NAME));
+    expect(compiled.querySelectorAll('.badge--presented').length).toBe(1);
+  });
+
+  it('hides the notes section when the manifest is empty', async () => {
     await setup([]);
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelectorAll('app-article-card').length).toBe(0);
-    expect(compiled.querySelector('.no-results')).toBeTruthy();
-    expect(compiled.querySelector('.no-results h3')?.textContent).toContain(
-      'No articles yet'
-    );
+    expect(compiled.querySelector('.notes')).toBeNull();
   });
 });

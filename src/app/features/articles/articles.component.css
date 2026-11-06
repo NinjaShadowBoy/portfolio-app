@@ -1,102 +1,199 @@
-/* Articles Container — mirrors .projects-container */
 .articles-container {
-  max-width: 1400px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 2rem 2rem 0;
-  background: var(--surface-base);
+  padding: 2rem clamp(1rem, 3vw, 2rem) 3rem;
   color: var(--text-primary);
-  transition: all var(--motion-duration-normal) var(--motion-ease-out);
-  overflow-x: hidden;
-  box-sizing: border-box;
 }
 
-/* Articles Header */
 .articles-header {
-  margin-bottom: 2rem;
-  text-align: center;
-  animation: fadeInUp 0.6s var(--motion-ease-out);
+  max-width: 44rem;
+  margin-bottom: 2.5rem;
 }
 
 .articles-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
-  font-size: 2.5rem;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .articles-subtitle {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.55;
   color: var(--text-secondary);
-  font-size: 1.2rem;
+}
+
+.section-title {
+  margin: 0 0 1.25rem;
+  font-size: 1.35rem;
+  color: var(--text-primary);
+}
+
+/* Publications: a readable list, one paper per row */
+.publication-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.publication {
+  padding: clamp(1.1rem, 2.5vw, 1.6rem);
+  border-radius: 16px;
+  background: var(--surface-raised);
+  box-shadow: var(--elevation-1);
+}
+
+.publication p {
   margin: 0;
 }
 
-/* Articles Grid — mirrors .projects-grid */
+.publication-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem !important;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+}
+
+/* A small dot between date and venue, drawn so it renders the same in every font */
+.venue::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  margin: 0 0.5rem 0 0;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.publication-title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.05rem, 1rem + 0.35vw, 1.25rem) !important; /* beats the global mobile h3 size */
+  line-height: 1.35;
+  color: var(--text-primary);
+  text-wrap: pretty;
+}
+
+.publication-title a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--border-emphasis);
+  text-underline-offset: 3px;
+}
+
+.publication-title a:hover {
+  color: var(--text-link-hover);
+}
+
+.publication-authors {
+  margin-bottom: 0.75rem !important;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.publication-authors .me {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.publication-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem !important;
+}
+
+.badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.badge--presented {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.publication-summary {
+  max-width: 70ch;
+  margin-bottom: 1rem !important;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.publication-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.publication-tags li {
+  padding: 0.15rem 0.6rem;
+  border-radius: 6px;
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+  font-size: 0.8rem;
+}
+
+.publication-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+}
+
+.download-paper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  order: 2;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.download-paper:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Notes from the content pipeline, when there are any */
+.notes {
+  margin-top: 3rem;
+}
+
 .articles-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-  gap: 2rem;
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
-  justify-content: center;
-  overflow: hidden;
-  width: 100%;
-  padding-top: 10px;
-  box-sizing: border-box;
+  gap: 1.5rem;
 }
 
-/* Empty state — surface-sunken + border-subtle */
-.no-results {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 3rem;
-  background: var(--surface-sunken);
-  border-radius: 16px;
-  border: 1px solid var(--border-subtle);
-  animation: fadeInUp 0.5s var(--motion-ease-out);
-}
+@media (max-width: 640px) {
+  .articles-container {
+    padding: 1.25rem 0.75rem 2rem;
+  }
 
-.no-results h3 {
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-}
+  .articles-header {
+    margin-bottom: 1.75rem;
+  }
 
-.no-results p {
-  color: var(--text-secondary);
-  margin-bottom: 0;
-}
-
-/* Animations */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsive — mirrors projects breakpoints (1024/768/480) */
-@media (max-width: 1024px) {
-  .articles-container { padding: 1.5rem; }
-  .articles-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 1.75rem; }
-}
-
-@media (max-width: 768px) {
-  .articles-container { padding: 0.75rem; }
-  .articles-header { margin-bottom: 1rem; }
-  .articles-header h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
-  .articles-subtitle { font-size: 0.95rem; }
-  .articles-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .no-results { padding: 2rem; }
-  .no-results h3 { font-size: 1.25rem; }
-  .no-results p { font-size: 0.95rem; }
-}
-
-@media (max-width: 480px) {
-  .articles-container { padding: 0.5rem; }
-  .articles-header { margin-bottom: 0.75rem; }
-  .articles-header h1 { font-size: 1.35rem; margin-bottom: 0.25rem; }
-  .articles-subtitle { font-size: 0.85rem; }
-  .articles-grid { gap: 1.25rem; grid-template-columns: 1fr; }
-  .no-results { padding: 1.5rem; border-radius: 12px; }
-  .no-results h3 { font-size: 1.15rem; margin-bottom: 0.75rem; }
-  .no-results p { font-size: 0.9rem; }
+  .articles-subtitle {
+    font-size: 1rem;
+  }
 }

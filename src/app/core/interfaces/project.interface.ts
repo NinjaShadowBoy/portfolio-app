@@ -35,6 +35,7 @@ export type ProjectImport = ProjectCreateRequest & { id?: number };
 
 export interface ProjectFilters {
   searchTerm: string;
-  technology: string;
+  /** Selected technologies; a project matches when it uses any of them. */
+  technologies: string[];
   featured: boolean;
 }
