@@ -180,7 +180,7 @@ export class TechnologiesService {
     },
     'stripe': {
       name: 'Stripe',
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/stripe/stripe-original.svg',
+      logo: 'https://cdn.simpleicons.org/stripe',
       docUrl: 'https://stripe.com/',
     },
     'hibernate': {

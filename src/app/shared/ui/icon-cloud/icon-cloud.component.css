@@ -1,0 +1,127 @@
+:host {
+  display: flex;
+  justify-content: center;
+}
+
+/* Natural width comes from the layout and shrinks to fit; the ratio is reserved up front */
+.cloud {
+  position: relative;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cloud-entry {
+  position: absolute;
+  aspect-ratio: 1;
+}
+
+.cloud-entry:hover,
+.cloud-entry:focus-within {
+  z-index: 1;
+}
+
+.cloud-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  text-decoration: none;
+  outline: none;
+}
+
+.cloud-item:focus-visible {
+  box-shadow: 0 0 0 2px var(--surface-base), 0 0 0 4px var(--border-focus);
+}
+
+.bob {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform var(--motion-duration-fast) var(--motion-ease-out),
+    opacity var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+/* Occasional tools sit back a little so the daily ones lead */
+.cloud-entry[data-level="1"] .logo {
+  opacity: 0.72;
+}
+
+.cloud-item:hover .logo,
+.cloud-item:focus-visible .logo {
+  transform: scale(1.15);
+  opacity: 1;
+}
+
+.fallback {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-brand);
+  color: var(--text-accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Name tooltip: visible on hover or keyboard focus */
+.name {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--elevation-3);
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  transition: opacity var(--motion-duration-fast) var(--motion-ease-out),
+    transform var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.cloud-item:hover .name,
+.cloud-item:focus-visible .name {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Black logos would vanish on dark surfaces: invert, keep the brand hue */
+:host-context([data-theme="dark"]) .dark-logo {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not([data-theme])) .dark-logo {
+    filter: invert(1) hue-rotate(180deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bob {
+    animation: drift var(--float-duration, 6s) ease-in-out var(--float-delay, 0s) infinite alternate;
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, -3px, 0);
+  }
+
+  to {
+    transform: translate3d(0, 3px, 0);
+  }
+}

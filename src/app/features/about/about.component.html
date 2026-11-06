@@ -46,15 +46,17 @@
   <section class="tech-stack-section">
     <h2 i18n="About page technologies heading@@aboutTechnologies">Technologies</h2>
     <p class="tech-stack-intro" i18n="About page tech stack intro paragraph@@aboutTechStackIntro">
-      Tools and languages I've worked with.
+      Tools and languages I've worked with. The larger the logo, the more I use it.
     </p>
 
-    @for (category of techCategories; track category.title) {
-    <div class="category-section">
-      <h3>{{ category.title }}</h3>
-      <app-tech-tags [technologies]="category.technologies" />
+    <div class="tech-groups">
+      @for (category of techCategories; track category.title) {
+      <div class="tech-group">
+        <h3>{{ category.title }}</h3>
+        <app-icon-cloud [entries]="category.technologies" [label]="category.title" />
+      </div>
+      }
     </div>
-    }
   </section>
 
   <h2 i18n="About page hobbies heading@@aboutHobbies">Hobbies & Interests</h2>

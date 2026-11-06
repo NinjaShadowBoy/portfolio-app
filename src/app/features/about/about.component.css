@@ -200,26 +200,36 @@ h2 {
   font-size: 0.95rem;
 }
 
-.category-section {
-  margin-bottom: 2.5rem;
+/* One small icon cloud per group. Each card starts at its cloud's width and
+   rows share out the rest, so big groups get wide cards and small ones pair up. */
+.tech-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
 }
 
-.category-section app-tech-tags {
-  justify-content: center;
+.tech-group {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 1.5rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
 }
 
-.category-section:last-child {
-  margin-bottom: 0;
-}
-
-.category-section h3 {
-  text-align: center;
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-  color: var(--text-secondary);
+.tech-group h3 {
+  margin: 0;
+  font-size: 1.05rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  color: var(--text-secondary);
+}
+
+.tech-group app-icon-cloud {
+  flex: 1;
+  align-items: center;
 }
 
 /* Responsive design - Tablet */
@@ -291,13 +301,12 @@ h2 {
     padding: 1.5rem 0;
   }
 
-  .category-section {
-    margin-bottom: 1.75rem;
+  .tech-groups {
+    gap: 1rem;
   }
 
-  .category-section h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
+  .tech-group {
+    padding: 1rem 1rem 1.25rem;
   }
 
   .tech-stack-intro {
@@ -360,15 +369,6 @@ h2 {
     padding: 1rem 0;
   }
 
-  .category-section {
-    margin-bottom: 1.25rem;
-  }
-
-  .category-section h3 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    letter-spacing: 1px;
-  }
 
   .tech-stack-intro {
     font-size: 0.85rem;

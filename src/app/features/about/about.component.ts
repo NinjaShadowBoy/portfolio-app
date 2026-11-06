@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { downloadCV } from '../../core/constants/cv';
-import { TechTagsComponent } from '../../shared/ui/tech-tags/tech-tags.component';
+import { IconCloudComponent } from '../../shared/ui/icon-cloud/icon-cloud.component';
+import { CloudEntry } from '../../shared/ui/icon-cloud/icon-cloud.layout';
 import { FlagComponent } from '../../shared/ui/flag/flag.component';
 
 @Component({
   selector: 'app-about',
-  imports: [TechTagsComponent, FlagComponent],
+  imports: [IconCloudComponent, FlagComponent],
   templateUrl: './about.component.html',
   styleUrl: './about.component.css',
 })
@@ -17,22 +18,84 @@ export class AboutComponent {
     $localize`:@@aboutSkillMobile:Mobile`,
   ];
 
-  readonly techCategories = [
+  // Usage level per technology: 3 daily, 2 regularly, 1 occasionally. Drives logo size in the cloud.
+  readonly techCategories: { title: string; technologies: CloudEntry[] }[] = [
     {
-      title: 'Languages',
-      technologies: ['TypeScript', 'JavaScript', 'Java', 'Kotlin', 'Python', 'Go', 'C', 'C++', 'HTML5', 'CSS3'],
+      title: $localize`:@@aboutTechLanguages:Languages`,
+      technologies: [
+        { name: 'TypeScript', level: 3 },
+        { name: 'Go', level: 3 },
+        { name: 'Kotlin', level: 2 },
+        { name: 'Java', level: 2 },
+        { name: 'Python', level: 2 },
+        { name: 'JavaScript', level: 2 },
+        { name: 'HTML5', level: 2 },
+        { name: 'CSS3', level: 2 },
+        { name: 'C', level: 1 },
+        { name: 'C++', level: 1 },
+      ],
     },
-    { title: 'Frontend', technologies: ['Angular', 'Nuxt', 'React', 'Next.js', 'TailwindCSS', 'Bootstrap'] },
     {
-      title: 'Backend',
-      technologies: ['Spring Boot', 'NestJS', 'Gin', 'Ktor', 'Node.js', 'Hibernate', 'Chi', 'SDL', 'Arduino'],
+      title: $localize`:@@aboutTechFrontend:Frontend`,
+      technologies: [
+        { name: 'Angular', level: 3 },
+        { name: 'Nuxt', level: 3 },
+        { name: 'React', level: 2 },
+        { name: 'TailwindCSS', level: 2 },
+        { name: 'Next.js', level: 1 },
+        { name: 'Bootstrap', level: 1 },
+      ],
     },
-    { title: 'Databases', technologies: ['PostgreSQL', 'MySQL', 'MongoDB', 'SQLite'] },
-    { title: 'Mobile', technologies: ['Expo React Native', 'Jetpack Compose'] },
-    { title: 'Testing', technologies: ['Karma', 'Jasmine', 'Playwright'] },
     {
-      title: 'DevOps & Tools',
-      technologies: ['Git', 'Docker', 'Linux', 'npm', 'Gradle', 'Maven', 'Stripe', 'ChatGPT'],
+      title: $localize`:@@aboutTechBackend:Backend`,
+      technologies: [
+        { name: 'Spring Boot', level: 3 },
+        { name: 'Gin', level: 3 },
+        { name: 'NestJS', level: 2 },
+        { name: 'Ktor', level: 2 },
+        { name: 'Node.js', level: 2 },
+        { name: 'Hibernate', level: 2 },
+        { name: 'Chi', level: 1 },
+        { name: 'SDL', level: 1 },
+        { name: 'Arduino', level: 1 },
+      ],
+    },
+    {
+      title: $localize`:@@aboutTechDatabases:Databases`,
+      technologies: [
+        { name: 'PostgreSQL', level: 3 },
+        { name: 'MySQL', level: 2 },
+        { name: 'SQLite', level: 2 },
+        { name: 'MongoDB', level: 1 },
+      ],
+    },
+    {
+      title: $localize`:@@aboutTechMobile:Mobile`,
+      technologies: [
+        { name: 'Expo React Native', level: 3 },
+        { name: 'Jetpack Compose', level: 2 },
+      ],
+    },
+    {
+      title: $localize`:@@aboutTechTesting:Testing`,
+      technologies: [
+        { name: 'Playwright', level: 3 },
+        { name: 'Karma', level: 1 },
+        { name: 'Jasmine', level: 1 },
+      ],
+    },
+    {
+      title: $localize`:@@aboutTechTools:DevOps & tools`,
+      technologies: [
+        { name: 'Git', level: 3 },
+        { name: 'Docker', level: 3 },
+        { name: 'Linux', level: 3 },
+        { name: 'npm', level: 2 },
+        { name: 'Gradle', level: 2 },
+        { name: 'ChatGPT', level: 2 },
+        { name: 'Maven', level: 1 },
+        { name: 'Stripe', level: 1 },
+      ],
     },
   ];
 

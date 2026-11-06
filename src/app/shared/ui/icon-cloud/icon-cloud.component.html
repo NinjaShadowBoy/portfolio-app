@@ -1,0 +1,31 @@
+<ul class="cloud" [attr.aria-label]="label() || null" [style.width.px]="layout().width"
+  [style.aspect-ratio]="layout().width + ' / ' + layout().height">
+  @for (item of layout().items; track item.name) {
+  <li class="cloud-entry" [attr.data-level]="item.level" [style.left.%]="item.left" [style.top.%]="item.top"
+    [style.width.%]="item.size" [style.--float-duration]="item.floatDuration + 's'"
+    [style.--float-delay]="item.floatDelay + 's'">
+    @if (item.docUrl) {
+    <a class="cloud-item" [href]="item.docUrl" target="_blank" rel="noopener noreferrer"
+      [attr.aria-label]="item.a11yName">
+      <ng-container *ngTemplateOutlet="face; context: { $implicit: item }" />
+    </a>
+    } @else {
+    <span class="cloud-item" role="img" [attr.aria-label]="item.a11yName">
+      <ng-container *ngTemplateOutlet="face; context: { $implicit: item }" />
+    </span>
+    }
+  </li>
+  }
+</ul>
+
+<ng-template #face let-item>
+  <span class="bob">
+    @if (item.logo) {
+    <img class="logo" [class.dark-logo]="item.dark" [src]="item.logo" alt="" [width]="item.px" [height]="item.px"
+      loading="lazy" decoding="async" (error)="markFailed(item.key)" />
+    } @else {
+    <span class="logo fallback" aria-hidden="true">{{ item.initial }}</span>
+    }
+  </span>
+  <span class="name" aria-hidden="true">{{ item.name }}</span>
+</ng-template>
