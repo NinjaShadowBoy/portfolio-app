@@ -53,17 +53,18 @@
   position: absolute;
   inset: auto 0 0;
   z-index: 1;
-  height: 40%;
-  /* Tilted 4deg so the fade sits lower on the right. The media box keeps a
-     fixed ratio, so the tilt costs the same share of the gradient line at any
-     width (~24%): the stops stay clear until 24% and turn solid by 76%, which
-     keeps the top edge transparent and the bottom edge solid at both corners. */
+  height: 26%;
+  /* Tilted 2deg so the fade sits a little lower on the right; its left end
+     starts where the box starts. The media box keeps a fixed ratio, so the tilt
+     costs the same share of the gradient line at any width (~19%): the stops
+     stay clear until 19% and turn solid by 81%, which keeps the top edge
+     transparent and the bottom edge solid at both corners. */
   background: linear-gradient(
-    184deg,
-    transparent 24%,
-    color-mix(in srgb, var(--surface-raised) 45%, transparent) 45%,
-    color-mix(in srgb, var(--surface-raised) 85%, transparent) 64%,
-    var(--surface-raised) 76%
+    182deg,
+    transparent 19%,
+    color-mix(in srgb, var(--surface-raised) 45%, transparent) 42%,
+    color-mix(in srgb, var(--surface-raised) 85%, transparent) 66%,
+    var(--surface-raised) 81%
   );
   pointer-events: none;
 }
