@@ -24,7 +24,8 @@
 }
 
 .breadcrumb li a {
-  color: var(--text-link);
+  /* primary-600 in light mode (--text-link is 4.37:1 on white), primary-500 in dark. */
+  color: var(--text-accent);
   text-decoration: none;
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
