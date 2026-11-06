@@ -1,16 +1,17 @@
 name: Deploy Frontend
 
-# Builds the SSR image, pushes it to GHCR, then runs the Ansible deploy
-# playbook from the infra repo against the VPS. Pushing to `main` deploys
-# production; `staging` deploys the staging instance.
+# The manual production routine, automated. Test, build the SSR image on the
+# runner, `docker save | ssh | docker load` it onto the VPS, then
+# .github/deploy/remote-deploy.sh backs up the DB, sets the frontend image in
+# /opt/apps/portfolio/production/compose.yaml (keeping compose.yaml.bak) and
+# runs `docker compose up -d --wait`. The public URLs are checked from the
+# runner; if they fail, the frontend goes back to the image it replaced.
 #
-# Every image is tagged with the commit SHA and the playbook is told that
-# exact tag, so a rollback is re-running the workflow (or the playbook by
-# hand) with an older SHA. No files are copied to the box: the VPS only ever
-# pulls images.
+# The image never touches a registry, so the VPS needs no registry login
+# and GHCR package visibility does not matter.
 on:
   push:
-    branches: [main, staging]
+    branches: [main]
     paths:
       - "src/**"
       - "public/**"
@@ -21,98 +22,143 @@ on:
       - "bun.lock"
       - "Dockerfile"
       - ".dockerignore"
+      - ".github/deploy/**"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
-# Never let two deploys of the same branch overlap on the box.
+# Never run two production deploys of this repo at once. The backend repo
+# edits the same compose.yaml; remote-deploy.sh holds a lock on the VPS for that.
 concurrency:
-  group: deploy-frontend-${{ github.ref }}
+  group: deploy-production
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash # -eo pipefail, so a failed `docker save | ssh` fails the step
+
 env:
-  IMAGE: ghcr.io/${{ github.repository_owner }}/portfolio-app
+  IMAGE: ghcr.io/ninjashadowboy/portfolio-app
+  SERVICE: frontend
+  VPS_HOST: 51.210.177.80
+  VPS_PORT: "6562"
+  VPS_USER: deploy
+  # Matches the runtime image in the Dockerfile (node:24). bun installs and
+  # runs scripts; ng itself runs on node.
+  NODE_VERSION: "24"
 
 jobs:
-  build:
-    name: Build & push image
+  test:
+    name: Test
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    outputs:
-      tag: ${{ steps.meta.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
 
-      - id: meta
-        name: Compute image tag
-        run: echo "tag=sha-${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
-
-      - uses: docker/setup-buildx-action@v3
-
-      - uses: docker/login-action@v3
+      - uses: oven-sh/setup-bun@v2
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          bun-version: latest
 
-      # Two tags per build: the immutable SHA tag the deploy pins, and a
-      # moving branch tag for humans browsing the registry.
-      - uses: docker/build-push-action@v6
+      - uses: actions/setup-node@v4
         with:
-          context: .
-          push: true
-          build-args: |
-            VERSION=${{ steps.meta.outputs.tag }}
-            NG_CONFIGURATION=${{ github.ref_name == 'main' && 'production' || 'staging' }}
-          tags: |
-            ${{ env.IMAGE }}:${{ steps.meta.outputs.tag }}
-            ${{ env.IMAGE }}:${{ github.ref_name }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Test build scripts
+        run: bun run test:content && bun run test:fs-cp-retry
+
+      - name: Test
+        run: bun run test:ci
 
   deploy:
-    name: Deploy to VPS
-    needs: build
+    name: Deploy to production
+    needs: test
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
-    env:
-      DEPLOY_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+    environment: production
+    timeout-minutes: 30
     steps:
-      # The Ansible project lives in the infra repo; INFRA_REPO is a repo
-      # variable like "NinjaShadowBoy/vps-infra". INFRA_REPO_TOKEN is
-      # only needed if that repo is private.
       - uses: actions/checkout@v4
-        with:
-          repository: ${{ vars.INFRA_REPO }}
-          token: ${{ secrets.INFRA_REPO_TOKEN || github.token }}
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      # ci-<sha12>-<run>-<attempt>: unique per run, so a re-run never
+      # re-tags the image it may need to roll back to.
+      - name: Compute image tag
+        run: echo "TAG=ci-${GITHUB_SHA::12}-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_ENV"
 
-      - name: Install Ansible
+      # The Dockerfile runs `bun run build`, so this is also the build check.
+      - name: Build image
         run: |
-          pip install --quiet ansible-core
-          ansible-galaxy collection install -r requirements.yml
+          docker build \
+            --build-arg "VERSION=$TAG" \
+            --build-arg NG_CONFIGURATION=production \
+            -t "$IMAGE:$TAG" .
 
-      - name: Configure SSH and vault
-        run: |
-          umask 077
-          mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
-          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
-          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > ~/.vault_pass
-
-      - name: Run deploy playbook
+      - name: Configure SSH
         env:
-          ANSIBLE_VAULT_PASSWORD_FILE: ~/.vault_pass
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
         run: |
-          ansible-playbook deploy.yml \
-            -i inventory/hosts.yml \
-            --private-key ~/.ssh/deploy_key \
-            -e "ansible_host=${{ secrets.VPS_HOST }}" \
-            -e "ansible_user=${{ secrets.VPS_USER }}" \
-            -e "target_env=${{ env.DEPLOY_ENV }}" \
-            -e "app=portfolio" -e "service=frontend" \
-            -e "frontend_image_tag=${{ needs.build.outputs.tag }}"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/deploy_key
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/deploy_key ~/.ssh/known_hosts
+          printf '%s\n' \
+            'Host vps' \
+            "  HostName $VPS_HOST" \
+            "  Port $VPS_PORT" \
+            "  User $VPS_USER" \
+            '  IdentityFile ~/.ssh/deploy_key' \
+            '  IdentitiesOnly yes' \
+            '  StrictHostKeyChecking yes' \
+            '  ServerAliveInterval 30' > ~/.ssh/config
+          ssh vps true
+
+      - name: Ship image to the VPS
+        run: docker save "$IMAGE:$TAG" | gzip | ssh vps 'gunzip | docker load'
+
+      - name: Back up DB, update compose.yaml, compose up --wait
+        id: deploy
+        run: |
+          ssh vps bash -s -- deploy "$SERVICE" "$IMAGE:$TAG" < .github/deploy/remote-deploy.sh | tee deploy.log
+          echo "previous=$(sed -n 's/^PREVIOUS_IMAGE=//p' deploy.log)" >> "$GITHUB_OUTPUT"
+
+      - name: Check public URLs
+        id: verify
+        run: |
+          check() {
+            for _ in $(seq 1 10); do
+              if curl -fsS -o /dev/null --max-time 15 "$1"; then echo "OK $1"; return 0; fi
+              sleep 6
+            done
+            echo "::error::$1 did not answer 2xx"
+            return 1
+          }
+          ok=true
+          for url in \
+            https://alexabena.me \
+            https://www.alexabena.me \
+            https://alexabena.space; do
+            check "$url" || ok=false
+          done
+          $ok
+
+      - name: Roll back to the previous image
+        if: failure() && steps.verify.outcome == 'failure' && steps.deploy.outputs.previous != ''
+        env:
+          PREVIOUS: ${{ steps.deploy.outputs.previous }}
+        run: ssh vps bash -s -- rollback "$SERVICE" "$PREVIOUS" < .github/deploy/remote-deploy.sh
+
+      - name: Summary
+        if: always()
+        env:
+          PREVIOUS: ${{ steps.deploy.outputs.previous }}
+          VERIFY: ${{ steps.verify.outcome }}
+        run: |
+          {
+            echo "### Frontend deploy"
+            echo "- image: \`$IMAGE:$TAG\`"
+            echo "- replaced: \`${PREVIOUS:-n/a}\`"
+            echo "- public checks: ${VERIFY:-skipped}"
+          } >> "$GITHUB_STEP_SUMMARY"

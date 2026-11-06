@@ -1,12 +1,12 @@
 name: CI
 
 # Gate for pull requests and for pushes to branches that do NOT deploy.
-# deploy.yml rebuilds the app itself, so main/staging pushes are covered
+# deploy.yml tests and rebuilds the app itself, so main pushes are covered
 # there rather than being built twice.
 on:
   pull_request:
   push:
-    branches-ignore: [main, staging]
+    branches-ignore: [main]
 
 concurrency:
   group: ci-${{ github.ref }}

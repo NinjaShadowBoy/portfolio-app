@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Angular 22 SSR portfolio site (Express server) with JWT auth, Cloudinary image hosting, and a custom CSS design system. Deployed as a Docker image rolled out by Ansible to a VPS (see `deploy/DEPLOY.md`). The SSR server is instrumented with OpenTelemetry via `otel/instrumentation.mjs`, active only when `OTEL_EXPORTER_OTLP_ENDPOINT` is set.
+Angular 22 SSR portfolio site (Express server) with JWT auth, Cloudinary image hosting, and a custom CSS design system. Deployed as a Docker image that `.github/workflows/deploy.yml` ships to the VPS over ssh on every push to `main` (see `deploy/DEPLOY.md`). The SSR server is instrumented with OpenTelemetry via `otel/instrumentation.mjs`, active only when `OTEL_EXPORTER_OTLP_ENDPOINT` is set.
 
 ## Commands
 
