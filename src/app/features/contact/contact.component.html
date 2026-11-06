@@ -1,6 +1,17 @@
 <div class="contact-container">
   <h1 i18n="Contact page heading@@contactHeading">Contact Me</h1>
   <p i18n="Contact page subtitle@@contactSubtitle">Hiring for a January 2027 internship, planning a project, or curious about something on this site? Write to me.</p>
+  <ul class="contact-socials">
+    @for (social of socialLinks; track social.name) {
+    <li>
+      <a class="contact-social" [href]="social.url" target="_blank" rel="noopener noreferrer"
+        [attr.aria-label]="social.ariaLabel">
+        <img [src]="social.icon" alt="" width="28" height="28" />
+        <span>{{ social.name }}</span>
+      </a>
+    </li>
+    }
+  </ul>
   <form [formGroup]="contactForm" (ngSubmit)="submitForm()" class="contact-form">
     <div class="form-group">
       <label for="name" i18n="Contact form name label@@contactNameLabel">Name</label>

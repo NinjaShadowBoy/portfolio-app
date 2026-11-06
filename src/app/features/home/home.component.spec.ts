@@ -46,14 +46,14 @@ describe('HomeComponent', () => {
 
   afterEach(() => vi.unstubAllGlobals());
 
-  it('leads the hero with a heading, a short intro and links to projects and contact', () => {
+  it('leads the hero with a heading, a short intro and links to projects, about and contact', () => {
     expect(el().querySelector('.hero-greeting')?.textContent).toContain('Alex');
     const intro = el().querySelector('.headline')?.textContent?.trim() ?? '';
     expect(intro.split(/\s+/).length).toBeLessThanOrEqual(20);
     const links = Array.from(el().querySelectorAll<HTMLAnchorElement>('.hero-actions a')).map((a) =>
       a.getAttribute('href'),
     );
-    expect(links).toEqual(['/projects', '/contact']);
+    expect(links).toEqual(['/projects', '/about', '/contact']);
   });
 
   it('keeps the hero photo sized before it loads, so it cannot shift the layout', () => {

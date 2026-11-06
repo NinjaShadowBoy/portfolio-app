@@ -19,20 +19,55 @@ export class AboutComponent {
   ];
 
   // Usage level per technology: 3 daily, 2 regularly, 1 occasionally. Drives logo size in the cloud.
+  // The first four groups sit on one row on desktop and describe the AI engineering profile.
   readonly techCategories: { title: string; technologies: CloudEntry[] }[] = [
+    {
+      title: $localize`:@@aboutTechAi:AI & LLMs`,
+      technologies: [
+        { name: 'RAG', level: 3 },
+        { name: 'Claude', level: 3 },
+        { name: 'LangChain', level: 2 },
+        { name: 'OpenRouter', level: 2 },
+        { name: 'ChatGPT', level: 2 },
+      ],
+    },
+    {
+      title: $localize`:@@aboutTechBackend:Backend`,
+      technologies: [
+        { name: 'Spring Boot', level: 3 },
+        { name: 'Gin', level: 3 },
+        { name: 'NestJS', level: 2 },
+        { name: 'Ktor', level: 2 },
+        { name: 'Node.js', level: 2 },
+        { name: 'Hibernate', level: 1 },
+        { name: 'Chi', level: 1 },
+        { name: 'SDL', level: 1 },
+        { name: 'Arduino', level: 1 },
+      ],
+    },
     {
       title: $localize`:@@aboutTechLanguages:Languages`,
       technologies: [
-        { name: 'TypeScript', level: 3 },
-        { name: 'Go', level: 3 },
-        { name: 'Kotlin', level: 2 },
-        { name: 'Java', level: 2 },
+        { name: 'Java', level: 3 },
         { name: 'Python', level: 2 },
+        { name: 'TypeScript', level: 2 },
+        { name: 'Go', level: 2 },
+        { name: 'Kotlin', level: 2 },
         { name: 'JavaScript', level: 2 },
         { name: 'HTML5', level: 2 },
         { name: 'CSS3', level: 2 },
         { name: 'C', level: 1 },
         { name: 'C++', level: 1 },
+      ],
+    },
+    {
+      title: $localize`:@@aboutTechCloud:Cloud & DevOps`,
+      technologies: [
+        { name: 'Docker', level: 3 },
+        { name: 'Git', level: 3 },
+        { name: 'AWS', level: 2 },
+        { name: 'Kubernetes', level: 2 },
+        { name: 'Linux', level: 1 },
       ],
     },
     {
@@ -44,20 +79,6 @@ export class AboutComponent {
         { name: 'TailwindCSS', level: 2 },
         { name: 'Next.js', level: 1 },
         { name: 'Bootstrap', level: 1 },
-      ],
-    },
-    {
-      title: $localize`:@@aboutTechBackend:Backend`,
-      technologies: [
-        { name: 'Spring Boot', level: 3 },
-        { name: 'Gin', level: 3 },
-        { name: 'NestJS', level: 2 },
-        { name: 'Ktor', level: 2 },
-        { name: 'Node.js', level: 2 },
-        { name: 'Hibernate', level: 2 },
-        { name: 'Chi', level: 1 },
-        { name: 'SDL', level: 1 },
-        { name: 'Arduino', level: 1 },
       ],
     },
     {
@@ -85,15 +106,10 @@ export class AboutComponent {
       ],
     },
     {
-      title: $localize`:@@aboutTechTools:DevOps & tools`,
+      title: $localize`:@@aboutTechTools:Tools`,
       technologies: [
-        { name: 'Git', level: 3 },
-        { name: 'Docker', level: 3 },
-        { name: 'Kubernetes', level: 2 },
-        { name: 'Linux', level: 3 },
         { name: 'npm', level: 2 },
         { name: 'Gradle', level: 2 },
-        { name: 'ChatGPT', level: 2 },
         { name: 'Maven', level: 1 },
         { name: 'Stripe', level: 1 },
       ],

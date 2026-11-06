@@ -3,6 +3,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { finalize } from 'rxjs';
 import { NotificationService } from '../../core/services/notification.service';
 import { ContactService } from '../../core/services/contact.service';
+import { SocialLinksService } from '../../core/services/social-links.service';
 import { CanComponentDeactivate } from '../../core/guards/auth.guard';
 
 @Component({
@@ -14,6 +15,8 @@ import { CanComponentDeactivate } from '../../core/guards/auth.guard';
 export class ContactComponent implements CanComponentDeactivate {
   private notificationService = inject(NotificationService);
   private contactService = inject(ContactService);
+
+  readonly socialLinks = inject(SocialLinksService).getSocialLinks();
 
   readonly isSubmitting = signal(false);
 

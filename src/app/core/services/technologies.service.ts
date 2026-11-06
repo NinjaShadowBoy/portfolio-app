@@ -153,6 +153,31 @@ export class TechnologiesService {
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
       docUrl: 'https://www.mongodb.com/',
     },
+    'claude': {
+      name: 'Claude',
+      logo: 'https://cdn.simpleicons.org/claude',
+      docUrl: 'https://docs.anthropic.com/',
+    },
+    'openrouter': {
+      name: 'OpenRouter',
+      logo: 'https://cdn.simpleicons.org/openrouter',
+      docUrl: 'https://openrouter.ai/docs',
+    },
+    'langchain': {
+      name: 'LangChain',
+      logo: 'https://cdn.simpleicons.org/langchain',
+      docUrl: 'https://python.langchain.com/docs/',
+    },
+    'rag': {
+      name: 'RAG',
+      logo: 'assets/icons/rag.svg',
+      docUrl: 'https://en.wikipedia.org/wiki/Retrieval-augmented_generation',
+    },
+    'aws': {
+      name: 'AWS',
+      logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/amazonwebservices/amazonwebservices-original-wordmark.svg',
+      docUrl: 'https://docs.aws.amazon.com/',
+    },
     'chatgpt': {
       name: 'ChatGPT',
       logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/openai.svg',
