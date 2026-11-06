@@ -1,7 +1,7 @@
 import { Mock } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LOCALE_ID, signal } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
 import { HeaderComponent } from './header.component';
 import { AuthService } from '../../../core/services/auth.service';
@@ -22,7 +22,7 @@ describe('HeaderComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
       providers: [
-        provideRouter([]),
+        provideRouter([{ path: '**', children: [] }]),
         { provide: LOCALE_ID, useValue: locale },
         {
           provide: AuthService,
@@ -124,6 +124,58 @@ describe('HeaderComponent', () => {
     expect(component.isMenuOpen()).toBe(false);
     expect(document.documentElement.style.overflow).toBe('');
     expect(document.activeElement).toBe(hamburger);
+  });
+
+  it('puts the nav links first and CV, language and theme in one row after them', async () => {
+    await setup('en');
+    const sidebar = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('.sidebar')!;
+    const nav = sidebar.querySelector('.mobile-nav')!;
+    const settings = sidebar.querySelector('.drawer-settings')!;
+
+    expect(nav.querySelectorAll('a.drawer-link').length).toBe(5);
+    expect(nav.compareDocumentPosition(settings) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(settings.querySelector('app-cv-menu')).toBeTruthy();
+    expect(settings.querySelector('.lang-toggle')?.textContent?.trim()).toBe('Français');
+    expect(settings.querySelector('.theme-toggle')).toBeTruthy();
+  });
+
+  it('keeps Tab and Shift+Tab inside the open drawer', async () => {
+    await setup('en');
+    const host = fixture.nativeElement as HTMLElement;
+    host.querySelector<HTMLButtonElement>('.hamburger')!.click();
+    fixture.detectChanges();
+    const sidebar = host.querySelector<HTMLElement>('.sidebar')!;
+    const close = sidebar.querySelector<HTMLButtonElement>('.close-btn')!;
+    const theme = sidebar.querySelector<HTMLButtonElement>('.drawer-settings .theme-toggle')!;
+    const tab = (shiftKey: boolean) => {
+      const event = new KeyboardEvent('keydown', { key: 'Tab', shiftKey, bubbles: true, cancelable: true });
+      document.activeElement!.dispatchEvent(event);
+      return event.defaultPrevented;
+    };
+
+    theme.focus();
+    expect(tab(false)).toBe(true);
+    expect(document.activeElement).toBe(close);
+
+    expect(tab(true)).toBe(true);
+    expect(document.activeElement).toBe(theme);
+
+    // In the middle of the drawer the browser moves focus as usual.
+    sidebar.querySelector<HTMLAnchorElement>('a.drawer-link')!.focus();
+    expect(tab(false)).toBe(false);
+  });
+
+  it('closes on any navigation, such as browser back while it is open', async () => {
+    await setup('en');
+    const host = fixture.nativeElement as HTMLElement;
+    host.querySelector<HTMLButtonElement>('.hamburger')!.click();
+    fixture.detectChanges();
+    expect(component.isMenuOpen()).toBe(true);
+
+    await TestBed.inject(Router).navigateByUrl('/about');
+    fixture.detectChanges();
+    expect(component.isMenuOpen()).toBe(false);
+    expect(document.documentElement.style.overflow).toBe('');
   });
 
   it('closes when the backdrop is tapped', async () => {

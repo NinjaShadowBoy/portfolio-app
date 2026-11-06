@@ -198,10 +198,18 @@
  * backdrop-filter re-rasterises the page under it on every frame.
  * `visibility` flips with a 0s delayed transition (hidden after the slide out)
  * and is never transitioned by children (see `.sidebar *` below).
+ * Opening decelerates; closing is shorter and accelerates out of the way.
  */
 .sidebar,
 .backdrop {
-  --drawer-duration: 220ms;
+  --drawer-duration: 160ms;
+  --drawer-ease: var(--motion-ease-in);
+}
+
+.sidebar.open,
+.backdrop.open {
+  --drawer-duration: 200ms;
+  --drawer-ease: var(--motion-ease-out);
 }
 
 .backdrop {
@@ -213,7 +221,7 @@
   visibility: hidden;
   pointer-events: none;
   transition:
-    opacity var(--drawer-duration) var(--motion-ease-out),
+    opacity var(--drawer-duration) var(--drawer-ease),
     visibility 0s linear var(--drawer-duration);
   touch-action: none;
   overscroll-behavior: contain;
@@ -226,17 +234,20 @@
   height: 100vh;
   height: 100dvh;
   width: min(88vw, 340px);
+  box-sizing: border-box;
   background: var(--gradient-primary);
   box-shadow: var(--elevation-4);
   z-index: 1001;
   transform: translate3d(calc(100% + 16px), 0, 0);
   visibility: hidden;
   transition:
-    transform var(--drawer-duration) var(--motion-ease-out),
+    transform var(--drawer-duration) var(--drawer-ease),
     visibility 0s linear var(--drawer-duration);
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  gap: 1rem;
+  padding: max(0.75rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+    max(1rem, env(safe-area-inset-bottom)) 1rem;
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
@@ -277,31 +288,44 @@
 
 @media (prefers-reduced-motion: reduce) {
   .sidebar,
-  .backdrop {
+  .backdrop,
+  .sidebar.open,
+  .backdrop.open {
     --drawer-duration: 0s;
   }
 }
 
-.close-btn {
-  align-self: flex-end;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: var(--text-inverse);
-  font-size: 1.5rem;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  cursor: pointer;
+/* Top row: profile (when signed in) on the left, close on the right. */
+.drawer-top {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
+  gap: 0.75rem;
   flex-shrink: 0;
 }
 
-.mobile-nav > li:not(.mobile-theme) .link {
-  justify-content: flex-start;
-  border-radius: 14px;
+.close-btn {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: var(--text-inverse);
+  cursor: pointer;
+}
+
+.close-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
 .mobile-nav {
@@ -310,27 +334,86 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  flex: 1;
+  gap: 0.25rem;
 }
 
-.mobile-nav li {
-  margin: 0;
-}
-
-.mobile-nav a,
-.mobile-nav button {
+/* Flat rows: the .liquid-glass stack (four shadows, gradient border) cost paint on every open. */
+.drawer-link {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  text-align: left;
-  padding: 0.75rem 1rem;
+  min-height: 52px;
+  padding: 0 1rem;
+  border-radius: 14px;
   color: var(--text-inverse);
-  text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 1.125rem;
   font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--motion-duration-fast) var(--motion-ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.drawer-link:active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.drawer-link.active {
+  background: rgba(255, 255, 255, 0.18);
+  font-weight: 600;
+}
+
+.close-btn:focus-visible,
+.drawer-link:focus-visible,
+.drawer-settings .lang-toggle:focus-visible,
+.drawer-settings .theme-toggle:focus-visible {
+  outline: 2px solid var(--text-inverse);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .drawer-link:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+}
+
+/*
+ * Settings row right under the links. Not pinned to the bottom: the CV
+ * popover opens below its button and would land off-screen there.
+ */
+.drawer-settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.drawer-settings .lang-toggle {
   min-height: 44px;
-  width: 100%;
+  padding: 0 0.75rem;
+  gap: 0.5rem;
+  font-weight: 600;
+  letter-spacing: normal;
+}
+
+.drawer-flag {
+  width: 20px;
+  height: 14px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.drawer-settings .theme-toggle {
+  min-height: 44px;
+}
+
+/* A tap leaves :hover applied on touch screens; no lift inside the drawer. */
+.drawer-settings .lang-toggle:hover,
+.drawer-settings .theme-toggle:hover {
+  transform: none;
 }
 
 /* Mobile Navigation Controls */
@@ -463,31 +546,22 @@
   text-overflow: ellipsis;
 }
 
-/* Mobile Login Status */
-.mobile-login-status {
-  margin-bottom: 0.85rem;
-  padding-bottom: 0.85rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  flex-shrink: 0;
-}
-
-.mobile-login-status .status-badge {
-  padding: 0.75rem 1rem;
-  gap: 0.75rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.mobile-login-status .user-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+/* Profile badge in the drawer's top row */
+.drawer-top .status-badge {
   flex: 1;
   min-width: 0;
-  /* Allow text truncation */
+  padding: 0.4rem 0.75rem 0.4rem 0.4rem !important;
+  border-radius: 14px;
 }
 
-.mobile-login-status .user-name {
+.drawer-top .user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.drawer-top .user-name {
   font-size: 0.95rem;
   font-weight: 600;
   max-width: none;
@@ -496,7 +570,7 @@
   text-overflow: ellipsis;
 }
 
-.mobile-login-status .user-email {
+.drawer-top .user-email {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.7);
   white-space: nowrap;
@@ -682,58 +756,4 @@
 
 .lang-toggle:active {
   transform: translateY(0);
-}
-
-.mobile-nav .lang-switch-item.mobile-lang {
-  align-items: stretch;
-  width: 100%;
-}
-
-.mobile-nav .lang-switch-item.mobile-lang .lang-toggle {
-  width: 100%;
-  justify-content: center;
-  min-height: 44px;
-  border-radius: 14px;
-}
-
-/* Mobile theme toggle - subtle icon-only style */
-.mobile-theme .theme-toggle {
-  width: auto;
-  justify-content: center;
-  padding: 0.55rem 0.75rem !important;
-  align-self: stretch;
-  margin-left: 0;
-}
-
-.mobile-theme.cv-download-n-theme-group {
-  align-items: stretch;
-  width: 100%;
-}
-
-.mobile-theme .cv-download-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  width: 100%;
-}
-
-.mobile-nav .theme-toggle-item.mobile-theme {
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 0.15rem 0 0.25rem;
-}
-
-.mobile-nav .theme-toggle-item.mobile-theme .theme-toggle {
-  justify-content: center;
-  width: auto;
-  min-width: auto;
-  min-height: 44px;
-  padding: 0 !important;
-}
-
-@media (max-width: 360px) {
-  .mobile-theme .cv-download-group {
-    grid-template-columns: 1fr;
-  }
 }

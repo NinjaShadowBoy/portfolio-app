@@ -10,16 +10,19 @@ import {
   viewChild,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { RouterLink, Router, RouterLinkActive } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationStart, RouterLink, Router, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { IdentityService } from '../../../core/services/identity.service';
 import { ThemeService } from '../../../core/services/theme.service';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 import { CvMenuComponent } from '../cv-menu/cv-menu.component';
+import { FlagComponent } from '../flag/flag.component';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, UserAvatarComponent, CvMenuComponent],
+  imports: [RouterLink, RouterLinkActive, UserAvatarComponent, CvMenuComponent, FlagComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
   host: { '(document:keydown.escape)': 'onEscape()' },
@@ -31,7 +34,9 @@ export class HeaderComponent {
   private themeService = inject(ThemeService);
   private router = inject(Router);
   readonly currentLang = inject(LOCALE_ID);
-  private readonly otherLang = this.currentLang === 'en' ? 'fr' : 'en';
+  readonly otherLang = this.currentLang === 'en' ? 'fr' : 'en';
+  /** The other language named in itself, as language switchers usually do. */
+  readonly otherLangName = this.otherLang === 'fr' ? 'Français' : 'English';
 
   readonly navItems = [
     { label: $localize`:Nav home link@@navHome:Home`, link: '/home' },
@@ -54,6 +59,13 @@ export class HeaderComponent {
 
   constructor() {
     inject(DestroyRef).onDestroy(() => (this.document.documentElement.style.overflow = ''));
+    // Any navigation closes the drawer, including browser back while it is open.
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationStart),
+        takeUntilDestroyed(),
+      )
+      .subscribe(() => this.closeMenu(false));
   }
 
   readonly langLabel = this.otherLang.toUpperCase();
@@ -101,6 +113,26 @@ export class HeaderComponent {
 
   onEscape() {
     this.closeMenu();
+  }
+
+  /** Keeps Tab and Shift+Tab inside the open drawer (it is aria-modal). */
+  onSidebarKeydown(event: KeyboardEvent) {
+    if (event.key !== 'Tab') return;
+    const sidebar = event.currentTarget as HTMLElement;
+    const focusable = [...sidebar.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')].filter(
+      (el) => el.checkVisibility?.() ?? true,
+    );
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = this.document.activeElement;
+    if (event.shiftKey && (active === first || !sidebar.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   /** `will-change` only while the drawer slides, so the layer is not kept alive when idle. */

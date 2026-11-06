@@ -88,68 +88,68 @@
     <div class="backdrop" [class.open]="isMenuOpen()" aria-hidden="true" (click)="closeMenu()"></div>
     <div class="sidebar" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu"
       [class.open]="isMenuOpen()" [class.animating]="isAnimating()" [attr.inert]="isMenuOpen() ? null : ''"
+      (keydown)="onSidebarKeydown($event)"
       (transitionend)="onSidebarTransitionEnd($event)" (transitioncancel)="onSidebarTransitionEnd($event)">
-      <button #closeButton class="close-btn" type="button" aria-label="Close navigation menu"
-        (click)="closeMenu()">×</button>
-      @if (isAuthenticated() && user()) {
-      <div class="mobile-login-status">
-        <a routerLink="/profile" class="status-badge liquid-glass-subtle" (click)="closeMenu(false)">
-          <app-user-avatar [userName]="user()!.name" [imageUrl]="identity()?.imageUrl ?? null" size="large" />
+      <div class="drawer-top">
+        @if (isAuthenticated() && user()) {
+        <a routerLink="/profile" class="status-badge" (click)="closeMenu(false)">
+          <app-user-avatar [userName]="user()!.name" [imageUrl]="identity()?.imageUrl ?? null" size="medium" />
           <div class="user-info">
             <span class="user-name">{{ user()!.name }}</span>
             <span class="user-email">{{ user()!.email }}</span>
           </div>
         </a>
+        }
+        <button #closeButton class="close-btn" type="button" aria-label="Close navigation menu"
+          (click)="closeMenu()">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M6 6l12 12M18 6L6 18"></path>
+          </svg>
+        </button>
       </div>
-      }
       <ul class="mobile-nav">
-        <li class="cv-download-n-theme-group mobile-theme">
-          <div class="cv-download-group">
-            <app-cv-menu variant="onBrand" />
-          </div>
-        </li>
-        <li class="theme-toggle-item mobile-theme">
-          <button class="theme-toggle" type="button" (click)="toggleTheme()"
-            [class.dark]="currentTheme() === 'dark'"
-            [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-            title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
-            <span class="theme-track" aria-hidden="true">
-              <span class="theme-icon theme-icon-sun">
-                <svg viewBox="0 0 24 24" focusable="false">
-                  <circle cx="12" cy="12" r="4"></circle>
-                  <path
-                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41">
-                  </path>
-                </svg>
-              </span>
-              <span class="theme-icon theme-icon-moon">
-                <svg viewBox="0 0 24 24" focusable="false">
-                  <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 1 0 9.8 9.8z"></path>
-                </svg>
-              </span>
-              <span class="theme-thumb"></span>
-            </span>
-          </button>
-        </li>
         @for(item of navItems; track item.label) {
         <li>
-          <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active"
+          <a class="drawer-link" [routerLink]="[item.link]" routerLinkActive="active"
             ariaCurrentWhenActive="page" (click)="closeMenu(false)">{{ item.label }}</a>
         </li>
         }
         @if (isAuthenticated() && isAdmin()) {
         <li>
-          <a class="link liquid-glass" routerLink="/admin" routerLinkActive="active"
+          <a class="drawer-link" routerLink="/admin" routerLinkActive="active"
             ariaCurrentWhenActive="page" (click)="closeMenu(false)" i18n="Header admin link@@headerAdmin">Admin</a>
         </li>
         }
-        <li class="lang-switch-item mobile-lang">
-          <button class="lang-toggle liquid-glass" type="button" (click)="toggleLanguage(); closeMenu(false)"
-            [attr.aria-label]="langAriaLabel">
-            {{ langLabel }}
-          </button>
-        </li>
       </ul>
+      <div class="drawer-settings">
+        <app-cv-menu variant="onBrand" />
+        <button class="lang-toggle drawer-lang" type="button" (click)="toggleLanguage()"
+          [attr.aria-label]="langAriaLabel">
+          <app-flag [lang]="otherLang" class="drawer-flag" />
+          <span [attr.lang]="otherLang">{{ otherLangName }}</span>
+        </button>
+        <button class="theme-toggle" type="button" (click)="toggleTheme()"
+          [class.dark]="currentTheme() === 'dark'"
+          [attr.aria-label]="currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+          title="{{ currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode' }}">
+          <span class="theme-track" aria-hidden="true">
+            <span class="theme-icon theme-icon-sun">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path
+                  d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41">
+                </path>
+              </svg>
+            </span>
+            <span class="theme-icon theme-icon-moon">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 1 0 9.8 9.8z"></path>
+              </svg>
+            </span>
+            <span class="theme-thumb"></span>
+          </span>
+        </button>
+      </div>
     </div>
   </header>
 </div>
