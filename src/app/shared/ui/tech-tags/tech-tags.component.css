@@ -99,10 +99,6 @@
 /* Outline variant: project cards, the row aligned to the right edge. Round, no
    fill, a faint border; the hover
    lifts only the border and text colour. */
-:host(.outline) {
-  justify-content: flex-end;
-}
-
 :host(.outline) .tech-tag,
 [data-theme="dark"] :host(.outline) .tech-tag {
   background: transparent;

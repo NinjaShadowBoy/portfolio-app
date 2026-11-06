@@ -13,7 +13,7 @@
 
 <ng-template #label let-tag>
   @if (tag.logo) {
-    <img [src]="tag.logo" [alt]="tag.name" class="tech-icon" [class.dark-logo]="tag.dark" width="16" height="16" />
+    <img [src]="tag.logo" alt="" class="tech-icon" [class.dark-logo]="tag.dark" width="16" height="16" />
   }
   <span>{{ tag.name }}</span>
 </ng-template>
