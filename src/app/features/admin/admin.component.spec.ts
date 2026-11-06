@@ -29,6 +29,7 @@ describe('AdminComponent', () => {
     description: 'desc',
     technologies: ['Angular'],
     githubLink: 'https://github.com/x/y',
+    demoLink: null,
     challenges: 'c',
     whatILearned: 'w',
     averageRating: 0,
@@ -36,6 +37,7 @@ describe('AdminComponent', () => {
     createdAt: '2026-01-01T00:00:00Z',
     updatedAt: '2026-01-01T00:00:00Z',
     featured: false,
+    displayOrder: 0,
     photoUrls: [],
   };
   const draft: ProjectCreateRequest = {
@@ -96,6 +98,24 @@ describe('AdminComponent', () => {
 
     component.selectTab('not-a-tab');
     expect(component.tab()).toBe('overview');
+  });
+
+  it('lists projects in a table whose row actions edit and delete', () => {
+    Element.prototype.scrollIntoView = vi.fn();
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    component.selectTab('projects');
+    fixture.detectChanges();
+
+    const row: HTMLElement = fixture.nativeElement.querySelector('.projects-list tbody tr[data-row]');
+    expect(row.textContent).toContain('Existing');
+    const button = (label: string) =>
+      Array.from(row.querySelectorAll('button')).find((b) => b.textContent?.trim() === label)!;
+
+    button('Edit').click();
+    expect(component.editingProject()).toEqual(existing);
+
+    button('Delete').click();
+    expect(projects.deleteProject).toHaveBeenCalledWith(9);
   });
 
   it('creates a project when nothing is being edited', () => {

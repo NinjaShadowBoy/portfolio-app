@@ -87,38 +87,10 @@
       <!-- Projects List -->
       <div class="projects-list">
         <h2>Existing Projects ({{ projects().length }})</h2>
-        @if (projects().length === 0) {
-          <p class="no-projects" i18n="Admin no projects message@@adminNoProjects">No projects found. Create your first project above!</p>
-        } @else {
-          <div class="projects-grid">
-            @for (project of projects(); track project.id) {
-              <div class="project-card" [class.featured]="project.featured">
-                <div class="project-header">
-                  <h3>{{ project.name }}</h3>
-                  @if (project.featured) {
-                    <span class="badge-featured" i18n="Admin featured badge@@adminFeaturedBadge">Featured</span>
-                  }
-                </div>
-                <p class="project-description">{{ project.description }}</p>
-                <div class="project-meta">
-                  <app-tech-tags [technologies]="project.technologies" />
-                  <a [href]="project.githubLink" target="_blank" class="github-link">
-                    <span i18n="Admin view on GitHub link@@adminGitHubLink">View on GitHub →</span>
-                  </a>
-                </div>
-                <div class="project-details">
-                  <p><strong i18n="Admin challenges label@@adminChallengesLabel">Challenges:</strong> {{ project.challenges }}</p>
-                  <p><strong i18n="Admin learnings label@@adminLearningsLabel">Learnings:</strong> {{ project.whatILearned }}</p>
-                </div>
-                <div class="project-actions">
-                  <button (click)="editProject(project)" class="btn-edit" i18n="Admin edit button@@adminEditButton">Edit</button>
-                  <button (click)="openPhotoManager(project)" class="btn-photos" i18n="Admin photos button@@adminPhotosButton">Photos</button>
-                  <button (click)="deleteProject(project)" class="btn-delete" i18n="Admin delete button@@adminDeleteButton">Delete</button>
-                </div>
-              </div>
-            }
-          </div>
-        }
+        <app-projects-list [projects]="projects()"
+          (edit)="editProject($event)"
+          (managePhotos)="openPhotoManager($event)"
+          (remove)="deleteProject($event)" />
       </div>
 
       <!-- Photo Management Modal -->

@@ -1,0 +1,151 @@
+@if (showFilter() || (canSort() && rows().length > 1)) {
+  <div class="dt-toolbar">
+    @if (showFilter()) {
+      <input class="input-field dt-filter" type="search"
+        [attr.aria-label]="filterLabel()" [placeholder]="filterPlaceholder()"
+        [value]="filterText()" (input)="setFilter($any($event.target).value)" />
+    }
+    @if (canSort() && rows().length > 1) {
+      <div class="dt-mobile-sort">
+        <select class="input-field" aria-label="Sort rows" i18n-aria-label="@@dataTableSortRows"
+          (change)="setSortFromSelect($any($event.target).value)">
+          <option value="" [selected]="!sortKey()" i18n="@@dataTableDefaultOrder">Default order</option>
+          @for (column of sortableColumns(); track column.key) {
+            <option [value]="column.key" [selected]="sortKey() === column.key">{{ column.header }}</option>
+          }
+        </select>
+        <button type="button" class="btn-secondary" [disabled]="!sortKey()" (click)="toggleDirection()">
+          @if (sortDirection() === 'asc') {
+            <ng-container i18n="@@dataTableAscending">Ascending</ng-container>
+          } @else {
+            <ng-container i18n="@@dataTableDescending">Descending</ng-container>
+          }
+        </button>
+      </div>
+    }
+  </div>
+}
+
+<div class="dt-scroll" [class.is-loading]="loading() && rows().length > 0">
+  <table role="table" [attr.aria-label]="label() || null" [attr.aria-busy]="loading()">
+    <thead role="rowgroup">
+      <tr role="row">
+        @if (reorderable()) {
+          <th scope="col" role="columnheader" class="dt-reorder-col">
+            <span class="dt-sr" i18n="@@dataTableOrder">Order</span>
+          </th>
+        }
+        @for (column of columns(); track column.key) {
+          <th scope="col" role="columnheader" [attr.aria-sort]="ariaSort(column)"
+            [class.align-center]="column.align === 'center'" [class.align-end]="column.align === 'end'"
+            [style.width]="column.width ?? null">
+            @if (canSort() && column.sortable) {
+              <button type="button" class="dt-sort" [class.active]="isActiveSort(column)" (click)="toggleSort(column)">
+                {{ column.header }}
+                <svg class="dt-sort-icon" viewBox="0 0 10 14" width="10" height="14" aria-hidden="true" focusable="false">
+                  <path class="up" [class.on]="isActiveSort(column) && sortDirection() === 'asc'" d="M5 1 9 6H1z" />
+                  <path class="down" [class.on]="isActiveSort(column) && sortDirection() === 'desc'" d="M5 13 1 8h8z" />
+                </svg>
+              </button>
+            } @else {
+              {{ column.header }}
+            }
+          </th>
+        }
+        @if (actionsTemplate()) {
+          <th scope="col" role="columnheader" class="dt-actions-col" [style.width]="actionsWidth()">
+            <span class="dt-sr">{{ actionsLabel() }}</span>
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody role="rowgroup">
+      @if (visibleRows().length === 0) {
+        <tr class="dt-state" role="row">
+          <td role="cell" [attr.colspan]="columnCount()">
+            @if (loading() && rows().length === 0) {
+              {{ loadingText() }}
+            } @else if (rows().length === 0) {
+              {{ emptyText() }}
+            } @else {
+              {{ noMatchText() }}
+            }
+          </td>
+        </tr>
+      }
+
+      @for (row of visibleRows(); track rowKey()(row); let i = $index) {
+        <tr #rowEl data-row role="row"
+          [class.highlight]="isHighlighted(row)"
+          [class.dragging]="dragFrom() === i"
+          [class.drop-before]="dropPosition(i) === 'before'"
+          [class.drop-after]="dropPosition(i) === 'after'"
+          (dragover)="onDragOver($event, i, rowEl)" (drop)="onDrop($event)">
+          @if (reorderable()) {
+            <td role="cell" class="dt-reorder-cell">
+              <span class="dt-reorder">
+                <span class="dt-handle" draggable="true" aria-hidden="true" [attr.title]="dragLabel(row)"
+                  (dragstart)="onDragStart($event, i, rowEl)" (dragend)="clearDrag()">
+                  <svg viewBox="0 0 10 16" width="10" height="16" focusable="false">
+                    <circle cx="2" cy="3" r="1.3" /><circle cx="8" cy="3" r="1.3" />
+                    <circle cx="2" cy="8" r="1.3" /><circle cx="8" cy="8" r="1.3" />
+                    <circle cx="2" cy="13" r="1.3" /><circle cx="8" cy="13" r="1.3" />
+                  </svg>
+                </span>
+                <span class="dt-position">{{ i + 1 }}</span>
+                <button type="button" class="dt-move" data-move="up" [disabled]="i === 0"
+                  [attr.aria-label]="moveUpLabel(row)" (click)="moveBy(i, -1)">
+                  <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 8l4-4 4 4" /></svg>
+                </button>
+                <button type="button" class="dt-move" data-move="down" [disabled]="i === visibleRows().length - 1"
+                  [attr.aria-label]="moveDownLabel(row)" (click)="moveBy(i, 1)">
+                  <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="M2 4l4 4 4-4" /></svg>
+                </button>
+              </span>
+            </td>
+          }
+          @for (column of columns(); track column.key) {
+            @if (isRowHeader(column)) {
+              <th scope="row" role="rowheader" [attr.data-label]="column.header"
+                [class.align-center]="column.align === 'center'" [class.align-end]="column.align === 'end'">
+                <div class="dt-cell">
+                  <ng-container [ngTemplateOutlet]="content"
+                    [ngTemplateOutletContext]="{ $implicit: row, column: column, index: i }" />
+                </div>
+              </th>
+            } @else {
+              <td role="cell" [attr.data-label]="column.header"
+                [class.align-center]="column.align === 'center'" [class.align-end]="column.align === 'end'">
+                <div class="dt-cell">
+                  <ng-container [ngTemplateOutlet]="content"
+                    [ngTemplateOutletContext]="{ $implicit: row, column: column, index: i }" />
+                </div>
+              </td>
+            }
+          }
+          @if (actionsTemplate(); as actions) {
+            <td role="cell" class="dt-actions">
+              <ng-container [ngTemplateOutlet]="actions"
+                [ngTemplateOutletContext]="{ $implicit: row, row: row, index: i }" />
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<ng-template #content let-row let-column="column" let-index="index">
+  @if (cellTemplates().get(column.key); as template) {
+    <ng-container [ngTemplateOutlet]="template"
+      [ngTemplateOutletContext]="{ $implicit: row, row: row, index: index }" />
+  } @else {
+    {{ display(row, column) }}
+  }
+</ng-template>
+
+<div class="dt-sr" role="status" aria-live="polite">
+  {{ announcement() }}
+  @if (loading()) { {{ loadingText() }} }
+</div>

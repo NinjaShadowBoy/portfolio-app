@@ -6,29 +6,27 @@
     deploy. Reader feedback on articles is in the Feedback tab.
   </p>
 
-  @if (articles().length === 0) {
-    <p class="panel-empty">No published articles. Drafts (<code>draft: true</code>) are not listed.</p>
-  } @else {
-    <ul class="panel-list">
-      @for (article of articles(); track article.slug) {
-        <li class="panel-item">
-          <div class="panel-item-main">
-            <div class="panel-item-title">
-              {{ article.title }}
-              @for (lang of article.langs; track lang) { <span class="badge">{{ lang }}</span> }
-            </div>
-            <div class="panel-item-meta">
-              {{ article.date | date: 'mediumDate' }}
-              @if (article.updated) { · updated {{ article.updated | date: 'mediumDate' }} }
-              · {{ article.readingTime }} min · <code>src/content/articles/{{ article.slug }}/</code>
-            </div>
-            <p class="panel-item-body">{{ article.description }}</p>
-          </div>
-          <div class="panel-item-actions">
-            <a class="btn-secondary" [routerLink]="['/articles', article.slug]">View</a>
-          </div>
-        </li>
-      }
-    </ul>
-  }
+  <app-data-table label="Articles" [rows]="articles()" [columns]="columns" [rowKey]="rowKey"
+    rowHeaderKey="title" [filterable]="true" filterLabel="Filter articles"
+    filterPlaceholder="Filter by title or text" [filterBy]="filterBy" actionsWidth="6rem"
+    emptyText="No published articles. Drafts (draft: true) are not listed.">
+    <ng-template appDataTableCell="title" let-article>
+      <div class="panel-item-title">
+        {{ article.title }}
+        @for (lang of article.langs; track lang) { <span class="badge">{{ lang }}</span> }
+      </div>
+      <div class="panel-item-meta"><code>src/content/articles/{{ article.slug }}/</code></div>
+      <p class="panel-item-body">{{ article.description }}</p>
+    </ng-template>
+    <ng-template appDataTableCell="date" let-article>{{ article.date | date: 'mediumDate' }}</ng-template>
+    <ng-template appDataTableCell="updated" let-article>
+      {{ article.updated ? (article.updated | date: 'mediumDate') : '-' }}
+    </ng-template>
+    <ng-template appDataTableCell="readingTime" let-article>{{ article.readingTime }} min</ng-template>
+    <ng-template appDataTableActions let-article>
+      <div class="row-actions">
+        <a class="btn-secondary" [routerLink]="['/articles', article.slug]">View</a>
+      </div>
+    </ng-template>
+  </app-data-table>
 </section>

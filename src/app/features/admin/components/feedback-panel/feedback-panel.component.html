@@ -23,51 +23,53 @@
 
   @if (failed()) {
     <p class="panel-empty">Could not load feedback.</p>
-  } @else if (page(); as p) {
-    @if (p.items.length === 0) {
-      <p class="panel-empty">{{ isLoading() ? 'Loading...' : 'No feedback matches.' }}</p>
-      @if (p.offset > 0 && !isLoading()) {
-        <div class="pager"><button type="button" class="btn-secondary" (click)="previousPage()">Previous</button></div>
-      }
-    } @else {
-      <ul class="panel-list">
-        @for (comment of p.items; track comment.id) {
-          <li class="panel-item">
-            <div class="panel-item-main">
-              <div class="panel-item-title">
-                <span class="badge" [class.badge-warning]="comment.type === 'critique'"
-                  [class.badge-success]="comment.type === 'feature_request'">{{ typeLabels[comment.type] }}</span>
-                @if (comment.projectId !== null) {
-                  <a [routerLink]="['/projects', comment.projectId]">{{ comment.projectName ?? 'Project #' + comment.projectId }}</a>
-                } @else if (comment.articleSlug) {
-                  <a [routerLink]="['/articles', comment.articleSlug]">{{ articleTitle(comment.articleSlug) }}</a>
-                }
-              </div>
-              <p class="panel-item-body">{{ comment.body }}</p>
-              <div class="panel-item-meta">
-                {{ comment.userName }}
-                @if (comment.userProvider === 'ANON') { <span class="badge">Anonymous</span> }
-                · {{ comment.createdAt | date: 'medium' }}
-                @if (comment.updatedAt !== comment.createdAt) { · edited }
-              </div>
-            </div>
-            <div class="panel-item-actions">
-              <button type="button" class="btn-delete" [disabled]="busyId() === comment.id"
-                (click)="deleteComment(comment)">Delete</button>
-            </div>
-          </li>
-        }
-      </ul>
-
-      <div class="pager">
-        <span>{{ p.offset + 1 }}-{{ p.offset + p.items.length }} of {{ p.total }}</span>
-        <button type="button" class="btn-secondary" [disabled]="p.offset === 0 || isLoading()"
-          (click)="previousPage()">Previous</button>
-        <button type="button" class="btn-secondary" [disabled]="p.offset + p.items.length >= p.total || isLoading()"
-          (click)="nextPage()">Next</button>
-      </div>
-    }
   } @else {
-    <p class="panel-empty">Loading...</p>
+    <app-data-table label="Feedback" [rows]="comments()" [columns]="columns" [rowKey]="rowKey"
+      [loading]="isLoading()" emptyText="No feedback matches.">
+      <ng-template appDataTableCell="type" let-comment>
+        <span class="badge" [class.badge-warning]="comment.type === 'critique'"
+          [class.badge-success]="comment.type === 'feature_request'">{{ typeLabel(comment) }}</span>
+      </ng-template>
+      <ng-template appDataTableCell="target" let-comment>
+        @if (comment.projectId !== null) {
+          <a [routerLink]="['/projects', comment.projectId]">{{ comment.projectName ?? 'Project #' + comment.projectId }}</a>
+        } @else if (comment.articleSlug) {
+          <a [routerLink]="['/articles', comment.articleSlug]">{{ articleTitle(comment.articleSlug) }}</a>
+        }
+      </ng-template>
+      <ng-template appDataTableCell="body" let-comment>
+        <p class="panel-item-body">{{ comment.body }}</p>
+      </ng-template>
+      <ng-template appDataTableCell="author" let-comment>
+        {{ comment.userName }}
+        @if (comment.userProvider === 'ANON') { <span class="badge">Anonymous</span> }
+      </ng-template>
+      <ng-template appDataTableCell="createdAt" let-comment>
+        {{ comment.createdAt | date: 'medium' }}
+        @if (comment.updatedAt !== comment.createdAt) { <span class="panel-item-meta">(edited)</span> }
+      </ng-template>
+      <ng-template appDataTableActions let-comment>
+        <div class="row-actions">
+          <button type="button" class="btn-delete" [disabled]="busyId() === comment.id"
+            (click)="deleteComment(comment)">Delete</button>
+        </div>
+      </ng-template>
+    </app-data-table>
+
+    @if (page(); as p) {
+      @if (p.items.length === 0) {
+        @if (p.offset > 0 && !isLoading()) {
+          <div class="pager"><button type="button" class="btn-secondary" (click)="previousPage()">Previous</button></div>
+        }
+      } @else {
+        <div class="pager">
+          <span>{{ p.offset + 1 }}-{{ p.offset + p.items.length }} of {{ p.total }}</span>
+          <button type="button" class="btn-secondary" [disabled]="p.offset === 0 || isLoading()"
+            (click)="previousPage()">Previous</button>
+          <button type="button" class="btn-secondary" [disabled]="p.offset + p.items.length >= p.total || isLoading()"
+            (click)="nextPage()">Next</button>
+        </div>
+      }
+    }
   }
 </section>

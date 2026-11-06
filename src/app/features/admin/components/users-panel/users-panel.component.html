@@ -15,64 +15,63 @@
 
   @if (failed()) {
     <p class="panel-empty">Could not load users.</p>
-  } @else if (page(); as p) {
-    @if (p.items.length === 0) {
-      <p class="panel-empty">{{ isLoading() ? 'Loading...' : 'No users match.' }}</p>
-      @if (p.offset > 0 && !isLoading()) {
-        <div class="pager"><button type="button" class="btn-secondary" (click)="previousPage()">Previous</button></div>
-      }
-    } @else {
-      <ul class="panel-list">
-        @for (user of p.items; track user.id) {
-          <li class="panel-item">
-            <div class="panel-item-main">
-              <div class="panel-item-title">
-                {{ user.name }}
-                @if (user.role === 'ADMIN') { <span class="badge badge-admin">Admin</span> }
-                <span class="badge">{{ user.provider }}</span>
-                @if (user.emailVerified) { <span class="badge badge-success">Verified</span> }
-                @if (user.id === currentUserId()) { <span class="badge">You</span> }
-              </div>
-              <div class="panel-item-meta">
-                {{ user.provider === 'ANON' ? 'No email (anonymous)' : user.email }}
-              </div>
-              <div class="panel-item-meta">
-                Joined {{ user.createdAt | date: 'mediumDate' }}
-                · Last login {{ user.lastLoginAt ? (user.lastLoginAt | date: 'medium') : 'never' }}
-                · {{ user.commentCount }} comment(s) · {{ user.ratingCount }} rating(s)
-              </div>
-            </div>
-            @if (canManage(user)) {
-              <div class="panel-item-actions">
-                @if (user.role === 'ADMIN') {
-                  <button type="button" class="btn-secondary" [disabled]="busyId() === user.id"
-                    (click)="setRole(user, 'USER')">Remove admin</button>
-                } @else {
-                  <button type="button" class="btn-secondary" [disabled]="busyId() === user.id"
-                    (click)="setRole(user, 'ADMIN')">Make admin</button>
-                }
-                <button type="button" class="btn-delete" [disabled]="busyId() === user.id"
-                  (click)="deleteUser(user)">Delete</button>
-              </div>
-            } @else if (user.provider === 'ANON') {
-              <div class="panel-item-actions">
-                <button type="button" class="btn-delete" [disabled]="busyId() === user.id"
-                  (click)="deleteUser(user)">Delete</button>
-              </div>
-            }
-          </li>
-        }
-      </ul>
-
-      <div class="pager">
-        <span>{{ p.offset + 1 }}-{{ p.offset + p.items.length }} of {{ p.total }}</span>
-        <button type="button" class="btn-secondary" [disabled]="p.offset === 0 || isLoading()"
-          (click)="previousPage()">Previous</button>
-        <button type="button" class="btn-secondary" [disabled]="p.offset + p.items.length >= p.total || isLoading()"
-          (click)="nextPage()">Next</button>
-      </div>
-    }
   } @else {
-    <p class="panel-empty">Loading...</p>
+    <app-data-table label="Users" [rows]="users()" [columns]="columns" [rowKey]="rowKey"
+      rowHeaderKey="name" [loading]="isLoading()" emptyText="No users match." actionsWidth="13rem">
+      <ng-template appDataTableCell="name" let-user>
+        <div class="panel-item-title">
+          {{ user.name }}
+          @if (user.role === 'ADMIN') { <span class="badge badge-admin">Admin</span> }
+          @if (user.emailVerified) { <span class="badge badge-success">Verified</span> }
+          @if (user.id === currentUserId()) { <span class="badge">You</span> }
+        </div>
+        <div class="panel-item-meta">
+          {{ user.provider === 'ANON' ? 'No email (anonymous)' : user.email }}
+        </div>
+      </ng-template>
+      <ng-template appDataTableCell="provider" let-user>
+        <span class="badge">{{ user.provider }}</span>
+      </ng-template>
+      <ng-template appDataTableCell="createdAt" let-user>{{ user.createdAt | date: 'mediumDate' }}</ng-template>
+      <ng-template appDataTableCell="lastLoginAt" let-user>
+        {{ user.lastLoginAt ? (user.lastLoginAt | date: 'medium') : 'never' }}
+      </ng-template>
+      <ng-template appDataTableActions let-user>
+        @if (canManage(user)) {
+          <div class="row-actions">
+            @if (user.role === 'ADMIN') {
+              <button type="button" class="btn-secondary" [disabled]="busyId() === user.id"
+                (click)="setRole(user, 'USER')">Remove admin</button>
+            } @else {
+              <button type="button" class="btn-secondary" [disabled]="busyId() === user.id"
+                (click)="setRole(user, 'ADMIN')">Make admin</button>
+            }
+            <button type="button" class="btn-delete" [disabled]="busyId() === user.id"
+              (click)="deleteUser(user)">Delete</button>
+          </div>
+        } @else if (user.provider === 'ANON') {
+          <div class="row-actions">
+            <button type="button" class="btn-delete" [disabled]="busyId() === user.id"
+              (click)="deleteUser(user)">Delete</button>
+          </div>
+        }
+      </ng-template>
+    </app-data-table>
+
+    @if (page(); as p) {
+      @if (p.items.length === 0) {
+        @if (p.offset > 0 && !isLoading()) {
+          <div class="pager"><button type="button" class="btn-secondary" (click)="previousPage()">Previous</button></div>
+        }
+      } @else {
+        <div class="pager">
+          <span>{{ p.offset + 1 }}-{{ p.offset + p.items.length }} of {{ p.total }}</span>
+          <button type="button" class="btn-secondary" [disabled]="p.offset === 0 || isLoading()"
+            (click)="previousPage()">Previous</button>
+          <button type="button" class="btn-secondary" [disabled]="p.offset + p.items.length >= p.total || isLoading()"
+            (click)="nextPage()">Next</button>
+        </div>
+      }
+    }
   }
 </section>

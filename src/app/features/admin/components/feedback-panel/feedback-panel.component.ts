@@ -7,8 +7,20 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { ArticleDataService } from '../../../../core/services/article-data.service';
 import { AdminComment, CommentTarget, Page } from '../../../../core/interfaces/admin.interface';
 import { CommentType } from '../../../../core/services/comment.service';
+import { DataTableComponent } from '../../../../shared/ui/data-table/data-table.component';
+import { DataTableActionsDirective, DataTableCellDirective } from '../../../../shared/ui/data-table/data-table.directives';
+import { DataTableColumn } from '../../../../shared/ui/data-table/data-table.model';
 
 const PAGE_SIZE = 25;
+
+/** Not sortable: the feed is paged by the server, newest first. */
+const COMMENT_COLUMNS: DataTableColumn<AdminComment>[] = [
+  { key: 'type', header: 'Type' },
+  { key: 'target', header: 'On' },
+  { key: 'body', header: 'Comment' },
+  { key: 'author', header: 'From' },
+  { key: 'createdAt', header: 'Posted' },
+];
 
 export const COMMENT_TYPE_LABELS: Record<CommentType, string> = {
   critique: 'Critique',
@@ -19,7 +31,7 @@ export const COMMENT_TYPE_LABELS: Record<CommentType, string> = {
 /** Moderation feed of every feedback comment, on projects and articles. */
 @Component({
   selector: 'app-feedback-panel',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, DataTableComponent, DataTableCellDirective, DataTableActionsDirective],
   templateUrl: './feedback-panel.component.html',
   styleUrl: '../../admin-shared.css',
 })
@@ -48,8 +60,15 @@ export class FeedbackPanelComponent {
   readonly page = computed<Page<AdminComment> | null>(() =>
     this.commentsResource.hasValue() ? this.commentsResource.value() : null,
   );
+  readonly comments = computed(() => this.page()?.items ?? []);
+  readonly columns = COMMENT_COLUMNS;
+  readonly rowKey = (comment: AdminComment) => comment.id;
   readonly isLoading = this.commentsResource.isLoading;
   readonly failed = computed(() => this.commentsResource.status() === 'error');
+
+  typeLabel(comment: AdminComment): string {
+    return COMMENT_TYPE_LABELS[comment.type];
+  }
 
   setType(value: string) {
     this.offset.set(0);

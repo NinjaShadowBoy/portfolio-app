@@ -53,10 +53,36 @@ describe('UsersPanelComponent', () => {
   });
 
   it('offers no role or delete actions on the signed-in admin', () => {
-    const rows: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('.panel-item'));
+    const rows: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('tbody tr[data-row]'));
     expect(rows.length).toBe(2);
-    expect(rows[0].querySelector('.panel-item-actions')).toBeNull();
+    expect(rows[0].querySelector('.row-actions')).toBeNull();
     expect(rows[1].textContent).toContain('Make admin');
+  });
+
+  it('shows each user in a table row with the account details', () => {
+    const table: HTMLElement = fixture.nativeElement.querySelector('table');
+    const headers = Array.from(table.querySelectorAll('thead th')).map((th) => th.textContent?.trim());
+    expect(headers).toEqual(['User', 'Sign-in', 'Joined', 'Last login', 'Comments', 'Ratings', 'Actions']);
+
+    const first = table.querySelector('tbody tr[data-row]')!;
+    expect(first.querySelector('th[scope="row"]')?.textContent).toContain('User 1');
+    expect(first.querySelector('th[scope="row"]')?.textContent).toContain('You');
+    expect(first.querySelector('td[data-label="Last login"]')?.textContent).toContain('never');
+  });
+
+  it('keeps the server order, since sorting one page of a paged list would mislead', () => {
+    expect(fixture.nativeElement.querySelector('thead button')).toBeNull();
+  });
+
+  it('shows the empty message and a way back on an empty later page', async () => {
+    admin.listUsers.mockReturnValue(of({ items: [], total: 30, limit: 25, offset: 25 }));
+    component.nextPage();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.dt-state')?.textContent).toContain('No users match.');
+    expect(fixture.nativeElement.querySelector('.pager')?.textContent).toContain('Previous');
   });
 
   it('updates the row in place after a role change', () => {

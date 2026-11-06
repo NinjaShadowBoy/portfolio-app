@@ -6,12 +6,25 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { AdminUser, Page } from '../../../../core/interfaces/admin.interface';
 import { UserRole } from '../../../../core/interfaces/auth.interface';
+import { DataTableComponent } from '../../../../shared/ui/data-table/data-table.component';
+import { DataTableActionsDirective, DataTableCellDirective } from '../../../../shared/ui/data-table/data-table.directives';
+import { DataTableColumn } from '../../../../shared/ui/data-table/data-table.model';
 
 const PAGE_SIZE = 25;
 
+/** Not sortable: the list is paged by the server, so a client sort would only reorder one page. */
+const USER_COLUMNS: DataTableColumn<AdminUser>[] = [
+  { key: 'name', header: 'User' },
+  { key: 'provider', header: 'Sign-in' },
+  { key: 'createdAt', header: 'Joined' },
+  { key: 'lastLoginAt', header: 'Last login' },
+  { key: 'commentCount', header: 'Comments', align: 'end' },
+  { key: 'ratingCount', header: 'Ratings', align: 'end' },
+];
+
 @Component({
   selector: 'app-users-panel',
-  imports: [DatePipe],
+  imports: [DatePipe, DataTableComponent, DataTableCellDirective, DataTableActionsDirective],
   templateUrl: './users-panel.component.html',
   styleUrl: '../../admin-shared.css',
 })
@@ -41,6 +54,9 @@ export class UsersPanelComponent {
   readonly page = computed<Page<AdminUser> | null>(() =>
     this.usersResource.hasValue() ? this.usersResource.value() : null,
   );
+  readonly users = computed(() => this.page()?.items ?? []);
+  readonly columns = USER_COLUMNS;
+  readonly rowKey = (user: AdminUser) => user.id;
   readonly isLoading = this.usersResource.isLoading;
   readonly failed = computed(() => this.usersResource.status() === 'error');
   readonly currentUserId = computed(() => this.auth.user()?.id ?? null);

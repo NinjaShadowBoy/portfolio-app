@@ -1,0 +1,69 @@
+@if (projects().length > 1 || reordering()) {
+  <div class="reorder-bar">
+    @if (!reordering()) {
+      <button type="button" class="btn-secondary" (click)="startReorder()"
+        i18n="@@adminReorderStart">Reorder projects</button>
+    } @else {
+      <p class="reorder-hint" i18n="@@adminReorderHint">Drag rows or use the arrows to set the order. Sorting and filtering are off while you reorder.</p>
+      <div class="reorder-actions">
+        @if (dirty()) {
+          <span class="badge badge-warning" role="status" i18n="@@adminReorderUnsaved">Unsaved order changes</span>
+        }
+        <button type="button" class="btn-primary" [disabled]="!dirty() || saving()" (click)="saveOrder()">
+          @if (saving()) {
+            <ng-container i18n="@@adminReorderSaving">Saving...</ng-container>
+          } @else {
+            <ng-container i18n="@@adminReorderSave">Save order</ng-container>
+          }
+        </button>
+        <button type="button" class="btn-secondary" [disabled]="!dirty() || saving()" (click)="resetOrder()"
+          i18n="@@adminReorderReset">Reset</button>
+        <button type="button" class="btn-secondary" [disabled]="saving()" (click)="cancelReorder()"
+          i18n="@@adminReorderCancel">Cancel</button>
+      </div>
+    }
+  </div>
+}
+
+<app-data-table label="Projects" i18n-label="@@adminProjectsTableLabel" [rows]="rows()" [columns]="columns"
+  [rowKey]="rowKey" rowHeaderKey="name" [filterable]="true" [filterBy]="filterBy"
+  [reorderable]="reordering()" [rowLabel]="rowLabel" [emptyText]="emptyText" actionsWidth="15rem"
+  (rowsReordered)="onReordered($event)">
+  <ng-template appDataTableCell="name" let-project>
+    <div class="panel-item-title">
+      {{ project.name }}
+      @if (project.featured) {
+        <span class="badge badge-featured" i18n="Admin featured badge@@adminFeaturedBadge">Featured</span>
+      }
+    </div>
+    <p class="project-description">{{ project.description }}</p>
+  </ng-template>
+  <ng-template appDataTableCell="technologies" let-project>
+    <app-tech-tags [technologies]="project.technologies" />
+  </ng-template>
+  <ng-template appDataTableCell="links" let-project>
+    <div class="project-links">
+      @if (project.githubLink) {
+        <a [href]="project.githubLink" target="_blank" rel="noopener" i18n="@@adminLinkGitHub">GitHub</a>
+      }
+      @if (project.demoLink) {
+        <a [href]="project.demoLink" target="_blank" rel="noopener" i18n="@@adminLinkDemo">Live demo</a>
+      }
+    </div>
+  </ng-template>
+  <ng-template appDataTableCell="rating" let-project>
+    @if (project.totalRatings > 0) {
+      {{ project.averageRating | number: '1.1-1' }} ({{ project.totalRatings }})
+    } @else {
+      -
+    }
+  </ng-template>
+  <ng-template appDataTableCell="updatedAt" let-project>{{ project.updatedAt | date: 'mediumDate' }}</ng-template>
+  <ng-template appDataTableActions let-project>
+    <div class="row-actions">
+      <button type="button" class="btn-secondary" (click)="edit.emit(project)" i18n="Admin edit button@@adminEditButton">Edit</button>
+      <button type="button" class="btn-secondary" (click)="managePhotos.emit(project)" i18n="Admin photos button@@adminPhotosButton">Photos</button>
+      <button type="button" class="btn-delete" (click)="remove.emit(project)" i18n="Admin delete button@@adminDeleteButton">Delete</button>
+    </div>
+  </ng-template>
+</app-data-table>

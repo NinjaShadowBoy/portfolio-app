@@ -15,7 +15,7 @@ import { Project, ProjectCreateRequest, ProjectImport } from '../../core/interfa
 import { ProjectFormComponent } from './components/project-form/project-form.component';
 import { JsonImportComponent } from './components/json-import/json-import.component';
 import { PhotoManagerComponent } from './components/photo-manager/photo-manager.component';
-import { TechTagsComponent } from '../../shared/ui/tech-tags/tech-tags.component';
+import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 
 type AdminTab = 'overview' | 'projects' | 'users' | 'feedback' | 'messages' | 'articles';
 
@@ -38,7 +38,7 @@ function parseTab(value: string | null): AdminTab {
     ProjectFormComponent,
     JsonImportComponent,
     PhotoManagerComponent,
-    TechTagsComponent,
+    ProjectsListComponent,
     SegmentedToggleComponent,
     UsersPanelComponent,
     FeedbackPanelComponent,
