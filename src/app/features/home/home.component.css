@@ -11,21 +11,24 @@
   --bleed: linear-gradient(to bottom, transparent, var(--color-primary-50));
 }
 
+/* One grid, three areas. The illustration keeps a column at every width. */
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'face text art';
   align-items: center;
-  gap: clamp(1.5rem, 4vw, 4rem);
-  max-width: 1120px;
+  column-gap: clamp(1.5rem, 4vw, 3.5rem);
+  max-width: 1200px;
   margin-inline: auto;
-  padding: clamp(1.75rem, 5vw, 3.5rem) clamp(0.75rem, 3vw, 1.5rem);
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(0.75rem, 3vw, 1.5rem);
 }
 
-.content {
-  display: flex;
-  align-items: center;
-  gap: clamp(1.5rem, 4vw, 3rem);
-  min-width: 0;
+.my-face {
+  grid-area: face;
+}
+
+.hero-text {
+  grid-area: text;
 }
 
 /* LCP image: width/height attributes plus aspect-ratio reserve its box before it loads */
@@ -111,37 +114,64 @@
   box-shadow: var(--focus-ring-offset);
 }
 
+/* The illustration is the hero's centrepiece: tall, and never hidden */
 .hero-illustration {
+  grid-area: art;
   display: block;
-  width: clamp(150px, 16vw, 220px);
-  height: auto;
+  /* Tall, but leaves the call-to-action buttons above the fold */
+  height: min(clamp(28rem, 20rem + 20vw, 42rem), calc(100svh - 13rem));
+  width: auto;
+  aspect-ratio: 346 / 742;
+  justify-self: center;
 }
 
-/* Tablets: the decorative illustration goes, photo and text stay side by side */
+/* Tablets: photo above the text, the illustration spans both rows on the right */
 @media (max-width: 900px) {
   .hero {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'face art'
+      'text art';
+    row-gap: 1.5rem;
+  }
+
+  .my-face {
+    align-self: end;
+  }
+
+  .hero-text {
+    align-self: start;
   }
 
   .hero-illustration {
-    display: none;
-  }
-
-  .content {
-    justify-content: center;
+    height: clamp(26rem, 12rem + 32vw, 34rem);
   }
 }
 
-/* Phones: photo above the text, everything centred */
+/* Phones: photo and illustration side by side, text centred below */
 @media (max-width: 600px) {
-  .content {
-    flex-direction: column;
-    gap: 1.25rem;
+  .hero {
+    grid-template-columns: auto auto;
+    grid-template-areas:
+      'face art'
+      'text text';
+    justify-content: center;
+    column-gap: 1.5rem;
+    row-gap: 1.25rem;
     text-align: center;
+  }
+
+  .my-face {
+    align-self: center;
+  }
+
+  .hero-illustration {
+    height: clamp(17rem, 9rem + 34vw, 22rem);
   }
 
   .hero-text {
     max-width: 30rem;
+    justify-self: center;
   }
 
   .hero-actions {

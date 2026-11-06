@@ -54,8 +54,6 @@ export class AboutComponent {
         { name: 'Go', level: 2 },
         { name: 'Kotlin', level: 2 },
         { name: 'JavaScript', level: 2 },
-        { name: 'HTML5', level: 2 },
-        { name: 'CSS3', level: 2 },
         { name: 'C', level: 1 },
         { name: 'C++', level: 1 },
       ],

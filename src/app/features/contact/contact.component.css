@@ -342,18 +342,15 @@ p {
   gap: 0.75rem;
   min-height: 3.25rem;
   padding: 0.6rem 1rem;
-  border: 1px solid var(--border-default);
   border-radius: 12px;
-  background: var(--surface-raised);
+  background: var(--surface-sunken);
   color: var(--text-primary);
   font-weight: 600;
   text-decoration: none;
-  transition: border-color var(--motion-duration-fast) var(--motion-ease-out),
-    background-color var(--motion-duration-fast) var(--motion-ease-out);
+  transition: background-color var(--motion-duration-fast) var(--motion-ease-out);
 }
 
 .contact-social:hover {
-  border-color: var(--border-emphasis);
   background: var(--surface-hover);
 }
 
