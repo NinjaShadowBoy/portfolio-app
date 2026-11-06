@@ -4,7 +4,6 @@ import { PhotoService } from '../../../../core/services/photo.service';
 import { ProjectDataService } from '../../../../core/services/project-data.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { Project } from '../../../../core/interfaces/project.interface';
-import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-photo-manager',
@@ -23,8 +22,6 @@ export class PhotoManagerComponent {
 
   selectedFiles = signal<File[]>([]);
   isUploadingPhotos = signal(false);
-  /** Photo records store API-relative paths; the origin is prepended for display. */
-  apiBaseUrl = environment.apiBaseUrl.replace('/api/v1', '');
 
   onFilesSelected(event: Event) {
     this.selectedFiles.set(Array.from((event.target as HTMLInputElement).files ?? []));

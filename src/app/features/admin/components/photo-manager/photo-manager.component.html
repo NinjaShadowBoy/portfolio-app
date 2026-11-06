@@ -54,7 +54,7 @@
           @if (project().photos && project().photos!.length > 0) {
             @for (photo of project().photos; track photo.id) {
             <div class="photo-item">
-              <img [src]="apiBaseUrl + photo.photoUrl" [alt]="'Project photo ' + photo.id" />
+              <img [src]="photo.photoUrl" [alt]="'Project photo ' + photo.id" />
               <button (click)="deletePhoto(photo.id)" class="btn-delete-photo" i18n="Photo manager delete button@@photoManagerDeleteButton">
                 Delete
               </button>
