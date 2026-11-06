@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CONTACT_PHONE } from '../constants/contact';
 
 export interface SocialLink {
   name: string;
@@ -27,7 +28,8 @@ export class SocialLinksService {
     },
     {
       name: 'WhatsApp',
-      url: 'https://wa.me/237656246826',
+      // Same number as the phone shown on the site; wa.me wants digits only.
+      url: `https://wa.me/${CONTACT_PHONE.replace(/\D/g, '')}`,
       icon: 'assets/images/WhatsApp.svg',
       ariaLabel: $localize`:@@socialWhatsAppLabel:Chat on WhatsApp`,
     },
