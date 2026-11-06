@@ -91,8 +91,40 @@
   }
 
   .carousel-button {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+/* Touch: 44px dots do not fit a card with eight photos, so the arrows (44px)
+   do the navigating and a counter replaces the dots. */
+.carousel-counter {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .carousel-indicators {
+    display: none;
+  }
+
+  .carousel-button {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .carousel-counter {
+    position: absolute;
+    bottom: 0.6rem;
+    left: 50%;
+    z-index: 2;
+    display: block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    transform: translateX(-50%);
   }
 }
 
