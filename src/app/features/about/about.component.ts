@@ -25,12 +25,12 @@ export class AboutComponent {
     {
       title: $localize`:@@aboutTechAi:AI & LLMs`,
       technologies: [
-        { name: 'RAG', level: 3 },
-        { name: 'Claude', level: 3 },
-        { name: 'LangChain', level: 2 },
-        { name: 'OpenRouter', level: 2 },
-        { name: 'ChatGPT', level: 2 },
-        { name: 'Gemini', level: 2 },
+        { name: 'RAG', level: 2 },
+        { name: 'Claude', level: 2 },
+        { name: 'LangChain', level: 1 },
+        { name: 'OpenRouter', level: 1 },
+        { name: 'ChatGPT', level: 1 },
+        { name: 'Gemini', level: 1 },
         { name: 'MCP', level: 1 },
       ],
     },
