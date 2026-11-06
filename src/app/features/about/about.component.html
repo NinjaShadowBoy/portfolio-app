@@ -1,13 +1,23 @@
 <div class="about-container">
   <h1 i18n="About page heading@@aboutMeHeading">About Me</h1>
-  <p i18n="About page bio paragraph@@aboutBio">
-    I'm a fifth-year software engineering student on an academic exchange at Grenoble INP - Ensimag, after four
-    years at Saint Jean Ingénieur in Yaoundé, where I finished top of my class every year. From May to September
-    2026 I interned at TWMicronics on MAYA, a multi-tenant ERP: I wrote the architecture decision record for its
-    rewrite in Go and Nuxt, rebuilt its CRM modules, and built the RAG pipeline and agent runtime behind its chatbot.
-    I'm also a co-author of three papers accepted at CERC 2026 on speech translation and recognition for
-    low-resource African languages. I'm looking for a 6-month end-of-studies internship starting January 2027.
-  </p>
+  <dl class="bio">
+    <div class="bio-row">
+      <dt i18n="About bio education label@@aboutBioEducationLabel">Education</dt>
+      <dd i18n="About bio education@@aboutBioEducation">Fifth-year software engineering student on exchange at Grenoble INP - Ensimag, after four years at Saint Jean Ingénieur, Yaoundé, top of my class every year.</dd>
+    </div>
+    <div class="bio-row">
+      <dt i18n="About bio experience label@@aboutBioExperienceLabel">Experience</dt>
+      <dd i18n="About bio experience@@aboutBioExperience">Software engineering intern at TWMicronics, May to September 2026, on MAYA, a multi-tenant ERP. I wrote the architecture decision record for its rewrite in Go and Nuxt, rebuilt its CRM modules, and built the RAG pipeline and agent runtime behind its chatbot.</dd>
+    </div>
+    <div class="bio-row">
+      <dt i18n="About bio research label@@aboutBioResearchLabel">Research</dt>
+      <dd i18n="About bio research@@aboutBioResearch">Co-author of three papers accepted at CERC 2026 on speech translation and recognition for low-resource African languages.</dd>
+    </div>
+    <div class="bio-row">
+      <dt i18n="About bio looking for label@@aboutBioLookingLabel">Looking for</dt>
+      <dd i18n="About bio looking for@@aboutBioLooking">A 6-month end-of-studies internship starting January 2027.</dd>
+    </div>
+  </dl>
 
   <div class="cv-download-section">
     <div class="cv-download-group">
@@ -33,7 +43,7 @@
         <span>CV</span>
         <app-flag lang="fr" class="lang-flag" />
       </button>
-      <a class="btn-secondary articles-link" routerLink="/articles"
+      <a class="btn-secondary articles-link" routerLink="/publications"
         i18n="About page link to articles@@aboutArticlesLink">Read my papers</a>
     </div>
   </div>

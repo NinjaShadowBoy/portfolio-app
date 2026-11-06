@@ -137,40 +137,46 @@ h2 {
   margin-bottom: 1rem;
 }
 
+/* Plain tags: not interactive, so no hover, shadow or pointer. */
 .skills-list li {
-  background: var(--surface-raised);
-  color: var(--text-accent);
-  padding: 0.75rem 1.25rem;
-  border-radius: 25px;
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 500;
-  border: 1px solid var(--border-brand);
-  box-shadow: var(--elevation-1);
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
+  border: 1px solid var(--border-subtle);
 }
 
-.skills-list li::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--gradient-aurora);
-  opacity: 0;
-  transition: opacity var(--motion-duration-fast) var(--motion-ease-out);
-  z-index: -1;
+/* Short labelled lines in place of one long bio paragraph. */
+.bio {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0 0 1.5rem;
+  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
 }
 
-.skills-list li:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--elevation-3);
-  border-color: var(--color-primary-600);
-  color: var(--text-inverse);
+.bio-row {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 0.25rem 1rem;
 }
 
-.skills-list li:hover::before {
-  opacity: 1;
+.bio dt {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.bio dd {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .bio-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Hobbies list - reuses skills-list styles */
@@ -193,10 +199,6 @@ h2 {
   color: var(--text-tertiary);
 }
 
-.hobbies-list li:hover .hobby-detail {
-  color: var(--text-inverse);
-  opacity: 1;
-}
 
 /* Technologies section */
 .tech-stack-section {
@@ -261,7 +263,7 @@ h2 {
   }
 
   .skills-list li {
-    padding: 0.65rem 1.15rem;
+    padding: 0.35rem 0.75rem;
   }
 }
 
@@ -306,12 +308,7 @@ h2 {
   }
 
   .skills-list li {
-    padding: 0.6rem 1rem;
     font-size: 0.875rem;
-    min-height: 40px;
-    /* Better touch target */
-    display: inline-flex;
-    align-items: center;
   }
 
   .tech-stack-section {
@@ -373,9 +370,7 @@ h2 {
   }
 
   .skills-list li {
-    padding: 0.5rem 0.875rem;
     font-size: 0.825rem;
-    border-radius: 20px;
   }
 
   .tech-stack-section {
@@ -409,10 +404,6 @@ h2 {
   border-color: var(--border-default);
 }
 
-[data-theme="dark"] .skills-list li:hover {
-  border-color: var(--border-brand);
-  box-shadow: var(--elevation-3), var(--shadow-primary);
-}
 
 /* Print optimizations */
 @media print {
@@ -423,7 +414,4 @@ h2 {
     box-shadow: none !important;
   }
 
-  .skills-list li::before {
-    display: none !important;
-  }
 }
