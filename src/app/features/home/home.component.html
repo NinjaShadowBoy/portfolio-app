@@ -1,45 +1,23 @@
-<div class="hero-section">
-  <!-- <div class="nav-container">
-    <header>
-      <span class="logo">Alex Nelson ABENA</span>
-      <nav>
-        <ul>
-          <li><a href="#">My Work</a></li>
-          <li><a href="#">My Skills</a></li>
-        </ul>
-      </nav>
-    </header>
-    <div class="social-header">
-      <ul>
-        <li>
-          <a href="#"><img [src]="'/assets/images/LinkedIn.png'" alt="LinkedIn" /></a>
-        </li>
-        <li>
-          <a href="#"><img [src]="'/assets/images/Facebook Circled.png'" alt="Facebook" /></a>
-        </li>
-        <li>
-          <a href="#"><img [src]="'/assets/images/GitHub.png'" alt="GitHub" /></a>
-        </li>
-      </ul>
-    </div>
-  </div> -->
+<section class="hero-section" aria-labelledby="hero-greeting">
   <div class="hero">
     <div class="content">
-      <img class="my-face" src="assets/images/2223i141.jpg" alt="Alex Nelson ABENA - Profile Picture" width="200" height="200" fetchpriority="high">
-      <p class="headline" i18n="Home page hero headline@@homeHeadline">
-        Final-year engineering student at Ensimag. I build backends and AI features, and I'm looking for a 6-month internship from January 2027.
-      </p>
-      <div class="meet">
-        <span aria-label="point down" role="img">👇</span>
-        <span i18n="Home page call to action@@homeKnowMore">More about me</span>
+      <img class="my-face" src="assets/images/2223i141.jpg" alt="Alex Nelson ABENA - Profile Picture" width="512" height="512" fetchpriority="high">
+      <div class="hero-text">
+        <h2 id="hero-greeting" class="hero-greeting" i18n="Home page hero greeting@@homeHeroGreeting">Hi, I'm Alex.</h2>
+        <p class="headline" i18n="Home page hero headline@@homeHeadline">Final-year software engineering student at Ensimag, Grenoble INP. I build backends and AI features.</p>
+        <p class="availability" i18n="Home page internship availability@@homeAvailability">Looking for a 6-month internship from January 2027.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" routerLink="/projects" i18n="Home page projects call to action@@homeCtaProjects">See my projects</a>
+          <a class="btn-secondary" routerLink="/contact" i18n="Home page contact call to action@@homeCtaContact">Contact me</a>
+        </div>
       </div>
     </div>
-    <img class="hero-illustration" src="assets/images/Ilustration-1-animated.svg" alt="Hero Illustration" width="480" height="900" fetchpriority="high">
+    <img class="hero-illustration" src="assets/images/Ilustration-1-animated.svg" alt="" width="380" height="800">
   </div>
-</div>
+</section>
 
 <!-- My Arsenal Section - three homes for the code, each an orbiting 3D ring -->
-<section class="my-tools-section">
+<section #arsenal class="my-tools-section" [class.rings-paused]="!arsenalVisible()">
   <h2 i18n="Home page tools section heading@@homeMyArsenal">My Arsenal</h2>
   <p class="arsenal-narrative" i18n="Home page arsenal narrative@@homeArsenalNarrative">
     What I reach for on the server, in the browser, and on your phone.
@@ -82,7 +60,6 @@
   </div>
 </ng-template>
 
-<!-- Existing featured projects section remains below -->
 <section class="featured-projects">
   <h2 i18n="Home page featured projects heading@@homeFeaturedProjects">Featured Projects</h2>
   @if (featuredProjects().length > 0) {

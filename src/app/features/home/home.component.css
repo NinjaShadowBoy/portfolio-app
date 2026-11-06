@@ -1,163 +1,169 @@
-/* HERO SECTION STYLES */
-.hero-section {
-  width: 100vw;
-  max-width: 100vw;
+/* Full-bleed backgrounds: the border-image outset paints past the content column
+   to both viewport edges without adding scrollable overflow (100vw would, by the scrollbar width). */
+.hero-section,
+.my-tools-section {
   position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  max-height: 850px;
-  background: linear-gradient(170deg, #3572ef00 10%, #1e4189 80%);
-  color: white;
-  padding-bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: nowrap;
-  z-index: 2;
+  border-image: var(--bleed) fill 0 / 0 / 0 100vw;
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme]) .hero-section {
-    background: linear-gradient(#3572ef00, #1e4189 90%);
-  }
-}
-[data-theme="dark"] .hero-section {
-  background: linear-gradient(#3572ef00, #1e4189 90%);
-}
-
-.nav-container {
-  background-color: #050c9c;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-}
-
-.nav-container header {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 2em 2em 2em 4em;
-}
-
-.logo {
-  color: white;
-  font-weight: 600;
-  font-size: 1.1em;
-  margin-right: 2em;
-}
-
-.nav-container nav ul {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.nav-container nav ul li a {
-  color: white;
-  padding: 0 1em;
-  font-size: 1em;
-  text-decoration: none;
-}
-
-.social-header {
-  display: flex;
-  align-items: center;
-  padding: 2em 2em 2em 0em;
-}
-
-.social-header ul {
-  display: flex;
-  gap: 1.5em;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.social-header ul li img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: white;
-  object-fit: contain;
+/* HERO */
+.hero-section {
+  --bleed: linear-gradient(to bottom, transparent, var(--color-primary-50));
 }
 
 .hero {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  padding: 2em 4em 0 4em;
-  gap: 1rem;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  max-width: 1120px;
+  margin-inline: auto;
+  padding: clamp(1.75rem, 5vw, 3.5rem) clamp(0.75rem, 3vw, 1.5rem);
 }
 
-.hero .content {
-  text-align: left;
-  max-width: 700px;
-  margin: 2rem;
+.content {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  min-width: 0;
 }
 
+/* LCP image: width/height attributes plus aspect-ratio reserve its box before it loads */
 .my-face {
-  border-radius: 500px;
-  width: 400px;
+  flex: none;
+  width: clamp(8rem, 6rem + 10vw, 15rem);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: var(--elevation-3);
+}
+
+.hero-text {
+  min-width: 0;
+  max-width: 34rem;
+}
+
+.hero-greeting {
+  /* !important beats the global mobile `h2 { font-size: ... !important }` in styles.css,
+     which would otherwise shrink the hero heading to section-heading size */
+  font-size: clamp(2rem, 1.5rem + 2.2vw, 3.25rem) !important;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.hero-text p {
+  animation: none; /* hero text is above the fold: paint it at once */
 }
 
 .headline {
-  font-size: 2.5em;
-  font-weight: bold;
-  line-height: 1.2;
-  margin-bottom: 1.5em;
+  font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  text-wrap: pretty;
 }
 
-.meet {
+.availability {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  margin-bottom: 1.75rem;
+  text-wrap: balance;
+}
+
+/* Inline status dot, so it stays with the first word when the line wraps */
+.availability::before {
+  content: '';
+  display: inline-block;
+  margin-right: 0.6rem;
+  vertical-align: 0.05em;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--color-success-500);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-success-500) 20%, transparent);
+}
+
+.hero-actions {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.hero-actions a {
+  display: inline-flex;
   align-items: center;
-  color: #ffd70d;
-  font-size: 1.1em;
-  font-weight: 500;
-  gap: 0.5em;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hero-actions a:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-offset);
 }
 
 .hero-illustration {
-  /* width: 100%; */
-  max-width: 1000px;
-  height: 120%;
-  margin-left: -100px;
-  max-height: 980px;
   display: block;
-  position: relative;
-  z-index: 3;
+  width: clamp(150px, 16vw, 220px);
+  height: auto;
 }
 
-/* MY ARSENAL SECTION - MOVING BANNERS */
-.my-tools-section {
-  width: 100vw;
-  max-width: 100vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 4rem 0;
-  background: var(--surface-base);
-  overflow: hidden;
-  z-index: 1;
-}
+/* Tablets: the decorative illustration goes, photo and text stay side by side */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme]) .my-tools-section {
-    background: linear-gradient(to bottom, #0a0f2e 0%, var(--surface-base) 50%);
+  .hero-illustration {
+    display: none;
+  }
+
+  .content {
+    justify-content: center;
   }
 }
 
-[data-theme="dark"] .my-tools-section {
-  background: linear-gradient(to bottom, #0a0f2e 0%, var(--surface-base) 50%);
+/* Phones: photo above the text, everything centred */
+@media (max-width: 600px) {
+  .content {
+    flex-direction: column;
+    gap: 1.25rem;
+    text-align: center;
+  }
+
+  .hero-text {
+    max-width: 30rem;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+}
+
+/* MY ARSENAL: three homes for the code, each an orbiting 3D ring of logos */
+.my-tools-section {
+  --bleed: linear-gradient(to bottom, var(--color-primary-50), var(--surface-base) 55%);
+  padding: 4rem 0;
+  overflow: clip;
+  /* Keep ring work from leaking into the rest of the page, and skip it entirely while off-screen */
+  contain: layout paint;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1100px;
 }
 
 .my-tools-section h2 {
   text-align: center;
   font-size: 2.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   color: var(--text-primary);
   animation: fadeInUp 0.8s var(--motion-ease-out);
 }
@@ -172,9 +178,7 @@
   color: var(--text-secondary);
 }
 
-/* Three homes for the code, each an orbiting 3D ring of logos */
 .pillars {
-  --arsenal-mono: ui-monospace, 'Cascadia Code', 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
   --stage-h: 300px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -188,15 +192,11 @@
   text-align: center;
 }
 
-/* Match the About page category headings */
 .pillar-title {
   text-align: center;
   font-size: 1.25rem;
-  /* margin: 0 0 1rem; */
   color: var(--text-secondary);
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 2px;
 }
 
 /* The 3D scene */
@@ -221,33 +221,51 @@
   pointer-events: none;
 }
 
+/* Only transform animates. The keyframes hold literal values (no var()),
+   so the compositor can run them without a style recalc per frame. */
 .ring {
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
-  /* Tilt the turntable, and stretch it in depth so the orbit is an ellipse
-     that swings far behind the screen instead of sliding flat */
-  --tilt: -18deg;
-  --depth: 1.8;
   animation: ringOrbit 30s linear infinite;
 }
 
-.ring--reverse {
+.node-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  /* Counter-spin the live rotation so every logo keeps facing the viewer */
+  animation: ringOrbitReverse 30s linear infinite;
+}
+
+.ring--reverse,
+.ring--reverse .node-face {
   animation-direction: reverse;
 }
 
-/* Pause the whole scene when a visitor wants to read it */
+/* Pause when a visitor hovers to read, while the section is off-screen,
+   and while the header drawer has locked page scroll (it sets overflow: hidden on <html>) */
 .stage:hover .ring,
-.stage:hover .node-face {
+.stage:hover .node-face,
+.rings-paused .ring,
+.rings-paused .node-face,
+:host-context(html[style*='overflow: hidden']) .ring,
+:host-context(html[style*='overflow: hidden']) .node-face {
   animation-play-state: paused;
 }
 
+/* Tilt the turntable and stretch it in depth so the orbit is an ellipse
+   that swings far behind the screen instead of sliding flat */
 @keyframes ringOrbit {
   from {
-    transform: rotateX(var(--tilt, -18deg)) scaleZ(var(--depth, 1.8)) rotateY(0);
+    transform: rotateX(-18deg) scaleZ(1.8) rotateY(0);
   }
   to {
-    transform: rotateX(var(--tilt, -18deg)) scaleZ(var(--depth, 1.8)) rotateY(360deg);
+    transform: rotateX(-18deg) scaleZ(1.8) rotateY(360deg);
   }
 }
 
@@ -270,7 +288,7 @@
   text-decoration: none;
 }
 
-/* Cancel the node's base angle so the face is upright... */
+/* Cancel the node's base angle so the face is upright */
 .node-billboard {
   display: block;
   width: 100%;
@@ -279,27 +297,10 @@
   transform: rotateY(calc(-1 * var(--base, 0deg)));
 }
 
-/* ...and counter-spin the live rotation so every logo keeps facing the viewer */
-.node-face {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  height: 100%;
-  animation: ringOrbitReverse 30s linear infinite;
-}
-
-.ring--reverse .node-face {
-  animation-direction: reverse;
-}
-
 .node-face img {
   width: 52px;
   height: 52px;
   object-fit: contain;
-  filter: drop-shadow(0 6px 12px rgba(15, 23, 42, 0.22));
   transition: transform var(--motion-duration-fast) var(--motion-ease-out);
 }
 
@@ -365,21 +366,11 @@
   }
 }
 
+/* FEATURED PROJECTS */
 .featured-projects {
   max-width: 1400px;
   margin: 0 auto;
   padding-inline: 2rem;
-}
-
-h1 {
-  color: var(--text-primary);
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: fadeInUp 0.8s var(--motion-ease-out);
 }
 
 p {
@@ -405,40 +396,8 @@ p {
   padding-top: 10px;
 }
 
-/* Large tablets and small desktops */
-@media (max-width: 1050px) {
-  .hero {
-    padding: 1.5rem 1rem 0 1rem;
-    text-align: center;
-    grid-template-columns: 1fr 200px;
-    gap: 0.75rem;
-  }
-  .hero .content {
-    text-align: center;
-    margin: 1.5rem;
-  }
-  .hero-illustration {
-    margin: 1.5rem auto 0 auto;
-    max-width: 200px;
-  }
-  .nav-container header {
-    padding: 1.5rem 1rem;
-  }
-  .social-header {
-    padding: 1.5rem 1rem 1.5rem 0;
-  }
-  .my-face {
-    width: 320px;
-  }
-}
-
 /* Tablets */
 @media (max-width: 768px) {
-  .hero-section {
-    padding-bottom: 0;
-    max-height: none;
-  }
-
   .my-tools-section {
     padding: 3rem 0;
   }
@@ -459,64 +418,8 @@ p {
     gap: 1rem;
   }
 
-  .hero {
-    padding: 1.25rem 0.75rem 0 0.75rem;
-    grid-template-columns: 1fr 120px;
-    gap: 0.5rem;
-  }
-
-  .hero .content {
-    margin: 1rem;
-  }
-
-  .headline {
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
-  }
-
-  .meet {
-    font-size: 1rem;
-  }
-
-  .hero-illustration {
-    max-width: 140px;
-  }
-
-  .nav-container header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1.25rem 0.75rem;
-    gap: 0.75rem;
-  }
-
-  .nav-container nav ul li a {
-    padding: 0 0.75rem;
-    font-size: 0.95rem;
-  }
-
-  .social-header {
-    padding: 1.25rem 0.75rem 1.25rem 0;
-  }
-
-  .social-header ul {
-    gap: 1rem;
-  }
-
-  .social-header ul li img {
-    width: 36px;
-    height: 36px;
-  }
-
-  .my-face {
-    width: 200px;
-  }
-
   .featured-projects {
     padding-inline: 0.5rem;
-  }
-
-  h1 {
-    font-size: 2rem;
   }
 
   .featured-projects h2 {
@@ -526,6 +429,7 @@ p {
 
   .projects-grid {
     grid-template-columns: 1fr;
+    grid-auto-rows: auto; /* one column: each card keeps its own height */
     gap: 1.5rem;
   }
 }
@@ -546,66 +450,6 @@ p {
     grid-template-columns: 1fr;
     max-width: 460px;
     --stage-h: 300px;
-  }
-
-  .hero {
-    padding: 1rem 0.5rem 0 0.5rem;
-    grid-template-columns: 1fr 80px;
-  }
-
-  .hero .content {
-    margin: 0.75rem;
-  }
-
-  .headline {
-    font-size: 1.35rem;
-    line-height: 1.3;
-    margin-bottom: 0.875rem;
-  }
-
-  .meet {
-    font-size: 0.9rem;
-    gap: 0.4rem;
-  }
-
-  .hero-illustration {
-    max-width: 100px;
-  }
-
-  .nav-container header {
-    padding: 1rem 0.5rem;
-    gap: 0.5rem;
-  }
-
-  .logo {
-    font-size: 1rem;
-    margin-right: 1.5rem;
-  }
-
-  .nav-container nav ul li a {
-    padding: 0 0.5rem;
-    font-size: 0.9rem;
-  }
-
-  .social-header {
-    padding: 1rem 0.5rem 1rem 0;
-  }
-
-  .social-header ul {
-    gap: 0.875rem;
-  }
-
-  .social-header ul li img {
-    width: 32px;
-    height: 32px;
-  }
-
-  .my-face {
-    width: 160px;
-  }
-
-  h1 {
-    font-size: 1.75rem;
   }
 
   .featured-projects h2 {
@@ -639,62 +483,8 @@ p {
     --stage-h: 270px;
   }
 
-  .hero {
-    padding: 0.75rem 0.5rem 0 0.5rem;
-    grid-template-columns: 1fr 70px;
-  }
-
-  .hero .content {
-    margin: 0.5rem;
-  }
-
-  .headline {
-    font-size: 1.2rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .meet {
-    font-size: 0.85rem;
-  }
-
-  .hero-illustration {
-    max-width: 80px;
-  }
-
-  .logo {
-    font-size: 0.95rem;
-    margin-right: 1rem;
-  }
-
-  .nav-container nav ul {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .nav-container nav ul li a {
-    padding: 0 0.4rem;
-    font-size: 0.85rem;
-  }
-
-  .social-header ul {
-    gap: 0.75rem;
-  }
-
-  .social-header ul li img {
-    width: 28px;
-    height: 28px;
-  }
-
-  .my-face {
-    width: 120px;
-  }
-
   .featured-projects {
     padding-inline: 0.25rem;
-  }
-
-  h1 {
-    font-size: 1.5rem;
   }
 
   p {

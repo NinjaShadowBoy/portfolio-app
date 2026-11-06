@@ -3,7 +3,7 @@
     <!-- Navigation with hamburger for small screens -->
     <nav class="navigation" aria-label="Primary">
       <div class="mobile-nav-controls">
-        <button class="hamburger liquid-glass" type="button" aria-controls="mobile-menu"
+        <button #hamburger class="hamburger liquid-glass" type="button" aria-controls="mobile-menu"
           [attr.aria-expanded]="isMenuOpen()"
           [attr.aria-label]="isMenuOpen() ? 'Close navigation menu' : 'Open navigation menu'" (click)="toggleMenu()">
           <span></span><span></span><span></span>
@@ -104,14 +104,16 @@
     </div>
 
     <!-- Mobile sidebar modal -->
-    @if (isMenuOpen()) {
-    <div class="backdrop" (click)="toggleMenu()"></div>
-    }
-    <div class="sidebar" id="mobile-menu" [class.open]="isMenuOpen()">
-      <button class="close-btn" type="button" aria-label="Close navigation menu" (click)="toggleMenu()">×</button>
+    <!-- Always rendered so opening only flips a class: no DOM insertion, no layout. -->
+    <div class="backdrop" [class.open]="isMenuOpen()" aria-hidden="true" (click)="closeMenu()"></div>
+    <div class="sidebar" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu"
+      [class.open]="isMenuOpen()" [class.animating]="isAnimating()" [attr.inert]="isMenuOpen() ? null : ''"
+      (transitionend)="onSidebarTransitionEnd($event)" (transitioncancel)="onSidebarTransitionEnd($event)">
+      <button #closeButton class="close-btn" type="button" aria-label="Close navigation menu"
+        (click)="closeMenu()">×</button>
       @if (isAuthenticated() && user()) {
       <div class="mobile-login-status">
-        <a routerLink="/profile" class="status-badge liquid-glass-subtle" (click)="toggleMenu()">
+        <a routerLink="/profile" class="status-badge liquid-glass-subtle" (click)="closeMenu(false)">
           <app-user-avatar [userName]="user()!.name" [imageUrl]="identity()?.imageUrl ?? null" size="large" />
           <div class="user-info">
             <span class="user-name">{{ user()!.name }}</span>
@@ -152,26 +154,26 @@
         @for(item of navItems; track item.label) {
         <li>
           <a class="link liquid-glass" [routerLink]="[item.link]" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()">{{ item.label }}</a>
+            ariaCurrentWhenActive="page" (click)="closeMenu(false)">{{ item.label }}</a>
         </li>
         }
         <li class="auth-controls">
           @if (isAuthenticated()) {
-          <a class="link liquid-glass" (click)="logout(); toggleMenu()" routerLinkActive="active"
+          <a class="link liquid-glass" (click)="logout(); closeMenu()" routerLinkActive="active"
             ariaCurrentWhenActive="page" i18n="Header logout link@@headerLogout">Logout</a>
           } @else {
           <a class="link liquid-glass" routerLink="/login" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Header login link@@headerLogin">Login</a>
+            ariaCurrentWhenActive="page" (click)="closeMenu(false)" i18n="Header login link@@headerLogin">Login</a>
           }
         </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
           <a class="link liquid-glass" routerLink="/admin" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="toggleMenu()" i18n="Header admin link@@headerAdmin">Admin</a>
+            ariaCurrentWhenActive="page" (click)="closeMenu(false)" i18n="Header admin link@@headerAdmin">Admin</a>
         </li>
         }
         <li class="lang-switch-item mobile-lang">
-          <button class="lang-toggle liquid-glass" type="button" (click)="toggleLanguage(); toggleMenu()"
+          <button class="lang-toggle liquid-glass" type="button" (click)="toggleLanguage(); closeMenu(false)"
             [attr.aria-label]="langAriaLabel">
             {{ langLabel }}
           </button>

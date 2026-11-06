@@ -37,7 +37,7 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
   }
 
-  afterEach(() => (document.body.style.overflow = ''));
+  afterEach(() => (document.documentElement.style.overflow = ''));
 
   it('offers French from the English build and maps the current page under /fr', async () => {
     await setup('en');
@@ -82,16 +82,58 @@ describe('HeaderComponent', () => {
 
   it('toggles the mobile menu and locks page scrolling while it is open', async () => {
     await setup('en');
-    const hamburger = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('.hamburger')!;
+    const host = fixture.nativeElement as HTMLElement;
+    const hamburger = host.querySelector<HTMLButtonElement>('.hamburger')!;
+    const sidebar = host.querySelector<HTMLElement>('.sidebar')!;
+    const backdrop = host.querySelector<HTMLElement>('.backdrop')!;
+
+    expect(sidebar.hasAttribute('inert')).toBe(true);
 
     hamburger.click();
     fixture.detectChanges();
     expect(hamburger.getAttribute('aria-expanded')).toBe('true');
-    expect(document.body.style.overflow).toBe('hidden');
+    expect(document.documentElement.style.overflow).toBe('hidden');
+    expect(sidebar.classList).toContain('open');
+    expect(backdrop.classList).toContain('open');
+    expect(sidebar.hasAttribute('inert')).toBe(false);
 
     hamburger.click();
     fixture.detectChanges();
     expect(hamburger.getAttribute('aria-expanded')).toBe('false');
-    expect(document.body.style.overflow).toBe('');
+    expect(document.documentElement.style.overflow).toBe('');
+    // The drawer stays in the DOM so closing only flips classes.
+    expect(host.querySelector('.sidebar')).toBe(sidebar);
+    expect(host.querySelector('.backdrop')).toBe(backdrop);
+  });
+
+  it('closes on Escape and gives focus back to the hamburger', async () => {
+    await setup('en');
+    const host = fixture.nativeElement as HTMLElement;
+    const hamburger = host.querySelector<HTMLButtonElement>('.hamburger')!;
+    // jsdom renders at desktop width, where the hamburger is display:none and cannot take focus.
+    hamburger.style.display = 'inline-flex';
+    hamburger.parentElement!.style.display = 'flex';
+
+    hamburger.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(host.querySelector('.sidebar .close-btn'));
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+    expect(component.isMenuOpen()).toBe(false);
+    expect(document.documentElement.style.overflow).toBe('');
+    expect(document.activeElement).toBe(hamburger);
+  });
+
+  it('closes when the backdrop is tapped', async () => {
+    await setup('en');
+    const host = fixture.nativeElement as HTMLElement;
+    host.querySelector<HTMLButtonElement>('.hamburger')!.click();
+    fixture.detectChanges();
+
+    host.querySelector<HTMLElement>('.backdrop')!.click();
+    fixture.detectChanges();
+    expect(component.isMenuOpen()).toBe(false);
   });
 });
