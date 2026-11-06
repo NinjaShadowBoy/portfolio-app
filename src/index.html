@@ -14,13 +14,12 @@
   <!-- Preconnect to critical origins -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
-  <!-- Preload critical fonts with font-display: swap -->
-  <link rel="preload" href="assets/fonts/PRODUCTSANS-REGULAR.TTF" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="assets/fonts/PRODUCTSANS-BOLD.TTF" as="font" type="font/ttf" crossorigin>
-
-  <!-- Preload LCP image (hero image) -->
-  <link rel="preload" href="assets/images/2223i141.jpg" as="image" fetchpriority="high">
-  <link rel="preload" href="assets/images/Ilustration-1-animated.svg" as="image">
+  <!--
+    No font or image preloads: the build serves the fonts under hashed media/
+    names, so a preload of assets/fonts/... is a second, unused download; and an
+    image preload here runs on every page, not just home. The home photo has
+    fetchpriority="high" instead.
+  -->
 
   <!-- Critical CSS - Inline minimal styles for FCP -->
   <style>
