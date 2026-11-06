@@ -7,6 +7,15 @@ export interface Technology {
   proficiency?: number; // Optional proficiency level (0-3); 0/1 = exposed, 2/3 = proficient
 }
 
+/**
+ * Keys of logos that are black or near-black and vanish on a dark surface. In
+ * dark mode they are inverted, with a hue rotation that keeps any brand colour.
+ */
+export const DARK_LOGOS = new Set([
+  'next.js', 'expo react native', 'react native', 'chatgpt', 'openai', 'gradle', 'sdl', 'maven', 'mysql', 'aws',
+  'ovh', 'mcp',
+]);
+
 @Injectable({
   providedIn: 'root',
 })
@@ -82,6 +91,11 @@ export class TechnologiesService {
       name: 'Expo React Native',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/expo/expo-original.svg',
       docUrl: 'https://expo.dev/',
+    },
+    'react native': {
+      name: 'React Native',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/expo/expo-original.svg',
+      docUrl: 'https://reactnative.dev/',
     },
     'spring boot': {
       name: 'Spring Boot',

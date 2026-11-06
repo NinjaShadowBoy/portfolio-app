@@ -44,24 +44,33 @@
   background: var(--surface-sunken);
 }
 
-/* The photo dissolves into the card body: a fade to the card surface over the
-   bottom of the media, with no border at the seam. It sits above the image
-   (no z-index) and below the carousel controls (z-index 2), and ignores
-   pointer events so the image stays clickable. */
+/* The photo dissolves into the card body: a short fade to the card surface at
+   the bottom of the media, with no border at the seam. The title overlaps the
+   fade (see .card-body). The fade sits above the image (no z-index) and below
+   the carousel controls (z-index 2), and ignores pointer events. */
 .card-media::after {
   content: "";
   position: absolute;
   inset: auto 0 0;
   z-index: 1;
-  height: 45%;
+  height: 32%;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    color-mix(in srgb, var(--surface-raised) 35%, transparent) 45%,
-    color-mix(in srgb, var(--surface-raised) 80%, transparent) 75%,
+    color-mix(in srgb, var(--surface-raised) 45%, transparent) 40%,
+    color-mix(in srgb, var(--surface-raised) 85%, transparent) 75%,
     var(--surface-raised) 100%
   );
   pointer-events: none;
+}
+
+/* The slide dots move to the top-right corner, away from the title. */
+.card-media ::ng-deep .carousel-indicators {
+  top: 0.6rem;
+  right: 0.75rem;
+  bottom: auto;
+  left: auto;
+  transform: none;
 }
 
 .card-media app-carousel {
@@ -117,6 +126,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  margin-top: -2.75rem;
+  z-index: 2;
   padding: 1.25rem 1.25rem 1.5rem;
 }
 
@@ -126,6 +137,12 @@
   font-weight: 600;
   line-height: 1.3;
   overflow-wrap: anywhere;
+  /* A halo in the card surface colour keeps the title readable where it sits
+     on the faded photo. */
+  text-shadow:
+    0 0 2px var(--surface-raised),
+    0 0 10px var(--surface-raised),
+    0 0 18px var(--surface-raised);
 }
 
 .card-link {

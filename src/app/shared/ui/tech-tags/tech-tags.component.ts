@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { TechnologiesService } from '../../../core/services/technologies.service';
+import { DARK_LOGOS, TechnologiesService } from '../../../core/services/technologies.service';
 
 /**
  * A wrapping row of technology chips. Names known to {@link TechnologiesService}
@@ -29,7 +29,7 @@ export class TechTagsComponent {
   readonly tags = computed(() =>
     this.technologies().map((name) => {
       const tech = this.techService.getTechnology(name);
-      return { name, logo: tech?.logo, docUrl: tech?.docUrl };
+      return { name, logo: tech?.logo, docUrl: tech?.docUrl, dark: DARK_LOGOS.has(name.toLowerCase().trim()) };
     })
   );
 }

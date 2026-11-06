@@ -1,13 +1,7 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { TechnologiesService } from '../../../core/services/technologies.service';
+import { DARK_LOGOS, TechnologiesService } from '../../../core/services/technologies.service';
 import { CloudEntry, LEVEL_SIZE, UsageLevel, layoutCloud } from './icon-cloud.layout';
-
-/**
- * Logos that are black or near-black and vanish on a dark surface. In dark
- * mode they are inverted, with a hue rotation that keeps any brand colour.
- */
-const DARK_LOGOS = new Set(['next.js', 'expo react native', 'chatgpt', 'openai', 'gradle', 'sdl', 'maven', 'mysql', 'aws', 'ovh', 'mcp']);
 
 const LEVEL_LABEL: Record<UsageLevel, string> = {
   3: $localize`:@@iconCloudLevelDaily:used daily`,

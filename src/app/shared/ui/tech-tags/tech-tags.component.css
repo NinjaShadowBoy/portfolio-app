@@ -31,6 +31,17 @@
   flex-shrink: 0;
 }
 
+/* Black logos would vanish on dark surfaces: invert, keep the brand hue. */
+:host-context([data-theme="dark"]) .dark-logo {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(html:not([data-theme])) .dark-logo {
+    filter: invert(1) hue-rotate(180deg);
+  }
+}
+
 [data-theme="dark"] .tech-tag {
   background: var(--color-primary-900);
   color: var(--color-primary-200);
