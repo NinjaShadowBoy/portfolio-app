@@ -1,6 +1,6 @@
 export const CV_PATHS = {
-  en: 'assets/docs/ABENA_ALEX_NELSON_RYAN_cv-en.pdf',
-  fr: 'assets/docs/ABENA_ALEX_NELSON_RYAN_cv-fr.pdf',
+  en: 'assets/docs/Alex_Abena_cv-en.pdf',
+  fr: 'assets/docs/Alex_Abena_cv-fr.pdf',
 } as const;
 
 export function downloadCV(lang: keyof typeof CV_PATHS): void {
