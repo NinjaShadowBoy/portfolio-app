@@ -74,14 +74,20 @@ describe('ArticlesComponent', () => {
     );
   });
 
-  it('lists the hard-coded research papers newest first, with my name in bold', async () => {
+  it('groups the hard-coded papers by venue, newest venue first, with my name highlighted', async () => {
     await setup([]);
     const compiled = fixture.nativeElement as HTMLElement;
-    const papers = compiled.querySelectorAll('.publication');
+    const venues = Array.from(compiled.querySelectorAll('.venue-header h2')).map((h) => h.textContent?.trim());
+    expect(venues).toEqual(['CERC 2026', 'Institut Universitaire Saint Jean']);
+
+    const papers = compiled.querySelectorAll('.paper');
     expect(papers.length).toBe(PUBLICATIONS.length);
-    expect(compiled.querySelector('.publication-title')?.textContent).toContain('Tonal African Languages');
-    papers.forEach((paper) => expect(paper.querySelector('.publication-authors .me')?.textContent).toBe(MY_NAME));
-    expect(compiled.querySelectorAll('.badge--presented').length).toBe(1);
+    papers.forEach((paper) => {
+      expect(paper.querySelector('.paper-authors .me')?.textContent).toBe(MY_NAME);
+      expect(paper.querySelector('.paper-download')?.getAttribute('href')).toMatch(/^papers\/.+\.pdf$/);
+    });
+    expect(papers[0].querySelector('.paper-role')?.textContent).toBe('Second author');
+    expect(compiled.querySelectorAll('.paper-flag').length).toBe(1);
   });
 
   it('hides the notes section when the manifest is empty', async () => {

@@ -17,8 +17,30 @@ export interface Publication {
   link?: string;
   /** Path of the PDF under public/, served from the site root. */
   pdf: string;
+  pdfBytes: number;
+  group: VenueId;
   tags: string[];
 }
+
+export type VenueId = 'cerc2026' | 'iusjc2026';
+
+/** Papers are shown under their venue, so the venue is written once. */
+export const VENUES: Record<VenueId, { name: string; detail: { en: string; fr: string } }> = {
+  cerc2026: {
+    name: 'CERC 2026',
+    detail: {
+      en: 'Collaborative European Research Conference, ATU Galway, Ireland',
+      fr: 'Collaborative European Research Conference, ATU Galway, Irlande',
+    },
+  },
+  iusjc2026: {
+    name: 'Institut Universitaire Saint Jean',
+    detail: {
+      en: 'Research methodology paper, Yaoundé, Cameroon',
+      fr: 'Article de méthodologie de recherche, Yaoundé, Cameroun',
+    },
+  },
+};
 
 export const MY_NAME = 'Alex Nelson Ryan Abena';
 
@@ -38,6 +60,8 @@ const CERC_AUTHORS_THIRD = [
 export const PUBLICATIONS: Publication[] = [
   {
     id: 'cerc2026-tonal',
+    group: 'cerc2026',
+    pdfBytes: 923729,
     pdf: 'papers/linguomt-cascade-vs-end-to-end-tonal-languages.pdf',
     title: 'LinguoMT: Cascade versus End-to-End Speech Translation for Tonal African Languages',
     authors: ['Philippe Tamla', MY_NAME, 'Ruth Stephie Darelle Bilogui Tiguena', 'Gladys Kouakam', 'Haithem Afli'],
@@ -53,6 +77,8 @@ export const PUBLICATIONS: Publication[] = [
   },
   {
     id: 'cerc2026-benchmark',
+    group: 'cerc2026',
+    pdfBytes: 1947185,
     pdf: 'papers/linguomt-zero-shot-pilot-benchmark.pdf',
     title: 'LinguoMT: A Zero-Shot Pilot Benchmark for African Language Speech Translation and Recognition',
     authors: CERC_AUTHORS_THIRD,
@@ -67,6 +93,8 @@ export const PUBLICATIONS: Publication[] = [
   },
   {
     id: 'cerc2026-audio',
+    group: 'cerc2026',
+    pdfBytes: 430116,
     pdf: 'papers/linguomt-audio-preprocessing-strategies.pdf',
     title: 'LinguoMT: Audio Preprocessing Strategies for Low-Resource African Language Speech Translation',
     authors: CERC_AUTHORS_THIRD,
@@ -81,6 +109,8 @@ export const PUBLICATIONS: Publication[] = [
   },
   {
     id: 'acadai',
+    group: 'iusjc2026',
+    pdfBytes: 1864131,
     pdf: 'papers/acadai-bilingual-rag-academic-assistant.pdf',
     title:
       'AcadAI: A Bilingual LLM-Based Academic Assistant for Campus Service Access in Central African Universities Using RAG and Quiizy Integration',
