@@ -21,6 +21,7 @@ const FALLBACK_PROJECTS: Project[] = [
       'A mobile learning companion built with Expo to stream audio lessons and keep learning sessions organized.',
     technologies: ['Expo React Native', 'TypeScript', 'JavaScript'],
     githubLink: 'https://github.com/',
+    demoLink: null,
     challenges:
       'Balancing audio playback reliability with smooth navigation across mobile devices.',
     whatILearned:
@@ -30,6 +31,7 @@ const FALLBACK_PROJECTS: Project[] = [
     createdAt: '2026-01-01T00:00:00Z',
     updatedAt: '2026-01-01T00:00:00Z',
     featured: true,
+    displayOrder: 0,
     photoUrls: ['http://localhost:4200/assets/images/2223i141.jpg'],
     isExpanded: false,
   },
@@ -40,6 +42,7 @@ const FALLBACK_PROJECTS: Project[] = [
       'A visually rich strategy game with polished interactions and animated game feedback.',
     technologies: ['TypeScript', 'Angular', 'CSS3'],
     githubLink: 'https://github.com/',
+    demoLink: null,
     challenges:
       'Making the board logic feel responsive without losing the visual weight of the animations.',
     whatILearned:
@@ -49,10 +52,22 @@ const FALLBACK_PROJECTS: Project[] = [
     createdAt: '2026-01-01T00:00:00Z',
     updatedAt: '2026-01-01T00:00:00Z',
     featured: false,
+    displayOrder: 1,
     photoUrls: [],
     isExpanded: false,
   },
 ];
+
+/** Projects sorted by their position in `ids`, with `displayOrder` set to that position. Unlisted projects go last. */
+function applyOrder(projects: Project[], ids: number[]): Project[] {
+  const position = (project: Project) => {
+    const index = ids.indexOf(project.id);
+    return index === -1 ? ids.length : index;
+  };
+  return projects
+    .map((project) => ({ ...project, displayOrder: position(project) }))
+    .sort((a, b) => a.displayOrder - b.displayOrder);
+}
 
 @Injectable({ providedIn: 'root' })
 export class ProjectDataService {
@@ -105,6 +120,19 @@ export class ProjectDataService {
       .pipe(tap(() => this.refreshProjects()));
   }
 
+  /**
+   * Admin only. `ids` lists every project id in the desired order. The list
+   * shows the new order at once, then reloads to pick up the stored positions.
+   */
+  reorderProjects(ids: number[]): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/order`, { ids }).pipe(
+      tap(() => {
+        this.projectsResource.update((projects) => applyOrder(projects ?? [], ids));
+        this.refreshProjects();
+      })
+    );
+  }
+
   getProject(projectId: number | string): Project | undefined {
     return this.projects().find((p) => p.id === Number(projectId));
   }
@@ -126,8 +154,8 @@ export class ProjectDataService {
 
   /** Imports may carry ids, ratings, photos or UI state; the API accepts only writable fields. */
   private projectPayload(data: ProjectUpdateRequest): ProjectUpdateRequest {
-    const { name, description, technologies, githubLink, challenges, whatILearned, featured } = data;
-    return { name, description, technologies, githubLink, challenges, whatILearned, featured };
+    const { name, description, technologies, githubLink, demoLink, challenges, whatILearned, featured } = data;
+    return { name, description, technologies, githubLink, demoLink, challenges, whatILearned, featured };
   }
 
   private applyFilters(): Project[] {

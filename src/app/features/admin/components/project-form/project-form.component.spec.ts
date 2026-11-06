@@ -14,6 +14,7 @@ describe('ProjectFormComponent', () => {
     description: 'A beekeeping companion app',
     technologies: ['Kotlin', 'Jetpack Compose'],
     githubLink: 'https://github.com/x/hive',
+    demoLink: null,
     challenges: 'Offline sync',
     whatILearned: 'Compose state',
     averageRating: 0,
@@ -21,6 +22,7 @@ describe('ProjectFormComponent', () => {
     createdAt: '2026-01-01T00:00:00Z',
     updatedAt: '2026-01-01T00:00:00Z',
     featured: true,
+    displayOrder: 0,
     photoUrls: [],
   };
 
@@ -44,6 +46,7 @@ describe('ProjectFormComponent', () => {
       description: 'A long enough description',
       technologies: 'Angular, TypeScript,,  CSS3 ',
       githubLink: 'https://github.com/x/new',
+      demoLink: '',
       challenges: 'c',
       whatILearned: 'w',
       featured: false,
@@ -56,6 +59,7 @@ describe('ProjectFormComponent', () => {
         description: 'A long enough description',
         technologies: ['Angular', 'TypeScript', 'CSS3'],
         githubLink: 'https://github.com/x/new',
+        demoLink: null,
         challenges: 'c',
         whatILearned: 'w',
         featured: false,
@@ -81,5 +85,15 @@ describe('ProjectFormComponent', () => {
   it('rejects a GitHub link that is not an http(s) URL', () => {
     component.projectForm.controls.githubLink.setValue('github.com/x/y');
     expect(component.projectForm.controls.githubLink.invalid).toBe(true);
+  });
+
+  it('accepts an empty live site URL and rejects one without a scheme', () => {
+    const demoLink = component.projectForm.controls.demoLink;
+    demoLink.setValue('');
+    expect(demoLink.valid).toBe(true);
+    demoLink.setValue('example.com');
+    expect(demoLink.invalid).toBe(true);
+    demoLink.setValue('https://example.com');
+    expect(demoLink.valid).toBe(true);
   });
 });

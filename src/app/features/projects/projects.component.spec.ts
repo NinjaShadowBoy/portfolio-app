@@ -13,6 +13,7 @@ function makeProject(overrides: Partial<Project>): Project {
     description: 'desc',
     technologies: [],
     githubLink: 'https://github.com/',
+    demoLink: null,
     challenges: '',
     whatILearned: '',
     averageRating: 0,
@@ -20,6 +21,7 @@ function makeProject(overrides: Partial<Project>): Project {
     createdAt: '2026-01-01T00:00:00Z',
     updatedAt: '2026-01-01T00:00:00Z',
     featured: false,
+    displayOrder: 0,
     photoUrls: [],
     ...overrides,
   };

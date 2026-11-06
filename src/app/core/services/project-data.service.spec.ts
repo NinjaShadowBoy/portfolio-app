@@ -66,6 +66,7 @@ describe('ProjectDataService', () => {
       description: imported.description,
       technologies: imported.technologies,
       githubLink: imported.githubLink,
+      demoLink: imported.demoLink,
       challenges: imported.challenges,
       whatILearned: imported.whatILearned,
       featured: imported.featured,
@@ -96,6 +97,40 @@ describe('ProjectDataService', () => {
     const request = httpMock.expectOne((req) => req.method === 'POST');
     expect(JSON.parse(request.request.serializeBody() as string).id).toBeUndefined();
     request.flush('Server error', { status: 500, statusText: 'Server Error' });
+    expect(refresh).not.toHaveBeenCalled();
+  });
+
+  it('sends the new order, shows it at once and refreshes', async () => {
+    vi.useFakeTimers();
+    httpMock.expectOne((req) => req.url.endsWith('/projects')).flush([]);
+    await vi.advanceTimersByTimeAsync(300);
+    expect(service.projects().map((p) => p.id)).toEqual([1, 3]);
+    const refresh = vi.spyOn(service, 'refreshProjects').mockImplementation(() => undefined);
+
+    service.reorderProjects([3, 1]).subscribe();
+
+    const request = httpMock.expectOne((req) => req.method === 'PUT');
+    expect(request.request.url.endsWith('/projects/order')).toBe(true);
+    expect(request.request.body).toEqual({ ids: [3, 1] });
+    request.flush(null, { status: 204, statusText: 'No Content' });
+    expect(service.projects().map((p) => [p.id, p.displayOrder])).toEqual([[3, 0], [1, 1]]);
+    expect(refresh).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the current order and does not refresh when reordering fails', async () => {
+    vi.useFakeTimers();
+    httpMock.expectOne((req) => req.url.endsWith('/projects')).flush([]);
+    await vi.advanceTimersByTimeAsync(300);
+    const refresh = vi.spyOn(service, 'refreshProjects').mockImplementation(() => undefined);
+    const onError = vi.fn();
+
+    service.reorderProjects([3, 1]).subscribe({ error: onError });
+    httpMock
+      .expectOne((req) => req.method === 'PUT')
+      .flush('Server error', { status: 500, statusText: 'Server Error' });
+
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(service.projects().map((p) => p.id)).toEqual([1, 3]);
     expect(refresh).not.toHaveBeenCalled();
   });
 });

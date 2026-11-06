@@ -1,233 +1,178 @@
-/* Fill the grid cell so every card in a grid has the cell's size. */
+/* Fill the grid cell; grids use grid-auto-rows: 1fr, so every card in a grid
+   has the same height. */
 :host {
   display: block;
   height: 100%;
 }
 
-/* Project card styles */
 .project-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
   background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
   box-shadow: var(--elevation-2);
-  overflow: hidden;
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-  position: relative;
-  border: 1px solid var(--border-subtle);
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-.project-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 4px;
-  background: var(--gradient-primary);
-  transform: scaleX(0);
-  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease-out),
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
+    border-color var(--motion-duration-fast) var(--motion-ease-out);
 }
 
 .project-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-4px);
   box-shadow: var(--elevation-4);
   border-color: var(--border-brand);
 }
 
-.project-card:hover::before {
-  transform: scaleX(1);
+/* Featured cards get a brand ring instead of a thicker border, so their
+   content lines up with the other cards. */
+.project-card.featured {
+  border-color: var(--color-primary-500);
+  box-shadow: var(--elevation-3), var(--shadow-primary);
 }
 
-.project-card.featured {
-  border: 2px solid var(--color-primary-500);
-  box-shadow: var(--elevation-3), var(--shadow-primary);
-  background: linear-gradient(135deg, var(--surface-raised), var(--color-primary-50));
+/* Media: one fixed 16:9 box whatever the photo count or natural image size.
+   The carousel overlays its controls inside this box. */
+.card-media {
+  position: relative;
+  flex: none;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--surface-sunken);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.card-media app-carousel {
+  display: block;
+  height: 100%;
+}
+
+.card-media ::ng-deep .carousel-main {
+  height: 100%;
+  aspect-ratio: auto;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.card-placeholder {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  background:
+    radial-gradient(circle at 30% 20%, var(--surface-brand), transparent 60%),
+    var(--surface-sunken);
+}
+
+.card-monogram {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--border-brand);
+  user-select: none;
 }
 
 .featured-badge {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
   background: var(--gradient-primary);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
+  color: var(--btn-primary-text);
   font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: var(--shadow-accent);
-  animation: pulse 2s infinite;
-  z-index: 10;
-}
-
-.project-carousel-wrapper {
-  padding: 0;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-/* Same 16:9 box as the carousel, so cards without photos line up with the rest. */
-.project-photo-placeholder {
-  aspect-ratio: 16 / 9;
-  background: var(--surface-sunken);
-}
-
-.project-carousel-wrapper ::ng-deep .carousel-container {
-  gap: 1rem;
-}
-
-.project-carousel-wrapper ::ng-deep .carousel-main {
-  max-width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
-}
-
-.project-header {
-  padding: 1.25rem;
-  padding-top: 1.25rem;
-  padding-bottom: 0;
-}
-
-.project-card.featured .project-header {
-  padding-right: 7rem;
-}
-
-.project-header h3 {
-  color: var(--text-primary);
-  margin: 0 0 0.5rem 0;
-  font-size: 1.35rem;
   font-weight: 600;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
+  box-shadow: var(--elevation-2);
+  pointer-events: none;
 }
 
-.project-meta {
-  display: flex;
-  gap: 1rem;
-  font-size: 0.85rem;
-  color: var(--text-tertiary);
-  flex-wrap: wrap;
-}
-
-.project-content {
-  flex: 1;
+/* Body: a stretched link. The title anchor's ::after covers the whole body,
+   so title, description and the gaps between tags all open the project. */
+.card-body {
+  position: relative;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  padding: 0.75rem 1.25rem 1.25rem;
+  gap: 0.75rem;
+  padding: 1.25rem 1.25rem 1.5rem;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.card-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.card-body:hover .card-link {
+  color: var(--text-link);
+}
+
+.card-link:focus-visible {
+  outline: none;
+  color: var(--text-link);
+}
+
+.card-link:focus-visible::after {
+  box-shadow: inset 0 0 0 2px var(--border-focus);
+}
+
+.card-description {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: hidden;
 }
 
-.project-description {
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 0.75rem;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  font-size: 0.95rem;
+/* Technology chips that link to docs stay clickable above the stretched link. */
+.card-tags {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding-top: 0.25rem;
 }
 
-.technologies {
-  margin-bottom: 0.75rem;
-}
-
-.technologies strong {
-  color: var(--text-accent);
-  display: block;
-  margin-bottom: 0.4rem;
-  font-size: 0.9rem;
-}
-
-.project-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-top: auto; /* Pin the buttons to the bottom of equal-height cards. */
-  margin-bottom: 0.75rem;
-}
-
-.github-link {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: var(--btn-primary-bg);
-  color: var(--btn-primary-text);
-  text-decoration: none;
-  box-shadow: var(--btn-primary-shadow);
-  border: 1px solid transparent;
-}
-
-.github-link:hover {
-  background: var(--btn-primary-bg-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--btn-primary-shadow), var(--elevation-2);
-}
-
-.github-icon {
-  filter: brightness(0) invert(1);
-  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
-}
-
-.github-link:hover .github-icon {
-  transform: scale(1.5);
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
-}
-
-[data-theme="dark"] .project-card:hover {
-  box-shadow: var(--elevation-4), var(--shadow-primary);
-}
-
-[data-theme="dark"] .project-card.featured {
-  background: linear-gradient(135deg, var(--surface-raised), var(--color-primary-950));
-}
-
-/* Tablet & Mobile - consolidated */
-@media (max-width: 1024px) {
-  .project-header { padding: 1.35rem 1.35rem 0; }
-  .project-card.featured .project-header { padding-right: 6.5rem; }
-  .project-content { padding: 0.875rem 1.35rem 1.35rem; }
+.card-footer {
+  flex: none;
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid var(--border-subtle);
 }
 
 @media (max-width: 768px) {
   .project-card { border-radius: 12px; }
-  .featured-badge { top: 0.5rem; right: 0.5rem; padding: 0.2rem 0.65rem; font-size: 0.7rem; }
-  .project-header { padding: 1rem 1rem 0; }
-  .project-card.featured .project-header { padding-right: 5.5rem; }
-  .project-header h3 { font-size: 1.25rem; margin-bottom: 0.4rem; }
-  .project-meta { font-size: 0.8rem; gap: 0.75rem; }
-  .project-content { padding: 0.75rem 1rem 1rem; }
-  .project-description, .technologies strong { font-size: 0.95rem; }
-  .project-actions { flex-direction: column; gap: 0.5rem; }
-  .project-actions ::ng-deep app-cta-button { width: 100%; display: block; }
-  .project-actions ::ng-deep app-cta-button .cta-button { width: 100% !important; display: flex !important; min-height: 40px; font-size: 0.85rem; padding: 0.5rem 0.75rem; }
-  .github-link { padding: 0.5rem 0.75rem; width: 100%; text-align: center; min-height: 40px; font-size: 0.85rem; }
+  .card-body { padding: 1rem 1rem 1.25rem; gap: 0.6rem; }
+  .card-title { font-size: 1.15rem; }
+  .card-footer { padding: 0.65rem 1rem; }
 }
 
-@media (max-width: 480px) {
-  .project-card { border-radius: 8px; }
-  .featured-badge { padding: 0.15rem 0.5rem; font-size: 0.65rem; }
-  .project-header { padding: 0.75rem 0.75rem 0; }
-  .project-card.featured .project-header { padding-right: 4.5rem; }
-  .project-header h3 { font-size: 1.15rem; }
-  .project-meta { font-size: 0.75rem; gap: 0.5rem; }
-  .project-content { padding: 0.5rem 0.75rem 0.75rem; }
-  .project-description { font-size: 0.9rem; line-height: 1.5; }
-  .project-actions ::ng-deep app-cta-button { width: 100%; display: block; }
-  .project-actions ::ng-deep app-cta-button .cta-button { width: 100% !important; display: flex !important; min-height: 38px; font-size: 0.8rem; padding: 0.5rem 0.75rem; }
-  .github-link { padding: 0.5rem 0.75rem; font-size: 0.8rem; min-height: 38px; }
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .project-card:hover {
+    transition: none;
+    transform: none;
+  }
 }

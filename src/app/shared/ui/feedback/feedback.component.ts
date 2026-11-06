@@ -26,6 +26,7 @@ type FeedbackTone = 'danger' | 'info' | 'success';
 interface CommentTypeOption {
   value: CommentType;
   label: string;
+  shortLabel?: string;
   tone: FeedbackTone;
 }
 
@@ -65,6 +66,7 @@ export class FeedbackComponent {
     {
       value: 'feature_request',
       label: $localize`:@@feedbackTypeFeatureRequest:Feature request`,
+      shortLabel: $localize`:@@feedbackTypeFeatureRequestShort:Feature`,
       tone: 'success',
     },
   ];

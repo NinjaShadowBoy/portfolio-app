@@ -17,6 +17,8 @@ export interface SegmentedToggleOption {
   value: string;
   /** Visible button text. */
   label: string;
+  /** Shorter text shown on narrow screens; `label` stays the accessible name. */
+  shortLabel?: string;
 }
 
 /**

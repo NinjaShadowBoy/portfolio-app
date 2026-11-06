@@ -89,6 +89,11 @@
   font-size: 0.85rem;
 }
 
+/* Single column (below two 280px tracks): equal rows would pad short cards. */
+@media (max-width: 640px) {
+  .connections-grid { grid-auto-rows: auto; }
+}
+
 @media (max-width: 768px) {
   .connections {
     padding: 1.25rem;

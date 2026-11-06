@@ -1,43 +1,33 @@
 <article class="project-card" [class.featured]="project().featured">
-  @if (project().featured) {
-  <div class="featured-badge" i18n="Project card featured badge@@projectCardFeatured">Featured</div>
-  }
-
-  <!-- Project Carousel -->
-  @if (project().photoUrls && project().photoUrls.length > 0) {
-  <div class="project-carousel-wrapper">
+  <div class="card-media">
+    @if (hasPhotos()) {
     <app-carousel [photoUrls]="project().photoUrls" [projectName]="project().name" />
+    } @else {
+    <div class="card-placeholder" aria-hidden="true">
+      <span class="card-monogram">{{ monogram() }}</span>
+    </div>
+    }
+    @if (project().featured) {
+    <span class="featured-badge" i18n="Project card featured badge@@projectCardFeatured">Featured</span>
+    }
   </div>
-  } @else {
-  <div class="project-carousel-wrapper project-photo-placeholder" aria-hidden="true"></div>
+
+  <div class="card-body">
+    <h3 class="card-title">
+      <a class="card-link" [routerLink]="['/projects', project().id]">{{ project().name }}</a>
+    </h3>
+    @if (project().description.trim()) {
+    <p class="card-description">{{ project().description }}</p>
+    }
+    @if (project().technologies.length) {
+    <app-tech-tags class="card-tags" [technologies]="project().technologies" />
+    }
+  </div>
+
+  @if (hasLinks()) {
+  <footer class="card-footer">
+    <app-project-links [githubLink]="project().githubLink" [demoLink]="project().demoLink"
+      [projectName]="project().name" />
+  </footer>
   }
-
-  <header class="project-header">
-    <h3>{{ project().name }}</h3>
-    <div class="project-meta">
-      <span class="created-date" i18n="Project card created date@@projectCardCreated">Created: {{ project().createdAt | date:'MMM yyyy' }}</span>
-      @if (project().updatedAt.toString() !== project().createdAt.toString()) {
-      <span class="updated-date" i18n="Project card updated date@@projectCardUpdated">Updated: {{ project().updatedAt | date:'MMM yyyy' }}</span>
-      }
-    </div>
-  </header>
-
-  <div class="project-content">
-    <p class="project-description">{{ truncatedDescription() }}</p>
-
-    <div class="technologies">
-      <strong i18n="Project card technologies label@@projectCardTechnologies">Technologies:</strong>
-      <app-tech-tags [technologies]="project().technologies" />
-    </div>
-
-    <div class="project-actions">
-      <app-cta-button text="Details"
-        [routerLink]="['/projects', project().id]"
-        icon="search"
-        variant="outline" />
-      <a [href]="project().githubLink" target="_blank" rel="noopener noreferrer" class="github-link" aria-label="View on GitHub">
-        <img src="assets/icons/github.svg" alt="GitHub" width="20" height="20" class="github-icon" />
-      </a>
-    </div>
-  </div>
 </article>

@@ -23,6 +23,7 @@ export class ProjectFormComponent {
     description: ['', [Validators.required, Validators.minLength(10)]],
     technologies: ['', Validators.required], // comma-separated in the UI
     githubLink: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
+    demoLink: ['', Validators.pattern(/^https?:\/\/.+/)], // optional
     challenges: ['', Validators.required],
     whatILearned: ['', Validators.required],
     featured: [false],
@@ -40,6 +41,7 @@ export class ProjectFormComponent {
         description: project.description,
         technologies: project.technologies.join(', '),
         githubLink: project.githubLink ?? '',
+        demoLink: project.demoLink ?? '',
         challenges: project.challenges ?? '',
         whatILearned: project.whatILearned ?? '',
         featured: project.featured ?? false,
@@ -50,9 +52,10 @@ export class ProjectFormComponent {
   submitForm() {
     if (this.projectForm.invalid) return;
 
-    const { technologies, ...rest } = this.projectForm.getRawValue();
+    const { technologies, demoLink, ...rest } = this.projectForm.getRawValue();
     this.save.emit({
       ...rest,
+      demoLink: demoLink.trim() || null,
       technologies: technologies
         .split(',')
         .map((t) => t.trim())

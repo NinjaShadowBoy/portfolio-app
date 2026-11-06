@@ -1,0 +1,74 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+:host:empty {
+  display: none;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    color var(--motion-duration-fast) var(--motion-ease-out),
+    background var(--motion-duration-fast) var(--motion-ease-out),
+    border-color var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.project-link:hover {
+  color: var(--text-link-hover);
+  background: var(--surface-hover);
+  border-color: var(--border-brand);
+}
+
+.project-link:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.project-link-icon {
+  flex-shrink: 0;
+}
+
+/* Detail page: larger buttons, the live site is the primary action. */
+:host(.prominent) {
+  gap: 0.75rem;
+}
+
+:host(.prominent) .project-link {
+  min-height: 2.75rem;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  border-color: var(--border-default);
+  background: var(--surface-raised);
+  color: var(--text-primary);
+}
+
+:host(.prominent) .project-link.demo {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: transparent;
+  box-shadow: var(--btn-primary-shadow);
+}
+
+:host(.prominent) .project-link.demo:hover {
+  background: var(--btn-primary-bg-hover);
+}
+
+:host(.prominent) .project-link.github:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-emphasis);
+}

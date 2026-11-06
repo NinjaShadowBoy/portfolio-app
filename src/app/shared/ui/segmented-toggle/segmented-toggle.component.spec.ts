@@ -88,4 +88,17 @@ describe('SegmentedToggleComponent', () => {
       buttons().every((b) => b.getAttribute('aria-checked') === 'false'),
     ).toBe(true);
   });
+
+  it('keeps the full label as the accessible name when a short label is set', () => {
+    fixture.componentRef.setInput('options', [
+      { value: 'a', label: 'Alpha' },
+      { value: 'f', label: 'Feature request', shortLabel: 'Feature' },
+    ]);
+    fixture.detectChanges();
+    const [plain, short] = buttons();
+    expect(plain.getAttribute('aria-label')).toBeNull();
+    expect(short.getAttribute('aria-label')).toBe('Feature request');
+    expect(short.querySelector('.label-short')?.textContent?.trim()).toBe('Feature');
+    expect(short.querySelector('.label-short')?.getAttribute('aria-hidden')).toBe('true');
+  });
 });

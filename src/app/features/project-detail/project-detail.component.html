@@ -1,40 +1,54 @@
 @if (project(); as project) {
-<div class="project-detail-container">
-  <h1>{{ project.name }}</h1>
-  <div class="project-meta">
-    <span i18n="Project detail created date label@@projectDetailCreated">Created: {{ project.createdAt | date:'MMM yyyy' }}</span>
-    @if (project.updatedAt.toString() !== project.createdAt.toString()) {
-    <span i18n="Project detail updated date label@@projectDetailUpdated">Updated: {{ project.updatedAt | date:'MMM yyyy' }}</span>
+@let c = content()!;
+<article class="project-detail-container">
+  <header class="detail-header">
+    <h1>{{ project.name }}</h1>
+    @if (project.createdAt) {
+    <p class="project-meta">
+      <span i18n="Project detail created date label@@projectDetailCreated">Created: {{ project.createdAt | date:'MMM yyyy' }}</span>
+      @if (c.updated) {
+      <span i18n="Project detail updated date label@@projectDetailUpdated">Updated: {{ c.updated | date:'MMM yyyy' }}</span>
+      }
+    </p>
     }
-  </div>
-  @if (project.photoUrls && project.photoUrls.length > 0) {
-  <div class="gallery">
-    <h2 i18n="Project detail screenshots heading@@projectDetailScreenshots">Project Screenshots</h2>
-    <app-carousel [photoUrls]="project.photoUrls" [projectName]="project.name" />
-  </div>
-  } @else {
-  <div class="gallery">
-    <h2 i18n="Project detail screenshots heading@@projectDetailScreenshots2">Project Screenshots</h2>
-    <p class="no-photos" i18n="Project detail no screenshots message@@projectDetailNoScreenshots">No screenshots available yet.</p>
-  </div>
+    @if (c.description) {
+    <p class="description">{{ c.description }}</p>
+    }
+    @if (c.hasLinks) {
+    <app-project-links class="detail-links" variant="prominent" [githubLink]="project.githubLink"
+      [demoLink]="project.demoLink" [projectName]="project.name" />
+    }
+  </header>
+
+  @if (c.photoUrls.length > 0) {
+  <section class="gallery" i18n-aria-label="Project detail screenshots region@@projectDetailScreenshots" aria-label="Screenshots">
+    <app-carousel [photoUrls]="c.photoUrls" [projectName]="project.name" loading="eager" />
+  </section>
   }
 
-  <p class="description">{{ project.description }}</p>
-  <div class="technologies">
-    <strong i18n="Project detail technologies label@@projectDetailTechnologies">Technologies:</strong>
-    <app-tech-tags variant="pill" [technologies]="project.technologies" />
-  </div>
-  <div class="challenges">
-    <h2 i18n="Project detail challenges heading@@projectDetailChallenges">Challenges</h2>
-    <p>{{ project.challenges }}</p>
-  </div>
-  <!-- Structured feedback (critique / suggestion / feature request) -->
-  <app-feedback [projectId]="project.id" />
+  @if (c.technologies.length > 0) {
+  <section class="panel technologies">
+    <h2 i18n="Project detail technologies heading@@projectDetailTechnologies">Technologies</h2>
+    <app-tech-tags variant="pill" [technologies]="c.technologies" />
+  </section>
+  }
 
-  <a [href]="project.githubLink" target="_blank" class="github-link"><p i18n="Project detail view on GitHub link@@projectDetailGitHub">View on GitHub</p>
-    <img src="assets/icons/github.svg" alt="GitHub" width="20" height="20" class="github-icon" />
-  </a>
-</div>
+  @if (c.challenges) {
+  <section class="panel challenges">
+    <h2 i18n="Project detail challenges heading@@projectDetailChallenges">Challenges</h2>
+    <p>{{ c.challenges }}</p>
+  </section>
+  }
+
+  @if (c.whatILearned) {
+  <section class="panel learned">
+    <h2 i18n="Project detail what I learned heading@@projectDetailWhatILearned">What I learned</h2>
+    <p>{{ c.whatILearned }}</p>
+  </section>
+  }
+
+  <app-feedback [projectId]="project.id" />
+</article>
 } @else {
 <div class="not-found">
   <h2 i18n="Project detail not found heading@@projectDetailNotFound">Project Not Found</h2>

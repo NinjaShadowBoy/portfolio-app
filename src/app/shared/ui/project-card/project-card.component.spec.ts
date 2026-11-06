@@ -24,6 +24,7 @@ describe('ProjectCardComponent', () => {
       description: 'A test project',
       technologies: ['Angular', 'TypeScript'],
       githubLink: 'https://github.com/test/project',
+      demoLink: null,
       challenges: 'Test challenges',
       whatILearned: 'Test learnings',
       isExpanded: false,
@@ -32,6 +33,7 @@ describe('ProjectCardComponent', () => {
       createdAt: '2025-01-01T00:00:00Z',
       updatedAt: '2025-01-01T00:00:00Z',
       featured: false,
+      displayOrder: 0,
       photoUrls: []
     };
 
@@ -57,17 +59,40 @@ describe('ProjectCardComponent', () => {
     expect(compiled.querySelector('.featured-badge')).toBeFalsy();
   });
 
-  it('should truncate description longer than maxDescriptionLength', () => {
-    const longDescription = 'a'.repeat(200);
-    fixture.componentRef.setInput('project', { ...mockProject, description: longDescription });
-    fixture.componentRef.setInput('maxDescriptionLength', 150);
-    fixture.detectChanges();
-    const truncated = component.truncatedDescription();
-    expect(truncated.endsWith('...')).toBe(true);
-    expect(truncated.length).toBe(153);
+  it('links the card body to the project page with a real anchor', () => {
+    const link = fixture.nativeElement.querySelector('.card-body a.card-link') as HTMLAnchorElement;
+    expect(link.getAttribute('href')).toBe('/projects/1');
+    expect(link.textContent).toContain('Test Project');
   });
 
-  it('should not truncate description shorter than maxDescriptionLength', () => {
-    expect(component.truncatedDescription()).toBe('A test project');
+  it('shows no dates, no technologies label and no details button', () => {
+    const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
+    expect(text).not.toContain('Created');
+    expect(text).not.toContain('Technologies:');
+    expect(text).not.toContain('Details');
+  });
+
+  it('shows only the links that exist, outside the card link', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('.card-footer a.github')).toBeTruthy();
+    expect(el.querySelector('.card-footer a.demo')).toBeNull();
+    expect(el.querySelector('.card-link a, .card-link .card-footer')).toBeNull();
+
+    fixture.componentRef.setInput('project', { ...mockProject, githubLink: null, demoLink: 'https://demo.example' });
+    fixture.detectChanges();
+    expect(el.querySelector('.card-footer a.github')).toBeNull();
+    expect(el.querySelector('.card-footer a.demo')?.getAttribute('href')).toBe('https://demo.example');
+  });
+
+  it('omits the footer when the project has no links', () => {
+    fixture.componentRef.setInput('project', { ...mockProject, githubLink: '  ', demoLink: null });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.card-footer')).toBeNull();
+  });
+
+  it('keeps the media box with a placeholder when there are no photos', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('.card-media .card-placeholder')?.textContent?.trim()).toBe('T');
+    expect(el.querySelector('app-carousel')).toBeNull();
   });
 });

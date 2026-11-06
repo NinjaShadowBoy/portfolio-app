@@ -167,8 +167,6 @@
   border: 1px solid transparent;
   font-size: 0.8rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
 }
 
 .feedback-group-count {
@@ -247,6 +245,28 @@
 @media (max-width: 480px) {
   .feedback {
     padding: 1rem;
+  }
+
+  /* Keep the three feedback types on one line down to 320px: shorter labels
+     (via shortLabel), tighter padding, and horizontal scroll as a last resort. */
+  .feedback-form app-segmented-toggle {
+    width: 100%;
+  }
+
+  .feedback-form app-segmented-toggle ::ng-deep .segmented-toggle {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  /* !important beats the global mobile button rule in styles.css, which
+     forces large padding and 1rem text on every button. */
+  .feedback-form app-segmented-toggle ::ng-deep button {
+    flex: 1 0 auto;
+    min-height: 40px;
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.85rem !important;
+    white-space: nowrap;
   }
 
   .feedback-textarea {

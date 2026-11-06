@@ -1,24 +1,30 @@
 import { Component, computed, input } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Project } from '../../../core/interfaces/project.interface';
-import { CtaButtonComponent } from '../cta-button/cta-button.component';
 import { CarouselComponent } from '../carousel/carousel.component';
 import { TechTagsComponent } from '../tech-tags/tech-tags.component';
+import { ProjectLinksComponent, presentLink } from '../project-links/project-links.component';
 
+/**
+ * A project in a card grid. The media area keeps its own carousel controls;
+ * the body below it is one stretched link to the project page; the GitHub and
+ * live-site links sit in a separate footer so no link is nested in another.
+ */
 @Component({
   selector: 'app-project-card',
-  imports: [DatePipe, CtaButtonComponent, CarouselComponent, TechTagsComponent],
+  imports: [RouterLink, CarouselComponent, TechTagsComponent, ProjectLinksComponent],
   templateUrl: './project-card.component.html',
   styleUrl: './project-card.component.css',
 })
 export class ProjectCardComponent {
   project = input.required<Project>();
-  /** Descriptions longer than this are cut and suffixed with an ellipsis. */
-  maxDescriptionLength = input(150);
 
-  readonly truncatedDescription = computed(() => {
-    const desc = this.project().description ?? '';
-    const max = this.maxDescriptionLength();
-    return desc.length <= max ? desc : desc.substring(0, max).trim() + '...';
-  });
+  readonly hasPhotos = computed(() => (this.project().photoUrls?.length ?? 0) > 0);
+
+  readonly hasLinks = computed(
+    () => presentLink(this.project().githubLink) !== null || presentLink(this.project().demoLink) !== null
+  );
+
+  /** First letter of the name, shown on the placeholder when there are no photos. */
+  readonly monogram = computed(() => this.project().name.trim().charAt(0).toUpperCase());
 }

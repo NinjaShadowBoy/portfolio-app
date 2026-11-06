@@ -40,6 +40,7 @@
     }
   </div>
 
+  <div class="form-row">
   <div class="form-group">
     <label for="githubLink" i18n="Project form GitHub link label@@projectFormGithubLabel">GitHub Link *</label>
     <input
@@ -51,6 +52,20 @@
     @if(projectForm.get('githubLink')?.invalid && projectForm.get('githubLink')?.touched) {
     <div class="error" i18n="Project form GitHub URL required error@@projectFormGithubError">Valid GitHub URL is required.</div>
     }
+  </div>
+
+  <div class="form-group">
+    <label for="demoLink" i18n="Project form live site URL label@@projectFormDemoLabel">Live site URL</label>
+    <input
+      formControlName="demoLink"
+      id="demoLink"
+      type="url"
+      i18n-placeholder="Project form live site URL placeholder@@projectFormDemoPlaceholder" placeholder="https://example.com"
+    />
+    @if(projectForm.get('demoLink')?.invalid && projectForm.get('demoLink')?.touched) {
+    <div class="error" i18n="Project form live site URL error@@projectFormDemoError">Enter a full URL starting with http:// or https://, or leave it empty.</div>
+    }
+  </div>
   </div>
 
   <div class="form-group">

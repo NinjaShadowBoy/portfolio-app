@@ -12,6 +12,8 @@ const AUTO_PLAY_DELAY = 5000;
 export class CarouselComponent {
   photoUrls = input.required<string[]>();
   projectName = input.required<string>();
+  /** `eager` for a carousel above the fold (project page), `lazy` in card grids. */
+  loading = input<'lazy' | 'eager'>('lazy');
 
   readonly carouselImage = viewChild.required<ElementRef<HTMLImageElement>>('carouselImage');
   readonly lightbox = viewChild<ElementRef<HTMLElement>>('lightbox');
@@ -69,6 +71,10 @@ export class CarouselComponent {
 
   previousImage(): void {
     this.goToImage(this.currentImageIndex() - 1);
+  }
+
+  goToLabel(index: number): string {
+    return $localize`:Carousel go to image@@carouselGoToImage:Go to image ${index + 1}:INTERPOLATION:`;
   }
 
   /** Show the image at `index`, wrapping around at both ends, with a fade. */

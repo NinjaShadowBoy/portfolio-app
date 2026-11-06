@@ -1,10 +1,12 @@
-/* Carousel Styles */
+/* Carousel: one fixed-ratio box with every control overlaid inside it, so a
+   slide change or the photo count never changes the carousel's height. */
+:host {
+  display: block;
+}
+
 .carousel-container {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
+  height: 100%;
 }
 
 .carousel-main {
@@ -19,97 +21,133 @@
 }
 
 .carousel-image {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
   opacity: 1;
   cursor: zoom-in;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity var(--motion-duration-normal) var(--motion-ease-out);
 }
 
+.carousel-image:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 3px var(--border-focus);
+}
+
+/* On-photo controls: dark translucent chrome that reads on any image. One-off
+   literals, as on the lightbox overlay; no theme token covers on-photo UI. */
 .carousel-button {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
   border: none;
-  padding: 1rem 0.75rem;
-  font-size: 1.5rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
   cursor: pointer;
-  z-index: 10;
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 50px;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition:
+    opacity var(--motion-duration-fast) var(--motion-ease-out),
+    background var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.carousel-button:hover:not(:disabled) {
-  background: rgba(0, 0, 0, 0.8);
-  transform: translateY(-50%) scale(1.1);
+.carousel-button-prev { left: 0.5rem; }
+.carousel-button-next { right: 0.5rem; }
+
+.carousel-container:hover .carousel-button,
+.carousel-container:focus-within .carousel-button {
+  opacity: 1;
 }
 
-.carousel-button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+.carousel-button:hover {
+  background: rgba(0, 0, 0, 0.7);
 }
 
-.carousel-button-prev {
-  left: -0.1rem;
+.carousel-button:focus-visible,
+.indicator-dot:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
 
-.carousel-button-next {
-  right: -0.1rem;
+/* Touch screens have no hover: keep the arrows visible. */
+@media (hover: none) {
+  .carousel-button { opacity: 1; }
+}
+
+/* The global mobile rule in styles.css gives every button large padding and a
+   44px min-height; these overlay controls size themselves. */
+@media (max-width: 768px) {
+  .carousel-button,
+  .indicator-dot {
+    min-height: 0;
+    padding: 0 !important;
+  }
+
+  .carousel-button {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
 }
 
 .carousel-indicators {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 50%;
+  z-index: 2;
   display: flex;
-  gap: 0.5rem;
-  justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
+  gap: 0.15rem;
+  max-width: calc(100% - 6rem);
+  padding: 0.1rem 0.3rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  transform: translateX(-50%);
 }
 
+/* A 20px hit area around an 8px dot; the active dot widens inside the same box. */
 .indicator-dot {
-  width: 12px !important;
-  height: 12px !important;
-  border-radius: 50%;
-  background: var(--border-default);
+  position: relative;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
   border: none;
+  border-radius: 999px;
+  background: transparent;
   cursor: pointer;
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-  padding: 0 !important;
-  margin: 0 !important;
-  appearance: none !important;
-  box-sizing: border-box !important;
-  flex: 0 0 12px !important;
-  min-width: 12px !important;
-  min-height: 12px !important;
+  appearance: none;
 }
 
-.indicator-dot:hover {
-  background: var(--text-tertiary);
-  transform: scale(1.2);
+.indicator-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  transform: translate(-50%, -50%);
+  transition:
+    width var(--motion-duration-fast) var(--motion-ease-out),
+    background var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.indicator-dot.active {
-  background: var(--color-primary-500);
-  width: 16px !important;
-  height: 16px !important;
-  flex: 0 0 16px !important;
-  min-width: 16px !important;
-  min-height: 16px !important;
+.indicator-dot:hover::before {
+  background: rgba(255, 255, 255, 0.85);
 }
 
-.carousel-counter {
-  font-size: 0.9rem;
-  color: var(--text-tertiary);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.indicator-dot.active::before {
+  width: 16px;
+  background: #fff;
 }
 
 .carousel-empty {
@@ -122,88 +160,10 @@
   border-radius: 12px;
   border: 1px solid var(--border-subtle);
   color: var(--text-tertiary);
-  font-size: 1rem;
-  font-style: italic;
 }
 
-/* Responsive design - Tablet */
-@media (max-width: 1024px) {
-  .carousel-container {
-    gap: 1rem;
-  }
-}
-
-/* Responsive design - Mobile */
-@media (max-width: 768px) {
-  .carousel-container {
-    gap: 0.75rem;
-  }
-
-  .carousel-button {
-    padding: 0.75rem 0.5rem;
-    font-size: 1.25rem;
-    min-width: 40px;
-  }
-
-  .carousel-counter {
-    font-size: 0.8rem;
-  }
-
-  .indicator-dot {
-    flex: 0 0 12px !important;
-    min-width: 12px !important;
-    min-height: 12px !important;
-    width: 12px !important;
-    height: 12px !important;
-  }
-
-  .indicator-dot.active {
-    flex: 0 0 16px !important;
-    min-width: 16px !important;
-    min-height: 16px !important;
-    width: 16px !important;
-    height: 16px !important;
-  }
-}
-
-/* Extra small screens */
-@media (max-width: 480px) {
-  .carousel-main {
-    aspect-ratio: 4 / 3;
-  }
-
-  .carousel-button {
-    padding: 0.5rem 0.35rem;
-    font-size: 1rem;
-    min-width: 35px;
-  }
-
-  .indicator-dot {
-    width: 10px !important;
-    height: 10px !important;
-    flex: 0 0 10px !important;
-    min-width: 10px !important;
-    min-height: 10px !important;
-  }
-
-  .indicator-dot.active {
-    width: 14px !important;
-    height: 14px !important;
-    flex: 0 0 14px !important;
-    min-width: 14px !important;
-    min-height: 14px !important;
-  }
-}
-
-/* Dark mode */
-[data-theme="dark"] .carousel-main {
-  border-color: var(--border-default);
-  background: var(--surface-sunken);
-}
-
-[data-theme="dark"] .carousel-empty {
-  border-color: var(--border-default);
-  background: var(--surface-sunken);
+@media (prefers-reduced-motion: reduce) {
+  .carousel-image { transition: none; }
 }
 
 /* Fullscreen lightbox */

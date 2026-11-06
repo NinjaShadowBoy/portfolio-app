@@ -97,3 +97,18 @@ button:focus-visible {
     text-align: center;
   }
 }
+
+/* Options with a shortLabel swap to it on narrow screens. */
+.label-short {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .label-full {
+    display: none;
+  }
+
+  .label-short {
+    display: inline;
+  }
+}

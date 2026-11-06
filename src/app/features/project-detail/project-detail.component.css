@@ -1,436 +1,152 @@
 .project-detail-container {
-  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 2rem;
-  padding-top: 0;
-  background: var(--surface-base);
+  padding: 0 2rem 3rem;
   color: var(--text-primary);
-  transition: all var(--motion-duration-normal) var(--motion-ease-out);
-  animation: fadeInUp 0.8s var(--motion-ease-out);
+  animation: fadeInUp 0.6s var(--motion-ease-out);
+}
+
+/* Header: title, quiet dates, the lead description, then the links. */
+.detail-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 h1 {
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  margin: 0;
   font-size: 2.5rem;
   font-weight: 600;
+  line-height: 1.15;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .project-meta {
   display: flex;
-  gap: 1rem;
-  color: var(--text-tertiary);
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
   flex-wrap: wrap;
-}
-
-.project-meta span {
-  padding: 0.5rem 1rem;
-  background: var(--surface-sunken);
-  border-radius: 8px;
-  border: 1px solid var(--border-subtle);
+  gap: 0.25rem 1rem;
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
 }
 
 .description {
+  max-width: 68ch;
+  margin: 0.25rem 0 0;
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+.detail-links {
+  margin-top: 0.5rem;
+}
+
+/* Content panels share one surface style. */
+.panel {
   padding: 1.5rem;
   background: var(--surface-raised);
-  border-radius: 12px;
   border: 1px solid var(--border-subtle);
-  box-shadow: var(--elevation-1);
-}
-
-.technologies {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: var(--surface-raised);
   border-radius: 12px;
-  border: 1px solid var(--border-subtle);
   box-shadow: var(--elevation-1);
-}
-
-.technologies strong {
-  color: var(--text-accent);
-  display: block;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-}
-
-.challenges {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: var(--surface-raised);
-  border-radius: 12px;
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--elevation-1);
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-}
-
-.challenges:hover {
-  box-shadow: var(--elevation-2);
-  border-color: var(--border-emphasis);
 }
 
 h2 {
-  color: var(--text-accent);
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin: 0 0 0.875rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 h2::before {
   content: "";
   width: 4px;
-  height: 1.5rem;
-  background: var(--gradient-primary);
+  height: 1.1em;
   border-radius: 2px;
-}
-
-.challenges p {
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin: 0;
-  font-size: 1rem;
-}
-
-.gallery {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: var(--surface-raised);
-  border-radius: 12px;
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--elevation-1);
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-}
-
-.gallery:hover {
-  box-shadow: var(--elevation-2);
-  border-color: var(--border-emphasis);
-}
-
-.no-photos {
-  color: var(--text-secondary);
-  text-align: center;
-  padding: 2rem;
-  font-style: italic;
-  margin: 0;
-}
-
-.github-link {
-  display: inline-flex;
-  color: var(--color-primary-500);
-  text-decoration: none;
-  font-weight: 600;
-  padding: 1rem 2rem;
-  border: 2px solid var(--color-primary-500);
-  border-radius: 8px;
-  transition: all var(--motion-duration-fast) var(--motion-ease-out);
-  background: transparent;
-  position: relative;
-  overflow: hidden;
-  margin-top: 1rem;
-}
-
-.github-link::before {
-  content: "";
-  position: absolute;
-  inset: 0;
   background: var(--gradient-primary);
-  transform: scaleX(0);
-  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
-  z-index: -1;
 }
 
-.github-link:hover {
-  color: var(--text-inverse);
-  border-color: var(--color-primary-600);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-primary);
+.panel p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.65;
+  white-space: pre-line;
 }
 
-.github-link:hover::before {
-  transform: scaleX(1);
-}
-
-.github-icon {
-  filter: brightness(0) invert(1);
-  transition: transform var(--motion-duration-fast) var(--motion-ease-out);
-  margin-left: 10px;
-}
-
-.github-link:hover .github-icon {
-  transform: scale(1.5);
-}
-
-/* Dark mode - adjust icon color */
-[data-theme="dark"] .github-icon {
-  filter: brightness(0) invert(1);
+.technologies app-tech-tags {
+  margin-top: 0;
 }
 
 .not-found {
-  text-align: center;
+  max-width: 640px;
+  margin: 2rem auto;
   padding: 4rem 2rem;
+  text-align: center;
   color: var(--text-secondary);
   background: var(--surface-raised);
-  border-radius: 16px;
   border: 1px solid var(--border-subtle);
+  border-radius: 16px;
   box-shadow: var(--elevation-2);
-  animation: fadeInUp 0.8s var(--motion-ease-out);
 }
 
 .not-found h2 {
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  font-size: 2rem;
+  justify-content: center;
+  font-size: 1.75rem;
+}
+
+.not-found h2::before {
+  display: none;
 }
 
 .not-found p {
-  font-size: 1.1rem;
+  margin: 0;
+  font-size: 1.05rem;
   line-height: 1.6;
 }
 
-/* Responsive design - Tablet */
 @media (max-width: 1024px) {
-  .project-detail-container {
-    padding: 1.5rem;
-  }
-
-  .description,
-  .technologies,
-  .challenges,
-  .gallery {
-    padding: 1.35rem;
-  }
+  .project-detail-container { padding: 0 1.5rem 2.5rem; }
 }
 
-/* Responsive design - Mobile */
 @media (max-width: 768px) {
-  .project-detail-container {
-    padding: 1rem;
-  }
-
-  h1 {
-    font-size: 1.75rem;
-    margin-bottom: 0.875rem;
-  }
-
-  .project-meta {
-    flex-direction: column;
-    gap: 0.65rem;
-    margin-bottom: 1.25rem;
-    font-size: 0.85rem;
-  }
-
-  .project-meta span {
-    padding: 0.4rem 0.875rem;
-    font-size: 0.85rem;
-  }
-
-  .description,
-  .technologies,
-  .challenges,
-  .gallery {
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
-    border-radius: 8px;
-  }
-
-  .description {
-    font-size: 1rem;
-  }
-
-  .technologies strong {
-    font-size: 1rem;
-    margin-bottom: 0.875rem;
-  }
-
-  h2 {
-    font-size: 1.35rem;
-    margin-bottom: 0.875rem;
-  }
-
-  h2::before {
-    width: 3px;
-    height: 1.35rem;
-  }
-
-  .challenges p {
-    font-size: 0.95rem;
-  }
-
-  .github-link {
-    padding: 0.875rem 1.5rem;
-    font-size: 1rem;
-    width: 100%; /* Full width on mobile */
-    justify-content: center;
-    min-height: 44px; /* Touch target size */
-  }
-
-  .no-photos {
-    padding: 1.5rem;
-    font-size: 0.9rem;
-  }
-
-  .not-found {
-    padding: 3rem 1.5rem;
-  }
-
-  .not-found h2 {
-    font-size: 1.75rem;
-  }
-
-  .not-found p {
-    font-size: 1rem;
-  }
+  .project-detail-container { gap: 1.25rem; padding: 0 1rem 2rem; }
+  h1 { font-size: 1.85rem; }
+  .description { font-size: 1.05rem; }
+  .panel { padding: 1.25rem; }
+  h2 { font-size: 1.15rem; }
 }
 
-/* Extra small screens */
 @media (max-width: 480px) {
-  .project-detail-container {
-    padding: 0.75rem;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .project-meta {
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 0.8rem;
-  }
-
-  .project-meta span {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.8rem;
-    border-radius: 6px;
-  }
-
-  .description,
-  .technologies,
-  .challenges,
-  .gallery {
-    padding: 1rem;
-    margin-bottom: 1.25rem;
-    border-radius: 8px;
-  }
-
-  .description {
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
-
-  .technologies strong {
-    font-size: 0.95rem;
-    margin-bottom: 0.75rem;
-  }
-
-  h2 {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-  }
-
-  h2::before {
-    width: 3px;
-    height: 1.25rem;
-  }
-
-  .challenges p {
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  .github-link {
-    padding: 0.75rem 1.25rem;
-    font-size: 0.95rem;
-    border-radius: 6px;
-  }
-
-  .github-icon {
-    margin-left: 6px;
-  }
-
-  .no-photos {
-    padding: 1.25rem;
-    font-size: 0.85rem;
-  }
-
-  .not-found {
-    padding: 2.5rem 1rem;
-    border-radius: 12px;
-  }
-
-  .not-found h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .not-found p {
-    font-size: 0.95rem;
-  }
+  .project-detail-container { padding: 0 0.75rem 1.5rem; }
+  h1 { font-size: 1.6rem; }
+  .description { font-size: 1rem; line-height: 1.6; }
+  .panel { padding: 1rem; border-radius: 10px; }
+  .panel p { font-size: 0.95rem; line-height: 1.6; }
+  .not-found { padding: 2.5rem 1rem; }
+  .not-found h2 { font-size: 1.5rem; }
 }
 
-/* Animation keyframes */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Dark mode optimizations */
-[data-theme="dark"] .description,
-[data-theme="dark"] .technologies,
-[data-theme="dark"] .challenges,
-[data-theme="dark"] .gallery {
-  background: var(--surface-raised);
-  border-color: var(--border-default);
+@media (prefers-reduced-motion: reduce) {
+  .project-detail-container { animation: none; }
 }
 
-[data-theme="dark"] .project-meta span {
-  background: var(--surface-sunken);
-  border-color: var(--border-default);
-}
-
-[data-theme="dark"] .not-found {
-  background: var(--surface-raised);
-  border-color: var(--border-default);
-}
-
-/* Print optimizations */
 @media print {
-  .project-detail-container {
-    max-width: none;
-    padding: 0;
-  }
-
-  .description,
-  .technologies,
-  .challenges,
-  .gallery {
-    background: transparent !important;
-    border: 1px solid var(--border-default) !important;
-    box-shadow: none !important;
-  }
-
-  .github-link {
-    border: 1px solid var(--border-default) !important;
-    color: var(--text-primary) !important;
-  }
-
+  .project-detail-container { max-width: none; padding: 0; }
+  .panel { background: transparent; box-shadow: none; border: 1px solid var(--border-default); }
 }

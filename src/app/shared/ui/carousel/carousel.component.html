@@ -1,10 +1,16 @@
 @if (photoUrls().length > 0) {
-  <div class="carousel-container" (mouseenter)="onHover()" (mouseleave)="onLeave()">
+  <div class="carousel-container" (mouseenter)="onHover()" (mouseleave)="onLeave()" (focusin)="onHover()" (focusout)="onLeave()">
+    <!-- Every control is overlaid inside this fixed-ratio box, so changing
+         slides never changes the carousel's height. -->
     <div class="carousel-main">
       <img
         #carouselImage
         [src]="photoUrls()[currentImageIndex()]"
         [alt]="projectName() + ' screenshot ' + (currentImageIndex() + 1)"
+        width="1600"
+        height="900"
+        [attr.loading]="loading()"
+        decoding="async"
         class="carousel-image"
         (click)="openFullscreen()"
         (keydown.enter)="openFullscreen()"
@@ -12,43 +18,41 @@
         role="button"
         i18n-aria-label="Carousel view fullscreen@@carouselViewFullscreen"
         aria-label="View image fullscreen" />
+
+      @if (photoUrls().length > 1) {
+        <button
+          type="button"
+          class="carousel-button carousel-button-prev"
+          (click)="previousImage()"
+          i18n-aria-label="Carousel previous image@@carouselPrevImage"
+          aria-label="Previous image">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+        </button>
+        <button
+          type="button"
+          class="carousel-button carousel-button-next"
+          (click)="nextImage()"
+          i18n-aria-label="Carousel next image@@carouselNextImage"
+          aria-label="Next image">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+        </button>
+
+        <div class="carousel-indicators">
+          @for (dot of photoUrls(); track $index; let i = $index) {
+            <button
+              type="button"
+              class="indicator-dot"
+              [class.active]="i === currentImageIndex()"
+              (click)="goToImage(i)"
+              [attr.aria-label]="goToLabel(i)"
+              [attr.aria-current]="i === currentImageIndex() ? 'true' : null">
+            </button>
+          }
+        </div>
+      }
     </div>
-    
-    @if (photoUrls().length > 1) {
-      <button 
-        type="button"
-        class="carousel-button carousel-button-prev" 
-        (click)="previousImage()"
-        [attr.aria-label]="'Previous image'"
-        [disabled]="photoUrls().length === 0">
-        ⟨
-      </button>
-      <button 
-        type="button"
-        class="carousel-button carousel-button-next" 
-        (click)="nextImage()"
-        [attr.aria-label]="'Next image'"
-        [disabled]="photoUrls().length === 0">
-        ⟩
-      </button>
-      
-      <div class="carousel-indicators">
-        @for (dot of photoUrls(); track $index; let i = $index) {
-          <button
-            type="button"
-            class="indicator-dot"
-            [class.active]="i === currentImageIndex()"
-            (click)="goToImage(i)"
-            [attr.aria-label]="'Go to image ' + (i + 1)"
-            [attr.aria-current]="i === currentImageIndex() ? 'true' : 'false'">
-          </button>
-        }
-      </div>
-      
-      <div class="carousel-counter">
-        {{ currentImageIndex() + 1 }} / {{ photoUrls().length }}
-      </div>
-    }
   </div>
 } @else {
   <div class="carousel-empty">

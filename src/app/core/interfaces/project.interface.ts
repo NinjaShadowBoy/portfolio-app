@@ -4,6 +4,7 @@ export interface Project {
   description: string;
   technologies: string[];
   githubLink: string | null;
+  demoLink: string | null; // Deployed site, when there is one
   challenges: string | null;
   whatILearned: string | null;
   isExpanded?: boolean; // UI-only property, not from backend
@@ -12,6 +13,7 @@ export interface Project {
   createdAt: string; // ISO string from backend
   updatedAt: string; // ISO string from backend
   featured: boolean; // For homepage featured projects
+  displayOrder: number; // Position in project lists, ascending
   photoUrls: string[]; // Backend uses photoUrls (not photosUrls)
   photos?: Photo[]; // Optional: Full photo objects with IDs for deletion
 }
@@ -25,7 +27,7 @@ export interface Photo {
 export type ProjectCreateRequest = Pick<
   Project,
   'name' | 'description' | 'technologies' | 'githubLink' | 'challenges' | 'whatILearned'
-> & { featured?: boolean };
+> & { featured?: boolean; demoLink?: string | null };
 
 export type ProjectUpdateRequest = Partial<ProjectCreateRequest>;
 

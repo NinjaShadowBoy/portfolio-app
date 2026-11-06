@@ -21,8 +21,14 @@
       [class.selected]="option.value === selected()"
       [tabindex]="tabIndexFor(i)"
       (click)="select(option.value)"
+      [attr.aria-label]="option.shortLabel ? option.label : null"
       (keydown)="onKeydown($event, i)">
-      {{ option.label }}
+      @if (option.shortLabel) {
+        <span class="label-full">{{ option.label }}</span>
+        <span class="label-short" aria-hidden="true">{{ option.shortLabel }}</span>
+      } @else {
+        {{ option.label }}
+      }
     </button>
   }
 </div>
