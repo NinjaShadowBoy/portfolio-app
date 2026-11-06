@@ -40,6 +40,17 @@ describe('FooterComponent', () => {
 
   it('routes the quick links to their pages', () => {
     const hrefs = Array.from(el.querySelectorAll('.footer-nav a')).map((a) => a.getAttribute('href'));
-    expect(hrefs).toEqual(['/home', '/projects', '/about', '/contact']);
+    expect(hrefs).toEqual(['/home', '/projects', '/publications', '/about', '/contact', '/tools']);
+  });
+
+  it('has no links that only lead back to the privacy page', () => {
+    const privacy = el.querySelectorAll('.footer-bottom a[href="/privacy"]');
+    expect(privacy.length).toBe(1);
+    expect(el.textContent).not.toContain('Terms of Service');
+    expect(el.textContent).not.toContain('Cookie Policy');
+  });
+
+  it('offers log in to visitors', () => {
+    expect(el.querySelector('.footer-bottom a[href="/login"]')).toBeTruthy();
   });
 });

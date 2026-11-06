@@ -58,17 +58,18 @@ describe('HeaderComponent', () => {
     await setup('en');
     const host = fixture.nativeElement as HTMLElement;
     for (const menu of ['.desktop-nav', '.mobile-nav']) {
-      for (const path of ['/home', '/projects', '/articles', '/tools', '/about', '/contact']) {
+      for (const path of ['/home', '/projects', '/publications', '/about', '/contact']) {
         expect(host.querySelector(`${menu} a[href="${path}"]`), `${menu} ${path}`).toBeTruthy();
       }
     }
   });
 
-  it('shows login when logged out, and profile, logout and admin links for an admin', async () => {
+  it('leaves login to the footer, and shows profile and admin links for an admin', async () => {
     await setup('en');
     const desktop = () => (fixture.nativeElement as HTMLElement).querySelector('.desktop-nav')!;
 
-    expect(desktop().textContent).toContain('Login');
+    expect(desktop().querySelector('a[href="/login"]')).toBeNull();
+    expect(desktop().querySelector('a[href="/tools"]')).toBeNull();
     expect(desktop().querySelector('a[href="/admin"]')).toBeNull();
 
     isAuthenticated.set(true);
@@ -77,7 +78,6 @@ describe('HeaderComponent', () => {
 
     expect(desktop().querySelector('.user-name')?.textContent).toContain('Ann');
     expect(desktop().querySelector('a[href="/admin"]')).toBeTruthy();
-    expect(desktop().textContent).toContain('Logout');
   });
 
   it('toggles the mobile menu and locks page scrolling while it is open', async () => {

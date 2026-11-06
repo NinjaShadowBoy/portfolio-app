@@ -35,30 +35,22 @@
         <h4 class="section-title" i18n="Footer contact heading@@footerContact">Contact</h4>
         <div class="contact-info">
           <div class="contact-item">
-            <img class="contact-icon" src="assets/icons/mail.svg" alt="Email icon" />
+            <img class="contact-icon" src="assets/icons/mail.svg" alt="" />
             <a [href]="'mailto:' + contactInfo.email" class="contact-link">
               {{ contactInfo.email }}
             </a>
           </div>
           <div class="contact-item">
-            <img class="contact-icon" src="assets/icons/phone.svg" alt="Phone icon" />
+            <img class="contact-icon" src="assets/icons/phone.svg" alt="" />
             <a [href]="'tel:' + contactInfo.phone" class="contact-link">
               {{ contactInfo.phone }}
             </a>
           </div>
           <div class="contact-item">
-            <img class="contact-icon" src="assets/icons/map-pin.svg" alt="Location icon" />
+            <img class="contact-icon" src="assets/icons/map-pin.svg" alt="" />
             <span class="contact-text" i18n="Footer location@@footerLocation">Grenoble, France</span>
           </div>
         </div>
-      </div>
-
-      <!-- Newsletter Section -->
-      <div class="footer-section">
-        <h4 class="section-title" i18n="Footer stay updated heading@@footerStayUpdated">Stay Updated</h4>
-        <p class="newsletter-description" i18n="Footer newsletter description@@footerNewsletterDescription">
-          Get an email when I publish a new project or article.
-        </p>
       </div>
     </div>
 
@@ -66,12 +58,18 @@
     <div class="footer-bottom">
       <div class="footer-bottom-content">
         <p class="copyright" i18n="Footer copyright text@@footerCopyright">
-          © {{ currentYear }} Abena Alex Nelson Ryan. All rights reserved.
+          © {{ currentYear }} Alex Abena. All rights reserved.
         </p>
         <div class="footer-bottom-links">
           <a routerLink="/privacy" class="footer-bottom-link interactive" i18n="Footer privacy policy link@@footerPrivacyPolicy">Privacy Policy</a>
-          <a routerLink="/privacy" class="footer-bottom-link interactive" i18n="Footer terms of service link@@footerTermsOfService">Terms of Service</a>
-          <a routerLink="/privacy" class="footer-bottom-link interactive" i18n="Footer cookie policy link@@footerCookiePolicy">Cookie Policy</a>
+          @if (isAdmin()) {
+          <a routerLink="/admin" class="footer-bottom-link interactive" i18n="Footer admin link@@footerAdmin">Admin</a>
+          }
+          @if (isAuthenticated()) {
+          <button type="button" class="footer-bottom-link interactive" (click)="logout()" i18n="Footer logout link@@footerLogout">Log out</button>
+          } @else {
+          <a routerLink="/login" class="footer-bottom-link interactive" i18n="Footer login link@@footerLogin">Log in</a>
+          }
         </div>
       </div>
     </div>

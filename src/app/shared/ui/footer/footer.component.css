@@ -184,13 +184,6 @@
   color: var(--text-secondary);
 }
 
-/* Newsletter Section */
-.newsletter-description {
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin: 0 0 1rem 0;
-}
-
 /* Footer Bottom */
 .footer-bottom {
   border-top: 1px solid var(--border-subtle);
@@ -219,6 +212,11 @@
 }
 
 .footer-bottom-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
   color: var(--text-tertiary);
   text-decoration: none;
   font-size: 0.9rem;
@@ -286,10 +284,6 @@
   .section-title {
     font-size: 1rem;
   }
-
-  .newsletter-description {
-    font-size: 0.9rem;
-  }
 }
 
 /* Extra small screens */
@@ -333,8 +327,7 @@
   }
 
   .footer-link,
-  .contact-item,
-  .newsletter-description {
+  .contact-item {
     font-size: 0.875rem;
   }
 

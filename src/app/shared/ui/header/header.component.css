@@ -44,7 +44,7 @@
   min-width: 0;
 }
 
-.header-content h1 {
+.header-content .site-name {
   margin: 0;
   font-size: 2rem;
   font-weight: 300;
@@ -219,7 +219,7 @@
     padding: 1.5rem;
   }
 
-  .header-content h1 {
+  .header-content .site-name {
     font-size: 1.75rem;
   }
 
@@ -241,7 +241,7 @@
     align-items: center;
   }
 
-  .header-content h1 {
+  .header-content .site-name {
     font-size: 1.1rem !important;
   }
 
@@ -250,7 +250,7 @@
     margin: 0.2rem 0 0 0;
   }
 
-  .header-content h1,
+  .header-content .site-name,
   .header-content p {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -273,7 +273,7 @@
     padding: 0.6rem 0.85rem;
   }
 
-  .header-content h1 {
+  .header-content .site-name {
     font-size: 0.95rem !important;
     line-height: 1.2;
   }
@@ -499,7 +499,7 @@
     min-width: 0;
   }
 
-  .header-content h1 {
+  .header-content .site-name {
     font-size: 0.9rem !important;
     line-height: 1.2;
     margin: 0;
@@ -774,6 +774,34 @@
 .cv-download-group {
   display: flex;
   gap: 0.25rem;
+}
+
+/* Top-layer popover; top/left are set from the button when it opens. */
+.cv-menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  padding: 0.35rem;
+  min-width: 10rem;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  background: var(--surface-overlay);
+  box-shadow: var(--elevation-3);
+}
+
+.navigation .cv-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0 0.85rem;
+  border-radius: 8px;
+  color: var(--text-primary);
+}
+
+.navigation .cv-menu-item:hover,
+.navigation .cv-menu-item:focus-visible {
+  background: var(--surface-hover);
 }
 
 .cv-download-n-theme-group {

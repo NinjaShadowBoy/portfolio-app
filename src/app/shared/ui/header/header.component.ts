@@ -15,7 +15,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { IdentityService } from '../../../core/services/identity.service';
 import { SocialLinksService } from '../../../core/services/social-links.service';
 import { ThemeService } from '../../../core/services/theme.service';
-import { downloadCV } from '../../../core/constants/cv';
+import { CV_PATHS, downloadCV } from '../../../core/constants/cv';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 import { FlagComponent } from '../flag/flag.component';
 
@@ -24,7 +24,7 @@ import { FlagComponent } from '../flag/flag.component';
   imports: [NgTemplateOutlet, RouterLink, RouterLinkActive, UserAvatarComponent, FlagComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
-  host: { '(document:keydown.escape)': 'onEscape()' },
+  host: { '(document:keydown.escape)': 'onEscape()', '(window:scroll)': 'closeCvMenu()' },
 })
 export class HeaderComponent {
   private readonly document = inject(DOCUMENT);
@@ -38,8 +38,7 @@ export class HeaderComponent {
   readonly navItems = [
     { label: $localize`:Nav home link@@navHome:Home`, link: '/home' },
     { label: $localize`:Nav projects link@@navProjects:Projects`, link: '/projects' },
-    { label: $localize`:Nav articles link@@navArticles:Articles`, link: '/articles' },
-    { label: $localize`:Nav tools link@@navTools:Tools`, link: '/tools' },
+    { label: $localize`:Nav publications link@@navPublications:Publications`, link: '/publications' },
     { label: $localize`:Nav about link@@navAbout:About Me`, link: '/about' },
     { label: $localize`:Nav contact link@@navContact:Contact Me`, link: '/contact' },
   ];
@@ -51,6 +50,8 @@ export class HeaderComponent {
   readonly socialLinks = inject(SocialLinksService).getSocialLinks();
   readonly currentTheme = this.themeService.currentTheme;
   readonly downloadCV = downloadCV;
+  readonly cvPaths = CV_PATHS;
+  private readonly cvMenu = viewChild<ElementRef<HTMLElement>>('cvMenu');
 
   readonly isMenuOpen = signal(false);
   readonly isAnimating = signal(false);
@@ -120,8 +121,25 @@ export class HeaderComponent {
     }
   }
 
-  logout() {
-    this.auth.logout();
+  /**
+   * The CV menu is a popover so it renders in the top layer: the header clips
+   * its overflow, so an absolutely positioned dropdown would be cut off.
+   * Anchor positioning is not available everywhere, so the menu is placed
+   * under its button when it opens.
+   */
+  onCvMenuToggle(event: Event) {
+    if ((event as ToggleEvent).newState !== 'open') return;
+    const menu = event.target as HTMLElement;
+    const button = this.document.querySelector<HTMLElement>('[popovertarget="cv-menu"]');
+    if (!button) return;
+    const rect = button.getBoundingClientRect();
+    menu.style.top = `${rect.bottom + 6}px`;
+    menu.style.left = `${rect.left}px`;
+  }
+
+  closeCvMenu() {
+    const menu = this.cvMenu()?.nativeElement;
+    if (menu?.matches?.(':popover-open')) menu.hidePopover();
   }
 
   toggleTheme() {

@@ -33,15 +33,6 @@
           </a>
         </li>
         }
-        <li class="auth-controls">
-          @if (isAuthenticated()) {
-          <a class="link liquid-glass" (click)="logout()" routerLinkActive="active" ariaCurrentWhenActive="page"
-            i18n="Header logout link@@headerLogout">Logout</a>
-          } @else {
-          <a class="link liquid-glass" routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page"
-            i18n="Header login link@@headerLogin">Login</a>
-          }
-        </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
           <a class="link liquid-glass" routerLink="/admin" routerLinkActive="active" ariaCurrentWhenActive="page"
@@ -58,7 +49,26 @@
 
         <li class="cv-download-n-theme-group">
           <div class="cv-download-group">
-            <ng-container *ngTemplateOutlet="cvButtons" />
+            <button class="header-cv-btn liquid-glass" type="button" popovertarget="cv-menu"
+              aria-haspopup="menu">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>CV</span>
+            </button>
+            <div #cvMenu id="cv-menu" class="cv-menu" popover role="menu" (toggle)="onCvMenuToggle($event)">
+              <a class="cv-menu-item" role="menuitem" [href]="cvPaths.en" download (click)="closeCvMenu()">
+                <app-flag lang="en" class="lang-flag" />
+                <span i18n="Header CV menu English@@headerCvEnglish">English</span>
+              </a>
+              <a class="cv-menu-item" role="menuitem" [href]="cvPaths.fr" download (click)="closeCvMenu()">
+                <app-flag lang="fr" class="lang-flag" />
+                <span i18n="Header CV menu French@@headerCvFrench">French</span>
+              </a>
+            </div>
             <div class="theme-toggle-item">
               <button class="theme-toggle" type="button" (click)="toggleTheme()"
                 [class.dark]="currentTheme() === 'dark'"
@@ -99,7 +109,7 @@
 
     <!-- String interpolation for dynmic data -->
     <div class="header-content">
-      <h1 i18n="Header title@@headerTitle">Alex Nelson Abena aka <em class="nickname">NinjaShadowBoy</em></h1>
+      <div class="site-name" i18n="Header title@@headerTitle">Alex Abena aka <em class="nickname">NinjaShadowBoy</em></div>
       <p i18n="Header subtitle@@headerSubtitle">Software engineering student at Ensimag (Grenoble INP)</p>
     </div>
 
@@ -157,15 +167,6 @@
             ariaCurrentWhenActive="page" (click)="closeMenu(false)">{{ item.label }}</a>
         </li>
         }
-        <li class="auth-controls">
-          @if (isAuthenticated()) {
-          <a class="link liquid-glass" (click)="logout(); closeMenu()" routerLinkActive="active"
-            ariaCurrentWhenActive="page" i18n="Header logout link@@headerLogout">Logout</a>
-          } @else {
-          <a class="link liquid-glass" routerLink="/login" routerLinkActive="active"
-            ariaCurrentWhenActive="page" (click)="closeMenu(false)" i18n="Header login link@@headerLogin">Login</a>
-          }
-        </li>
         @if (isAuthenticated() && isAdmin()) {
         <li>
           <a class="link liquid-glass" routerLink="/admin" routerLinkActive="active"
