@@ -1,9 +1,11 @@
-import { Component, DestroyRef, ElementRef, afterNextRender, inject, signal, viewChild } from '@angular/core';
+import { Component, DestroyRef, computed, ElementRef, afterNextRender, inject, signal, viewChild } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProjectDataService } from '../../core/services/project-data.service';
 import { ProjectCardComponent } from '../../shared/ui/project-card/project-card.component';
 import { TechnologiesService, Technology } from '../../core/services/technologies.service';
+
+const FEATURED_ON_HOME = 4;
 
 interface Pillar {
   tech: Technology[];
@@ -21,7 +23,8 @@ export class HomeComponent {
   private techService = inject(TechnologiesService);
   private arsenal = viewChild.required<ElementRef<HTMLElement>>('arsenal');
 
-  readonly featuredProjects = this.projectService.featuredProjects;
+  /** The first featured projects in display order; the rest are on /projects. */
+  readonly featuredProjects = computed(() => this.projectService.featuredProjects().slice(0, FEATURED_ON_HOME));
 
   /** False while the rings are off-screen, so their animation is paused instead of recalculated every frame. */
   readonly arsenalVisible = signal(true);

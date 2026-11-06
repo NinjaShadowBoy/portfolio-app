@@ -1,8 +1,8 @@
 <section class="hero-section" aria-labelledby="hero-greeting">
   <div class="hero">
-      <img class="my-face" src="assets/images/2223i141.jpg" alt="Alex Nelson ABENA - Profile Picture" width="512" height="512" fetchpriority="high">
+      <img class="my-face" src="assets/images/2223i141.jpg" alt="Alex Abena" width="512" height="512" fetchpriority="high">
       <div class="hero-text">
-        <h2 id="hero-greeting" class="hero-greeting" i18n="Home page hero greeting@@homeHeroGreeting">Hi, I'm Alex.</h2>
+        <h1 id="hero-greeting" class="hero-greeting" i18n="Home page hero greeting@@homeHeroGreeting">Hi, I'm Alex.</h1>
         <p class="headline" i18n="Home page hero headline@@homeHeadline">Final-year software engineering student at Ensimag, Grenoble INP. I build backends and AI features.</p>
         <p class="availability" i18n="Home page internship availability@@homeAvailability">Looking for a 6-month internship from January 2027.</p>
         <div class="hero-actions">
@@ -13,6 +13,25 @@
       </div>
     <img class="hero-illustration" src="assets/images/Ilustration-1-animated.svg" alt="" width="346" height="742">
   </div>
+</section>
+
+<!-- Recent work: the internship and the papers, each pointing to its full page -->
+<section class="recent-work" aria-labelledby="recent-work-heading">
+  <h2 id="recent-work-heading" i18n="Home recent work heading@@homeRecentWork">Recent work</h2>
+  <ul class="recent-list">
+    <li class="recent-item">
+      <p class="recent-when" i18n="Home internship dates@@homeInternshipDates">May - Sep 2026</p>
+      <h3 class="recent-title" i18n="Home internship title@@homeInternshipTitle">Software engineering intern, TWMicronics</h3>
+      <p class="recent-text" i18n="Home internship summary@@homeInternshipSummary">Wrote the decision record for rewriting the MAYA multi-tenant ERP in Go and Nuxt, rebuilt its CRM modules, and built the RAG pipeline behind its chatbot.</p>
+      <a class="recent-link" routerLink="/about" i18n="Home internship link@@homeInternshipLink">More on the About page</a>
+    </li>
+    <li class="recent-item">
+      <p class="recent-when" i18n="Home papers dates@@homePapersDates">Oct 2026, ATU Galway</p>
+      <h3 class="recent-title" i18n="Home papers title@@homePapersTitle">Three papers at CERC 2026</h3>
+      <p class="recent-text" i18n="Home papers summary@@homePapersSummary">Co-author of three papers on speech translation and recognition for low-resource African languages.</p>
+      <a class="recent-link" routerLink="/publications" i18n="Home papers link@@homePapersLink">Read the papers</a>
+    </li>
+  </ul>
 </section>
 
 <!-- My Arsenal Section - three homes for the code, each an orbiting 3D ring -->
@@ -60,11 +79,14 @@
 </ng-template>
 
 <section class="featured-projects">
-  <h2 i18n="Home page featured projects heading@@homeFeaturedProjects">Featured Projects</h2>
+  <div class="featured-header">
+    <h2 i18n="Home page featured projects heading@@homeFeaturedProjects">Featured Projects</h2>
+    <a class="all-projects-link" routerLink="/projects" i18n="Home all projects link@@homeAllProjects">All projects</a>
+  </div>
   @if (featuredProjects().length > 0) {
   <div class="projects-grid">
     @for (project of featuredProjects(); track project.id) {
-    <app-project-card [project]="project" />
+    <app-project-card [project]="project" [showFeaturedBadge]="false" />
     }
   </div>
   } @else {
