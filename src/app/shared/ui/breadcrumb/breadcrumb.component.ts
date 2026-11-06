@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
-import { Router, NavigationEnd, ActivatedRoute, RouterLink } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Router, NavigationEnd, ActivatedRouteSnapshot, RouterLink } from '@angular/router';
+import { filter } from 'rxjs';
 import { ProjectDataService } from '../../../core/services/project-data.service';
 
 export interface Breadcrumb {
@@ -9,36 +9,47 @@ export interface Breadcrumb {
   url: string;
 }
 
-/** Builds the trail from each activated route's `breadcrumb` data; project ids resolve to names. */
+/**
+ * Builds the trail from each activated route's `breadcrumb` data; project ids
+ * resolve to names. A trail of one crumb says nothing the page heading does
+ * not, so it is not shown.
+ */
 @Component({
   selector: 'app-breadcrumb',
-  imports: [AsyncPipe, RouterLink],
+  imports: [RouterLink],
   templateUrl: './breadcrumb.component.html',
   styleUrl: './breadcrumb.component.css',
 })
 export class BreadcrumbComponent {
   private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
   private projectService = inject(ProjectDataService);
 
-  readonly breadcrumbs = this.router.events.pipe(
-    filter((event) => event instanceof NavigationEnd),
-    map(() => this.buildBreadcrumbs(this.activatedRoute.root))
+  private readonly navigation = toSignal(
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd))
   );
 
-  private buildBreadcrumbs(route: ActivatedRoute, url = '', crumbs: Breadcrumb[] = []): Breadcrumb[] {
+  /** Recomputed on each navigation and when the projects load, so a direct visit shows the project name. */
+  readonly breadcrumbs = computed(() => {
+    this.navigation();
+    this.projectService.projects();
+    // The snapshot tree is complete at all times; the live ActivatedRoute tree
+    // is not while a navigation is under way, which is when the projects can load.
+    const crumbs = this.buildBreadcrumbs(this.router.routerState.snapshot.root);
+    return crumbs.length > 1 ? crumbs : [];
+  });
+
+  private buildBreadcrumbs(route: ActivatedRouteSnapshot, url = '', crumbs: Breadcrumb[] = []): Breadcrumb[] {
     const child = route.children[0];
     if (!child) return crumbs;
 
-    const segment = child.snapshot.url.map((s) => s.path).join('/');
+    const segment = child.url.map((s) => s.path).join('/');
     if (segment === '') return crumbs;
     url += `/${segment}`;
 
-    const projectId = child.snapshot.params['id'];
+    const projectId = child.params['id'];
     const label = projectId
-      ? this.projectService.getProject(projectId)?.name ||
-        $localize`:@@breadcrumbProjectDetails:Project Details`
-      : child.snapshot.data['breadcrumb'] || '';
+      ? this.projectService.getProject(projectId)?.name || child.data['breadcrumb'] || ''
+      : child.data['breadcrumb'] || '';
     if (label) crumbs.push({ label, url });
 
     return this.buildBreadcrumbs(child, url, crumbs);

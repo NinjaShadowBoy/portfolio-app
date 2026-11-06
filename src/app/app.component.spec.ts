@@ -14,7 +14,7 @@ describe('AppComponent', () => {
       providers: [
         provideRouter([]), provideHttpClient(), provideHttpClientTesting(),
         { provide: IdentityService, useValue: { identity: signal(null) } },
-        { provide: ProjectDataService, useValue: { getProject: () => undefined } },
+        { provide: ProjectDataService, useValue: { projects: () => [], getProject: () => undefined } },
       ],
     }).compileComponents();
   });

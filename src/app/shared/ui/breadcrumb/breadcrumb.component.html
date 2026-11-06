@@ -1,13 +1,15 @@
-<nav class="breadcrumb">
-  <ul>
-    @for (crumb of breadcrumbs | async; track crumb.url; let last = $last) {
+@if (breadcrumbs().length > 0) {
+<nav class="breadcrumb" aria-label="Breadcrumb" i18n-aria-label="Breadcrumb landmark@@breadcrumbLabel">
+  <ol>
+    @for (crumb of breadcrumbs(); track crumb.url; let last = $last) {
     <li>
       @if (!last) {
       <a [routerLink]="crumb.url">{{ crumb.label }}</a>
       } @else {
-      <span>{{ crumb.label }}</span>
+      <span aria-current="page">{{ crumb.label }}</span>
       }
     </li>
     }
-  </ul>
+  </ol>
 </nav>
+}

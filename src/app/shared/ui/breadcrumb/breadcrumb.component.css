@@ -6,7 +6,7 @@
   transition: all var(--motion-duration-normal) var(--motion-ease-out);
 }
 
-.breadcrumb ul {
+.breadcrumb ol {
   list-style: none;
   padding: 0;
   display: flex;
@@ -30,7 +30,14 @@
   border-radius: 6px;
   transition: all var(--motion-duration-fast) var(--motion-ease-out);
   position: relative;
-  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Extends the tap area to 44px tall without changing the look. */
+.breadcrumb li a::after {
+  content: "";
+  position: absolute;
+  inset: -9px -4px;
 }
 
 .breadcrumb li a::before {
@@ -98,7 +105,7 @@
     margin: 0.5rem auto;
   }
 
-  .breadcrumb ul {
+  .breadcrumb ol {
     gap: 0.5rem;
     font-size: 0.8rem;
   }

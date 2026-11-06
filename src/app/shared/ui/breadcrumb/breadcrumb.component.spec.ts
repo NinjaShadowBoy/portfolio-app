@@ -35,7 +35,10 @@ describe('BreadcrumbComponent', () => {
         ]),
         {
           provide: ProjectDataService,
-          useValue: { getProject: (id: string) => (Number(id) === 1 ? { name: 'Lora' } : undefined) },
+          useValue: {
+            projects: () => [],
+            getProject: (id: string) => (Number(id) === 1 ? { name: 'Lora' } : undefined),
+          },
         },
       ],
     }).compileComponents();
@@ -63,8 +66,9 @@ describe('BreadcrumbComponent', () => {
     expect(crumbs().map((c) => c.label)).toEqual(['Projects', 'Project Details']);
   });
 
-  it('renders a single crumb for a top-level page', async () => {
+  it('renders nothing for a top-level page, where the trail has one crumb', async () => {
     await navigate('/home');
-    expect(crumbs()).toEqual([{ label: 'Home', href: null }]);
+    expect(crumbs()).toEqual([]);
+    expect((fixture.nativeElement as HTMLElement).querySelector('nav')).toBeNull();
   });
 });
