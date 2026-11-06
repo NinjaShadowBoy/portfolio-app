@@ -47,6 +47,10 @@
   margin: 0;
 }
 
+.brand-description .no-break {
+  white-space: nowrap;
+}
+
 /* Social Links */
 .social-links {
   display: flex;
