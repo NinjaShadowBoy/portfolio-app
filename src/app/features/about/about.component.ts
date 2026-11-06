@@ -1,3 +1,4 @@
+import { RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
 import { downloadCV } from '../../core/constants/cv';
 import { IconCloudComponent } from '../../shared/ui/icon-cloud/icon-cloud.component';
@@ -6,7 +7,7 @@ import { FlagComponent } from '../../shared/ui/flag/flag.component';
 
 @Component({
   selector: 'app-about',
-  imports: [IconCloudComponent, FlagComponent],
+  imports: [IconCloudComponent, FlagComponent, RouterLink],
   templateUrl: './about.component.html',
   styleUrl: './about.component.css',
 })
@@ -29,6 +30,8 @@ export class AboutComponent {
         { name: 'LangChain', level: 2 },
         { name: 'OpenRouter', level: 2 },
         { name: 'ChatGPT', level: 2 },
+        { name: 'Gemini', level: 2 },
+        { name: 'MCP', level: 1 },
       ],
     },
     {

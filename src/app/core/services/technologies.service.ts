@@ -183,6 +183,16 @@ export class TechnologiesService {
       logo: 'https://cdn.simpleicons.org/ovh',
       docUrl: 'https://help.ovhcloud.com/',
     },
+    'gemini': {
+      name: 'Gemini',
+      logo: 'https://cdn.simpleicons.org/googlegemini',
+      docUrl: 'https://ai.google.dev/gemini-api/docs',
+    },
+    'mcp': {
+      name: 'MCP',
+      logo: 'https://cdn.simpleicons.org/modelcontextprotocol',
+      docUrl: 'https://modelcontextprotocol.io/',
+    },
     'chatgpt': {
       name: 'ChatGPT',
       logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/openai.svg',

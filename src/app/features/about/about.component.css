@@ -33,6 +33,9 @@ p {
 
 .cv-download-group {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: 1rem;
 }
 
@@ -55,6 +58,23 @@ p {
   width: 140px;
   height: 40px;
   overflow: hidden;
+}
+
+/* Sits beside the CV buttons at the same height */
+.articles-link {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 1.25rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.articles-link:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 .lang-flag {
