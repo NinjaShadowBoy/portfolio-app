@@ -1096,8 +1096,6 @@ body * {
   .btn-ghost,
   a[role="button"] {
     min-height: var(--min-touch-target);
-    padding: 0.75rem 1.25rem !important;
-    font-size: 1rem !important;
   }
 
   /* Better input sizing for mobile */
@@ -1107,7 +1105,6 @@ body * {
     min-height: var(--min-touch-target);
     font-size: 16px !important;
     /* Prevents iOS zoom */
-    padding: 0.75rem !important;
   }
 }
 

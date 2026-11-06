@@ -128,6 +128,11 @@ export class TechnologiesService {
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
       docUrl: 'https://www.docker.com/',
     },
+    'kubernetes': {
+      name: 'Kubernetes',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-original.svg',
+      docUrl: 'https://kubernetes.io/docs/',
+    },
     'postgresql': {
       name: 'PostgreSQL',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',

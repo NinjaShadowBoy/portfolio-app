@@ -160,12 +160,13 @@ export class ProjectDataService {
 
   private applyFilters(): Project[] {
     const { searchTerm, technology, featured } = this.filters();
-    const term = searchTerm.toLowerCase();
+    const term = searchTerm.trim().toLowerCase();
 
     return this.projects().filter(
       (project) =>
         (project.name.toLowerCase().includes(term) ||
-          project.description.toLowerCase().includes(term)) &&
+          project.description.toLowerCase().includes(term) ||
+          project.technologies.some((tech) => tech.toLowerCase().includes(term))) &&
         (!technology || project.technologies.includes(technology)) &&
         (!featured || project.featured)
     );

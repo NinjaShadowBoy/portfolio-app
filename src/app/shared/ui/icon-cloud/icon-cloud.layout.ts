@@ -24,13 +24,13 @@ export interface CloudLayout {
 }
 
 /** Logo diameter in px at natural size, per usage level. */
-export const LEVEL_SIZE: Record<UsageLevel, number> = { 3: 60, 2: 44, 1: 32 };
+export const LEVEL_SIZE: Record<UsageLevel, number> = { 3: 80, 2: 48, 1: 28 };
 
-const GAP = 10; // px between logo edges
+const GAP = 5; // px between logo edges
 const PADDING = 8; // px around the cloud, room for the hover scale
 const STRETCH = 1.3; // horizontal stretch of the spiral, so clouds sit wider than tall
 const STEP = 0.12; // radians per spiral step
-const GROWTH = 1.4; // px of spiral radius gained per radian
+const GROWTH = 1.1; // px of spiral radius gained per radian
 const MAX_STEPS = 6000;
 
 /** FNV-1a: a stable 32-bit hash, so a name always lands in the same place. */

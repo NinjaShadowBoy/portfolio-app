@@ -89,6 +89,7 @@ export class AboutComponent {
       technologies: [
         { name: 'Git', level: 3 },
         { name: 'Docker', level: 3 },
+        { name: 'Kubernetes', level: 2 },
         { name: 'Linux', level: 3 },
         { name: 'npm', level: 2 },
         { name: 'Gradle', level: 2 },
