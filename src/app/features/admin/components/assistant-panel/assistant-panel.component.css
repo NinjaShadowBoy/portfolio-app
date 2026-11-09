@@ -1,0 +1,91 @@
+/* Assistant panel specifics; everything token-covered lives in admin-shared.css. */
+
+.panel-note {
+  margin: -0.25rem 0 1.25rem;
+}
+
+.today-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.today-summary {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.budget {
+  flex: 1 1 16rem;
+  min-width: 12rem;
+}
+
+.budget-label {
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+}
+
+.budget-meter {
+  height: 0.5rem;
+  margin-top: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.budget-meter-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary-500);
+  transition: width var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.chart {
+  margin: 0 0 1.25rem;
+}
+
+.chart figcaption {
+  margin-bottom: 0.4rem;
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+}
+
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: 64px;
+}
+
+.chart-svg rect {
+  fill: var(--color-primary-400);
+}
+
+.sync-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: 0 0 0.75rem;
+}
+
+.sync-error {
+  color: var(--color-danger-text);
+  background: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0 0 0.75rem;
+}
+
+.reindex-row {
+  margin-bottom: 1.25rem;
+}
+
+.admin-panel code {
+  font-size: 0.85em;
+}

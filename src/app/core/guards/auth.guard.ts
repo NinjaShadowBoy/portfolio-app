@@ -24,3 +24,7 @@ export interface CanComponentDeactivate {
 export const contactGuard: CanDeactivateFn<CanComponentDeactivate> = (
   component: CanComponentDeactivate
 ) => component.canDeactivate();
+
+/** Asks the routed component before leaving it, e.g. to protect unsaved edits. */
+export const pendingChangesGuard: CanDeactivateFn<CanComponentDeactivate> = (component) =>
+  component.canDeactivate();

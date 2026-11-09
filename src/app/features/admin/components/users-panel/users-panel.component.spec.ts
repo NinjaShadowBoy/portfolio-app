@@ -2,18 +2,21 @@ import { Mocked } from 'vitest';
 import { createSpyObj } from '../../../../../testing/create-spy-obj';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { UsersPanelComponent } from './users-panel.component';
 import { AdminService } from '../../../../core/services/admin.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { NotificationService } from '../../../../core/services/notification.service';
+import { ConfirmService } from '../../../../core/services/confirm.service';
 import { AdminUser } from '../../../../core/interfaces/admin.interface';
 
 describe('UsersPanelComponent', () => {
   let fixture: ComponentFixture<UsersPanelComponent>;
   let component: UsersPanelComponent;
   let admin: Mocked<AdminService>;
+  let notification: Mocked<NotificationService>;
+  let confirm: { ask: ReturnType<typeof vi.fn> };
 
   const user = (id: number, extra: Partial<AdminUser> = {}): AdminUser => ({
     id,
@@ -36,13 +39,18 @@ describe('UsersPanelComponent', () => {
       of({ items: [user(1, { role: 'ADMIN', provider: 'LOCAL' }), user(8)], total: 2, limit: 25, offset: 0 }),
     );
     admin.updateUserRole.mockReturnValue(of({} as any));
+    admin.deleteUser.mockReturnValue(of(undefined));
+    notification = createSpyObj<NotificationService>(['success', 'error', 'show', 'dismiss']);
+    notification.show.mockReturnValue('toast');
+    confirm = { ask: vi.fn().mockResolvedValue(true) };
 
     await TestBed.configureTestingModule({
       imports: [UsersPanelComponent],
       providers: [
         { provide: AdminService, useValue: admin },
         { provide: AuthService, useValue: { user: signal({ id: 1, name: 'Me', email: 'me@x.y' }) } },
-        { provide: NotificationService, useValue: createSpyObj(['success', 'error']) },
+        { provide: NotificationService, useValue: notification },
+        { provide: ConfirmService, useValue: confirm },
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(UsersPanelComponent);
@@ -85,13 +93,62 @@ describe('UsersPanelComponent', () => {
     expect(fixture.nativeElement.querySelector('.pager')?.textContent).toContain('Previous');
   });
 
-  it('updates the row in place after a role change', () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
-
+  it('changes the role in place at once and offers Undo, which sends the inverse', () => {
     component.setRole(component.page()!.items[1], 'ADMIN');
 
     expect(admin.updateUserRole).toHaveBeenCalledWith(8, 'ADMIN');
     expect(component.page()!.items[1].role).toBe('ADMIN');
+    const toast = notification.show.mock.calls[0][0];
+    expect(toast.message).toContain('User 8 is now an admin');
+
+    toast.actions![0].action();
+
+    expect(admin.updateUserRole).toHaveBeenLastCalledWith(8, 'USER');
+    expect(component.page()!.items[1].role).toBe('USER');
+    // The undo itself offers no further Undo.
+    expect(notification.show).toHaveBeenCalledTimes(1);
+  });
+
+  it('puts the old role back when the change fails', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    admin.updateUserRole.mockReturnValue(throwError(() => ({ error: { message: 'nope' } })));
+
+    component.setRole(component.page()!.items[1], 'ADMIN');
+
+    expect(component.page()!.items[1].role).toBe('USER');
+    expect(notification.dismiss).toHaveBeenCalledWith('toast');
+    expect(notification.error).toHaveBeenCalledWith('Could not change the role: nope');
+  });
+
+  it('deletes a user only after a danger dialog that names their feedback', async () => {
+    const target = { ...component.page()!.items[1], commentCount: 3, ratingCount: 1 };
+    confirm.ask.mockResolvedValue(false);
+    await component.deleteUser(target);
+
+    expect(confirm.ask).toHaveBeenCalledWith(expect.objectContaining({
+      title: 'Delete User 8?',
+      body: expect.stringContaining('3 comments and 1 rating'),
+      tone: 'danger',
+    }));
+    expect(admin.deleteUser).not.toHaveBeenCalled();
+
+    confirm.ask.mockResolvedValue(true);
+    await component.deleteUser(target);
+    expect(admin.deleteUser).toHaveBeenCalledWith(8);
+  });
+
+  it('explains an empty list and offers the next step', async () => {
+    admin.listUsers.mockReturnValue(of({ items: [], total: 0, limit: 25, offset: 0 }));
+    component.searchInput.set('zed');
+    component.applySearch();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const empty: HTMLElement = fixture.nativeElement.querySelector('.empty-state');
+    expect(empty.textContent).toContain('No users match "zed"');
+    empty.querySelector('button')!.click();
+    expect(component.search()).toBe('');
   });
 
   it('resets to the first page when the search changes', async () => {

@@ -2,8 +2,10 @@
 .notification-container {
   position: fixed;
   bottom: 2rem;
-  right: 2rem;
+  /* The desktop chat sheet sets --chat-pane-width so toasts stay clear of it. */
+  right: calc(2rem + var(--chat-pane-width, 0px));
   z-index: 9999;
+  transition: right var(--motion-duration-normal) var(--motion-ease-out);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -191,6 +193,10 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+  .notification-container {
+    transition: none;
+  }
+
   .notification {
     animation: none;
   }

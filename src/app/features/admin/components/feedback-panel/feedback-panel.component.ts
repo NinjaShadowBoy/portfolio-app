@@ -2,9 +2,11 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { tap } from 'rxjs';
 import { AdminService } from '../../../../core/services/admin.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { ArticleDataService } from '../../../../core/services/article-data.service';
+import { injectDeferDelete } from '../../../../core/utils/deferred-action';
 import { AdminComment, CommentTarget, Page } from '../../../../core/interfaces/admin.interface';
 import { CommentType } from '../../../../core/services/comment.service';
 import { DataTableComponent } from '../../../../shared/ui/data-table/data-table.component';
@@ -39,11 +41,13 @@ export class FeedbackPanelComponent {
   private admin = inject(AdminService);
   private notification = inject(NotificationService);
   private articles = inject(ArticleDataService);
+  private readonly deferDelete = injectDeferDelete();
 
   readonly type = signal<CommentType | ''>('');
   readonly target = signal<CommentTarget | ''>('');
   readonly offset = signal(0);
-  readonly busyId = signal<number | null>(null);
+  /** Comments waiting out their Undo window. Deleted ids stay here; the server no longer returns them. */
+  private readonly hiddenIds = signal<ReadonlySet<number>>(new Set());
   readonly typeLabels = COMMENT_TYPE_LABELS;
   readonly types = Object.keys(COMMENT_TYPE_LABELS) as CommentType[];
 
@@ -60,7 +64,17 @@ export class FeedbackPanelComponent {
   readonly page = computed<Page<AdminComment> | null>(() =>
     this.commentsResource.hasValue() ? this.commentsResource.value() : null,
   );
-  readonly comments = computed(() => this.page()?.items ?? []);
+  readonly comments = computed(() => {
+    const hidden = this.hiddenIds();
+    return (this.page()?.items ?? []).filter((comment) => !hidden.has(comment.id));
+  });
+  readonly filtered = computed(() => this.type() !== '' || this.target() !== '');
+  /** Loaded, and nothing to list. */
+  readonly empty = computed(() => {
+    const page = this.page();
+    // Everything there is was on this page, and all of it is gone or hidden.
+    return !!page && !this.isLoading() && page.offset === 0 && page.items.length === page.total && this.comments().length === 0;
+  });
   readonly columns = COMMENT_COLUMNS;
   readonly rowKey = (comment: AdminComment) => comment.id;
   readonly isLoading = this.commentsResource.isLoading;
@@ -80,6 +94,12 @@ export class FeedbackPanelComponent {
     this.target.set(value as CommentTarget | '');
   }
 
+  clearFilters() {
+    this.offset.set(0);
+    this.type.set('');
+    this.target.set('');
+  }
+
   previousPage() {
     this.offset.update((offset) => Math.max(0, offset - PAGE_SIZE));
   }
@@ -94,21 +114,24 @@ export class FeedbackPanelComponent {
   }
 
   deleteComment(comment: AdminComment) {
-    if (!confirm(`Delete this ${COMMENT_TYPE_LABELS[comment.type].toLowerCase()} by ${comment.userName}?`)) return;
-
-    this.busyId.set(comment.id);
-    this.admin.deleteComment(comment.id).subscribe({
-      next: () => {
-        this.notification.success('Comment deleted.');
-        this.busyId.set(null);
-        if (this.page()?.items.length === 1 && this.offset() > 0) this.previousPage();
-        else this.commentsResource.reload();
-      },
-      error: (err) => {
-        console.error('Error deleting comment:', err);
-        this.notification.error('Could not delete the comment.');
-        this.busyId.set(null);
-      },
+    this.deferDelete({
+      hide: () => this.hiddenIds.update((ids) => new Set(ids).add(comment.id)),
+      restore: () =>
+        this.hiddenIds.update((ids) => {
+          const next = new Set(ids);
+          next.delete(comment.id);
+          return next;
+        }),
+      commit: () =>
+        this.admin.deleteComment(comment.id).pipe(
+          tap(() => {
+            // An emptied later page steps back instead of showing nothing.
+            if (this.comments().length === 0 && this.offset() > 0) this.previousPage();
+            else this.commentsResource.reload();
+          })
+        ),
+      message: `Deleted the ${COMMENT_TYPE_LABELS[comment.type].toLowerCase()} by ${comment.userName}.`,
+      errorMessage: 'Could not delete the comment. It is back in the list.',
     });
   }
 }

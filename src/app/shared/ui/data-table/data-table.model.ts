@@ -77,21 +77,5 @@ export function filterRows<T>(
   });
 }
 
-/** Returns a copy with the item at `from` moved to index `to` (clamped to the list). */
-export function moveItem<T>(items: readonly T[], from: number, to: number): T[] {
-  const result = [...items];
-  if (from < 0 || from >= result.length) return result;
-  const target = Math.min(Math.max(to, 0), result.length - 1);
-  const [item] = result.splice(from, 1);
-  result.splice(target, 0, item);
-  return result;
-}
-
-/**
- * Final index of a dragged row dropped on the upper or lower half of the row at `over`.
- * `from` is the dragged row's index before the move.
- */
-export function dropIndex(from: number, over: number, placeAfter: boolean): number {
-  const insertAt = over + (placeAfter ? 1 : 0);
-  return insertAt > from ? insertAt - 1 : insertAt;
-}
+/** The reorder helpers live in `core/utils/reorder`; re-exported for the table and its callers. */
+export { dropIndex, moveItem } from '../../../core/utils/reorder';

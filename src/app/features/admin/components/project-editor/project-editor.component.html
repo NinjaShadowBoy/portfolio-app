@@ -1,0 +1,53 @@
+<dialog class="project-editor" #dialog aria-labelledby="project-editor-title"
+  (click)="onBackdropClick($event)" (keydown)="onKeydown($event)" (cancel)="onCancel($event)">
+  <header class="editor-header">
+    <h2 id="project-editor-title">
+      @if (formMode() === 'edit') {
+        <ng-container i18n="Project editor edit title@@projectEditorEditTitle">Edit project</ng-container>
+      } @else {
+        <ng-container i18n="Admin new project button@@adminNewProject">New project</ng-container>
+      }
+    </h2>
+  </header>
+
+  <div class="editor-body">
+    <!-- Basics: the whole project form, including the collapsible French section. -->
+    <app-project-form [formMode]="formMode()" [project]="project()" [saveStatus]="saveStatus()"
+      (save)="save.emit($event)" />
+
+    <!-- Photos: only for an existing project, so PhotoService has an id to work with. -->
+    @if (project(); as project) {
+      <section class="photos-section" #photosSection>
+        <h3 i18n="Admin photos button@@adminPhotosButton">Photos</h3>
+        <app-photo-manager [project]="project" />
+      </section>
+    } @else {
+      <p class="photos-hint field-hint" i18n="Project editor photos hint@@projectEditorPhotosHint">
+        Save the project to add photos.
+      </p>
+    }
+
+    <!-- Advanced: rare actions, out of the way. -->
+    <details class="editor-advanced">
+      <summary i18n="Project editor advanced section@@projectEditorAdvanced">Advanced</summary>
+      <button type="button" class="btn-delete" (click)="delete()"
+        i18n="Project editor delete button@@projectEditorDeleteButton">Delete project</button>
+    </details>
+  </div>
+
+  <footer class="editor-footer">
+    <button type="button" class="btn-primary" [disabled]="!canSave()" (click)="submit()"
+      i18n="Project editor save button@@projectEditorSave">Save</button>
+    <button type="button" class="btn-secondary" (click)="requestClose()"
+      i18n="Project editor close button@@projectEditorClose">Close</button>
+    <span class="save-status" role="status">
+      @if (saveStatus() === 'saving') {
+        <ng-container i18n="@@projectFormSaving">Saving...</ng-container>
+      } @else if (dirty()) {
+        <span class="badge badge-warning" i18n="@@projectFormUnsaved">Unsaved changes</span>
+      } @else if (saveStatus() === 'saved') {
+        <span class="badge badge-success" i18n="@@projectFormSaved">Saved</span>
+      }
+    </span>
+  </footer>
+</dialog>

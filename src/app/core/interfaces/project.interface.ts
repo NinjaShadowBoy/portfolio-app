@@ -26,6 +26,8 @@ export interface Photo {
   id: number;
   photoUrl: string;
   projectId: number;
+  /** Position within the project, ascending; 0 is the cover. The API lists photos in this order. */
+  displayOrder: number;
 }
 
 export type ProjectCreateRequest = Pick<

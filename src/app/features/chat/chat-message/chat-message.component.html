@@ -1,0 +1,60 @@
+<div class="chat-answer">
+  @for (block of blocks(); track $index) {
+    @switch (block.kind) {
+      @case ('paragraph') {
+        <p>
+          <ng-container [ngTemplateOutlet]="inline" [ngTemplateOutletContext]="{ $implicit: block.runs }" />
+        </p>
+      }
+      @case ('list') {
+        @if (block.ordered) {
+          <ol>
+            @for (item of block.items; track $index) {
+              <li><ng-container [ngTemplateOutlet]="inline" [ngTemplateOutletContext]="{ $implicit: item }" /></li>
+            }
+          </ol>
+        } @else {
+          <ul>
+            @for (item of block.items; track $index) {
+              <li><ng-container [ngTemplateOutlet]="inline" [ngTemplateOutletContext]="{ $implicit: item }" /></li>
+            }
+          </ul>
+        }
+      }
+    }
+  }
+
+  @if (downloads().length) {
+    <div class="chat-links">
+      @for (card of downloads(); track card.url) {
+        <a class="chat-card-download" [attr.href]="card.href" [attr.download]="card.download" [attr.title]="card.label">
+          <svg class="chat-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path>
+          </svg>
+          <span>{{ card.label }}</span>
+        </a>
+      }
+    </div>
+  }
+</div>
+
+<ng-template #inline let-runs>
+  @for (run of runs; track $index) {
+    <!-- A small icon after each link says where it goes: a site page, a download, another site. -->
+    @if (run.routerLink) {
+      <a [routerLink]="run.routerLink">{{ run.text }}<svg class="chat-link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+    } @else if (run.download) {
+      <a [attr.href]="run.href" [attr.download]="run.download">{{ run.text }}<svg class="chat-link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"></path></svg></a>
+    } @else if (run.href) {
+      <a [attr.href]="run.href" target="_blank" rel="noopener noreferrer">{{ run.text }}<svg class="chat-link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
+    } @else if (run.code) {
+      <code>{{ run.text }}</code>
+    } @else if (run.bold) {
+      <strong>{{ run.text }}</strong>
+    } @else if (run.italic) {
+      <em>{{ run.text }}</em>
+    } @else {
+      {{ run.text }}
+    }
+  }
+</ng-template>

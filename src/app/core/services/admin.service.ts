@@ -9,14 +9,17 @@ import {
   AdminStats,
   AdminUser,
   AdminUserQuery,
+  ChatUsage,
   ContactMessage,
+  KnowledgeIndex,
+  KnowledgeLastSync,
   Page,
 } from '../interfaces/admin.interface';
 
 /**
- * Admin-only API calls: users, feedback moderation, contact messages and the
- * overview counts. Every route sits behind the backend's Admin middleware; the
- * auth interceptor attaches the bearer token.
+ * Admin-only API calls: users, feedback moderation, contact messages, the
+ * overview counts, chat usage and the knowledge index. Every route sits behind
+ * the backend's Admin middleware; the auth interceptor attaches the bearer token.
  */
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -61,6 +64,21 @@ export class AdminService {
 
   deleteMessage(messageId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/contact/${messageId}`);
+  }
+
+  /** Chat usage over the last `days` UTC days (1..90, enforced by the backend). */
+  getChatUsage(days: number): Observable<ChatUsage> {
+    return this.http.get<ChatUsage>(`${this.apiUrl}/admin/chat/usage`, { params: { days: String(days) } });
+  }
+
+  /** The knowledge index state: enabled flag, sources and the last sync result. */
+  getKnowledge(): Observable<KnowledgeIndex> {
+    return this.http.get<KnowledgeIndex>(`${this.apiUrl}/admin/knowledge`);
+  }
+
+  /** Starts a reindex; 200 returns the new sync result (it may contain `error`), 409/503 report why not. */
+  reindexKnowledge(): Observable<KnowledgeLastSync> {
+    return this.http.post<KnowledgeLastSync>(`${this.apiUrl}/admin/knowledge/reindex`, {});
   }
 }
 

@@ -99,25 +99,52 @@ export class ProjectDataService {
     this.projectsResource.reload();
   }
 
-  /** Admin only. */
-  createProject(projectData: ProjectCreateRequest): Observable<Project> {
-    return this.http
-      .post<Project>(this.apiUrl, this.projectPayload(projectData))
-      .pipe(tap(() => this.refreshProjects()));
+  /**
+   * Local change to the loaded list, for optimistic updates. Nothing is sent
+   * to the server, and the next reload replaces it.
+   */
+  patchProjects(change: (projects: Project[]) => Project[]) {
+    this.projectsResource.update((projects) => change(projects ?? []));
   }
 
-  /** Admin only. */
+  /** Local change to one loaded project; see `patchProjects`. */
+  patchProject(projectId: number, change: (project: Project) => Project) {
+    this.patchProjects((projects) => projects.map((p) => (p.id === projectId ? change(p) : p)));
+  }
+
+  /** Admin only. The new project joins the list at once, so a caller can select it before the reload ends. */
+  createProject(projectData: ProjectCreateRequest): Observable<Project> {
+    return this.http.post<Project>(this.apiUrl, this.projectPayload(projectData)).pipe(
+      tap((created) => {
+        if (created) {
+          const project: Project = { ...created, photoUrls: created.photoUrls ?? [], isExpanded: false };
+          this.patchProjects((projects) => [...projects.filter((p) => p.id !== project.id), project]);
+        }
+        this.refreshProjects();
+      })
+    );
+  }
+
+  /** Admin only. The saved values show at once; the reload then confirms them. */
   updateProject(projectId: number, projectData: ProjectUpdateRequest): Observable<Project> {
-    return this.http
-      .put<Project>(`${this.apiUrl}/${projectId}`, this.projectPayload(projectData))
-      .pipe(tap(() => this.refreshProjects()));
+    return this.http.put<Project>(`${this.apiUrl}/${projectId}`, this.projectPayload(projectData)).pipe(
+      tap((saved) => {
+        if (saved) {
+          this.patchProject(projectId, (current) => ({ ...current, ...saved, isExpanded: current.isExpanded }));
+        }
+        this.refreshProjects();
+      })
+    );
   }
 
   /** Admin only. */
   deleteProject(projectId: number): Observable<void> {
-    return this.http
-      .delete<void>(`${this.apiUrl}/${projectId}`)
-      .pipe(tap(() => this.refreshProjects()));
+    return this.http.delete<void>(`${this.apiUrl}/${projectId}`).pipe(
+      tap(() => {
+        this.patchProjects((projects) => projects.filter((p) => p.id !== projectId));
+        this.refreshProjects();
+      })
+    );
   }
 
   /**

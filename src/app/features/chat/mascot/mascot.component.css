@@ -1,0 +1,233 @@
+/* The mascot hosts everything fixed: setup() writes --mascot-x/-y in px.
+   The safe-area offset is only needed on touch, see the media query below. */
+:host {
+  /* The character keeps its own colours in both themes: the primary tokens are
+     remapped lighter in dark mode, which would wash out the white lines. */
+  --ninja-body: #2563eb;
+  --ninja-ink: #0b1f4d;
+  --ninja-line: #fff;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(var(--mascot-x, -200px), calc(var(--mascot-y, -200px) + var(--mascot-safe-y, 0px)));
+  z-index: 900; /* under the header drawer (1000/1001) and the toasts (9999) */
+  pointer-events: none;
+}
+
+.mascot,
+.launch-plain {
+  pointer-events: auto;
+  display: block;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: grab;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mascot {
+  width: 80px;
+  height: 80px;
+  touch-action: none; /* the pointer drags the mascot instead of scrolling */
+}
+
+.mascot.dragging {
+  cursor: grabbing;
+}
+
+.launch-plain {
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--color-primary-500);
+  color: var(--surface-base);
+  box-shadow: var(--elevation-3);
+}
+
+.launch-plain:hover {
+  box-shadow: var(--elevation-4);
+}
+
+.launch-icon {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.mascot:focus-visible,
+.launch-plain:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+.mascot-visual {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Its feet face the edge it stands on: 0, 90 (left wall) or -90 (right wall). */
+  transform: rotate(var(--mascot-rot, 0deg));
+}
+
+/* --- The ninja ----------------------------------------------------------- */
+
+.ninja-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* a hop rises above the box; the clip path keeps the edge */
+  shape-rendering: geometricPrecision;
+  /* A dark shadow keeps the white lines readable on light pages. */
+  /* One shadow, not two: it is repainted on every frame the mascot moves. */
+  filter: drop-shadow(0 2px 3px rgb(11 31 77 / 0.55));
+}
+
+.body,
+.eye,
+.strap,
+.knot,
+.tails path {
+  stroke: var(--ninja-line);
+  stroke-linejoin: miter;
+  stroke-miterlimit: 4;
+}
+
+.body {
+  fill: var(--ninja-body);
+  stroke-width: 5;
+}
+
+.eye {
+  fill: var(--ninja-ink);
+  stroke-width: 3.5;
+}
+
+.pupil {
+  fill: var(--ninja-line);
+  transform: translate(calc(var(--pupil-x, 0) * 1px), calc(var(--pupil-y, 0) * 1px));
+}
+
+.strap,
+.knot,
+.tails path {
+  fill: var(--ninja-ink);
+  stroke-width: 3.5;
+}
+
+.tails {
+  transform: rotate(calc(var(--tail-angle, 0) * 1deg));
+  transform-box: fill-box;
+  transform-origin: 0% 50%;
+}
+
+/* Blink squishes both eyes together. The instant duration keeps the snap. */
+.eyes {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transition: transform var(--motion-duration-instant, 0ms) linear;
+}
+
+:host(.mascot-blink) .eyes {
+  transform: scaleY(0.12);
+}
+
+/* Up to something: eyes narrowed to slits under slanted brows (sneak move). */
+:host(.mascot-squint) .eyes {
+  transform: scaleY(0.3);
+}
+
+.brows,
+.trail {
+  fill: none;
+  stroke: var(--ninja-line);
+  stroke-linecap: square;
+  opacity: 0;
+}
+
+.brows {
+  stroke-width: 4;
+}
+
+:host(.mascot-squint) .brows {
+  opacity: 1;
+}
+
+/* Speed lines trail the body; --dash-dir is 1 running right (body frame), -1 left. */
+.trail {
+  stroke-width: 3.5;
+  transform: scaleX(var(--dash-dir, 1));
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+:host(.mascot-dash) .trail {
+  animation: mascot-trail 0.12s steps(2) infinite;
+}
+
+@keyframes mascot-trail {
+  from {
+    opacity: 0.95;
+  }
+
+  to {
+    opacity: 0.45;
+  }
+}
+
+/* The vanish move's smoke: hidden until the host gets .mascot-poof. */
+.poof {
+  fill: #e5e7eb;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+
+:host(.mascot-poof) .poof {
+  animation: mascot-poof 0.55s var(--motion-ease-out, ease-out);
+}
+
+@keyframes mascot-poof {
+  from {
+    opacity: 0.95;
+    transform: scale(0.4);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.7) translateY(-8px);
+  }
+}
+
+/* All motion comes from the component's loop: the jelly body path, the face
+   and band transforms, and --tail-angle (a plain number of degrees). */
+
+/* --- Touch screens ------------------------------------------------------- */
+
+@media (hover: none), (pointer: coarse) {
+  .mascot {
+    width: 64px;
+    height: 64px;
+  }
+
+  :host {
+    --mascot-safe-y: calc(-1 * env(safe-area-inset-bottom, 0px));
+  }
+
+  .mascot-visual,
+  .launch-plain {
+    transition: transform var(--motion-duration-slow, 500ms) var(--motion-ease-in-out, ease-in-out);
+  }
+}
+
+/* Hide away while the page scrolls down; JS toggles the host class. */
+:host(.slide-out) .mascot-visual,
+:host(.slide-out) .launch-plain {
+  transform: translateY(160%);
+}

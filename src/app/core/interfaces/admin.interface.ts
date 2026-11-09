@@ -67,3 +67,68 @@ export interface ContactMessage {
   isRead: boolean;
   isReplied: boolean;
 }
+
+/** Chat usage as reported by the backend's `/admin/chat/usage`. */
+export interface ChatUsageDay {
+  /** UTC date in `YYYY-MM-DD` form. */
+  day: string;
+  requests: number;
+  inputTokens: number;
+  outputTokens: number;
+}
+
+/** One ranked usage subject: `"ip:<hash>"` for visitors, `"u:<userId>"` for users. */
+export interface ChatUsageSubject {
+  subject: string;
+  requests: number;
+  inputTokens: number;
+  outputTokens: number;
+}
+
+export interface ChatUsageToday {
+  requests: number;
+  tokens: number;
+  /** 0 when no budget is configured. */
+  tokenBudget: number;
+  budgetRemaining: number;
+}
+
+export interface ChatUsage {
+  /** Every day in the range, newest first, with zero rows for gaps. */
+  days: ChatUsageDay[];
+  /** At most 10 entries. */
+  topSubjects: ChatUsageSubject[];
+  today: ChatUsageToday;
+}
+
+/** One indexed knowledge source, used by the assistant's site search. */
+export interface KnowledgeSource {
+  kind: KnowledgeSourceKind;
+  ref: string;
+  lang: string;
+  title: string | null;
+  url: string | null;
+  chunks: number;
+  updatedAt: string | null;
+}
+
+export type KnowledgeSourceKind = 'project' | 'publication' | 'cv' | 'about';
+
+/** Result of the last knowledge index sync; `error` is set when the run failed. */
+export interface KnowledgeLastSync {
+  startedAt: string;
+  finishedAt: string | null;
+  added: number;
+  updated: number;
+  deleted: number;
+  unchanged: number;
+  error: string | null;
+}
+
+export interface KnowledgeIndex {
+  enabled: boolean;
+  sources: KnowledgeSource[];
+  lastSync: KnowledgeLastSync | null;
+  /** True while a sync is running on the server. */
+  syncing: boolean;
+}

@@ -1,0 +1,71 @@
+@if (!chatUi.available() || ui.drawerOpen()) {
+  <!-- Chat off, or the header drawer covers the screen: nothing to show. -->
+} @else if (chatUi.mascotMode() === 'hidden') {
+  <button #mascotButton type="button" class="launch-plain"
+          [attr.aria-expanded]="chatUi.open()" aria-controls="chat-pane" [attr.aria-label]="label"
+          (click)="toggleChat()">
+    <svg class="launch-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.8-.8L3 20.5l1.4-4.3A8 8 0 0 1 3 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"></path>
+    </svg>
+  </button>
+} @else {
+  <button #mascotButton type="button" class="mascot" [class.dragging]="dragging()"
+          [attr.aria-expanded]="chatUi.open()" aria-controls="chat-pane" [attr.aria-label]="label"
+          (click)="toggleChat($event)" (pointerdown)="onGrab($event)"
+          (focus)="onFocusChange(true)" (blur)="onFocusChange(false)">
+    <!--
+      An original mascot: a square jelly body drawn with thick white lines,
+      square eyes with white square pupils, and a headband whose two tails
+      trail to the right. The view box bottom is the edge it stands on;
+      everything below it is clipped, so it can sink into the edge. The body
+      path, the face and the band are rewritten every frame by the component.
+    -->
+    <span class="mascot-visual" aria-hidden="true">
+      <svg class="ninja-svg" viewBox="0 0 100 100" overflow="visible" aria-hidden="true" focusable="false">
+        <defs>
+          <clipPath id="mascot-ground-clip">
+            <rect x="-300" y="-300" width="700" height="400"></rect>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#mascot-ground-clip)">
+          <g #rig class="rig" transform="translate(0 64)">
+            <!-- Speed lines behind it while it dashes; mirrored by --dash-dir. -->
+            <g class="trail">
+              <path d="M3 58H16"></path>
+              <path d="M-6 70H14"></path>
+              <path d="M3 82H16"></path>
+            </g>
+            <path #bodyPath class="body" d="M21 40H79V98H21Z"></path>
+            <g #face>
+              <g class="eyes">
+                <rect class="eye" x="31" y="66" width="15" height="15"></rect>
+                <rect class="eye" x="54" y="66" width="15" height="15"></rect>
+                <rect class="pupil" x="35.5" y="70.5" width="6" height="6"></rect>
+                <rect class="pupil" x="58.5" y="70.5" width="6" height="6"></rect>
+              </g>
+              <!-- Narrowed, slanted brows: shown only while it squints. -->
+              <g class="brows">
+                <path d="M29 61 L46 66"></path>
+                <path d="M71 61 L54 66"></path>
+              </g>
+            </g>
+            <g #band>
+              <g class="tails">
+                <path d="M83 52 L98 40 L94 54 Z"></path>
+                <path d="M83 57 L98 68 L91 57 Z"></path>
+              </g>
+              <rect class="strap" x="18" y="50" width="64" height="10"></rect>
+              <rect class="knot" x="76" y="49" width="8" height="12"></rect>
+            </g>
+          </g>
+        </g>
+        <!-- A puff of smoke for the vanish move, at the edge it stands on. -->
+        <g class="poof">
+          <circle cx="32" cy="92" r="10"></circle>
+          <circle cx="50" cy="86" r="14"></circle>
+          <circle cx="68" cy="92" r="10"></circle>
+        </g>
+      </svg>
+    </span>
+  </button>
+}

@@ -52,4 +52,29 @@ describe('AdminService', () => {
     expect(http.expectOne(`${api}/contact/3/replied`).request.method).toBe('PATCH');
     expect(http.expectOne(`${api}/contact/3`).request.method).toBe('DELETE');
   });
+
+  it('queries chat usage for the requested day range', () => {
+    service.getChatUsage(14).subscribe();
+
+    const req = http.expectOne((r) => r.url === `${api}/admin/chat/usage`);
+    expect(req.request.params.get('days')).toBe('14');
+    req.flush({ days: [], topSubjects: [], today: { requests: 0, tokens: 0, tokenBudget: 0, budgetRemaining: 0 } });
+  });
+
+  it('reads the knowledge index state', () => {
+    service.getKnowledge().subscribe();
+
+    const req = http.expectOne(`${api}/admin/knowledge`);
+    expect(req.request.method).toBe('GET');
+    req.flush({ enabled: true, sources: [], lastSync: null, syncing: false });
+  });
+
+  it('starts a reindex with an empty POST body', () => {
+    service.reindexKnowledge().subscribe();
+
+    const req = http.expectOne(`${api}/admin/knowledge/reindex`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({});
+    req.flush({ startedAt: '', finishedAt: '', added: 0, updated: 0, deleted: 0, unchanged: 0, error: null });
+  });
 });

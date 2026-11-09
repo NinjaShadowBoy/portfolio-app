@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
-import { authGuard, contactGuard } from './core/guards/auth.guard';
+import { authGuard, contactGuard, pendingChangesGuard } from './core/guards/auth.guard';
 
 // Only the landing page is eager. Every other page loads its own chunk, so the
 // initial bundle carries the shell and home and nothing else.
@@ -123,6 +123,7 @@ export const routes: Routes = [
     loadComponent: () => import('./features/admin/admin.component').then((m) => m.AdminComponent),
     data: { breadcrumb: 'Admin' },
     canActivate: [authGuard],
+    canDeactivate: [pendingChangesGuard],
   },
   {
     path: 'contact',

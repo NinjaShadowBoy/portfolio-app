@@ -6,27 +6,33 @@
     deploy. Reader feedback on articles is in the Feedback tab.
   </p>
 
-  <app-data-table label="Articles" [rows]="articles()" [columns]="columns" [rowKey]="rowKey"
-    rowHeaderKey="title" [filterable]="true" filterLabel="Filter articles"
-    filterPlaceholder="Filter by title or text" [filterBy]="filterBy" actionsWidth="6rem"
-    emptyText="No published articles. Drafts (draft: true) are not listed.">
-    <ng-template appDataTableCell="title" let-article>
-      <div class="panel-item-title">
-        {{ article.title }}
-        @for (lang of article.langs; track lang) { <span class="badge">{{ lang }}</span> }
-      </div>
-      <div class="panel-item-meta"><code>src/content/articles/{{ article.slug }}/</code></div>
-      <p class="panel-item-body">{{ article.description }}</p>
-    </ng-template>
-    <ng-template appDataTableCell="date" let-article>{{ article.date | date: 'mediumDate' }}</ng-template>
-    <ng-template appDataTableCell="updated" let-article>
-      {{ article.updated ? (article.updated | date: 'mediumDate') : '-' }}
-    </ng-template>
-    <ng-template appDataTableCell="readingTime" let-article>{{ article.readingTime }} min</ng-template>
-    <ng-template appDataTableActions let-article>
-      <div class="row-actions">
-        <a class="btn-secondary" [routerLink]="['/publications', article.slug]">View</a>
-      </div>
-    </ng-template>
-  </app-data-table>
+  @if (articles().length === 0) {
+    <div class="empty-state">
+      <p>No published articles. Add one under <code>src/content/articles/</code>; drafts (<code>draft: true</code>) are not listed.</p>
+      <a class="btn-primary" routerLink="/publications">Open the publications page</a>
+    </div>
+  } @else {
+    <app-data-table label="Articles" [rows]="articles()" [columns]="columns" [rowKey]="rowKey"
+      rowHeaderKey="title" [filterable]="true" filterLabel="Filter articles"
+      filterPlaceholder="Filter by title or text" [filterBy]="filterBy" actionsWidth="6rem">
+      <ng-template appDataTableCell="title" let-article>
+        <div class="panel-item-title">
+          {{ article.title }}
+          @for (lang of article.langs; track lang) { <span class="badge">{{ lang }}</span> }
+        </div>
+        <div class="panel-item-meta"><code>src/content/articles/{{ article.slug }}/</code></div>
+        <p class="panel-item-body">{{ article.description }}</p>
+      </ng-template>
+      <ng-template appDataTableCell="date" let-article>{{ article.date | date: 'mediumDate' }}</ng-template>
+      <ng-template appDataTableCell="updated" let-article>
+        {{ article.updated ? (article.updated | date: 'mediumDate') : '-' }}
+      </ng-template>
+      <ng-template appDataTableCell="readingTime" let-article>{{ article.readingTime }} min</ng-template>
+      <ng-template appDataTableActions let-article>
+        <div class="row-actions">
+          <a class="btn-secondary" [routerLink]="['/publications', article.slug]">View</a>
+        </div>
+      </ng-template>
+    </app-data-table>
+  }
 </section>

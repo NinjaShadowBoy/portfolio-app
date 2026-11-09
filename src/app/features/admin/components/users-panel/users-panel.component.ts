@@ -4,6 +4,8 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { AdminService } from '../../../../core/services/admin.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { NotificationService } from '../../../../core/services/notification.service';
+import { ConfirmService } from '../../../../core/services/confirm.service';
+import { DEFERRED_DELETE_MS } from '../../../../core/utils/deferred-action';
 import { AdminUser, Page } from '../../../../core/interfaces/admin.interface';
 import { UserRole } from '../../../../core/interfaces/auth.interface';
 import { DataTableComponent } from '../../../../shared/ui/data-table/data-table.component';
@@ -32,6 +34,7 @@ export class UsersPanelComponent {
   private admin = inject(AdminService);
   private auth = inject(AuthService);
   private notification = inject(NotificationService);
+  private confirm = inject(ConfirmService);
 
   /** The search box text; applied on submit so typing does not fire a request per key. */
   readonly searchInput = signal('');
@@ -59,12 +62,19 @@ export class UsersPanelComponent {
   readonly rowKey = (user: AdminUser) => user.id;
   readonly isLoading = this.usersResource.isLoading;
   readonly failed = computed(() => this.usersResource.status() === 'error');
+  /** Loaded, and nothing to list. */
+  readonly empty = computed(() => this.page()?.total === 0 && !this.isLoading());
   readonly currentUserId = computed(() => this.auth.user()?.id ?? null);
 
   applySearch(event?: Event) {
     event?.preventDefault();
     this.offset.set(0);
     this.search.set(this.searchInput().trim());
+  }
+
+  clearSearch() {
+    this.searchInput.set('');
+    this.applySearch();
   }
 
   toggleAnonymous(checked: boolean) {
@@ -85,26 +95,47 @@ export class UsersPanelComponent {
     return user.id !== this.currentUserId() && user.provider !== 'ANON';
   }
 
-  setRole(user: AdminUser, role: UserRole) {
-    const action = role === 'ADMIN' ? 'Grant admin access to' : 'Remove admin access from';
-    if (!confirm(`${action} ${user.name} (${user.email})? It takes effect at their next login.`)) return;
+  /**
+   * Applies the change in the table at once, then sends it. The toast offers
+   * Undo, which sends the inverse change. A failed request puts the row back.
+   */
+  setRole(user: AdminUser, role: UserRole, offerUndo = true) {
+    const previous = user.role;
+    if (previous === role) return;
 
+    this.patchRole(user.id, role);
     this.busyId.set(user.id);
+    const toastId = offerUndo
+      ? this.notification.show({
+          type: 'success',
+          message: `${user.name} is now ${role === 'ADMIN' ? 'an admin' : 'a regular user'}. It takes effect at their next login.`,
+          duration: DEFERRED_DELETE_MS,
+          actions: [{ label: 'Undo', action: () => this.setRole({ ...user, role }, previous, false) }],
+        })
+      : null;
+
     this.admin.updateUserRole(user.id, role).subscribe({
-      next: () => {
-        this.patchPage((items) => items.map((item) => (item.id === user.id ? { ...item, role } : item)));
-        this.notification.success(`${user.name} is now ${role === 'ADMIN' ? 'an admin' : 'a regular user'}.`);
-        this.busyId.set(null);
+      next: () => this.busyId.set(null),
+      error: (err) => {
+        if (toastId) this.notification.dismiss(toastId);
+        this.patchRole(user.id, previous);
+        this.fail('Could not change the role', err);
       },
-      error: (err) => this.fail('Could not change the role', err),
     });
   }
 
-  deleteUser(user: AdminUser) {
-    const activity = `${user.commentCount} comment(s) and ${user.ratingCount} rating(s)`;
-    if (!confirm(`Delete ${user.name} (${user.email})? Their ${activity} are deleted too. This cannot be undone.`)) {
-      return;
-    }
+  /** Irreversible, and it cascades to the user's feedback, so it asks first. */
+  async deleteUser(user: AdminUser) {
+    const who = user.provider === 'ANON' ? 'this anonymous identity' : `${user.name} (${user.email})`;
+    const confirmed = await this.confirm.ask({
+      title: `Delete ${user.provider === 'ANON' ? 'this anonymous identity' : user.name}?`,
+      body:
+        `Deleting ${who} also deletes their ${plural(user.commentCount, 'comment')} and ` +
+        `${plural(user.ratingCount, 'rating')}. This cannot be undone.`,
+      confirmLabel: 'Delete user',
+      tone: 'danger',
+    });
+    if (!confirmed) return;
 
     this.busyId.set(user.id);
     this.admin.deleteUser(user.id).subscribe({
@@ -119,6 +150,10 @@ export class UsersPanelComponent {
     });
   }
 
+  private patchRole(id: number, role: UserRole) {
+    this.patchPage((items) => items.map((item) => (item.id === id ? { ...item, role } : item)));
+  }
+
   private patchPage(change: (items: AdminUser[]) => AdminUser[]) {
     const page = this.page();
     if (page) this.usersResource.set({ ...page, items: change(page.items) });
@@ -130,4 +165,8 @@ export class UsersPanelComponent {
     this.notification.error(detail ? `${message}: ${detail}` : `${message}.`);
     this.busyId.set(null);
   }
+}
+
+function plural(count: number, noun: string): string {
+  return `${count} ${noun}${count === 1 ? '' : 's'}`;
 }

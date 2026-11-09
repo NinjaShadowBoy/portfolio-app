@@ -88,12 +88,79 @@ describe('ProjectFormComponent', () => {
     expect(component.projectForm.getRawValue().featured).toBe(false);
   });
 
+  it('refills from a new copy of the same project only while there are no unsaved edits', () => {
+    fixture.componentRef.setInput('project', project);
+    fixture.detectChanges();
+    component.projectForm.controls.name.setValue('Typing...');
+    component.projectForm.markAsDirty();
+
+    // A reload hands over a fresh object for the same project.
+    fixture.componentRef.setInput('project', { ...project, description: 'Changed on the server' });
+    fixture.detectChanges();
+    expect(component.projectForm.getRawValue().name).toBe('Typing...');
+    expect(component.dirty()).toBe(true);
+
+    // Switching to another project always loads it.
+    fixture.componentRef.setInput('project', { ...project, id: 6, name: 'Other' });
+    fixture.detectChanges();
+    expect(component.projectForm.getRawValue().name).toBe('Other');
+    expect(component.dirty()).toBe(false);
+  });
+
+  it('marks the form pristine when the parent reports the save, unless it was edited meanwhile', async () => {
+    fixture.componentRef.setInput('project', project);
+    fixture.detectChanges();
+    const name = component.projectForm.controls.name;
+
+    name.setValue('Saved name');
+    component.projectForm.markAsDirty();
+    component.submitForm();
+    fixture.componentRef.setInput('saveStatus', 'saving');
+    fixture.detectChanges();
+    fixture.componentRef.setInput('saveStatus', 'saved');
+    fixture.detectChanges();
+    expect(component.dirty()).toBe(false);
+
+    name.setValue('Saved name again');
+    component.projectForm.markAsDirty();
+    component.submitForm();
+    fixture.componentRef.setInput('saveStatus', 'saving');
+    fixture.detectChanges();
+    name.setValue('Typed while saving');
+    fixture.componentRef.setInput('saveStatus', 'saved');
+    fixture.detectChanges();
+    expect(component.dirty()).toBe(true);
+  });
+
+  it('allows saving only through valid, edited controls', () => {
+    expect(component.saveEnabled()).toBe(false);
+
+    // Valid but untouched: still no save, the editor keeps Save disabled.
+    component.projectForm.setValue({
+      name: 'New App',
+      description: 'A long enough description',
+      technologies: 'Angular',
+      githubLink: '',
+      demoLink: '',
+      challenges: 'c',
+      whatILearned: 'w',
+      descriptionFr: '',
+      challengesFr: '',
+      whatILearnedFr: '',
+      featured: false,
+    });
+    expect(component.saveEnabled()).toBe(false);
+
+    component.projectForm.markAsDirty();
+    expect(component.saveEnabled()).toBe(true);
+  });
+
   it('rejects a GitHub link that is not an http(s) URL', () => {
     component.projectForm.controls.githubLink.setValue('github.com/x/y');
     expect(component.projectForm.controls.githubLink.invalid).toBe(true);
   });
 
-  it('accepts an empty live site URL and rejects one without a scheme', () => {
+  it('accepts an empty live site URL and rejects one without a scheme', async () => {
     const demoLink = component.projectForm.controls.demoLink;
     demoLink.setValue('');
     expect(demoLink.valid).toBe(true);
@@ -101,5 +168,29 @@ describe('ProjectFormComponent', () => {
     expect(demoLink.invalid).toBe(true);
     demoLink.setValue('https://example.com');
     expect(demoLink.valid).toBe(true);
+  });
+
+  it('collapses the French fields and counts the filled ones in the summary', async () => {
+    fixture.detectChanges();
+    const details = fixture.nativeElement.querySelector('details.french-fields');
+    expect(details?.hasAttribute('open')).toBe(false);
+
+    component.projectForm.setValue({
+      name: 'New App',
+      description: 'A long enough description',
+      technologies: 'Angular',
+      githubLink: '',
+      demoLink: '',
+      challenges: 'c',
+      whatILearned: 'w',
+      descriptionFr: 'Une description',
+      challengesFr: '   ',
+      whatILearnedFr: 'Ce que ',
+      featured: false,
+    });
+    fixture.detectChanges();
+
+    expect(component.frenchCount()).toBe(2);
+    expect(details.querySelector('.french-count')?.textContent?.trim()).toBe('2 of 3 translated');
   });
 });

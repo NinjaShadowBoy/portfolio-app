@@ -10,7 +10,6 @@
 
 .admin-header {
   margin-bottom: 1.5rem;
-  animation: fadeInUp 0.8s var(--motion-ease-out);
 }
 
 .admin-header h1 {
@@ -43,45 +42,88 @@
   gap: 1.5rem;
 }
 
-/* Mode Toggle */
-.mode-toggle {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+/* Projects toolbar above the table. */
+.projects-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+}
+
+.projects-toolbar h2 {
+  color: var(--text-primary);
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  padding: 0.35rem;
-  border-radius: 999px;
-  background: var(--surface-sunken);
-  border: 1px solid var(--border-subtle);
-  cursor: pointer;
-  max-width: 420px;
-  margin-inline: auto;
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
 }
 
-.mode-toggle span {
-  text-align: center;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  z-index: 1;
-  padding: 0.5rem;
+/* The small JSON import dialog. */
+.json-dialog {
+  padding: 0;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  box-shadow: var(--elevation-5);
+  width: min(44rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
 }
 
-.mode-toggle span.active {
+.json-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.json-dialog::backdrop {
+  background: var(--glass-bg);
+  backdrop-filter: blur(4px);
+}
+
+.json-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.json-dialog-head h2 {
+  margin: 0;
+  font-size: 1.2rem;
   color: var(--text-primary);
 }
 
-.mode-toggle .toggle-thumb {
-  position: absolute;
-  inset: 3px 3px 3px calc(50% + 3px);
-  border-radius: 999px;
-  background: var(--surface-base);
-  box-shadow: var(--elevation-2);
-  transition: transform var(--motion-duration-normal) var(--motion-ease-out);
+.btn-close {
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.mode-toggle .toggle-thumb.right {
-  transform: translateX(-100%);
+.btn-close:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.json-dialog-body {
+  padding: 1.5rem;
+  overflow-y: auto;
 }
 
 /* Form & JSON Sections */
@@ -91,10 +133,6 @@
   border-radius: 12px;
   box-shadow: var(--elevation-2);
   border: 1px solid var(--border-subtle);
-}
-
-.projects-list {
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.6s both;
 }
 
 .projects-list h2 {
@@ -137,7 +175,6 @@
   .admin-header h1 { font-size: 1.5rem; }
   .welcome { font-size: 0.95rem; }
   .projects-list h2 { font-size: 1.2rem; margin-bottom: 0.75rem; }
-  .mode-toggle { max-width: 100%; font-size: 0.9rem; }
 
   .btn-primary { width: 100%; padding: 0.6rem 1rem; min-height: 44px; font-size: 0.9rem; }
 }
@@ -149,14 +186,11 @@
   .welcome { font-size: 0.9rem; }
   .restricted { padding: 0.75rem; font-size: 0.85rem; }
   .projects-list h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
-  .mode-toggle { padding: 0.3rem; font-size: 0.85rem; }
-  .mode-toggle span { padding: 0.4rem; }
 
   .btn-primary { padding: 0.6rem 1rem; font-size: 0.9rem; }
 }
 
 @media print {
-  .mode-toggle { display: none; }
   .admin-container { padding: 0; }
 }
 

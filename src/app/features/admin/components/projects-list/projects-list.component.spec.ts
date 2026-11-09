@@ -215,9 +215,16 @@ describe('ProjectsListComponent', () => {
     expect(button('Reorder projects')).toBeUndefined();
   });
 
-  it('shows the empty message when there are no projects', async () => {
+  it('explains an empty list and offers New project', async () => {
     fixture.componentRef.setInput('projects', []);
     await settle();
-    expect(el.querySelector('.dt-state')?.textContent).toContain('No projects found');
+    const created = vi.fn();
+    fixture.componentInstance.create.subscribe(created);
+
+    const empty = el.querySelector('.empty-state')!;
+    expect(empty.textContent).toContain('No projects yet');
+    expect(el.querySelector('table')).toBeNull();
+    empty.querySelector('button')!.click();
+    expect(created).toHaveBeenCalled();
   });
 });

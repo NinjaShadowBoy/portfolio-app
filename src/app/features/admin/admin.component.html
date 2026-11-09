@@ -47,6 +47,12 @@
                 <span class="stat-value">{{ s.unreadMessages }}</span>
                 <span class="stat-label">Unread messages</span>
               </button>
+              @if (chatToday(); as chat) {
+                <button type="button" class="stat-card" (click)="selectTab('assistant')">
+                  <span class="stat-value">{{ chat.requests }}</span>
+                  <span class="stat-label">Assistant messages today</span>
+                </button>
+              }
             </div>
           } @else {
             <p class="panel-empty">Loading...</p>
@@ -57,48 +63,48 @@
       @case ('feedback') { <app-feedback-panel /> }
       @case ('messages') { <app-messages-panel /> }
       @case ('articles') { <app-articles-panel /> }
+      @case ('assistant') { <app-assistant-panel /> }
     }
   }
 
   @if (isAdmin() && tab() === 'projects') {
     <div class="admin-content">
-      <!-- Mode Toggle -->
-      <div class="mode-toggle" (click)="toggleJsonMode()">
-        <span [class.active]="!jsonMode()" i18n="Admin form mode toggle@@adminFormMode">Form Mode</span>
-        <div class="toggle-thumb" [class.right]="jsonMode()"></div>
-        <span [class.active]="jsonMode()" i18n="Admin JSON mode toggle@@adminJsonMode">JSON Mode</span>
+      <div class="projects-toolbar">
+        <h2>Existing Projects ({{ visibleProjects().length }})</h2>
+        <div class="toolbar-actions">
+          <button type="button" class="btn-primary" (click)="startNewProject()"
+            i18n="Admin new project button@@adminNewProject">New project</button>
+          <button type="button" class="btn-secondary" (click)="openJsonImport()"
+            i18n="Admin import JSON button@@adminImportJson">Import JSON</button>
+        </div>
       </div>
 
-      <!-- Form Mode -->
-      @if (!jsonMode()) {
-        <app-project-form [formMode]="formMode()"
-          [project]="editingProject()"
-          (save)="onSaveProject($event)"
-          (cancel)="resetForm()"
-         />
-      }
-
-      <!-- JSON Mode -->
-      @if (jsonMode()) {
-        <app-json-import (importSuccess)="onJsonImport($event)"
-         />
-      }
-
-      <!-- Projects List -->
-      <div class="projects-list">
-        <h2>Existing Projects ({{ projects().length }})</h2>
-        <app-projects-list [projects]="projects()"
-          (edit)="editProject($event)"
-          (managePhotos)="openPhotoManager($event)"
-          (remove)="deleteProject($event)" />
-      </div>
-
-      <!-- Photo Management Modal -->
-      @if (selectedProjectForPhotos()) {
-        <app-photo-manager [project]="selectedProjectForPhotos()!"
-          (close)="closePhotoManager()"
-         />
-      }
+      <app-projects-list [projects]="visibleProjects()"
+        (edit)="editProject($event)"
+        (managePhotos)="editProjectPhotos($event)"
+        (remove)="deleteProject($event)"
+        (create)="startNewProject()" />
     </div>
+  }
+
+  <!-- The project editor: one native dialog, rendered only while ?project= names it. -->
+  @if (isAdmin() && tab() === 'projects' && editorOpen()) {
+    <app-project-editor [project]="editorProject()" [saveStatus]="saveStatus()"
+      [showPhotosFirst]="openWithPhotos()"
+      (save)="onSaveProject($event)" (deleteProject)="deleteProject($event)" (closed)="closeEditor()" />
+  }
+
+  <!-- The JSON import dialog: Escape and its close button both dismiss it. -->
+  @if (isAdmin() && tab() === 'projects' && jsonOpen()) {
+    <dialog #jsonDialog class="json-dialog" (cancel)="cancelJsonImport($event)" (close)="onJsonDialogClose()">
+      <div class="json-dialog-head">
+        <h2 i18n="JSON import dialog heading@@jsonImportHeading">JSON Bulk Operations</h2>
+        <button type="button" class="btn-close" (click)="closeJsonImport()" aria-label="Close"
+          i18n-aria-label="Admin close import dialog@@adminImportClose">&times;</button>
+      </div>
+      <div class="json-dialog-body">
+        <app-json-import (importSuccess)="onJsonImport($event)" />
+      </div>
+    </dialog>
   }
 </section>

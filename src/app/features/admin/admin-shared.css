@@ -106,6 +106,30 @@
   padding: 2rem 1rem;
 }
 
+/* Nothing to list yet: one line on why, then the action that fills it. */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--text-secondary);
+  border: 1px dashed var(--border-default);
+  border-radius: 10px;
+}
+
+.empty-state p {
+  margin: 0;
+  max-width: 36rem;
+}
+
+a.btn-primary,
+a.btn-secondary {
+  display: inline-block;
+  text-decoration: none;
+}
+
 /* Content of data table cells */
 .panel-item-title {
   display: flex;

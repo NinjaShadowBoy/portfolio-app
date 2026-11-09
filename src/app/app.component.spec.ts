@@ -9,6 +9,13 @@ import { signal } from '@angular/core';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
+    // The deferred mascot asks GET /chat/config; keep it off the network.
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ enabled: false, remainingToday: null }), { status: 200 }),
+      ),
+    );
     await TestBed.configureTestingModule({
       imports: [AppComponent],
       providers: [
@@ -18,6 +25,8 @@ describe('AppComponent', () => {
       ],
     }).compileComponents();
   });
+
+  afterEach(() => vi.unstubAllGlobals());
 
   it('should render the application shell', async () => {
     const fixture = TestBed.createComponent(AppComponent);

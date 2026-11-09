@@ -1,0 +1,17 @@
+<dialog #dialog class="confirm-dialog" role="alertdialog" aria-labelledby="confirm-dialog-title"
+  [attr.aria-describedby]="request()?.body ? 'confirm-dialog-body' : null"
+  (cancel)="onCancel($event)" (close)="onClose()" (click)="onDialogClick($event)">
+  @if (request(); as r) {
+    <div class="confirm-panel">
+      <h2 id="confirm-dialog-title" class="confirm-title">{{ r.title }}</h2>
+      @if (r.body) {
+        <p id="confirm-dialog-body" class="confirm-body">{{ r.body }}</p>
+      }
+      <div class="confirm-actions">
+        <button type="button" class="btn-secondary" data-cancel (click)="settle(false)">{{ r.cancelLabel }}</button>
+        <button type="button" data-confirm [class.btn-primary]="r.tone !== 'danger'"
+          [class.btn-danger]="r.tone === 'danger'" (click)="settle(true)">{{ r.confirmLabel }}</button>
+      </div>
+    </div>
+  }
+</dialog>

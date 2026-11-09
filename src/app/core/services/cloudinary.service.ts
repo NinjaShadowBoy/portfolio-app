@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
+import { Observable, catchError, filter, map, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface CloudinaryUploadResponse {
@@ -11,10 +12,16 @@ export interface CloudinaryUploadResponse {
   bytes: number;
 }
 
+/** Progress (0-100) while the file is sent, then the stored image. */
+export type CloudinaryUploadEvent =
+  | { type: 'progress'; percent: number }
+  | { type: 'done'; response: CloudinaryUploadResponse };
+
 @Injectable({
   providedIn: 'root',
 })
 export class CloudinaryService {
+  private http = inject(HttpClient);
   private cloudinaryConfig = environment.cloudinary;
 
   /**
@@ -27,19 +34,27 @@ export class CloudinaryService {
     file: File,
     folder?: string
   ): Observable<CloudinaryUploadResponse> {
-    return from(this.performUpload(file, folder));
+    return this.uploadImageWithProgress(file, folder).pipe(
+      filter((event): event is Extract<CloudinaryUploadEvent, { type: 'done' }> => event.type === 'done'),
+      map((event) => event.response)
+    );
+  }
+
+  /** Upload an image, reporting progress before the final response. */
+  uploadImageWithProgress(file: File, folder?: string): Observable<CloudinaryUploadEvent> {
+    return this.performUpload(file, folder);
   }
 
   /**
-   * Upload a project photo to Cloudinary
+   * Upload a project photo to Cloudinary, with progress
    * @param file The image file
    * @param projectId The project ID for folder organization
    */
   uploadProjectPhoto(
     file: File,
     projectId: number
-  ): Observable<CloudinaryUploadResponse> {
-    return this.uploadImage(file, `portfolio/projects/${projectId}`);
+  ): Observable<CloudinaryUploadEvent> {
+    return this.uploadImageWithProgress(file, `portfolio/projects/${projectId}`);
   }
 
   /**
@@ -50,13 +65,22 @@ export class CloudinaryService {
     return this.uploadImage(file, 'portfolio/profile');
   }
 
+  /** The URL of Cloudinary's unsigned upload endpoint for this cloud. */
+  get uploadUrl(): string {
+    return `https://api.cloudinary.com/v1_1/${this.cloudinaryConfig.cloudName}/image/upload`;
+  }
+
   /**
-   * Perform the actual upload to Cloudinary
+   * Perform the actual upload to Cloudinary.
+   *
+   * Upload progress events come from XMLHttpRequest's `upload.onprogress`.
+   * HttpClient uses its XHR backend here because app.config does not call
+   * `withFetch()`; the fetch backend reports no upload progress, so adding
+   * `withFetch()` would leave the bars at 0 until each upload finishes.
+   * The URL is outside `environment.apiBaseUrl`, so authInterceptor adds no
+   * bearer token or credentials to it.
    */
-  private async performUpload(
-    file: File,
-    folder?: string
-  ): Promise<CloudinaryUploadResponse> {
+  private performUpload(file: File, folder?: string): Observable<CloudinaryUploadEvent> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', this.cloudinaryConfig.uploadPreset);
@@ -68,24 +92,16 @@ export class CloudinaryService {
     // Add any additional options
     formData.append('cloud_name', this.cloudinaryConfig.cloudName);
 
-    const url = `https://api.cloudinary.com/v1_1/${this.cloudinaryConfig.cloudName}/image/upload`;
-
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error?.message || 'Upload failed');
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Cloudinary upload error:', error);
-      throw error;
-    }
+    return this.http
+      .post<CloudinaryUploadResponse>(this.uploadUrl, formData, { reportProgress: true, observe: 'events' })
+      .pipe(
+        map((event) => toUploadEvent(event)),
+        filter((event): event is CloudinaryUploadEvent => event !== null),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Cloudinary upload error:', error);
+          return throwError(() => new Error(error.error?.error?.message || 'Upload failed'));
+        })
+      );
   }
 
   /**
@@ -127,4 +143,15 @@ export class CloudinaryService {
       `w_${width},h_${height},c_fill,q_auto,f_auto`
     );
   }
+}
+
+function toUploadEvent(event: HttpEvent<CloudinaryUploadResponse>): CloudinaryUploadEvent | null {
+  if (event.type === HttpEventType.UploadProgress) {
+    const percent = event.total ? Math.round((100 * event.loaded) / event.total) : 0;
+    return { type: 'progress', percent: Math.min(100, percent) };
+  }
+  if (event.type === HttpEventType.Response && event.body) {
+    return { type: 'done', response: event.body };
+  }
+  return null;
 }

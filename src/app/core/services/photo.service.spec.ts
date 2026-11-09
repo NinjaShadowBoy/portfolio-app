@@ -5,8 +5,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 
-import { PhotoService } from './photo.service';
-import { CloudinaryService, CloudinaryUploadResponse } from './cloudinary.service';
+import { PhotoService, PhotoUploadEvent } from './photo.service';
+import { CloudinaryService, CloudinaryUploadEvent, CloudinaryUploadResponse } from './cloudinary.service';
 import { environment } from '../../../environments/environment';
 
 describe('PhotoService', () => {
@@ -21,7 +21,7 @@ describe('PhotoService', () => {
       'uploadProjectPhoto',
       'uploadProfilePhoto',
     ]);
-    cloudinary.uploadProjectPhoto.mockReturnValue(of(upload));
+    cloudinary.uploadProjectPhoto.mockReturnValue(of<CloudinaryUploadEvent[]>({ type: 'progress', percent: 40 }, { type: 'done', response: upload }));
     cloudinary.uploadProfilePhoto.mockReturnValue(of(upload));
     TestBed.configureTestingModule({
       providers: [
@@ -37,13 +37,17 @@ describe('PhotoService', () => {
   afterEach(() => http.verify());
 
   it('uploads a project photo to Cloudinary, then records the URL for that project', () => {
-    service.uploadProjectPhoto(7, file).subscribe();
+    const events: PhotoUploadEvent[] = [];
+    service.uploadProjectPhoto(7, file).subscribe((event) => events.push(event));
 
     expect(cloudinary.uploadProjectPhoto).toHaveBeenCalledWith(file, 7);
     const req = http.expectOne(`${environment.apiBaseUrl}/photos/7`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({ photoUrl: upload.secure_url, projectId: 7 });
-    req.flush({});
+    const photo = { id: 3, photoUrl: upload.secure_url, projectId: 7, displayOrder: 0 };
+    req.flush(photo);
+
+    expect(events).toEqual([{ type: 'progress', percent: 40 }, { type: 'saving' }, { type: 'done', photo }]);
   });
 
   it('records a profile photo without a project id', () => {
@@ -60,5 +64,41 @@ describe('PhotoService', () => {
     const req = http.expectOne(`${environment.apiBaseUrl}/photos/3`);
     expect(req.request.method).toBe('DELETE');
     req.flush(null);
+  });
+
+  it('stores a project photo order with the full id list', () => {
+    let done = false;
+    service.reorderPhotos(7, [12, 10, 11]).subscribe({ complete: () => (done = true) });
+
+    const req = http.expectOne(`${environment.apiBaseUrl}/projects/7/photos/order`);
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual({ ids: [12, 10, 11] });
+    req.flush(null, { status: 204, statusText: 'No Content' });
+    expect(done).toBe(true);
+  });
+
+  it('sends photo writes one at a time, reading lazy reorder ids when the request starts', () => {
+    let ids = [1, 2, 3];
+    service.deletePhoto(2).subscribe({ complete: () => (ids = [1, 3]) });
+    service.reorderPhotos(7, () => ids).subscribe();
+
+    // The reorder waits for the delete, which changes the list it must send.
+    http.expectNone(`${environment.apiBaseUrl}/projects/7/photos/order`);
+    http.expectOne(`${environment.apiBaseUrl}/photos/2`).flush(null);
+
+    expect(http.expectOne(`${environment.apiBaseUrl}/projects/7/photos/order`).request.body).toEqual({ ids: [1, 3] });
+  });
+
+  it('starts the next write after a failed one', () => {
+    const failed = vi.fn();
+    service.reorderPhotos(7, [1]).subscribe({ error: failed });
+    service.deletePhoto(1).subscribe();
+
+    http
+      .expectOne(`${environment.apiBaseUrl}/projects/7/photos/order`)
+      .flush({ error: 'bad' }, { status: 400, statusText: 'Bad Request' });
+
+    expect(failed).toHaveBeenCalled();
+    http.expectOne(`${environment.apiBaseUrl}/photos/1`).flush(null);
   });
 });

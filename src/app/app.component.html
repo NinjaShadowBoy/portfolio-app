@@ -6,3 +6,12 @@
 </main>
 <app-footer />
 <app-notification-container />
+<!-- The assistant rides on idle so the initial bundle and SSR output stay lean. -->
+@defer (on idle) {
+  <app-mascot />
+  @if (chatUi.paneRequested()) {
+    @defer (on immediate) {
+      <app-chat-pane />
+    }
+  }
+}

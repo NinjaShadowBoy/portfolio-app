@@ -60,9 +60,10 @@ export class ProjectsListComponent {
   readonly edit = output<Project>();
   readonly managePhotos = output<Project>();
   readonly remove = output<Project>();
+  /** The empty state's "New project" action. */
+  readonly create = output<void>();
 
   readonly columns = PROJECT_COLUMNS;
-  readonly emptyText = $localize`:@@adminNoProjects:No projects found. Create your first project above!`;
   readonly rowKey = (project: Project) => project.id;
   readonly rowLabel = (project: Project) => project.name;
   readonly filterBy = (project: Project) =>

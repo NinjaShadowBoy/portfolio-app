@@ -23,6 +23,16 @@
 
   @if (failed()) {
     <p class="panel-empty">Could not load feedback.</p>
+  } @else if (empty()) {
+    <div class="empty-state">
+      @if (filtered()) {
+        <p>No feedback matches these filters.</p>
+        <button type="button" class="btn-primary" (click)="clearFilters()">Show all feedback</button>
+      } @else {
+        <p>No feedback yet. Comments visitors leave on projects and articles show up here.</p>
+        <a class="btn-primary" routerLink="/projects">Open the projects page</a>
+      }
+    </div>
   } @else {
     <app-data-table label="Feedback" [rows]="comments()" [columns]="columns" [rowKey]="rowKey"
       [loading]="isLoading()" emptyText="No feedback matches.">
@@ -50,8 +60,7 @@
       </ng-template>
       <ng-template appDataTableActions let-comment>
         <div class="row-actions">
-          <button type="button" class="btn-delete" [disabled]="busyId() === comment.id"
-            (click)="deleteComment(comment)">Delete</button>
+          <button type="button" class="btn-delete" (click)="deleteComment(comment)">Delete</button>
         </div>
       </ng-template>
     </app-data-table>

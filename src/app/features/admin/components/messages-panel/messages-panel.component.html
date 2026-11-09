@@ -10,11 +10,21 @@
 
   @if (failed()) {
     <p class="panel-empty">Could not load messages.</p>
+  } @else if (empty()) {
+    <div class="empty-state">
+      @if (unreadOnly()) {
+        <p>No unread messages. Everything has been read.</p>
+        <button type="button" class="btn-primary" (click)="unreadOnly.set(false)">Show all messages</button>
+      } @else {
+        <p>No messages yet. Messages sent through the contact form land here.</p>
+        <a class="btn-primary" routerLink="/contact">Open the contact page</a>
+      }
+    </div>
   } @else {
     <app-data-table label="Messages" [rows]="visible() ?? []" [columns]="columns" [rowKey]="rowKey"
       [loading]="visible() === null" [filterable]="true" filterLabel="Filter messages"
       filterPlaceholder="Filter by name, email or text" [filterBy]="filterBy" [highlightRow]="isUnread"
-      [emptyText]="unreadOnly() ? 'No unread messages.' : 'No messages yet.'" actionsWidth="15rem">
+      actionsWidth="15rem">
       <ng-template appDataTableCell="from" let-message>
         <div class="panel-item-title">
           {{ message.name }}
@@ -31,15 +41,12 @@
         <div class="row-actions">
           <a class="btn-secondary" [href]="replyLink(message)">Reply</a>
           @if (!message.isRead) {
-            <button type="button" class="btn-secondary" [disabled]="busyId() === message.id"
-              (click)="markRead(message)">Mark read</button>
+            <button type="button" class="btn-secondary" (click)="markRead(message)">Mark read</button>
           }
           @if (!message.isReplied) {
-            <button type="button" class="btn-secondary" [disabled]="busyId() === message.id"
-              (click)="markReplied(message)">Mark replied</button>
+            <button type="button" class="btn-secondary" (click)="markReplied(message)">Mark replied</button>
           }
-          <button type="button" class="btn-delete" [disabled]="busyId() === message.id"
-            (click)="deleteMessage(message)">Delete</button>
+          <button type="button" class="btn-delete" (click)="deleteMessage(message)">Delete</button>
         </div>
       </ng-template>
     </app-data-table>

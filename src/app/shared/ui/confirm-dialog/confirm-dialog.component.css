@@ -1,0 +1,74 @@
+/* The dialog is a bare frame; the panel inside carries the padding, so a click
+   on the dialog element itself can only be a click on the backdrop. */
+.confirm-dialog {
+  padding: 0;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  box-shadow: var(--elevation-5);
+  width: min(28rem, calc(100vw - 2rem));
+}
+
+.confirm-dialog::backdrop {
+  background: var(--glass-bg);
+  backdrop-filter: blur(4px);
+}
+
+.confirm-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.confirm-title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.confirm-body {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.confirm-actions button {
+  padding: 0.55rem 1.1rem;
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 40px;
+}
+
+.confirm-actions button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-offset);
+}
+
+.btn-danger {
+  background: var(--color-danger-500);
+  color: var(--text-inverse);
+  border: none;
+  box-shadow: var(--shadow-danger);
+  transition: background var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.btn-danger:hover {
+  background: var(--color-danger-600);
+}
+
+@media (max-width: 480px) {
+  .confirm-actions { flex-direction: column-reverse; }
+  .confirm-actions button { width: 100%; }
+}

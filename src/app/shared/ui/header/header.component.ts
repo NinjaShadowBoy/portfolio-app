@@ -16,6 +16,7 @@ import { filter } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { IdentityService } from '../../../core/services/identity.service';
 import { ThemeService } from '../../../core/services/theme.service';
+import { UiStateService } from '../../../core/services/ui-state.service';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 import { CvMenuComponent } from '../cv-menu/cv-menu.component';
 import { FlagComponent } from '../flag/flag.component';
@@ -32,6 +33,7 @@ export class HeaderComponent {
   private readonly injector = inject(Injector);
   private auth = inject(AuthService);
   private themeService = inject(ThemeService);
+  private uiState = inject(UiStateService);
   private router = inject(Router);
   readonly currentLang = inject(LOCALE_ID);
   readonly otherLang = this.currentLang === 'en' ? 'fr' : 'en';
@@ -95,6 +97,7 @@ export class HeaderComponent {
     if (this.isMenuOpen()) return;
     this.startTransition();
     this.isMenuOpen.set(true);
+    this.uiState.setDrawerOpen(true);
     this.document.documentElement.style.overflow = 'hidden';
     // Focus once the drawer is visible; a visibility:hidden element cannot take focus.
     afterNextRender(() => this.closeButton()?.nativeElement.focus({ preventScroll: true }), {
@@ -107,6 +110,7 @@ export class HeaderComponent {
     if (!this.isMenuOpen()) return;
     this.startTransition();
     this.isMenuOpen.set(false);
+    this.uiState.setDrawerOpen(false);
     this.document.documentElement.style.overflow = '';
     if (returnFocus) this.hamburger()?.nativeElement.focus({ preventScroll: true });
   }

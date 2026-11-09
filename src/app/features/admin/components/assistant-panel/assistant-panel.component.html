@@ -1,0 +1,122 @@
+<section class="admin-panel">
+  <h2>Assistant</h2>
+
+  <p class="panel-item-meta panel-note">
+    Chat can be switched on or off only through the <code>CHAT_ENABLED</code> server setting; it is not controllable here.
+  </p>
+
+  <h3>Usage</h3>
+
+  <div class="panel-toolbar">
+    <label>
+      Range
+      <select class="input-field" [value]="days()" (change)="setDays($any($event.target).value)">
+        @for (range of ranges; track range) {
+          <option [value]="range" [selected]="range === days()">Last {{ range }} days</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  @if (usageFailed()) {
+    <p class="panel-empty">Could not load usage.</p>
+  } @else {
+    @if (todayUsage(); as t) {
+      <div class="today-strip">
+        <p class="today-summary">Today: {{ t.requests }} requests, {{ t.tokens }} tokens</p>
+        @if (t.tokenBudget > 0) {
+          <div class="budget">
+            <span class="budget-label">{{ t.tokens }} of {{ t.tokenBudget }} tokens</span>
+            <div class="budget-meter" role="meter" aria-label="Daily token budget"
+              [attr.aria-valuemin]="0" [attr.aria-valuemax]="t.tokenBudget" [attr.aria-valuenow]="t.tokens">
+              <span class="budget-meter-fill" [style.width.%]="budgetPercent()"></span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <figure class="chart">
+        <figcaption>Requests per day</figcaption>
+        <svg class="chart-svg" viewBox="0 0 200 48" preserveAspectRatio="none" aria-hidden="true">
+          @for (bar of chartBars(); track bar.day) {
+            <rect [attr.x]="bar.x" [attr.y]="bar.y" [attr.width]="bar.width" [attr.height]="bar.height" />
+          }
+        </svg>
+        <table class="visually-hidden">
+          <caption>Requests per day</caption>
+          <thead>
+            <tr><th scope="col">Day</th><th scope="col">Requests</th></tr>
+          </thead>
+          <tbody>
+            @for (bar of chartBars(); track bar.day) {
+              <tr><th scope="row">{{ bar.day }}</th><td>{{ bar.requests }}</td></tr>
+            }
+          </tbody>
+        </table>
+      </figure>
+    } @else {
+      <p class="panel-empty">Loading...</p>
+    }
+
+    <h3>Top subjects</h3>
+    <app-data-table label="Top subjects" [rows]="subjects()" [columns]="subjectColumns"
+      [rowKey]="subjectRowKey" rowHeaderKey="subject" [loading]="usageLoading()"
+      emptyText="No usage recorded yet." />
+  }
+
+  <h3>Knowledge index</h3>
+
+  @if (knowledgeFailed()) {
+    <p class="panel-empty">Could not load the knowledge index.</p>
+  } @else if (knowledge(); as k) {
+    <p class="sync-status">
+      <span class="badge" [class.badge-success]="k.enabled">{{ k.enabled ? 'Enabled' : 'Disabled' }}</span>
+      @if (k.lastSync; as sync) {
+        <span class="panel-item-meta">
+          Last ran {{ sync.startedAt | date: 'medium' }}
+          @if (syncDuration(); as dur) { · took {{ dur }} }
+          @if (syncCounts(); as counts) { · {{ counts }} }
+        </span>
+      } @else {
+        <span class="panel-item-meta">The index has never been synced.</span>
+      }
+    </p>
+
+    @if (k.lastSync?.error; as syncError) {
+      <p class="sync-error">The last sync failed: {{ syncError }}</p>
+    }
+
+    <div class="reindex-row">
+      <button type="button" class="btn-secondary" (click)="reindex()"
+        [disabled]="reindexing() || k.syncing">
+        {{ reindexing() || k.syncing ? 'Reindexing...' : 'Reindex now' }}
+      </button>
+    </div>
+
+    <h3>Sources ({{ sources().length }})</h3>
+    <app-data-table label="Sources" [rows]="sources()" [columns]="sourceColumns"
+      [rowKey]="sourceRowKey" rowHeaderKey="title" [loading]="knowledgeLoading()"
+      [filterable]="true" filterLabel="Filter sources"
+      filterPlaceholder="Filter by kind, title or language" [filterBy]="sourceFilterBy"
+      emptyText="No sources yet.">
+      <ng-template appDataTableCell="kind" let-source>
+        <span class="badge">{{ kindLabel(source) }}</span>
+      </ng-template>
+      <ng-template appDataTableCell="title" let-source>
+        <div class="panel-item-title">
+          @if (source.url) {
+            <a [href]="source.url" target="_blank" rel="noopener">{{ source.title }}</a>
+          } @else {
+            {{ source.title }}
+          }
+        </div>
+        <div class="panel-item-meta">{{ source.ref }}</div>
+      </ng-template>
+      <ng-template appDataTableCell="updatedAt" let-source>
+        {{ source.updatedAt ? (source.updatedAt | date: 'mediumDate') : 'never' }}
+      </ng-template>
+    </app-data-table>
+  } @else {
+    <p class="panel-empty">Loading...</p>
+  }
+</section>

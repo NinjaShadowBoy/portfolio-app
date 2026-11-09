@@ -1,78 +1,110 @@
-<div class="modal-overlay" (click)="onClose()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <h2 i18n="Photo manager heading@@photoManagerHeading">Manage Photos - {{ project().name }}</h2>
-      <button class="btn-close" (click)="onClose()">&times;</button>
+<div class="photo-manager">
+  <!-- Upload Section -->
+  <section class="upload-section">
+    <h3 i18n="Photo manager upload heading@@photoManagerUploadHeading">Upload New Photos</h3>
+    <div class="drop-zone" [class.dragging]="dragging()">
+      <p class="drop-hint" i18n="@@photoManagerDropHint">Drop or paste images here, or</p>
+      <button type="button" class="btn-primary" (click)="photoInput.click()"
+        i18n="@@photoManagerChooseFiles">Choose files</button>
+      <p class="field-hint" i18n="@@photoManagerFileRules">JPEG, PNG, GIF, WebP or AVIF, up to {{ maxMb }} MB each. Uploads start at once.</p>
+      <input #photoInput type="file" class="file-input" [accept]="accept" multiple tabindex="-1"
+        aria-hidden="true" (change)="onFilesSelected($event)" />
     </div>
 
-    <div class="modal-body">
-      <!-- Upload Section -->
-      <div class="upload-section">
-        <h3 i18n="Photo manager upload heading@@photoManagerUploadHeading">Upload New Photos</h3>
-        <div class="file-input-wrapper">
-          <input
-            type="file"
-            id="photoInput"
-            #photoInput
-            accept="image/jpeg,image/jpg,image/png,image/gif"
-            multiple
-            (change)="onFilesSelected($event)"
-            class="file-input"
-          />
-          <label for="photoInput" class="file-label" i18n="Photo manager choose photos label@@photoManagerChoosePhotos">
-            Choose Photos (JPEG, PNG, GIF)
-          </label>
-        </div>
-
-        @if (selectedFiles().length > 0) {
-        <div class="selected-files">
-          <p>Selected {{ selectedFiles().length }} file(s):</p>
-          <ul>
-            @for (file of selectedFiles(); track file.name) {
-            <li>{{ file.name }} ({{ (file.size / 1024).toFixed(2) }} KB)</li>
+    @if (queue.items().length > 0) {
+      <ul class="upload-queue" aria-label="Uploads" i18n-aria-label="@@photoManagerUploadsLabel">
+        @for (item of queue.items(); track item.id) {
+          <li class="upload-item" [attr.data-status]="item.status">
+            <img class="upload-thumb" [src]="item.previewUrl" alt="" />
+            <div class="upload-info">
+              <span class="upload-name">{{ item.file.name }}</span>
+              <span class="upload-status" [class.text-danger]="item.status === 'failed'">{{ statusLabel(item) }}</span>
+              @if (item.status === 'uploading' || item.status === 'saving') {
+                <progress max="100" [value]="item.progress" [attr.aria-label]="item.file.name"></progress>
+              }
+            </div>
+            @if (item.status === 'failed') {
+              <div class="row-actions">
+                <button type="button" class="btn-secondary" (click)="queue.retry(item.id)"
+                  i18n="@@photoManagerRetry">Retry</button>
+                <button type="button" class="btn-secondary" (click)="queue.remove(item.id)"
+                  i18n="@@photoManagerRemove">Remove</button>
+              </div>
             }
-          </ul>
-          <button
-            (click)="uploadPhotos()"
-            [disabled]="isUploadingPhotos()"
-            class="btn-primary"
-          >
-            {{ isUploadingPhotos() ? 'Uploading...' : 'Upload Photos' }}
-          </button>
-        </div>
+          </li>
         }
-      </div>
+      </ul>
+      @if (!queue.active() && queue.doneCount() > 0) {
+        <button type="button" class="btn-secondary clear-done" (click)="queue.clearDone()"
+          i18n="@@photoManagerClearDone">Clear uploaded</button>
+      }
+    }
+  </section>
 
-      <!-- Existing Photos Section -->
-      <div class="existing-photos">
-        <h3 i18n="Photo manager existing photos heading@@photoManagerExistingHeading">Existing Photos ({{ project().photos?.length || project().photoUrls.length }})</h3>
+  <!-- Existing Photos Section -->
+  <section class="existing-photos">
+    <div class="existing-header">
+      <h3 i18n="Photo manager existing photos heading@@photoManagerExistingHeading">Existing Photos ({{ photoCount() }})</h3>
+      <span class="order-status" aria-live="polite">
+        @switch (orderStatus()) {
+          @case ('saving') { <ng-container i18n="@@photoOrderSaving">Saving order…</ng-container> }
+          @case ('saved') { <ng-container i18n="@@photoOrderSaved">Order saved</ng-container> }
+        }
+      </span>
+    </div>
 
-        @if ((project().photos?.length || 0) === 0 && project().photoUrls.length === 0) {
-        <p class="no-photos" i18n="Photo manager no photos message@@photoManagerNoPhotos">No photos uploaded yet.</p>
-        } @else {
-        <div class="photos-grid">
-          @if (project().photos && project().photos!.length > 0) {
-            @for (photo of project().photos; track photo.id) {
-            <div class="photo-item">
-              <img [src]="photo.photoUrl" [alt]="'Project photo ' + photo.id" />
-              <button (click)="deletePhoto(photo.id)" class="btn-delete-photo" i18n="Photo manager delete button@@photoManagerDeleteButton">
+    @if (photos().length > 0) {
+      @if (photos().length > 1) {
+        <p class="field-hint order-hint" i18n="@@photoManagerOrderHint">The first photo is the cover. Drag the handle, or focus it and press Space, to reorder.</p>
+      }
+      <div class="photos-grid" [appReorderGrid]="photos()" #grid="appReorderGrid" (reordered)="onReorder($event)">
+        @for (photo of photos(); track photo.id; let i = $index, first = $first, last = $last) {
+          <div class="photo-item" role="group" [attr.aria-label]="photoLabel(photo)"
+            [appReorderItem]="i" [reorderLabel]="photoLabel(photo)">
+            <img [src]="photo.photoUrl" [alt]="'Project photo ' + photo.id" loading="lazy" decoding="async" draggable="false" />
+            <button type="button" class="photo-handle" appReorderHandle
+              aria-label="Reorder" i18n-aria-label="@@photoManagerReorderHandle"
+              title="Drag to reorder, or press Space" i18n-title="@@photoManagerReorderHandleTitle">
+              <svg viewBox="0 0 10 16" width="10" height="16" aria-hidden="true" focusable="false">
+                <circle cx="2" cy="3" r="1.3" /><circle cx="8" cy="3" r="1.3" />
+                <circle cx="2" cy="8" r="1.3" /><circle cx="8" cy="8" r="1.3" />
+                <circle cx="2" cy="13" r="1.3" /><circle cx="8" cy="13" r="1.3" />
+              </svg>
+            </button>
+            @if (first) {
+              <span class="badge badge-featured cover-badge" i18n="@@photoManagerCoverBadge">Cover</span>
+            }
+            <div class="row-actions photo-actions">
+              <button type="button" class="btn-secondary" data-move="earlier" [disabled]="first"
+                (click)="grid.move(i, i - 1)" i18n="@@photoManagerMoveEarlier">Move earlier</button>
+              <button type="button" class="btn-secondary" data-move="later" [disabled]="last"
+                (click)="grid.move(i, i + 1)" i18n="@@photoManagerMoveLater">Move later</button>
+              <button type="button" class="btn-secondary" data-move="cover" [disabled]="first"
+                (click)="grid.move(i, 0)" i18n="@@photoManagerMakeCover">Make cover</button>
+              <button type="button" (click)="deletePhoto(photo)" class="btn-delete btn-delete-photo" i18n="Photo manager delete button@@photoManagerDeleteButton">
                 Delete
               </button>
             </div>
-            }
-          } @else {
-            @for (photoUrl of project().photoUrls; track photoUrl) {
-            <div class="photo-item">
-              <img [src]="photoUrl" [alt]="'Project photo'" />
-              <div class="no-delete-info">
-                <small i18n="Photo manager photo ID not available message@@photoManagerPhotoIdNotAvailable">Photo ID not available - refresh page to delete</small>
-              </div>
-            </div>
-            }
-          }
-        </div>
+          </div>
         }
       </div>
-    </div>
-  </div>
+    } @else if (legacyUrls().length > 0) {
+      <div class="photos-grid">
+        @for (photoUrl of legacyUrls(); track photoUrl) {
+          <div class="photo-item">
+            <img [src]="photoUrl" [alt]="'Project photo'" loading="lazy" decoding="async" />
+            <div class="no-delete-info">
+              <small i18n="Photo manager photo ID not available message@@photoManagerPhotoIdNotAvailable">Photo ID not available - refresh page to delete</small>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <p i18n="Photo manager no photos message@@photoManagerNoPhotos">No photos yet. Drop or paste images here, or choose files.</p>
+        <button type="button" class="btn-primary" (click)="photoInput.click()"
+          i18n="@@photoManagerChooseFiles">Choose files</button>
+      </div>
+    }
+  </section>
 </div>

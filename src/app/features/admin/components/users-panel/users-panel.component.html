@@ -15,6 +15,18 @@
 
   @if (failed()) {
     <p class="panel-empty">Could not load users.</p>
+  } @else if (empty()) {
+    <div class="empty-state">
+      @if (search()) {
+        <p>No users match "{{ search() }}".</p>
+        <button type="button" class="btn-primary" (click)="clearSearch()">Clear search</button>
+      } @else if (!includeAnonymous()) {
+        <p>No accounts yet. People appear here once they sign up or log in with Google or GitHub.</p>
+        <button type="button" class="btn-primary" (click)="toggleAnonymous(true)">Show anonymous identities</button>
+      } @else {
+        <p>No accounts or anonymous identities yet. Visitors get one when they first leave feedback.</p>
+      }
+    </div>
   } @else {
     <app-data-table label="Users" [rows]="users()" [columns]="columns" [rowKey]="rowKey"
       rowHeaderKey="name" [loading]="isLoading()" emptyText="No users match." actionsWidth="13rem">
