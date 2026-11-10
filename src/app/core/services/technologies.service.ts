@@ -347,6 +347,47 @@ export class TechnologiesService {
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/playwright/playwright-original.svg',
       docUrl: 'https://playwright.dev/',
     },
+    'fastapi': {
+      name: 'FastAPI',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg',
+      docUrl: 'https://fastapi.tiangolo.com/',
+    },
+    'thymeleaf': {
+      name: 'Thymeleaf',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/thymeleaf/thymeleaf-original.svg',
+      docUrl: 'https://www.thymeleaf.org/documentation.html',
+    },
+    'gitlab ci': {
+      name: 'GitLab CI',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg',
+      docUrl: 'https://docs.gitlab.com/ci/',
+    },
+    'spring cloud': {
+      name: 'Spring Cloud',
+      logo: 'https://spring.io/img/projects/spring-cloud.svg',
+      docUrl: 'https://spring.io/projects/spring-cloud',
+    },
+    'cloudinary': {
+      name: 'Cloudinary',
+      logo: 'https://cdn.simpleicons.org/cloudinary',
+      docUrl: 'https://cloudinary.com/documentation',
+    },
+    'whatsapp': {
+      name: 'WhatsApp',
+      logo: 'https://cdn.simpleicons.org/whatsapp',
+      docUrl: 'https://developers.facebook.com/docs/whatsapp/',
+    },
+    // No CDN icon for these two: their GitHub organisations' avatars are the official marks.
+    'chromadb': {
+      name: 'ChromaDB',
+      logo: 'https://avatars.githubusercontent.com/u/105881770?s=64&v=4',
+      docUrl: 'https://docs.trychroma.com/',
+    },
+    'pygame': {
+      name: 'Pygame',
+      logo: 'https://avatars.githubusercontent.com/u/20628127?s=64&v=4',
+      docUrl: 'https://www.pygame.org/docs/',
+    },
   };
 
   /**
