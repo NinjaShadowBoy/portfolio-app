@@ -12,8 +12,13 @@
 }
 
 .connections:hover {
-  box-shadow: var(--elevation-2);
   border-color: var(--border-emphasis);
+}
+
+@media (hover: hover) {
+  .connections:hover {
+    box-shadow: var(--elevation-2);
+  }
 }
 
 .connections h2 {

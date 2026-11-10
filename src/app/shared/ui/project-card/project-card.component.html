@@ -1,12 +1,16 @@
 <article class="project-card" [class.featured]="project().featured">
   <div class="card-media">
     @if (hasPhotos()) {
-    <app-carousel [photoUrls]="project().photoUrls" [projectName]="project().name" />
+    <app-carousel [photoUrls]="project().photoUrls" [projectName]="project().name" [fullscreen]="false"
+      sizes="(max-width: 700px) 100vw, 400px" />
     } @else {
     <div class="card-placeholder" aria-hidden="true">
       <span class="card-monogram">{{ monogram() }}</span>
     </div>
     }
+    <!-- Pointer-only twin of the title link, so a tap on the image opens the project.
+         Hidden from assistive tech and the tab order: the title link is the real one. -->
+    <a class="card-media-link" [routerLink]="['/projects', project().id]" tabindex="-1" aria-hidden="true"></a>
     @if (project().featured && showFeaturedBadge()) {
     <span class="featured-badge" i18n="Project card featured badge@@projectCardFeatured">Featured</span>
     }
@@ -20,7 +24,7 @@
     <p class="card-description">{{ description() }}</p>
     }
     @if (project().technologies.length) {
-    <app-tech-tags class="card-tags" variant="outline" [technologies]="project().technologies" />
+    <app-tech-tags class="card-tags" variant="outline" [links]="false" [technologies]="project().technologies" />
     }
   </div>
 

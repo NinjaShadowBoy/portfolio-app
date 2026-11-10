@@ -16,6 +16,36 @@ export const DARK_LOGOS = new Set([
   'ovh', 'mcp',
 ]);
 
+/** Groups for the expanded technology filter, in display order. */
+export const TECH_CATEGORIES = ['languages', 'frontend', 'backend', 'data', 'infra', 'services'] as const;
+export type TechCategory = (typeof TECH_CATEGORIES)[number] | 'other';
+
+/**
+ * Lower-case technology keys per group. Kept apart from the records below so
+ * tags without a logo entry (e.g. Thymeleaf) still get a group.
+ */
+const CATEGORY_KEYS: Record<Exclude<TechCategory, 'other'>, string[]> = {
+  languages: ['typescript', 'javascript', 'java', 'kotlin', 'python', 'c', 'c++', 'go', 'html', 'html5', 'css', 'css3'],
+  frontend: [
+    'angular', 'react', 'react native', 'expo react native', 'nuxt', 'next.js', 'jetpack compose', 'thymeleaf',
+    'tailwind', 'tailwindcss', 'bootstrap', 'sdl', 'pygame',
+  ],
+  backend: [
+    'spring boot', 'spring', 'spring cloud', 'nestjs', 'ktor', 'gin', 'chi', 'fastapi', 'node', 'nodejs', 'node.js',
+    'hibernate',
+  ],
+  data: [
+    'postgresql', 'mysql', 'sqlite', 'mongodb', 'chromadb', 'rag', 'langchain', 'gemini', 'claude', 'openrouter',
+    'openai', 'chatgpt', 'mcp',
+  ],
+  infra: ['docker', 'kubernetes', 'aws', 'ovh', 'linux', 'git', 'gitlab ci', 'github actions'],
+  services: ['cloudinary', 'stripe', 'whatsapp'],
+};
+
+const CATEGORY_BY_KEY = new Map(
+  Object.entries(CATEGORY_KEYS).flatMap(([category, keys]) => keys.map((key) => [key, category as TechCategory])),
+);
+
 @Injectable({
   providedIn: 'root',
 })
@@ -328,6 +358,11 @@ export class TechnologiesService {
     if (!tech) return undefined;
     if (proficiency == null) return tech;
     return { ...tech, proficiency };
+  }
+
+  /** The filter group of a technology (case-insensitive); unknown names are 'other'. */
+  getCategory(name: string): TechCategory {
+    return CATEGORY_BY_KEY.get(name.toLowerCase().trim()) ?? 'other';
   }
 
   /**

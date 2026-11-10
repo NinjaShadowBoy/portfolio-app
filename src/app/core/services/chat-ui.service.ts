@@ -6,7 +6,12 @@
  */
 import { Injectable, PLATFORM_ID, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { NavigationSkipped, NavigationStart, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { environment } from '../../../environments/environment';
+
+/** Same breakpoint as the chat pane's switch to a full-screen dialog. */
+const FULL_SCREEN_PANE = '(max-width: 768px)';
 
 export type MascotMode = 'animated' | 'still' | 'hidden';
 
@@ -38,6 +43,18 @@ export class ChatUiService {
   readonly remainingToday = this.remainingTodaySignal.asReadonly();
   /** The latest ninja move the chat asked the mascot for; `id` tells repeats apart. */
   readonly move = this.moveSignal.asReadonly();
+
+  constructor() {
+    // At 768px and below the pane is a full-screen dialog, so a link followed from
+    // the chat would change the page out of sight. Any navigation closes it there;
+    // NavigationSkipped covers a link to the page already shown.
+    const media = this.isBrowser ? globalThis.matchMedia?.(FULL_SCREEN_PANE) : undefined;
+    inject(Router, { optional: true })
+      ?.events.pipe(filter((e) => e instanceof NavigationStart || e instanceof NavigationSkipped))
+      .subscribe(() => {
+        if (this.openSignal() && media?.matches) this.closePane();
+      });
+  }
 
   /** The assistant asked for a ninja move; the mascot performs it. */
   requestMove(name: string): void {

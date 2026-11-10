@@ -54,6 +54,27 @@ describe('HeaderComponent', () => {
     expect(component.languageUrl('/en')).toBe('/');
   });
 
+  it('suggests the other language only when the browser prefers it', async () => {
+    await setup('en');
+    expect(component.prefersOtherLanguage(['fr-FR', 'en-US'])).toBe(true);
+    expect(component.prefersOtherLanguage(['de-DE', 'fr'])).toBe(true);
+    expect(component.prefersOtherLanguage(['en-GB', 'fr'])).toBe(false);
+    expect(component.prefersOtherLanguage(['de-DE'])).toBe(false);
+    expect(component.prefersOtherLanguage([])).toBe(false);
+  });
+
+  it('shows the header language button only when suggested', async () => {
+    // jsdom's browser language is en-US, so the English build suggests nothing at first.
+    await setup('en');
+    const controls = () => (fixture.nativeElement as HTMLElement).querySelector('.mobile-nav-controls')!;
+    expect(controls().querySelector('.lang-suggest')).toBeNull();
+
+    component.suggestLanguage.set(true);
+    fixture.detectChanges();
+    expect(controls().querySelector('.lang-suggest')?.getAttribute('aria-label')).toBe('Switch to French');
+    expect(controls().querySelector('.lang-suggest [lang="fr"]')?.textContent?.trim()).toBe('FR');
+  });
+
   it('links every public section in both the desktop and mobile menus', async () => {
     await setup('en');
     const host = fixture.nativeElement as HTMLElement;

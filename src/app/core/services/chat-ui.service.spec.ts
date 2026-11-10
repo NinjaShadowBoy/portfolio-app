@@ -1,5 +1,6 @@
-import { PLATFORM_ID, Provider } from '@angular/core';
+import { EnvironmentProviders, PLATFORM_ID, Provider } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
 import { ChatUiService, MASCOT_MODE_KEY } from './chat-ui.service';
 
 describe('ChatUiService', () => {
@@ -9,13 +10,39 @@ describe('ChatUiService', () => {
     vi.restoreAllMocks();
   });
 
-  function makeService(providers: Provider[] = []): ChatUiService {
+  function makeService(providers: (Provider | EnvironmentProviders)[] = []): ChatUiService {
     TestBed.resetTestingModule(); // also lets a test recreate the service to reload
     TestBed.configureTestingModule({ providers });
     const service = TestBed.inject(ChatUiService);
     TestBed.tick(); // flush effects
     return service;
   }
+
+  describe('navigation while open', () => {
+    function withScreen(fullScreen: boolean) {
+      vi.spyOn(globalThis, 'matchMedia').mockReturnValue({ matches: fullScreen } as MediaQueryList);
+      const service = makeService([provideRouter([{ path: '**', children: [] }])]);
+      return { service, router: TestBed.inject(Router) };
+    }
+
+    it('closes the full-screen pane on a navigation, including to the current page', async () => {
+      const { service, router } = withScreen(true);
+      service.openPane();
+      await router.navigateByUrl('/projects');
+      expect(service.open()).toBe(false);
+
+      service.openPane();
+      await router.navigateByUrl('/projects');
+      expect(service.open()).toBe(false);
+    });
+
+    it('keeps the side pane open on wide screens', async () => {
+      const { service, router } = withScreen(false);
+      service.openPane();
+      await router.navigateByUrl('/projects');
+      expect(service.open()).toBe(true);
+    });
+  });
 
   it('toggles the pane open state', () => {
     const service = makeService();

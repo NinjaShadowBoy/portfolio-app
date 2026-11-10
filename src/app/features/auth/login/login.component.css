@@ -14,7 +14,6 @@
   border-radius: 16px;
   box-shadow: var(--elevation-2);
   border: 1px solid var(--border-subtle);
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
 }
 
 .auth-header h1 {
@@ -142,9 +141,14 @@
 
 .oauth-google:hover:not(:disabled) {
   border-color: #d2d3d5;
-  box-shadow: 0 2px 6px 0 rgba(60, 64, 67, 0.15),
-              0 1px 3px 0 rgba(60, 64, 67, 0.2);
-  transform: translateY(-2px);
+}
+
+@media (hover: hover) {
+  .oauth-google:hover:not(:disabled) {
+    box-shadow: 0 2px 6px 0 rgba(60, 64, 67, 0.15),
+                0 1px 3px 0 rgba(60, 64, 67, 0.2);
+    transform: translateY(-2px);
+  }
 }
 
 .oauth-google:active:not(:disabled) {
@@ -166,8 +170,13 @@
 
 .oauth-github:hover:not(:disabled) {
   border-color: #1b1f23;
-  box-shadow: 0 4px 12px 0 rgba(36, 41, 46, 0.3);
-  transform: translateY(-2px);
+}
+
+@media (hover: hover) {
+  .oauth-github:hover:not(:disabled) {
+    box-shadow: 0 4px 12px 0 rgba(36, 41, 46, 0.3);
+    transform: translateY(-2px);
+  }
 }
 
 .oauth-github:active:not(:disabled) {
@@ -293,8 +302,13 @@
 
 .auth-form button:hover:not(:disabled) {
   background: var(--btn-primary-bg-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--btn-primary-shadow), var(--elevation-2);
+}
+
+@media (hover: hover) {
+  .auth-form button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--btn-primary-shadow), var(--elevation-2);
+  }
 }
 
 .auth-form button:hover:not(:disabled)::before {
@@ -320,23 +334,23 @@
 }
 
 /* Dark Mode Specific Adjustments */
-[data-theme="dark"] .oauth-google {
+:host-context([data-theme="dark"]) .oauth-google {
   background: #2d2d2d;
   color: #e8eaed;
   border-color: #3c4043;
 }
 
-[data-theme="dark"] .oauth-google::before {
+:host-context([data-theme="dark"]) .oauth-google::before {
   background: linear-gradient(135deg, #3c4043 0%, #202124 100%);
 }
 
-[data-theme="dark"] .oauth-github {
+:host-context([data-theme="dark"]) .oauth-github {
   background: #0d1117;
   color: #ffffff;
   border-color: #30363d;
 }
 
-[data-theme="dark"] .oauth-github::before {
+:host-context([data-theme="dark"]) .oauth-github::before {
   background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
 }
 

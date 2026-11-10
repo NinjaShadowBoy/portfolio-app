@@ -1,5 +1,20 @@
-import { Component, PLATFORM_ID, Renderer2, effect, inject, input, signal, ElementRef, viewChild } from '@angular/core';
+import {
+  Component,
+  PLATFORM_ID,
+  Renderer2,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+  ElementRef,
+  viewChild,
+} from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { cloudinarySrcset, cloudinaryUrl } from '../../../core/utils/cloudinary';
+
+/** Horizontal travel, in px, that counts as a swipe in the lightbox. */
+const SWIPE_DISTANCE = 50;
 
 const AUTO_PLAY_DELAY = 5000;
 
@@ -14,6 +29,15 @@ export class CarouselComponent {
   projectName = input.required<string>();
   /** `eager` for a carousel above the fold (project page), `lazy` in card grids. */
   loading = input<'lazy' | 'eager'>('lazy');
+  /** False inside project cards: the image then belongs to the card's link, not a lightbox. */
+  fullscreen = input(true);
+  /** Rendered width of the image for `srcset`, e.g. `(max-width: 700px) 100vw, 400px`. */
+  sizes = input('100vw');
+
+  /** Resized Cloudinary sources; other hosts are served as they are. */
+  readonly sources = computed(() =>
+    this.photoUrls().map((url) => ({ src: cloudinaryUrl(url, 1200), srcset: cloudinarySrcset(url), full: cloudinaryUrl(url) })),
+  );
 
   readonly carouselImage = viewChild.required<ElementRef<HTMLImageElement>>('carouselImage');
   readonly lightbox = viewChild<ElementRef<HTMLElement>>('lightbox');
@@ -46,7 +70,31 @@ export class CarouselComponent {
   });
 
   openFullscreen(): void {
-    this.isFullscreen.set(true);
+    if (this.fullscreen()) this.isFullscreen.set(true);
+  }
+
+  private swipeStartX: number | null = null;
+  /** Set after a swipe so the click that follows it does not close the lightbox. */
+  private swiped = false;
+
+  onSwipeStart(event: PointerEvent): void {
+    this.swipeStartX = event.isPrimary ? event.clientX : null;
+    this.swiped = false;
+  }
+
+  onSwipeEnd(event: PointerEvent): void {
+    if (this.swipeStartX === null || this.photoUrls().length <= 1) return;
+    const dx = event.clientX - this.swipeStartX;
+    this.swipeStartX = null;
+    if (Math.abs(dx) < SWIPE_DISTANCE) return;
+    this.swiped = true;
+    if (dx < 0) this.nextImage();
+    else this.previousImage();
+  }
+
+  onLightboxClick(): void {
+    if (this.swiped) this.swiped = false;
+    else this.closeFullscreen();
   }
 
   closeFullscreen(): void {

@@ -22,9 +22,14 @@
 }
 
 .project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--elevation-4);
   border-color: var(--border-brand);
+}
+
+@media (hover: hover) {
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--elevation-4);
+  }
 }
 
 /* Featured cards get a brand ring instead of a thicker border, so their
@@ -76,6 +81,13 @@
   bottom: auto;
   left: auto;
   transform: none;
+}
+
+/* Covers the photo under the carousel arrows (z-index 2) and above the fade (1). */
+.card-media-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .card-media app-carousel {

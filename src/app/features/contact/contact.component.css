@@ -15,14 +15,12 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: fadeInUp 0.8s var(--motion-ease-out);
 }
 
 p {
   color: var(--text-secondary);
   margin-bottom: 2rem;
   line-height: 1.6;
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
 }
 
 .contact-form {
@@ -34,7 +32,6 @@ p {
   border-radius: 16px;
   box-shadow: var(--elevation-2);
   border: 1px solid var(--border-subtle);
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.4s both;
 }
 
 .form-group {
@@ -133,8 +130,13 @@ p {
 
 .contact-form button:hover:not(:disabled) {
   background: var(--btn-primary-bg-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--btn-primary-shadow), var(--elevation-2);
+}
+
+@media (hover: hover) {
+  .contact-form button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--btn-primary-shadow), var(--elevation-2);
+  }
 }
 
 .contact-form button:hover:not(:disabled)::before {
@@ -276,14 +278,7 @@ p {
 }
 
 /* Dark mode optimizations */
-[data-theme="dark"] .contact-form {
-  background: var(--surface-raised);
-  border-color: var(--border-default);
-}
-
-[data-theme="dark"] .form-group input,
-[data-theme="dark"] .form-group textarea {
-  background: var(--input-bg);
+:host-context([data-theme="dark"]) .contact-form {
   border-color: var(--border-default);
 }
 

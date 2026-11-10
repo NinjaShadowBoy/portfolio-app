@@ -72,8 +72,13 @@ h1 {
 .home-link:hover {
   color: var(--text-inverse);
   border-color: var(--color-primary-600);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-primary);
+}
+
+@media (hover: hover) {
+  .home-link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-primary);
+  }
 }
 
 .home-link:hover::before {
@@ -139,12 +144,11 @@ h1 {
 }
 
 /* Dark mode optimizations */
-[data-theme="dark"] .not-found-container {
-  background: var(--surface-raised);
+:host-context([data-theme="dark"]) .not-found-container {
   border-color: var(--border-default);
 }
 
-[data-theme="dark"] .not-found-container::before {
+:host-context([data-theme="dark"]) .not-found-container::before {
   opacity: 0.1;
 }
 

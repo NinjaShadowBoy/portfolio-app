@@ -4,6 +4,7 @@ import { HeaderComponent } from './shared/ui/header/header.component';
 import { BreadcrumbComponent } from './shared/ui/breadcrumb/breadcrumb.component';
 import { FooterComponent } from './shared/ui/footer/footer.component';
 import { NotificationContainerComponent } from './shared/ui/notification-container/notification-container.component';
+import { BackToTopComponent } from './shared/ui/back-to-top/back-to-top.component';
 import { MascotComponent } from './features/chat/mascot/mascot.component';
 import { ChatPaneComponent } from './features/chat/chat-pane/chat-pane.component';
 import { ChatUiService } from './core/services/chat-ui.service';
@@ -17,6 +18,7 @@ import { IdentityService } from './core/services/identity.service';
     RouterOutlet,
     FooterComponent,
     NotificationContainerComponent,
+    BackToTopComponent,
     MascotComponent,
     ChatPaneComponent,
   ],

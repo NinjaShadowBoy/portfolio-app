@@ -54,7 +54,12 @@
 .breadcrumb li a:hover {
   color: var(--text-link-hover);
   text-decoration: none;
-  transform: translateY(-1px);
+}
+
+@media (hover: hover) {
+  .breadcrumb li a:hover {
+    transform: translateY(-1px);
+  }
 }
 
 .breadcrumb li a:hover::before {
@@ -136,17 +141,6 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Dark mode optimizations */
-[data-theme="dark"] .breadcrumb li span {
-  background: var(--surface-brand);
-  border-color: var(--border-brand);
-  color: var(--text-primary);
-}
-
-[data-theme="dark"] .breadcrumb li a:hover {
-  background: var(--surface-hover);
 }
 
 /* Focus management for accessibility */

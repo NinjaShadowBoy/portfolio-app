@@ -1,5 +1,5 @@
 @for (tag of tags(); track tag.name) {
-  @if (tag.docUrl) {
+  @if (tag.docUrl && links()) {
     <a [href]="tag.docUrl" target="_blank" rel="noopener noreferrer" class="tech-tag"
       [attr.aria-label]="tag.name + ' documentation'">
       <ng-container *ngTemplateOutlet="label; context: { $implicit: tag }" />

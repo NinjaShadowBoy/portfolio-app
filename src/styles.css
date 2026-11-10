@@ -31,7 +31,7 @@ img {
    ============================================ */
 @font-face {
   font-family: 'Product Sans';
-  src: url('assets/fonts/PRODUCTSANS-REGULAR.TTF') format('truetype');
+  src: url('assets/fonts/PRODUCTSANS-REGULAR.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -39,7 +39,7 @@ img {
 
 @font-face {
   font-family: 'Product Sans';
-  src: url('assets/fonts/PRODUCTSANS-BOLD.TTF') format('truetype');
+  src: url('assets/fonts/PRODUCTSANS-BOLD.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -47,7 +47,7 @@ img {
 
 @font-face {
   font-family: 'Product Sans';
-  src: url('assets/fonts/PRODUCTSANS-ITALIC.TTF') format('truetype');
+  src: url('assets/fonts/PRODUCTSANS-ITALIC.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -55,7 +55,7 @@ img {
 
 @font-face {
   font-family: 'Product Sans';
-  src: url('assets/fonts/PRODUCTSANS-BOLDITALIC.TTF') format('truetype');
+  src: url('assets/fonts/PRODUCTSANS-BOLDITALIC.woff2') format('woff2');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -556,8 +556,13 @@ img {
 
 .btn-primary:hover {
   background: var(--btn-primary-bg-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--btn-primary-shadow), var(--elevation-2);
+}
+
+@media (hover: hover) {
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--btn-primary-shadow), var(--elevation-2);
+  }
 }
 
 .btn-primary:active {
@@ -576,8 +581,13 @@ img {
 .btn-secondary:hover {
   background: var(--btn-secondary-bg-hover);
   border-color: var(--border-emphasis);
-  transform: translateY(-1px);
-  box-shadow: var(--elevation-1);
+}
+
+@media (hover: hover) {
+  .btn-secondary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--elevation-1);
+  }
 }
 
 .btn-ghost {
@@ -669,9 +679,11 @@ img {
   cursor: pointer;
 }
 
-.interactive:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--elevation-2);
+@media (hover: hover) {
+  .interactive:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--elevation-2);
+  }
 }
 
 .interactive:active {
@@ -1203,8 +1215,6 @@ body * {
 
 /* Hover State */
 .liquid-glass:hover {
-  transform: translateY(-1px) scale(1.02);
-
   /* Enhanced Liquid Glass on Hover */
   background-image:
     linear-gradient(135deg,
@@ -1216,16 +1226,22 @@ body * {
       rgba(6, 182, 212, 0.4),
       rgba(139, 92, 246, 0.3),
       rgba(255, 255, 255, 0.5));
+}
 
-  box-shadow:
-    inset 0 1px 2px rgba(255, 255, 255, 0.35),
-    inset 0 -1px 2px rgba(255, 255, 255, 0.15),
-    0 4px 16px rgba(0, 0, 0, 0.15),
-    0 8px 32px rgba(53, 114, 239, 0.2),
-    0 12px 48px rgba(6, 182, 212, 0.15);
+@media (hover: hover) {
+  .liquid-glass:hover {
+    transform: translateY(-1px) scale(1.02);
 
-  backdrop-filter: blur(25px) saturate(200%) brightness(1.1);
-  -webkit-backdrop-filter: blur(25px) saturate(200%) brightness(1.1);
+    box-shadow:
+      inset 0 1px 2px rgba(255, 255, 255, 0.35),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.15),
+      0 4px 16px rgba(0, 0, 0, 0.15),
+      0 8px 32px rgba(53, 114, 239, 0.2),
+      0 12px 48px rgba(6, 182, 212, 0.15);
+
+    backdrop-filter: blur(25px) saturate(200%) brightness(1.1);
+    -webkit-backdrop-filter: blur(25px) saturate(200%) brightness(1.1);
+  }
 }
 
 .liquid-glass:hover::before {
@@ -1234,7 +1250,12 @@ body * {
 
 .liquid-glass:hover::after {
   opacity: 1;
-  transform: scale(1);
+}
+
+@media (hover: hover) {
+  .liquid-glass:hover::after {
+    transform: scale(1);
+  }
 }
 
 /* Active/Selected State */
@@ -1644,7 +1665,17 @@ button.chip:hover,
 .tag.interactive:hover,
 .chip.interactive:hover {
   background: var(--color-primary-200);
-  transform: translateY(-1px);
+}
+
+@media (hover: hover) {
+  a.tag:hover,
+  a.chip:hover,
+  button.tag:hover,
+  button.chip:hover,
+  .tag.interactive:hover,
+  .chip.interactive:hover {
+    transform: translateY(-1px);
+  }
 }
 
 /* Keep the promoted chip visually identical to the legacy project-card

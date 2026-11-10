@@ -12,7 +12,6 @@
 .tools-hero {
   margin-bottom: 2rem;
   text-align: center;
-  animation: fadeInUp 0.6s var(--motion-ease-out);
 }
 
 .tools-hero h1 {
@@ -37,7 +36,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: 2rem;
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
   width: 100%;
   box-sizing: border-box;
 }
@@ -57,9 +55,11 @@
     transform var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.tool-card:hover {
-  box-shadow: var(--elevation-3);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .tool-card:hover {
+    box-shadow: var(--elevation-3);
+    transform: translateY(-2px);
+  }
 }
 
 .tool-card:focus-visible {
@@ -92,10 +92,6 @@
 }
 
 /* Animations */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 
 /* Responsive — mirrors articles/projects breakpoints */
 @media (max-width: 768px) {

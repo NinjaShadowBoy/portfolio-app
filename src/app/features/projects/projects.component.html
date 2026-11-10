@@ -38,20 +38,29 @@
     </div>
 
     @if (techOptions().length > 0) {
-    <div class="tech-filter" [class.collapsed]="!showAllTech()" role="group" aria-label="Filter by technology"
+    <!-- Collapsed: the most used technologies in one wrapped list. Expanded: all of them, grouped. -->
+    <div class="tech-filter" id="tech-filter" [class.expanded]="showAllTech()" role="group" aria-label="Filter by technology"
       i18n-aria-label="Projects technology filter@@projectsTechLabel">
-      @for (tech of techOptions(); track tech.name) {
-      <button type="button" class="tech-chip" [class.extra]="tech.extra"
-        [attr.aria-pressed]="tech.selected" (click)="toggleTech(tech.name)">
-        @if (tech.logo && !failedLogos().has(tech.name)) {
-        <img class="tech-logo" [src]="tech.logo" alt="" width="16" height="16" loading="lazy" decoding="async"
-          (error)="markLogoFailed(tech.name)" />
-        }
-        {{ tech.name }}<span class="tech-count" aria-hidden="true">{{ tech.count }}</span>
-      </button>
+      @if (showAllTech()) {
+      @for (group of techGroups(); track group.category) {
+      <div class="tech-group" role="group" [attr.aria-labelledby]="'tech-group-' + group.category">
+        <span class="tech-group-label" [id]="'tech-group-' + group.category">{{ group.label }}</span>
+        <div class="tech-group-chips">
+          @for (tech of group.techs; track tech.name) {
+          <ng-container *ngTemplateOutlet="chip; context: { $implicit: tech }" />
+          }
+        </div>
+      </div>
       }
+      } @else {
+      @for (tech of visibleTech(); track tech.name) {
+      <ng-container *ngTemplateOutlet="chip; context: { $implicit: tech }" />
+      }
+      }
+      <!-- Outside the @if so it keeps focus when the list switches. -->
       @if (hiddenTechCount() > 0) {
-      <button type="button" class="tech-more" [attr.aria-expanded]="showAllTech()" (click)="showAllTech.set(!showAllTech())">
+      <button type="button" class="tech-more" aria-controls="tech-filter" [attr.aria-expanded]="showAllTech()"
+        (click)="showAllTech.set(!showAllTech())">
         @if (showAllTech()) {
         <span i18n="Projects show fewer technologies@@projectsTechFewer">Fewer</span>
         } @else {
@@ -61,6 +70,16 @@
       }
     </div>
     }
+
+    <ng-template #chip let-tech>
+      <button type="button" class="tech-chip" [attr.aria-pressed]="tech.selected" (click)="toggleTech(tech.name)">
+        @if (tech.logo && !failedLogos().has(tech.name)) {
+        <img class="tech-logo" [src]="tech.logo" alt="" width="16" height="16" loading="lazy" decoding="async"
+          (error)="markLogoFailed(tech.name)" />
+        }
+        {{ tech.name }}<span class="tech-count" aria-hidden="true">{{ tech.count }}</span>
+      </button>
+    </ng-template>
   </div>
 
   <div class="result-line">

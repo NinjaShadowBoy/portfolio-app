@@ -21,7 +21,12 @@
 
 .tech-tag:hover {
   background: var(--color-primary-200);
-  transform: translateY(-1px);
+}
+
+@media (hover: hover) {
+  .tech-tag:hover {
+    transform: translateY(-1px);
+  }
 }
 
 .tech-icon {
@@ -42,12 +47,12 @@
   }
 }
 
-[data-theme="dark"] .tech-tag {
+:host-context([data-theme="dark"]) .tech-tag {
   background: var(--color-primary-900);
   color: var(--color-primary-200);
 }
 
-[data-theme="dark"] .tech-tag:hover {
+:host-context([data-theme="dark"]) .tech-tag:hover {
   background: var(--color-primary-800);
 }
 
@@ -79,36 +84,33 @@
 }
 
 :host(.pill) .tech-tag:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--elevation-2);
   border-color: var(--color-primary-600);
   color: var(--text-inverse);
   background: var(--surface-brand);
+}
+
+@media (hover: hover) {
+  :host(.pill) .tech-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--elevation-2);
+  }
 }
 
 :host(.pill) .tech-tag:hover::before {
   opacity: 1;
 }
 
-[data-theme="dark"] :host(.pill) .tech-tag {
-  background: var(--surface-brand);
-  color: var(--text-accent);
-  border-color: var(--border-brand);
-}
-
 /* Outline variant: project cards, the row aligned to the right edge. Round, no
    fill, a faint border; the hover
    lifts only the border and text colour. */
-:host(.outline) .tech-tag,
-[data-theme="dark"] :host(.outline) .tech-tag {
+:host(.outline) .tech-tag {
   background: transparent;
   color: var(--text-secondary);
   border: 1px solid var(--border-default);
   border-radius: 999px;
 }
 
-:host(.outline) .tech-tag:hover,
-[data-theme="dark"] :host(.outline) .tech-tag:hover {
+:host(.outline) .tech-tag:hover {
   background: transparent;
   color: var(--text-primary);
   border-color: var(--border-brand);

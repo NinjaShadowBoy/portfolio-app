@@ -58,8 +58,17 @@
 
 .cloud-item:hover .logo,
 .cloud-item:focus-visible .logo {
-  transform: scale(1.15);
   opacity: 1;
+}
+
+@media (hover: hover) {
+  .cloud-item:hover .logo {
+    transform: scale(1.15);
+  }
+}
+
+.cloud-item:focus-visible .logo {
+  transform: scale(1.15);
 }
 
 .fallback {
@@ -96,6 +105,15 @@
 .cloud-item:hover .name,
 .cloud-item:focus-visible .name {
   opacity: 1;
+}
+
+@media (hover: hover) {
+  .cloud-item:hover .name {
+    transform: translate(-50%, 0);
+  }
+}
+
+.cloud-item:focus-visible .name {
   transform: translate(-50%, 0);
 }
 

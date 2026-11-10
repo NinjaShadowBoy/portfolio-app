@@ -26,8 +26,11 @@
   height: 100%;
   object-fit: cover;
   opacity: 1;
-  cursor: zoom-in;
   transition: opacity var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.carousel-image.zoomable {
+  cursor: zoom-in;
 }
 
 .carousel-image:focus-visible {
@@ -209,6 +212,8 @@
   padding: 2rem;
   background: rgba(0, 0, 0, 0.9);
   cursor: zoom-out;
+  /* Horizontal swipes go to the lightbox, which changes the image. */
+  touch-action: pan-y;
   animation: lightbox-fade-in 0.2s ease-out;
 }
 
@@ -247,8 +252,8 @@
 }
 
 .lightbox-close {
-  top: 1rem;
-  right: 1rem;
+  top: calc(1rem + env(safe-area-inset-top));
+  right: calc(1rem + env(safe-area-inset-right));
   width: 44px;
   height: 44px;
   font-size: 1.5rem;
@@ -268,7 +273,7 @@
 
 .lightbox-counter {
   position: absolute;
-  bottom: 1.25rem;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   padding: 0.25rem 0.75rem;
@@ -280,7 +285,7 @@
 
 @media (max-width: 600px) {
   .lightbox { padding: 0.5rem; }
-  .lightbox-nav { width: 40px; height: 40px; font-size: 1.4rem; }
-  .lightbox-prev { left: 0.5rem; }
-  .lightbox-next { right: 0.5rem; }
+  .lightbox-nav { width: 44px; height: 44px; font-size: 1.4rem; }
+  .lightbox-prev { left: calc(0.5rem + env(safe-area-inset-left)); }
+  .lightbox-next { right: calc(0.5rem + env(safe-area-inset-right)); }
 }

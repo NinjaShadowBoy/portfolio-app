@@ -195,8 +195,31 @@
   background: transparent;
 }
 
-.tech-filter.collapsed .extra {
-  display: none;
+/* Expanded: one labelled row of chips per group, "Fewer" at the end. */
+.tech-filter.expanded {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.875rem;
+}
+
+.tech-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.tech-group-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.tech-group-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .scope-btn:focus-visible,
@@ -324,30 +347,10 @@
     flex: 1;
   }
 
-  .tech-filter {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding-block: 2px;
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
-    mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
-  }
-
-  .tech-filter::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Every technology is reachable by scrolling, so nothing is folded away */
-  .tech-filter.collapsed .extra {
-    display: inline-flex;
-  }
-
+  /* 44px touch targets; the list wraps and folds behind "More" as on desktop. */
+  .tech-chip,
   .tech-more {
-    display: none;
-  }
-
-  .tech-chip:last-of-type {
-    margin-right: 2rem;
+    height: 2.75rem;
   }
 
   .projects-grid {

@@ -60,15 +60,6 @@
   box-shadow: var(--shadow-primary);
 }
 
-.cta-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--elevation-3), var(--shadow-primary);
-}
-
-.cta-primary:hover .cta-icon {
-  transform: translateX(4px);
-}
-
 /* Secondary variant */
 .cta-secondary {
   background: var(--btn-secondary-bg);
@@ -79,12 +70,6 @@
 .cta-secondary:hover {
   background: var(--btn-secondary-bg-hover);
   border-color: var(--border-emphasis);
-  transform: translateY(-2px);
-  box-shadow: var(--elevation-2);
-}
-
-.cta-secondary:hover .cta-icon {
-  transform: translateX(4px);
 }
 
 /* Outline variant */
@@ -109,16 +94,36 @@
 .cta-outline:hover {
   color: var(--text-inverse);
   border-color: var(--color-primary-600);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-primary);
 }
 
 .cta-outline:hover::before {
   transform: scaleX(1);
 }
 
-.cta-outline:hover .cta-icon {
-  transform: translateX(4px);
+@media (hover: hover) {
+  .cta-primary:hover,
+  .cta-secondary:hover,
+  .cta-outline:hover {
+    transform: translateY(-2px);
+  }
+
+  .cta-primary:hover {
+    box-shadow: var(--elevation-3), var(--shadow-primary);
+  }
+
+  .cta-secondary:hover {
+    box-shadow: var(--elevation-2);
+  }
+
+  .cta-outline:hover {
+    box-shadow: var(--shadow-primary);
+  }
+
+  .cta-primary:hover .cta-icon,
+  .cta-secondary:hover .cta-icon,
+  .cta-outline:hover .cta-icon {
+    transform: translateX(4px);
+  }
 }
 
 /* Responsive design */
@@ -136,11 +141,12 @@
 }
 
 /* Dark mode adjustments */
-[data-theme="dark"] .cta-outline {
+:host-context([data-theme="dark"]) .cta-outline {
   color: var(--color-primary-400);
   border-color: var(--color-primary-400);
 }
 
-[data-theme="dark"] .cta-outline:hover {
+:host-context([data-theme="dark"]) .cta-outline:hover {
+  color: var(--text-inverse);
   border-color: var(--color-primary-500);
 }

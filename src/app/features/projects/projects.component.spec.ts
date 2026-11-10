@@ -107,6 +107,14 @@ describe('ProjectsComponent', () => {
     expect(component.filters().technologies).toEqual(['Angular']);
   });
 
+  it('groups every technology by category when expanded', async () => {
+    vi.useFakeTimers();
+    await loadProjects();
+    expect(component.techGroups().map((g) => [g.category, g.techs.map((t) => t.name)])).toEqual([
+      ['frontend', ['Angular', 'React']],
+    ]);
+  });
+
   it('switches between all and featured projects and reports the count', async () => {
     vi.useFakeTimers();
     await loadProjects();

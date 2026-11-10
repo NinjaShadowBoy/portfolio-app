@@ -1,0 +1,54 @@
+/* Above the mascot and chat pane (900), below the header drawer (1001) and toasts (9999). */
+.back-to-top {
+  position: fixed;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 950;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  min-height: 0;
+  padding: 0 !important;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  box-shadow: var(--elevation-3);
+  cursor: pointer;
+  transform: translateX(-50%);
+  animation: back-to-top-in var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.back-to-top svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.back-to-top:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring), var(--elevation-3);
+}
+
+/* The scroll state is phone-only already; this keeps it off wide screens if a tablet rotates. */
+@media (min-width: 601px) {
+  .back-to-top {
+    display: none;
+  }
+}
+
+@keyframes back-to-top-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top {
+    animation: none;
+  }
+}

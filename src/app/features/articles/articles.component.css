@@ -171,6 +171,7 @@
 .paper-download {
   display: inline-flex;
   align-items: center;
+  min-height: var(--min-touch-target, auto);
   gap: 0.5rem;
   padding: 0.45rem 0.95rem;
   border-radius: 999px;
@@ -192,6 +193,9 @@
 }
 
 .paper-extra {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--min-touch-target, auto);
   font-size: 0.875rem;
   color: var(--text-link);
 }

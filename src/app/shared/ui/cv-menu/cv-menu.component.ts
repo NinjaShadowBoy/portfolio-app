@@ -12,7 +12,7 @@ let nextId = 0;
  * The menu is a popover, so it renders in the top layer: the header clips its
  * overflow and would cut off an absolutely positioned dropdown. Anchor
  * positioning is not available everywhere, so the menu is placed under its
- * button when it opens.
+ * button when it opens, or above it when the viewport has no room below.
  */
 @Component({
   selector: 'app-cv-menu',
@@ -35,7 +35,10 @@ export class CvMenuComponent {
     const menu = this.menu().nativeElement;
     // Keep the menu inside the viewport when the button sits near the right edge.
     const left = Math.min(rect.left, window.innerWidth - menu.offsetWidth - 8);
-    menu.style.top = `${rect.bottom + 6}px`;
+    // Open upward when there is no room below, e.g. in the bottom-anchored mobile drawer.
+    const below = rect.bottom + 6;
+    const fitsBelow = below + menu.offsetHeight <= window.innerHeight - 8;
+    menu.style.top = `${fitsBelow ? below : Math.max(8, rect.top - 6 - menu.offsetHeight)}px`;
     menu.style.left = `${Math.max(8, left)}px`;
   }
 

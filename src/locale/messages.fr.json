@@ -585,6 +585,17 @@
     "chatErrorOffline": "Vous êtes hors ligne. Vérifiez votre connexion et réessayez.",
     "chatErrorCancelled": "La réponse a été interrompue.",
     "privacyChatHeading": "Assistant de discussion",
-    "privacyChatBody": " Lorsque vous utilisez l'assistant de discussion, vos messages sont envoyés via {$START_LINK}OpenRouter{$CLOSE_LINK} (qui les transmet au fournisseur du modèle d'IA qui répond — en production, Claude d'Anthropic — et à {$START_LINK_1}Voyage AI{$CLOSE_LINK}, qui calcule les représentations de recherche) pour produire une réponse. Ce site ne conserve aucune transcription : seul un compteur quotidien de messages par visiteur est enregistré, associé à un cookie anonyme ou à une adresse IP hachée. La conversation reste dans l'onglet de votre navigateur (sessionStorage) et est effacée à sa fermeture. "
+    "privacyChatBody": " Lorsque vous utilisez l'assistant de discussion, vos messages sont envoyés via {$START_LINK}OpenRouter{$CLOSE_LINK} (qui les transmet au fournisseur du modèle d'IA qui répond — en production, Claude d'Anthropic — et à {$START_LINK_1}Voyage AI{$CLOSE_LINK}, qui calcule les représentations de recherche) pour produire une réponse. Ce site ne conserve aucune transcription : seul un compteur quotidien de messages par visiteur est enregistré, associé à un cookie anonyme ou à une adresse IP hachée. La conversation reste dans l'onglet de votre navigateur (sessionStorage) et est effacée à sa fermeture. ",
+    "headerSwitchToFrench": "Passer en français",
+    "headerSwitchToEnglish": "Passer en anglais",
+    "headerBackToTop": "Revenir en haut",
+    "projectsTechGroupLanguages": "Langages",
+    "projectsTechGroupFrontend": "Frontend et mobile",
+    "projectsTechGroupBackend": "Backend",
+    "projectsTechGroupData": "Données et IA",
+    "projectsTechGroupInfra": "Infrastructure",
+    "projectsTechGroupServices": "Services",
+    "projectsTechGroupOther": "Autres",
+    "feedbackTextareaLabel": "Votre avis"
   }
 }

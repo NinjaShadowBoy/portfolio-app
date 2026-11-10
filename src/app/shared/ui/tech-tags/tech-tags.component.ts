@@ -25,6 +25,8 @@ export class TechTagsComponent {
   /** Technology names exactly as stored on the project. */
   technologies = input.required<string[]>();
   variant = input<'chip' | 'pill' | 'outline'>('chip');
+  /** False inside project cards: plain labels, so a tap on the card opens the project, not a docs site. */
+  links = input(true);
 
   readonly tags = computed(() =>
     this.technologies().map((name) => {

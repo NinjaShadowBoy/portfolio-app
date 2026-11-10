@@ -60,7 +60,12 @@
 
 .avatar-edit:hover {
   background: var(--btn-primary-bg-hover);
-  transform: scale(1.05);
+}
+
+@media (hover: hover) {
+  .avatar-edit:hover {
+    transform: scale(1.05);
+  }
 }
 
 .avatar-edit.disabled {

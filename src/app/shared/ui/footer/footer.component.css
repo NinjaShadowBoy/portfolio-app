@@ -81,9 +81,14 @@
 .social-link:hover {
   background: var(--color-primary-500);
   color: var(--text-inverse);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-primary);
   border-color: var(--color-primary-500);
+}
+
+@media (hover: hover) {
+  .social-link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-primary);
+  }
 }
 
 /* Footer Sections */
@@ -125,11 +130,19 @@
   transition: all var(--motion-duration-fast) var(--motion-ease-out);
   position: relative;
   padding: 0.25rem 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--min-touch-target, auto);
 }
 
 .footer-link:hover {
   color: var(--text-accent);
-  transform: translateX(0.25rem);
+}
+
+@media (hover: hover) {
+  .footer-link:hover {
+    transform: translateX(0.25rem);
+  }
 }
 
 .footer-link.active {
@@ -315,6 +328,9 @@
   }
 
   .footer-bottom-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--min-touch-target);
     padding: 0.5rem 0;
   }
 

@@ -16,9 +16,9 @@
 
 @media (max-width: 768px) {
   .notification-container {
-    bottom: 1rem;
-    right: 1rem;
-    left: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    right: calc(1rem + env(safe-area-inset-right));
+    left: calc(1rem + env(safe-area-inset-left));
     max-width: none;
   }
 }
@@ -35,9 +35,11 @@
   box-shadow: var(--shadow-elevation-3);
 }
 
-.notification:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-elevation-4);
+@media (hover: hover) {
+  .notification:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elevation-4);
+  }
 }
 
 /* Success Notification - Reusing semantic color system */
@@ -136,7 +138,12 @@
 .notification-action-btn:hover {
   background: currentColor;
   color: white;
-  transform: translateY(-1px);
+}
+
+@media (hover: hover) {
+  .notification-action-btn:hover {
+    transform: translateY(-1px);
+  }
 }
 
 .notification-action-btn:active {
@@ -171,11 +178,11 @@
 }
 
 /* Dark mode adjustments */
-[data-theme="dark"] .notification {
+:host-context([data-theme="dark"]) .notification {
   backdrop-filter: blur(16px);
 }
 
-[data-theme="dark"] .notification-close:hover {
+:host-context([data-theme="dark"]) .notification-close:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 

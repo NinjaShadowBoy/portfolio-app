@@ -17,6 +17,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { IdentityService } from '../../../core/services/identity.service';
 import { ThemeService } from '../../../core/services/theme.service';
 import { UiStateService } from '../../../core/services/ui-state.service';
+import { ScrollStateService } from '../../../core/services/scroll-state.service';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 import { CvMenuComponent } from '../cv-menu/cv-menu.component';
 import { FlagComponent } from '../flag/flag.component';
@@ -26,7 +27,13 @@ import { FlagComponent } from '../flag/flag.component';
   imports: [RouterLink, RouterLinkActive, UserAvatarComponent, CvMenuComponent, FlagComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
-  host: { '(document:keydown.escape)': 'onEscape()' },
+  host: {
+    '(document:keydown.escape)': 'onEscape()',
+    '[class.scrolled-away]': 'scrollState.headerHidden()',
+    '[class.menu-open]': 'isMenuOpen()',
+    // A keyboard or screen reader user moving into the hidden header brings it back.
+    '(focusin)': 'scrollState.revealHeader()',
+  },
 })
 export class HeaderComponent {
   private readonly document = inject(DOCUMENT);
@@ -59,8 +66,26 @@ export class HeaderComponent {
   private readonly hamburger = viewChild<ElementRef<HTMLButtonElement>>('hamburger');
   private readonly closeButton = viewChild<ElementRef<HTMLButtonElement>>('closeButton');
 
+  /** Phones only: the sticky header slides away while scrolling down and returns on scroll up. */
+  readonly scrollState = inject(ScrollStateService);
+  /**
+   * Phones only: the browser prefers the other language, so the header shows the
+   * switch instead of leaving it in the drawer. Browser-only, so SSR output is the same for all.
+   */
+  readonly suggestLanguage = signal(false);
+
+  /** True when the first site language (en or fr) in the browser's list is not this page's. */
+  prefersOtherLanguage(languages: readonly string[]): boolean {
+    const preferred = languages.map((tag) => tag.toLowerCase().split('-')[0]).find((l) => l === 'en' || l === 'fr');
+    return preferred === this.otherLang;
+  }
+
   constructor() {
     inject(DestroyRef).onDestroy(() => (this.document.documentElement.style.overflow = ''));
+    // Browser only: the server cannot know the visitor's languages.
+    afterNextRender(() => {
+      this.suggestLanguage.set(this.prefersOtherLanguage(this.document.defaultView?.navigator.languages ?? []));
+    });
     // Any navigation closes the drawer, including browser back while it is open.
     this.router.events
       .pipe(
@@ -71,7 +96,10 @@ export class HeaderComponent {
   }
 
   readonly langLabel = this.otherLang.toUpperCase();
-  readonly langAriaLabel = this.otherLang === 'fr' ? 'Switch to French' : 'Switch to English';
+  readonly langAriaLabel =
+    this.otherLang === 'fr'
+      ? $localize`:Header switch to French@@headerSwitchToFrench:Switch to French`
+      : $localize`:Header switch to English@@headerSwitchToEnglish:Switch to English`;
 
   /**
    * The current page in the other locale. `en` is the source locale served at

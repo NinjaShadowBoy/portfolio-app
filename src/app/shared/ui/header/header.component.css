@@ -51,13 +51,11 @@
   font-weight: 300;
   white-space: nowrap;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.8s var(--motion-ease-out);
 }
 
 .navigation {
   position: relative;
   z-index: 1;
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.4s both;
 }
 
 .navigation ul {
@@ -70,7 +68,8 @@
   flex-wrap: wrap;
 }
 
-.hamburger {
+.hamburger,
+.lang-suggest {
   display: none;
   flex-direction: column;
   align-items: center;
@@ -91,7 +90,10 @@
  */
 .hamburger,
 .hamburger::before,
-.hamburger::after {
+.hamburger::after,
+.lang-suggest,
+.lang-suggest::before,
+.lang-suggest::after {
   transition: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -328,10 +330,11 @@
   stroke-linecap: round;
 }
 
+/* Links and settings sit at the bottom, in thumb reach; the auto margin collapses on short screens. */
 .mobile-nav {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: auto 0 0;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -375,10 +378,7 @@
   }
 }
 
-/*
- * Settings row right under the links. Not pinned to the bottom: the CV
- * popover opens below its button and would land off-screen there.
- */
+/* Settings row under the links, at the bottom; the CV popover flips upward there. */
 .drawer-settings {
   display: flex;
   flex-wrap: wrap;
@@ -399,7 +399,8 @@
   letter-spacing: normal;
 }
 
-.drawer-flag {
+.lang-flag {
+  flex: none;
   width: 20px;
   height: 14px;
   border-radius: 3px;
@@ -477,6 +478,35 @@
     display: flex;
   }
 
+  /*
+   * Sticky header that slides away on scroll down and back on scroll up. It
+   * moves with `top`, not `transform`: a transform would become the containing
+   * block of the fixed drawer inside it. 899 keeps it under the mascot and chat
+   * pane (900); while the drawer is open it goes back to 1001, as before.
+   */
+  :host {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 899;
+    transition: top var(--motion-duration-normal) var(--motion-ease-out);
+  }
+
+  /* Header height (44px button + 2 x 0.6rem padding) plus room for its shadow. */
+  :host(.scrolled-away) {
+    top: calc(-44px - 1.7rem);
+  }
+
+  :host(.menu-open) {
+    z-index: 1001;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :host {
+      transition: none;
+    }
+  }
+
   .hamburger {
     display: inline-flex;
     width: 44px;
@@ -492,23 +522,25 @@
     width: 18px;
   }
 
+  /* Flag and code, e.g. "FR": the code names the language, the flag helps it stand out. */
+  .lang-suggest {
+    display: inline-flex;
+    flex: none;
+    flex-direction: row;
+    gap: 0.4rem;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 0.6rem !important;
+    border-radius: 12px;
+    font-weight: 600;
+  }
+
+
   .desktop-nav {
     display: none !important;
   }
 }
 
-/* Animation keyframes */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* Login Status Indicator Styles */
 .login-status {
@@ -535,7 +567,12 @@
 
 .status-badge:hover {
   border-color: rgba(255, 255, 255, 0.45);
-  transform: translateY(-1px);
+}
+
+@media (hover: hover) {
+  .status-badge:hover {
+    transform: translateY(-1px);
+  }
 }
 
 .user-name {
@@ -622,8 +659,10 @@
   transition: all var(--motion-duration-normal) var(--motion-ease-out);
 }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .theme-toggle:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .theme-toggle:active {
@@ -751,7 +790,12 @@
 .lang-toggle:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
+}
+
+@media (hover: hover) {
+  .lang-toggle:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .lang-toggle:active {

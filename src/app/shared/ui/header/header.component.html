@@ -3,6 +3,14 @@
     <!-- Navigation with hamburger for small screens -->
     <nav class="navigation" aria-label="Primary">
       <div class="mobile-nav-controls">
+        <!-- Only for visitors whose browser prefers the other language. -->
+        @if (suggestLanguage()) {
+        <button class="lang-suggest liquid-glass" type="button" (click)="toggleLanguage()"
+          [attr.aria-label]="langAriaLabel">
+          <app-flag [lang]="otherLang" class="lang-flag" />
+          <span [attr.lang]="otherLang">{{ langLabel }}</span>
+        </button>
+        }
         <button #hamburger class="hamburger liquid-glass" type="button" aria-controls="mobile-menu"
           [attr.aria-expanded]="isMenuOpen()"
           [attr.aria-label]="isMenuOpen() ? 'Close navigation menu' : 'Open navigation menu'" (click)="toggleMenu()">
@@ -43,7 +51,8 @@
         <li class="lang-switch-item">
           <button class="lang-toggle liquid-glass" type="button" (click)="toggleLanguage()"
             [attr.aria-label]="langAriaLabel">
-            {{ langLabel }}
+            <app-flag [lang]="otherLang" class="lang-flag" />
+            <span [attr.lang]="otherLang">{{ langLabel }}</span>
           </button>
         </li>
 
@@ -125,7 +134,7 @@
         <app-cv-menu variant="onBrand" />
         <button class="lang-toggle drawer-lang" type="button" (click)="toggleLanguage()"
           [attr.aria-label]="langAriaLabel">
-          <app-flag [lang]="otherLang" class="drawer-flag" />
+          <app-flag [lang]="otherLang" class="lang-flag" />
           <span [attr.lang]="otherLang">{{ otherLangName }}</span>
         </button>
         <button class="theme-toggle" type="button" (click)="toggleTheme()"

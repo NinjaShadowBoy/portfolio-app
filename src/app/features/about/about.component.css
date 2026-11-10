@@ -14,21 +14,18 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: fadeInUp 0.8s var(--motion-ease-out);
 }
 
 p {
   color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 1.5rem;
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
 }
 
 .cv-download-section {
   margin: 2rem 0;
   display: flex;
   justify-content: center;
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.3s both;
 }
 
 .cv-download-group {
@@ -43,7 +40,7 @@ p {
 .articles-link {
   display: inline-flex;
   align-items: center;
-  height: 40px;
+  height: var(--min-touch-target, 40px);
   padding: 0 1.25rem;
   border-radius: 50px;
   font-size: 1rem;
@@ -71,7 +68,6 @@ h2 {
   color: var(--text-primary);
   margin-bottom: 1rem;
   font-size: 1.75rem;
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.4s both;
 }
 
 .skills-list {
@@ -80,7 +76,6 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.6s both;
   margin-bottom: 1rem;
 }
 
@@ -100,7 +95,6 @@ h2 {
   display: grid;
   gap: 0.85rem;
   margin: 0 0 1.5rem;
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.2s both;
 }
 
 .bio-row {
@@ -141,9 +135,8 @@ h2 {
 }
 
 .hobby-detail {
-  font-size: 0.75rem;
-  opacity: 0.8;
-  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
 }
 
 /* Technologies section */
@@ -152,7 +145,6 @@ h2 {
   padding: 2.5rem 0;
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
-  animation: fadeInUp 0.8s var(--motion-ease-out) 0.5s both;
 }
 
 .tech-stack-section h2 {
@@ -265,7 +257,6 @@ h2 {
   }
 
   .tech-stack-intro {
-    font-size: 0.9rem;
     margin-bottom: 1.5rem;
   }
 }
@@ -288,7 +279,6 @@ h2 {
 
   p {
     margin-bottom: 1rem;
-    font-size: 0.9rem;
   }
 
   .cv-download-section {
@@ -309,26 +299,13 @@ h2 {
   }
 
   .tech-stack-intro {
-    font-size: 0.85rem;
     margin-bottom: 1rem;
   }
 }
 
-/* Animation keyframes */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* Dark mode optimizations */
-[data-theme="dark"] .skills-list li {
+:host-context([data-theme="dark"]) .skills-list li {
   background: var(--surface-raised);
   border-color: var(--border-default);
 }

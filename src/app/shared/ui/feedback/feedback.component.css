@@ -42,8 +42,13 @@
 }
 
 .feedback:hover {
-  box-shadow: var(--elevation-2);
   border-color: var(--border-emphasis);
+}
+
+@media (hover: hover) {
+  .feedback:hover {
+    box-shadow: var(--elevation-2);
+  }
 }
 
 .feedback-heading {
@@ -119,8 +124,14 @@
 .submit-btn:hover:not(:disabled),
 .edit-btn:hover:not(:disabled) {
   background: var(--btn-primary-bg-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--btn-primary-shadow), var(--elevation-2);
+}
+
+@media (hover: hover) {
+  .submit-btn:hover:not(:disabled),
+  .edit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--btn-primary-shadow), var(--elevation-2);
+  }
 }
 
 .submit-btn:active:not(:disabled),
@@ -157,9 +168,15 @@
 .cancel-btn:hover,
 .delete-btn:hover {
   background: var(--btn-secondary-bg-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--elevation-2);
   border-color: var(--border-emphasis);
+}
+
+@media (hover: hover) {
+  .cancel-btn:hover,
+  .delete-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--elevation-2);
+  }
 }
 
 .cancel-btn:active,
@@ -224,8 +241,13 @@
 }
 
 .feedback-item:hover {
-  box-shadow: var(--elevation-1);
   border-color: var(--border-emphasis);
+}
+
+@media (hover: hover) {
+  .feedback-item:hover {
+    box-shadow: var(--elevation-1);
+  }
 }
 
 .feedback-item-header {

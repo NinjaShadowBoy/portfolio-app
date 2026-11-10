@@ -522,6 +522,17 @@
     "chatErrorOffline": "You are offline. Check your connection and try again.",
     "chatErrorCancelled": "The answer was interrupted.",
     "privacyChatHeading": "Chat assistant",
-    "privacyChatBody": " When you use the chat assistant, your messages are sent through {$START_LINK}OpenRouter{$CLOSE_LINK} (which forwards them to the AI model provider that answers — in production, Anthropic's Claude — and to {$START_LINK_1}Voyage AI{$CLOSE_LINK}, which computes the search embeddings) to produce an answer. This site stores no transcripts: only a daily message count per visitor, keyed by an anonymous cookie or a hashed IP address. The conversation stays in your browser tab (sessionStorage) and is cleared when the tab closes. "
+    "privacyChatBody": " When you use the chat assistant, your messages are sent through {$START_LINK}OpenRouter{$CLOSE_LINK} (which forwards them to the AI model provider that answers — in production, Anthropic's Claude — and to {$START_LINK_1}Voyage AI{$CLOSE_LINK}, which computes the search embeddings) to produce an answer. This site stores no transcripts: only a daily message count per visitor, keyed by an anonymous cookie or a hashed IP address. The conversation stays in your browser tab (sessionStorage) and is cleared when the tab closes. ",
+    "headerSwitchToFrench": "Switch to French",
+    "headerSwitchToEnglish": "Switch to English",
+    "headerBackToTop": "Back to top",
+    "projectsTechGroupLanguages": "Languages",
+    "projectsTechGroupFrontend": "Frontend & mobile",
+    "projectsTechGroupBackend": "Backend",
+    "projectsTechGroupData": "Data & AI",
+    "projectsTechGroupInfra": "Infrastructure",
+    "projectsTechGroupServices": "Services",
+    "projectsTechGroupOther": "Other",
+    "feedbackTextareaLabel": "Your feedback"
   }
 }

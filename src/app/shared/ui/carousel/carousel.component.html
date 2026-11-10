@@ -3,21 +3,40 @@
     <!-- Every control is overlaid inside this fixed-ratio box, so changing
          slides never changes the carousel's height. -->
     <div class="carousel-main">
+      @let source = sources()[currentImageIndex()];
+      @if (fullscreen()) {
       <img
         #carouselImage
-        [src]="photoUrls()[currentImageIndex()]"
+        [src]="source.src"
+        [attr.srcset]="source.srcset"
+        [attr.sizes]="source.srcset ? sizes() : null"
         [alt]="projectName() + ' screenshot ' + (currentImageIndex() + 1)"
         width="1600"
         height="900"
         [attr.loading]="loading()"
+        [attr.fetchpriority]="loading() === 'eager' ? 'high' : null"
         decoding="async"
-        class="carousel-image"
+        class="carousel-image zoomable"
         (click)="openFullscreen()"
         (keydown.enter)="openFullscreen()"
         tabindex="0"
         role="button"
         i18n-aria-label="Carousel view fullscreen@@carouselViewFullscreen"
         aria-label="View image fullscreen" />
+      } @else {
+      <!-- In a card the image is not a control; the card's link covers it. -->
+      <img
+        #carouselImage
+        [src]="source.src"
+        [attr.srcset]="source.srcset"
+        [attr.sizes]="source.srcset ? sizes() : null"
+        [alt]="projectName() + ' screenshot ' + (currentImageIndex() + 1)"
+        width="1600"
+        height="900"
+        [attr.loading]="loading()"
+        decoding="async"
+        class="carousel-image" />
+      }
 
       @if (photoUrls().length > 1) {
         <button
@@ -62,7 +81,8 @@
 }
 
 @if (isFullscreen()) {
-  <div #lightbox class="lightbox" (click)="closeFullscreen()">
+  <div #lightbox class="lightbox" (click)="onLightboxClick()" (pointerdown)="onSwipeStart($event)"
+    (pointerup)="onSwipeEnd($event)" (pointercancel)="onSwipeEnd($event)">
     <button
       type="button"
       class="lightbox-close"
@@ -92,7 +112,7 @@
     }
 
     <img
-      [src]="photoUrls()[currentImageIndex()]"
+      [src]="sources()[currentImageIndex()].full"
       [alt]="projectName() + ' screenshot ' + (currentImageIndex() + 1)"
       class="lightbox-image"
       (click)="$event.stopPropagation()" />
