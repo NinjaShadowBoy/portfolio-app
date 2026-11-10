@@ -32,7 +32,7 @@ const CATEGORY_KEYS: Record<Exclude<TechCategory, 'other'>, string[]> = {
   ],
   backend: [
     'spring boot', 'spring', 'spring cloud', 'nestjs', 'ktor', 'gin', 'chi', 'fastapi', 'node', 'nodejs', 'node.js',
-    'hibernate',
+    'hibernate', 'jwt', 'oauth', 'oauth2',
   ],
   data: [
     'postgresql', 'mysql', 'sqlite', 'mongodb', 'chromadb', 'rag', 'langchain', 'gemini', 'claude', 'openrouter',
@@ -374,8 +374,24 @@ export class TechnologiesService {
     },
     'whatsapp': {
       name: 'WhatsApp',
-      logo: 'https://cdn.simpleicons.org/whatsapp',
+      // The same file as the WhatsApp contact link.
+      logo: 'assets/images/WhatsApp.svg',
       docUrl: 'https://developers.facebook.com/docs/whatsapp/',
+    },
+    'jwt': {
+      name: 'JWT',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jwt/jwt-original.svg',
+      docUrl: 'https://jwt.io/introduction',
+    },
+    'oauth2': {
+      name: 'OAuth2',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oauth/oauth-original.svg',
+      docUrl: 'https://oauth.net/2/',
+    },
+    'oauth': {
+      name: 'OAuth',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oauth/oauth-original.svg',
+      docUrl: 'https://oauth.net/2/',
     },
     // No CDN icon for these two: their GitHub organisations' avatars are the official marks.
     'chromadb': {
